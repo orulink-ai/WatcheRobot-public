@@ -10,7 +10,7 @@
 
 ## Flashing and Assets
 
-For first-time reproduction, download these assets from the same [GitHub Release](https://github.com/orulink-ai/WatcheRobot/releases) bundle:
+For first-time reproduction, download these assets from the same [GitHub Release](https://github.com/orulink-ai/WatcheRobot-public/releases) bundle:
 
 | Content | File |
 | --- | --- |

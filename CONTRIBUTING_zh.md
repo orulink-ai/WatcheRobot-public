@@ -4,7 +4,7 @@
 
 ## Fork 和分支
 
-1. Fork `orulink-ai/WatcheRobot`。
+1. Fork `orulink-ai/WatcheRobot-public`。
 2. Clone 你自己的 fork。
 3. 创建一个聚焦的工作分支。
 

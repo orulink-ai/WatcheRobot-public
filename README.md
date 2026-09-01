@@ -4,7 +4,7 @@
 
 <img src="docs/images/watcher-robot-render.png" alt="WatcheRobot render" width="720">
 
-<p>Open-source materials for the WatcheRobot desktop robot, focused on hardware reproduction, mechanical reference, SDK integration, firmware flashing, and device validation.</p>
+<p>Public materials for the WatcheRobot desktop robot, including hardware files, mechanical models, the Python SDK, flashing tools, user documentation, and Release asset notes.</p>
 
 <p>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg" alt="License: GPL-3.0"></a>
@@ -20,20 +20,20 @@
 
 ## Overview
 
-WatcheRobot is a desktop interaction robot built around SenseCAP Watcher, an ESP32-S3, an STM32F103 co-processor, custom PCBs, mechanical parts, and SD-card behavior assets. This repository publishes the materials needed for reproduction and integration, including hardware manufacturing files, mechanical models, the Python SDK, flashing tools, user manuals, and release-asset documentation.
+WatcheRobot is a desktop robot kit for companion interaction, interactive demos, and developer experiments. The full device is built around SenseCAP Watcher, an ESP32-S3, an STM32F103 co-processor, custom PCBs, mechanical parts, and SD-card behavior assets.
 
-The open-source boundary has changed: this repository does not publish the ESP32-S3 or STM32F103 embedded firmware source code. Firmware is distributed as same-version prebuilt GitHub Release assets, so users can flash the device, prepare SD-card assets, and validate startup without accessing firmware source.
+This repository publishes WatcheRobot public materials and developer-facing integration entrypoints; it does not contain the complete product source code. It includes hardware manufacturing files, editable PCB projects, mechanical assembly models, the Python SDK, flashing tools, network setup notes, user manuals, and Release asset documentation. ESP32-S3 and STM32F103 firmware is distributed as prebuilt Release assets, and firmware source code is not published in this repository.
 
-Through the Python SDK, developers can control the WatcheRobot ESP32-S3 from the host side and use the camera, microphone, speaker, and built-in expressions and animation effects. For interfaces and examples, see the [Python SDK documentation](python-sdk/README.md).
+Users can use these materials to check device assembly, flash firmware, configure networking, validate first startup, and build host-side integrations through the Python SDK. The SDK connects to WatcheRobot from a host computer and can use the camera, microphone, speaker, built-in expressions, and animation effects. For interfaces and examples, see the [Python SDK documentation](python-sdk/README.md).
 
 ## Quick Start
 
-This section helps you get the repository, prepare tools, and complete the smallest verifiable startup flow.
+This section helps you get the public materials, prepare tools, and complete the smallest verifiable device startup and SDK connection flow.
 
 ### 1. Get the Repository
 
 ```bash
-git clone https://github.com/orulink-ai/WatcheRobot.git
+git clone https://github.com/orulink-ai/WatcheRobot-public.git
 cd WatcheRobot
 ```
 
@@ -51,7 +51,7 @@ If you plan to submit changes, fork the repository first and create a branch fro
 
 ### 3. Get Firmware and Behavior Assets
 
-Prefer downloading all runtime assets from the same [GitHub Release](https://github.com/orulink-ai/WatcheRobot/releases) bundle. First-time reproduction needs at least the ESP32-S3 firmware, STM32F103 firmware, and SD-card assets from the same version; the Release may also include an AI flashing skill ZIP that an AI assistant can read before helping with flashing.
+Prefer downloading all runtime assets from the same [GitHub Release](https://github.com/orulink-ai/WatcheRobot-public/releases) bundle. First-time reproduction needs at least the ESP32-S3 firmware, STM32F103 firmware, and SD-card assets from the same version; the Release may also include an AI flashing skill ZIP that an AI assistant can read before helping with flashing.
 
 The current `watche-v0.1.1` asset list is documented in [Downloads](docs/downloads.md).
 

@@ -22,10 +22,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/orulink-ai/WatcheRobot"
-Repository = "https://github.com/orulink-ai/WatcheRobot"
-Documentation = "https://github.com/orulink-ai/WatcheRobot/tree/main/python-sdk#readme"
-Issues = "https://github.com/orulink-ai/WatcheRobot/issues"
+Homepage = "https://github.com/orulink-ai/WatcheRobot-public"
+Repository = "https://github.com/orulink-ai/WatcheRobot-public"
+Documentation = "https://github.com/orulink-ai/WatcheRobot-public/tree/main/python-sdk#readme"
+Issues = "https://github.com/orulink-ai/WatcheRobot-public/issues"
 
 [project.optional-dependencies]
 test = ["mypy>=1.10,<2", "pytest>=8"]

@@ -1,6 +1,6 @@
 # Governance
 
-`orulink-ai/WatcheRobot` is the public repository for hardware materials, mechanical models, SDK source, user documentation, flashing tools, and release coordination.
+`orulink-ai/WatcheRobot-public` is the public repository for hardware materials, mechanical models, SDK source, user documentation, flashing tools, and release coordination.
 
 Maintainers should keep the following boundaries clear:
 

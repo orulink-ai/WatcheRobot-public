@@ -4,7 +4,7 @@ Thank you for helping improve WatcheRobot. This repository publishes hardware ma
 
 ## Forks and Branches
 
-1. Fork `orulink-ai/WatcheRobot`.
+1. Fork `orulink-ai/WatcheRobot-public`.
 2. Clone your fork.
 3. Create a focused working branch.
 

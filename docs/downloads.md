@@ -1,6 +1,6 @@
 # Downloads
 
-All release artifacts are published through GitHub Releases for `orulink-ai/WatcheRobot`.
+All release artifacts are published through GitHub Releases for `orulink-ai/WatcheRobot-public`.
 
 ## Current Status
 

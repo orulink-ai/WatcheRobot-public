@@ -10,7 +10,7 @@
 
 ## 烧录和资源
 
-首次复现建议从同一个 [GitHub Release](https://github.com/orulink-ai/WatcheRobot/releases) 套装中下载：
+首次复现建议从同一个 [GitHub Release](https://github.com/orulink-ai/WatcheRobot-public/releases) 套装中下载：
 
 | 内容 | 文件 |
 | --- | --- |

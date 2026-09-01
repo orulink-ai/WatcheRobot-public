@@ -4,7 +4,7 @@
 
 <img src="docs/images/watcher-robot-render.png" alt="WatcheRobot 渲染图" width="720">
 
-<p>WatcheRobot 桌面机器人开源资料包，面向硬件复现、结构参考、SDK 集成、固件烧录和设备使用验证。</p>
+<p>WatcheRobot 桌面机器人公开资料仓库，提供硬件资料、机械模型、Python SDK、烧录工具、使用文档和 Release 资产说明。</p>
 
 <p>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg" alt="License: GPL-3.0"></a>
@@ -20,20 +20,20 @@
 
 ## 项目概览
 
-WatcheRobot 是一个桌面交互机器人项目，整机由 SenseCAP Watcher、ESP32-S3、STM32F103 协处理器、自研 PCB、机械结构件和 SD 卡行为资源组成。这个仓库用于公开复现和集成所需的资料，包括硬件生产文件、机械模型、Python SDK、烧录工具、设备说明书和配套 Release 资产说明。
+WatcheRobot 是一个面向桌面陪伴、交互展示和开发者实验的机器人套件，整机由 SenseCAP Watcher、ESP32-S3、STM32F103 协处理器、自研 PCB、机械结构件和 SD 卡行为资源组成。
 
-当前开源边界已经调整：本仓库不公开 ESP32-S3 和 STM32F103 的嵌入式固件源码。固件以同一套版本的预编译 Release 资产提供，用户可以按文档完成烧录、准备 SD 卡资源并验证设备启动。
+本仓库用于发布 WatcheRobot 的公开资料和开发者接入能力。仓库中提供硬件生产文件、可编辑 PCB 工程、机械装配模型、Python SDK、烧录工具、网络配置说明、使用说明书和 Release 资产说明。ESP32-S3 与 STM32F103 固件以预编译 Release 资产提供，不在本仓库公开源码。
 
-通过 Python SDK，开发者可以在主机侧控制 WatcheRobot 的 ESP32-S3，使用摄像头、麦克风、喇叭、内置表情和动效等能力。更多接口和示例请查看 [Python SDK 说明](python-sdk/README.zh-CN.md)。
+用户可以基于这些资料完成设备装配核对、固件烧录、网络配置、首次启动验证，以及通过 Python SDK 进行二次开发。SDK 支持在主机侧连接 WatcheRobot，调用摄像头、麦克风、喇叭、内置表情和动效等能力。更多接口和示例请查看 [Python SDK 说明](python-sdk/README.zh-CN.md)。
 
 ## 快速开始
 
-这部分用于帮助你从零拿到仓库、准备工具，并完成一次最小可验证的启动流程。
+这部分用于帮助你拿到公开资料、准备工具，并完成一次最小可验证的设备启动和 SDK 连接流程。
 
 ### 1. 获取仓库
 
 ```bash
-git clone https://github.com/orulink-ai/WatcheRobot.git
+git clone https://github.com/orulink-ai/WatcheRobot-public.git
 cd WatcheRobot
 ```
 
@@ -51,7 +51,7 @@ cd WatcheRobot
 
 ### 3. 获取固件和资源
 
-推荐优先从 [GitHub Releases](https://github.com/orulink-ai/WatcheRobot/releases) 下载同一个套装中的资源。首次复现至少需要 ESP32-S3 固件、STM32F103 固件和 SD 卡资源，不要混用不同版本的资产；Release 中也会提供 AI 烧录 Skill 压缩包，可交给 AI 助手读取后协助烧录。
+推荐优先从 [GitHub Releases](https://github.com/orulink-ai/WatcheRobot-public/releases) 下载同一个套装中的资源。首次复现至少需要 ESP32-S3 固件、STM32F103 固件和 SD 卡资源，不要混用不同版本的资产；Release 中也会提供 AI 烧录 Skill 压缩包，可交给 AI 助手读取后协助烧录。
 
 当前 `watche-v0.1.1` 套装的资源清单见 [下载说明](docs/downloads.md)。
 
