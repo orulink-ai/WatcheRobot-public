@@ -1,0 +1,19 @@
+* text=auto eol=lf
+
+*.bmp binary
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.png binary
+*.webp binary
+
+*.3mf binary
+*.glb binary
+*.obj binary
+*.stl binary
+*.step binary
+*.stp binary
+
+*.pdf binary
+*.zip binary

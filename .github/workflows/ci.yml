@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  policy:
+    name: Repository policy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check repository boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -d releases
+          test ! -d hardware/releases
+          if git ls-files | grep -E '(^|/)(firmware/esp32-s3|firmware/stm32-f103|WatcheRobot_app|WatcheRobot_server|WatcheRobot_client)(/|$)'; then
+            echo "Closed-source implementation directories must not be committed."
+            exit 1
+          fi
+          if git ls-files | grep -Ei '\.(apk|aab|exe|msi|dmg|zip|bin|elf|hex|map)$'; then
+            echo "Release artifacts must be uploaded to GitHub Releases, not committed to Git."
+            exit 1
+          fi
+      - name: Check public link hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE \
+            --exclude-dir=.git \
+            --exclude-dir=build \
+            --exclude='ci.yml' \
+            'Ro-In-AI|ERRORIGHT-AI|D:\\|COM37|COM57' .; then
+            echo "Found old organization links, local paths, or private COM-port notes."
+            exit 1
+          fi
+      - name: Basic secret pattern scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE \
+            --exclude-dir=.git \
+            --exclude-dir=build \
+            --exclude='ci.yml' \
+            '(AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9_]{20,}|xox[baprs]-|BEGIN (RSA |OPENSSH |EC |DSA )?PRIVATE KEY|api[_-]?key[=:][^[:space:]]+|token[=:][^[:space:]]+|password[=:][^[:space:]]+)' .; then
+            echo "Potential secret detected."
+            exit 1
+          fi
+
+  python-sdk:
+    name: Python SDK tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python-sdk
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install SDK test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+      - name: Run tests
+        run: python -m pytest

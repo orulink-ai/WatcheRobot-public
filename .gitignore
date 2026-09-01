@@ -1,0 +1,54 @@
+# Local and generated files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.vscode/settings.json
+.local/
+*.log
+*.tmp
+*.bak
+*.orig
+
+# Build outputs
+build/
+cmake-build-*/
+out/
+dist/
+artifacts/
+firmware/**/build*/
+firmware/**/managed_components/
+firmware/**/sdkconfig
+firmware/**/sdkconfig.old
+firmware/**/release/
+
+# Python / Node caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+node_modules/
+
+# Local secrets and machine config
+.env
+.env.*
+!.env.example
+secrets.h
+wifi_credentials.h
+config/local/
+.codex/local/
+
+# Release artifacts belong in GitHub Releases, not Git history.
+*.apk
+*.aab
+*.exe
+*.msi
+*.dmg
+*.zip
+*.bin
+*.elf
+*.map
+*.hex

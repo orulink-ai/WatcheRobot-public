@@ -1,0 +1,74 @@
+# Contributing
+
+Thank you for helping improve WatcheRobot. This repository publishes hardware materials, mechanical models, the Python SDK, user documentation, flashing tools, and release-asset documentation.
+
+## Forks and Branches
+
+1. Fork `orulink-ai/WatcheRobot`.
+2. Clone your fork.
+3. Create a focused working branch.
+
+Recommended branch names:
+
+| Work type | Branch format |
+| --- | --- |
+| Documentation | `docs/<topic>` |
+| SDK | `sdk/<topic>` |
+| Hardware materials | `hardware/<topic>` |
+| Release docs or manifests | `release/<topic>` |
+| Tools | `tools/<topic>` |
+
+Keep each pull request focused on one clear change.
+
+## PR Titles
+
+Use short prefixes:
+
+- `docs: ...`
+- `sdk: ...`
+- `hardware: ...`
+- `release: ...`
+- `tools: ...`
+
+Examples:
+
+- `docs: add SD-card behavior asset checklist`
+- `hardware: document spare parts for wireless charging base`
+- `sdk: add camera capture example`
+
+## Do Not Commit
+
+Do not commit:
+
+- ESP32-S3 or STM32F103 firmware source code
+- Release artifacts: `.bin`, `.zip`, `.exe`, `.msi`, `.dmg`, `.apk`, `.aab`
+- local build outputs or generated firmware images
+- Wi-Fi credentials, API keys, tokens, private keys, or `.env` files
+- local machine paths, private serial logs, or bench-only COM-port notes
+- closed-source App, Server, or Desktop source code
+
+Binary release artifacts should be uploaded to GitHub Releases instead of entering Git history.
+
+## Documentation Updates
+
+If your change affects setup, flashing, behavior assets, hardware materials, SDK usage, or Release assets, update the matching documents:
+
+- Quick start: `README.md`
+- Firmware and flashing: `firmware/README.md`
+- Flashing: `docs/flashing.md`
+- SD-card behavior assets: `docs/sd-card-assets.md`
+- First action smoke test: `docs/action-test.md`
+- SDK and public interface boundary: `docs/sdk.md`
+- Versions and compatibility: `docs/versions.md`, `docs/compatibility.md`
+- Hardware and BOM: `hardware/README.md`, `hardware/pcb/spares.md`
+
+## Validation Before PR
+
+Run checks according to the change scope:
+
+- Documentation-only changes: check links and run the repository policy scan when possible.
+- SDK changes: run `python -m pytest` under `python-sdk/`.
+- Flashing or behavior-asset changes: complete the checklist in `docs/action-test.md`.
+- Hardware material changes: confirm BOM, CPL, Gerber, schematic, layout, and editable source filenames correspond to the same board.
+
+If your environment is missing a tool, state that clearly in the PR Test Plan.
