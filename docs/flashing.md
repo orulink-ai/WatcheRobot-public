@@ -59,11 +59,19 @@ Wait for `Programming Finished`, `Verified OK`, and `Resetting Target` with succ
 
 Connect the Watcher head with a USB data cable. First run this command to install dependencies and list ports; it does not write firmware:
 
+Windows:
+
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder"
 ```
 
-Find SERIAL-B and SERIAL-A in the `desc:` lines above. COM61 and COM62 below are examples; use the port numbers shown on your computer:
+macOS/Linux:
+
+```sh
+bash tools/flash.sh head --package "extracted-PTL-paired-folder"
+```
+
+Identify the ports corresponding to SERIAL-B and SERIAL-A in the output. On Windows, the `desc:` names map to these arguments; COM61 and COM62 are examples:
 
 | Device name | Port (example) | Command argument |
 | --- | --- | --- |
@@ -78,7 +86,13 @@ Use SERIAL-B for `--port` and SERIAL-A for `--vision-port`. Replace both port nu
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder" --port COM61 --vision-port COM62
 ```
 
-On macOS/Linux use the same arguments with `bash tools/flash.sh` and actual `/dev/...` port paths.
+Full macOS/Linux flashing command:
+
+```sh
+bash tools/flash.sh head --package "extracted-PTL-paired-folder" --port "/dev/SERIAL_B" --vision-port "/dev/SERIAL_A"
+```
+
+`/dev/SERIAL_B` and `/dev/SERIAL_A` are placeholders. Replace them with the identified ESP32 and Himax serial paths respectively; do not infer the mapping from port number order. Do not flash until the mapping is confirmed.
 
 The script flashes Himax first, then ESP32-S3; no separate commands are needed. After `HX flash completed; reboot accepted.`, keep waiting until `PTL paired flash completed.` confirms the whole step. Do not unplug the cable during flashing.
 

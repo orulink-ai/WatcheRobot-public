@@ -59,11 +59,19 @@ bash tools/flash.sh stm32 --package "解压后的STM32目录"
 
 用 USB 数据线连接 Watcher 头部。先运行以下命令，脚本安装依赖并列出串口；此命令不写入固件：
 
+Windows：
+
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录"
 ```
 
-在上一步输出的 `desc:` 中找到 SERIAL-B 和 SERIAL-A。下面以 COM61、COM62 为例，实际端口号以你的电脑显示为准：
+macOS/Linux：
+
+```sh
+bash tools/flash.sh head --package "解压后的PTL-paired目录"
+```
+
+在上一步输出中确认 SERIAL-B 和 SERIAL-A 对应的端口。Windows 的 `desc:` 名称与参数对应如下，以 COM61、COM62 为例：
 
 | 设备名称 | 端口（示例） | 命令参数 |
 | --- | --- | --- |
@@ -78,7 +86,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --packa
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录" --port COM61 --vision-port COM62
 ```
 
-macOS/Linux 使用相同参数，将入口换成 `bash tools/flash.sh`，端口换成实际 `/dev/...` 路径。
+macOS/Linux 完整烧录命令：
+
+```sh
+bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/SERIAL_B" --vision-port "/dev/SERIAL_A"
+```
+
+`/dev/SERIAL_B` 和 `/dev/SERIAL_A` 是占位路径，分别替换成查询到的 ESP32 和 Himax 串口路径；不要按端口数字大小判断。无法确认对应关系时，先不要烧录。
 
 脚本先烧 Himax，再烧 ESP32-S3，不需要分开操作。看到 `HX flash completed; reboot accepted.` 后继续等待，直到 `PTL paired flash completed.` 才算整步完成，期间不要拔线。
 
