@@ -29,8 +29,7 @@ conda activate watcherobot
 
 用 ST-LINK V2 连接身体内部主板的四针接口，按印字对应，不按线色猜。
 
-<img src="images/flashing/stm32-board-labels.jpg" alt="身体主板接口标识" width="420">
-<img src="images/flashing/stlink-v2-pins.jpg" alt="ST-LINK V2 接口标识" width="420">
+<img src="images/flashing/stm32-swd-wiring.png" alt="STM32 身体主板与 ST-LINK V2 接线" width="620">
 
 | 身体主板 | ST-LINK V2 |
 | --- | --- |

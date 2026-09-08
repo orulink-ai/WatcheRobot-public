@@ -29,8 +29,7 @@ Run the following commands at the repository root, replacing firmware paths with
 
 Connect ST-LINK V2 to the four-pin connector on the board inside the body. Follow the labels, not wire colors.
 
-<img src="images/flashing/stm32-board-labels.jpg" alt="Body board connector labels" width="420">
-<img src="images/flashing/stlink-v2-pins.jpg" alt="ST-LINK V2 connector labels" width="420">
+<img src="images/flashing/stm32-swd-wiring.png" alt="STM32 body board to ST-LINK V2 wiring" width="620">
 
 | Body board | ST-LINK V2 |
 | --- | --- |
