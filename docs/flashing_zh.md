@@ -99,13 +99,13 @@ bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/S
 
 ## 4. 用读卡器准备 SD 卡
 
-用读卡器将 FAT32 格式的 SD 卡连接电脑，把 SD 资源压缩包解压到卡的根目录，再插回头部。
+用读卡器将 FAT32 格式的 SD 卡连接电脑，把 SD 资源压缩包解压到卡的根目录，再插回头部。根目录内容见 [SD 卡资源说明](sd-card-assets_zh.md)。
 
 ## 5. 上电并使用
 
 确认 SD 卡和接线就位，接通电源并按电源键开机，检查屏幕进入正常界面。烧录后的自动复位不一定会解除关机状态。从 Release 下载 Desktop 或 Android 安装包；iOS 使用页面中的 TestFlight。Python 用户见 [SDK 指南](sdk_zh.md)。
 
-连接后尝试一个表情、灯效和安全范围内的动作。
+连接后按[首次运行检查](action-test_zh.md)尝试一个表情、灯效和安全范围内的动作。
 
 ## 使用 Skill（可选）
 

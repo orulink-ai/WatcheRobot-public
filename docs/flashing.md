@@ -99,13 +99,13 @@ Stop if ports are missing or inaccessible: automatic CH342 driver installation a
 
 ## 4. Prepare the SD Card with a Card Reader
 
-Connect a FAT32-formatted SD card to your computer with a card reader, extract the SD resource archive to the card root, then reinsert the card into the head.
+Connect a FAT32-formatted SD card to your computer with a card reader, extract the SD resource archive to the card root, then reinsert the card into the head. See [SD-card Resources](sd-card-assets.md) for the root contents.
 
 ## 5. Power On and Use
 
 Check the SD card and wiring, connect power, and press the power button. Check that the normal screen appears; the automatic reset after flashing may retain the powered-off state. Download Desktop or Android installers from the Release; use its TestFlight link for iOS. Python users can follow the [SDK Guide](sdk.md).
 
-After connecting, try an expression, a light effect, and a movement within a safe range.
+After connecting, follow the [First-run Check](action-test.md) with an expression, a light effect, and a movement within a safe range.
 
 ## Use the Skill (Optional)
 

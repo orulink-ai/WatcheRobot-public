@@ -1,67 +1,50 @@
-<p><strong>English</strong> | <a href="sdk_zh.md">简体中文</a></p>
+English | [简体中文](sdk_zh.md)
 
 # SDK Installation and Commands
 
-Complete firmware flashing and SD preparation first. These steps set up Python control from your computer.
+Complete robot flashing, SD-card preparation, and network setup first. Download the `watcherobot` `.whl` from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest), then open a terminal in the folder containing it.
 
-## 1. Prepare the Download Folder
+## 1. Create the Environment and Install
 
-Download the `watcherobot` `.whl` from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest). Put it in a separate folder with only this wheel. Use a Python version supported by the Release.
+```bash
+conda create -n watcherobot-sdk python=3.12 pip -y
+conda activate watcherobot-sdk
+```
 
-Open a terminal in that folder. On Windows, type `powershell` in its address bar and press Enter.
-
-## 2. Create the Environment and Install
-
-Windows PowerShell, one line at a time:
+Windows PowerShell:
 
 ```powershell
-python --version
-python -m venv .venv
 $wheel = Get-Item .\watcherobot-*.whl
-.\.venv\Scripts\python.exe -m pip install $wheel.FullName
-.\.venv\Scripts\watcherobot.exe --version
-```
-
-macOS/Linux, one line at a time:
-
-```sh
-python3 --version
-python3 -m venv .venv
-.venv/bin/python -m pip install ./watcherobot-*.whl
-.venv/bin/watcherobot --version
-```
-
-The final command prints the SDK version. Activation is not required; use the programs inside this folder for the following steps.
-
-## 3. Connect the Robot
-
-For first-time network setup, use a Windows or macOS computer with Bluetooth and follow the prompts:
-
-```powershell
-.\.venv\Scripts\watcherobot.exe robot setup
-```
-
-If the robot already has Wi-Fi, connect the computer to the same network and open the Python SDK app on the robot. Replace `123456` below with the displayed six-digit pairing code:
-
-```powershell
-.\.venv\Scripts\watcherobot.exe robot pair 123456
-.\.venv\Scripts\watcherobot.exe robot status
-```
-
-On macOS/Linux, replace `..venvScriptswatcherobot.exe` with `.venv/bin/watcherobot`. Once status returns the device information, you can use the SDK.
-
-## 4. Run Your Python Script
-
-Save your script in this folder. For a script named `my_robot.py`, run on Windows:
-
-```powershell
-.\.venv\Scripts\python.exe .\my_robot.py
+python -m pip install $wheel.FullName
+watcherobot --version
 ```
 
 macOS/Linux:
 
-```sh
-.venv/bin/python ./my_robot.py
+```bash
+python -m pip install ./watcherobot-*.whl
+watcherobot --version
 ```
 
-`my_robot.py` is an example filename; replace it with your saved script. See the [SDK README](../python-sdk/README.md) for API usage and examples, including any extra example dependencies.
+## 2. Set Up and Connect the Robot
+
+For first-time network setup, run this on a Bluetooth-capable Windows or macOS computer:
+
+```bash
+watcherobot robot setup
+```
+
+After the robot is online, connect the computer to the same network and open the Python SDK app on the robot. Replace `123456` with the six-digit pairing code shown on screen:
+
+```bash
+watcherobot robot pair 123456
+watcherobot robot status
+```
+
+## 3. Run a Python Script
+
+```bash
+python my_robot.py
+```
+
+Replace `my_robot.py` with your script file. See the [Python SDK README](../python-sdk/README.md) for APIs and examples.

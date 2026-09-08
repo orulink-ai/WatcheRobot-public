@@ -6,7 +6,7 @@
 
 Maintainers should keep the following boundaries clear:
 
-- SDK source changes belong under `python-sdk/`.
+- Python SDK source is provided through the `python-sdk/` submodule.
 - Hardware source changes belong under `hardware/pcb/`, `hardware/3d-models/`, or `hardware/assembly/`.
 - ESP32-S3 and STM32F103 firmware source code is not published in this repository.
 - App, server, desktop, firmware, and SD-card runtime artifacts are release assets only.
