@@ -1,40 +1,50 @@
-# SDK and Public Interface Boundary
+English | [简体中文](sdk_zh.md)
 
-The public software integration surface of this repository is the root-level Python SDK plus the runtime assets distributed through GitHub Releases. ESP32-S3 and STM32F103 firmware source code is not published here.
+# SDK Installation and Commands
 
-## Current Public Interfaces
+Complete robot flashing, SD-card preparation, and network setup first. Download the `watcherobot` `.whl` from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest), then open a terminal in the folder containing it.
 
-| Area | Entry point | Status |
-| --- | --- | --- |
-| Python SDK | `python-sdk/` | Public source, examples, and tests for host-side control. |
-| SDK protocol notes | `python-sdk/docs/protocol-v1.md` | Public SDK-facing protocol notes. |
-| Factory resource IDs | `python-sdk/docs/resources.md` | Public reference for supported built-in behavior, animation, and audio IDs. |
-| ESP32-S3 release flashing | `tools/win_flasher/`, `tools/flash-release.cmd` | Public helper for prebuilt release ZIPs. |
-| AI flashing skill | `tools/flashing/` | Public AI-readable workflow for firmware flashing and boot checks. |
-| Release assets | GitHub Releases | Prebuilt firmware, SD-card assets, installers, manifest, and checksums. |
+## 1. Create the Environment and Install
 
-## Stable for Users
+```bash
+conda create -n watcherobot-sdk python=3.12 pip -y
+conda activate watcherobot-sdk
+```
 
-Users may rely on:
+Windows PowerShell:
 
-- repository layout documented in `README.md`
-- SDK installation and examples in `python-sdk/README.md`
-- release assets being distributed through GitHub Releases
-- SD-card behavior assets being copied under `anim/`
-- hardware manufacturing files under `hardware/`
+```powershell
+$wheel = Get-Item .\watcherobot-*.whl
+python -m pip install $wheel.FullName
+watcherobot --version
+```
 
-## Not Published Here
+macOS/Linux:
 
-The following implementation details are outside this public repository:
+```bash
+python -m pip install ./watcherobot-*.whl
+watcherobot --version
+```
 
-- ESP32-S3 firmware source and internal component layout
-- STM32F103 firmware source and host tests
-- App, server, and desktop source code
-- private bring-up logs, local serial-port records, and bench-only scripts
+## 2. Set Up and Connect the Robot
 
-## Development Against the Public Repo
+For first-time network setup, run this on a Bluetooth-capable Windows or macOS computer:
 
-- For SDK integration, use `python-sdk/`.
-- For hardware reproduction, use `hardware/pcb/` and `hardware/3d-models/`.
-- For flashing automation, use `tools/win_flasher` or the AI-readable workflow under `tools/flashing/`.
-- For firmware behavior, use the documented Release assets and verify device capabilities at runtime.
+```bash
+watcherobot robot setup
+```
+
+After the robot is online, connect the computer to the same network and open the Python SDK app on the robot. Replace `123456` with the six-digit pairing code shown on screen:
+
+```bash
+watcherobot robot pair 123456
+watcherobot robot status
+```
+
+## 3. Run a Python Script
+
+```bash
+python my_robot.py
+```
+
+Replace `my_robot.py` with your script file. See the [Python SDK README](../python-sdk/README.md) for APIs and examples.

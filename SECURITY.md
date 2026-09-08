@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="SECURITY_zh.md">简体中文</a></p>
+
 # Security Policy
 
 ## Public Repository Rules
@@ -24,9 +26,8 @@ If the report requires sharing credentials, private logs, or unpublished exploit
 
 Security reports for this public repository may cover:
 
-- embedded firmware code in `firmware/`
 - public flashing and release tools in `tools/`
-- public protocol documentation in `firmware/` and `docs/`
+- public usage documentation in `docs/`
 - hardware publication files when they affect safe reproduction
 
 Closed-source app, server, and desktop packages are distributed separately as release assets when available.

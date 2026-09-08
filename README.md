@@ -1,162 +1,132 @@
-<div align="center">
+English | [简体中文](README_zh.md)
 
-<p><strong>English</strong> | <a href="README_zh.md">简体中文</a></p>
+# WatcheRobot
 
-<img src="docs/images/watcher-robot-render.png" alt="WatcheRobot render" width="720">
+The public WatcheRobot desktop-robot repository provides hardware files, mechanical models, the Python SDK, flashing tools, user guides, and Release asset documentation.
 
-<p>Public materials for the WatcheRobot desktop robot, including hardware files, mechanical models, the Python SDK, flashing tools, user documentation, and Release asset notes.</p>
+## Project Preview
 
-<p>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg" alt="License: GPL-3.0"></a>
-  <img src="https://img.shields.io/badge/Package-0.1.0-brightgreen" alt="Package 0.1.0">
-  <img src="https://img.shields.io/badge/Firmware-Release%20Assets-green" alt="Firmware release assets">
-  <img src="https://img.shields.io/badge/Hardware-Gerber%20%7C%20BOM%20%7C%20CPL-orange" alt="Hardware: Gerber, BOM, CPL">
-  <img src="https://img.shields.io/badge/SDK-Python-blue" alt="Python SDK">
-</p>
+![WatcheRobot desktop robot](docs/images/watcher-robot-render.png)
 
-</div>
-
----
-
-## Overview
-
-WatcheRobot is a desktop robot kit for companion interaction, interactive demos, and developer experiments. The full device is built around SenseCAP Watcher, an ESP32-S3, an STM32F103 co-processor, custom PCBs, mechanical parts, and SD-card behavior assets.
-
-This repository publishes WatcheRobot public materials and developer-facing integration entrypoints; it does not contain the complete product source code. It includes hardware manufacturing files, editable PCB projects, mechanical assembly models, the Python SDK, flashing tools, network setup notes, user manuals, and Release asset documentation. ESP32-S3 and STM32F103 firmware is distributed as prebuilt Release assets, and firmware source code is not published in this repository.
-
-Users can use these materials to check device assembly, flash firmware, configure networking, validate first startup, and build host-side integrations through the Python SDK. The SDK connects to WatcheRobot from a host computer and can use the camera, microphone, speaker, built-in expressions, and animation effects. For interfaces and examples, see the [Python SDK documentation](python-sdk/README.md).
+WatcheRobot is designed for desktop companionship, interactive demos, and developer experiments. It combines a Watcher head, ESP32-S3, an STM32 body board, servos, mechanical parts, and SD-card resources. You can use it through Desktop, the mobile App, or the Python SDK.
 
 ## Quick Start
-
-This section helps you get the public materials, prepare tools, and complete the smallest verifiable device startup and SDK connection flow.
 
 ### 1. Get the Repository
 
 ```bash
-git clone https://github.com/orulink-ai/WatcheRobot-public.git
-cd WatcheRobot
+git clone --recurse-submodules https://github.com/orulink-ai/WatcheRobot-public.git
+cd WatcheRobot-public
 ```
 
-If you plan to submit changes, fork the repository first and create a branch from your fork.
+If `python-sdk/` is empty in an existing clone, run:
 
-### 2. Prepare Tools
+```bash
+git submodule update --init --recursive
+```
 
-| Purpose | Tools |
+### 2. Prepare the Environment and Materials
+
+See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for the bill of materials and assembly steps.
+
+| Prepare | Purpose |
 | --- | --- |
-| Base environment | Git, Python 3.11+ |
-| ESP32-S3 flashing | USB serial driver, repository flashing tool, or AI flashing skill from the Release |
-| STM32F103 flashing | ST-LINK or compatible SWD tool, with the same-version Release firmware package |
-| SD-card assets | FAT32 SD card and the same-version SD-card asset package |
-| Hardware validation | Serial tool, multimeter, or basic hardware debugging tools |
+| Assembled Watcher head and robot body | Flash and run the robot |
+| ST-LINK V2 | Flash STM32 on the body board |
+| USB data cable | Flash Himax and ESP32-S3 in the head |
+| SD card and card reader | Write expression, movement, and other resources |
+| Conda | Create an isolated environment; the scripts prepare the remaining dependencies and tools |
+| Computer or phone | Use Desktop, App, or SDK |
 
-### 3. Get Firmware and Behavior Assets
+### 3. Prepare the Robot
 
-Prefer downloading all runtime assets from the same [GitHub Release](https://github.com/orulink-ai/WatcheRobot-public/releases) bundle. First-time reproduction needs at least the ESP32-S3 firmware, STM32F103 firmware, and SD-card assets from the same version; the Release may also include an AI flashing skill ZIP that an AI assistant can read before helping with flashing.
+Open the [Flashing Guide](docs/flashing.md) and follow its sections in order:
 
-The current `watche-v0.1.1` asset list is documented in [Downloads](docs/downloads.md).
+1. Flash STM32 on the body board.
+2. Flash the Watcher head; the script writes Himax first and ESP32-S3 second.
+3. Use a card reader to extract the SD resource archive to the SD-card root, then return the card to the head.
+4. Power on and complete the startup check.
 
-### 4. Flash Firmware and Prepare the SD Card
+### 4. Connect and Use
 
-After downloading Release assets, flash STM32F103, flash ESP32-S3, and copy the SD-card assets before running first-start validation. The concrete steps are documented in [Firmware: Flashing and Assets](firmware/README.md#flashing-and-assets).
+Download the required client or SDK from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest):
 
-If you want an AI assistant to help with flashing, download `WatcheRobot-Flashing-Skill-v0.1.1.zip` from the Release or ask the AI to read [WatcheRobot Firmware Flashing Skill](tools/flashing/README.md). The skill guides the AI through same-version asset selection, serial-port detection, flashing, and boot-log checks.
+| Interface | Download |
+| --- | --- |
+| Windows Desktop | x64 `.exe` installer |
+| macOS Desktop | Apple Silicon `.dmg` installer |
+| Android App | `.apk` installer |
+| iOS App | [TestFlight](https://testflight.apple.com/join/XFCFsm5M) |
+| Python SDK | `watcherobot` `.whl`; follow the [SDK Guide](docs/sdk.md) |
 
-### 5. First-Start Validation
+See the [device network setup guide (Chinese PDF)](docs/manuals/device-network-setup.pdf). Once connected, run one expression and one movement to check the display, lights, and motion.
 
-Use the [first-start validation checklist](docs/action-test.md) to check:
-
-- ESP32-S3 boot logs
-- SD-card asset recognition
-- one basic servo or actuator action
-- one LED or display behavior
-- basic status returned from serial, BLE, WebSocket, or SDK entrypoints
-
-After these checks pass, the smallest hardware, firmware, and resource chain is working.
-
-## Repository Layout
+## Repository Structure
 
 ```text
-firmware/
-  README.md       Firmware Release assets, flashing entry, and resource notes
-
-hardware/
-  README.md       Hardware package map and BOM notes
-  pcb/            PCB source, schematics, layout PDFs, Gerber, BOM, CPL files, and spare-parts template
-  3d-models/      Mechanical model exports
-  assembly/       Assembly images or documents when available
-
-python-sdk/
-  README.md       Python SDK source, examples, and tests
-
-docs/
-  flashing.md             Firmware flashing and tool guide
-  manuals/                Device network setup and full user manual PDFs
-  sd-card-assets.md       SD-card behavior asset guide
-  behavior-flash-skill.md Behavior asset checklist
-  action-test.md          First-start validation checklist
-  sdk.md                  SDK and public interface boundary
-  versions.md             Version source-of-truth guide
-  downloads.md            Release asset guide
-  compatibility.md        Version compatibility matrix
-  release-process.md      Release process and asset rules
-  governance.md           Repository boundary notes
-
-tools/
-  ...             Flashing, release, and resource helper tools
+WatcheRobot-public/
+├─ README.md / README_zh.md       English and Chinese project entry
+├─ docs/
+│  ├─ flashing.md / flashing_zh.md        Flashing guide
+│  ├─ sd-card-assets.md / sd-card-assets_zh.md    SD-card resource guide
+│  ├─ action-test.md / action-test_zh.md          First-run check
+│  ├─ sdk.md / sdk_zh.md                  SDK guide
+│  ├─ versions.md / versions_zh.md        Version sources
+│  ├─ compatibility.md / compatibility_zh.md      Compatibility notes
+│  ├─ release-process.md / release-process_zh.md  Release rules
+│  ├─ governance.md / governance_zh.md            Repository rules
+│  ├─ images/                              Documentation images
+│  └─ manuals/                             PDF user manuals
+├─ firmware/README.md / README_zh.md       Firmware download entry
+├─ hardware/
+│  ├─ pcb/
+│  │  ├─ schematic/                        Schematics
+│  │  ├─ layout/                           PCB layouts
+│  │  ├─ gerber/                           Production files
+│  │  ├─ bom/ / cpl/                      BOM and placement files
+│  │  └─ pcb-source/                       EasyEDA Pro project source
+│  └─ 3d-models/exports/                   STEP mechanical models
+├─ python-sdk/                             Python SDK submodule
+├─ skills/watche-release-flash/
+│  ├─ SKILL.md                             English flashing Skill
+│  └─ SKILL_zh.md                          Chinese flashing Skill
+├─ tools/
+│  ├─ flash.ps1                            Windows flashing entry
+│  ├─ flash.sh                             macOS/Linux flashing entry
+│  └─ flash_setup.py                       Dependency setup and flashing dispatcher
+├─ .github/                                Issue, PR, and CI configuration
+├─ CONTRIBUTING.md / CONTRIBUTING_zh.md    Contribution guide
+├─ SECURITY.md / SECURITY_zh.md            Security policy
+└─ LICENSE                                 Open-source license
 ```
 
 ## Project Documentation
 
-- [Firmware and flashing notes](firmware/README.md)
-- [Flashing tool guide](docs/flashing.md)
-- [SD-card behavior assets](docs/sd-card-assets.md)
-- [Behavior asset field checklist](docs/behavior-flash-skill.md)
-- [First-start validation](docs/action-test.md)
-- For device network setup, see the [device network setup guide](docs/manuals/device-network-setup.pdf).
-- For the complete usage guide, see the [WatcheRobot user manual](docs/manuals/WatcheRobot-user-manual-20260724.pdf).
-- [SDK and public interface boundary](docs/sdk.md)
-- [Python SDK](python-sdk/README.md)
-- [Version tracking](docs/versions.md)
-- [Contribution guide](CONTRIBUTING.md)
-- [Security policy](SECURITY.md)
+- [Flashing Guide](docs/flashing.md): environment, wiring, firmware flashing, SD card, and startup checks.
+- [Firmware Entry Point](firmware/README.md): download package and flashing entry for each target.
+- [SD-card Resources](docs/sd-card-assets.md) and [First-run Check](docs/action-test.md).
+- [SDK Guide](docs/sdk.md): installation, pairing, and running Python scripts.
+- [Hardware Files](hardware/README.md): PCB and mechanical-file entry point.
+- [Full User Manual (Chinese PDF)](docs/manuals/WatcheRobot-user-manual-20260724.pdf).
+- [Version Sources](docs/versions.md), [Compatibility](docs/compatibility.md), [Release Rules](docs/release-process.md), and [Repository Rules](docs/governance.md).
+- [Contributing Guide](CONTRIBUTING.md) and [Security Policy](SECURITY.md).
 
-## Public Scope
+## Open-source Scope
 
-Open in this repository:
+- This repository publishes hardware production files, mechanical models, the Python SDK, flashing tools, and documentation.
+- Python SDK source is provided through the `python-sdk/` submodule.
+- ESP32-S3, Himax, STM32, App, server, and Desktop source code is not published here.
+- Firmware, client installers, and SD-card resources are distributed through GitHub Releases.
 
-- Python SDK source
-- PCB and mechanical publication files
-- firmware flashing, resource preparation, and release helper tools
-- user manuals, network setup guide, and release documentation
+## Technology Stack
 
-Not published as source in this repository:
-
-- ESP32-S3 firmware source
-- STM32F103 firmware source
-- Android app source
-- server source
-- desktop app source
-
-Distributed through GitHub Releases when available:
-
-- ESP32-S3 prebuilt firmware
-- STM32F103 prebuilt firmware
-- SD-card asset package
-- Android app package
-- desktop app installer
-- manifest and checksum files
-
-See [docs/downloads.md](docs/downloads.md) for the expected release asset types and current release status.
-
-## Tech Stack
-
-| Area | Main Contents |
+| Area | Technology or format |
 | --- | --- |
-| Python SDK | Python package, examples, host-side tests |
-| Hardware | EasyEDA Pro, Gerber, BOM, CPL, STEP |
-| Firmware assets | ESP32-S3 and STM32F103 prebuilt Release packages |
-| Flashing tools | Python, Windows helper scripts, AI flashing skill |
+| Head | Watcher, Himax, ESP32-S3 |
+| Body control | STM32F103, SWD / ST-LINK |
+| SDK and flashing tools | Python, PowerShell, Bash |
+| Hardware files | Schematic, PCB, BOM, CPL, Gerber, STEP |
 
 ## License
 
-This repository is licensed under [GPL-3.0](LICENSE), unless a subproject or third-party component states otherwise in its own license file.
+This repository uses [GPL-3.0](LICENSE). Subprojects and third-party components retain their own licenses.

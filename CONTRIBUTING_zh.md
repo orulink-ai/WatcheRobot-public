@@ -1,3 +1,5 @@
+<p><a href="CONTRIBUTING.md">English</a> | <strong>简体中文</strong></p>
+
 # 贡献指南
 
 感谢你一起完善 WatcheRobot。这个仓库用于公开硬件资料、机械模型、Python SDK、使用文档、烧录工具和 Release 资产说明。
@@ -54,21 +56,22 @@
 如果你的改动影响安装、刷写、行为资源、硬件资料、SDK 或 Release 资产，请同步更新对应文档：
 
 - 快速开始：`README_zh.md`
-- 固件和烧录：`firmware/README_zh.md`
-- 刷写：`docs/flashing.md`
-- SD 卡行为资源：`docs/sd-card-assets.md`
-- 第一个动作 smoke test：`docs/action-test.md`
-- SDK 和公开接口边界：`docs/sdk.md`
-- 版本与兼容：`docs/versions.md`、`docs/compatibility.md`
-- 硬件与 BOM：`hardware/README.md`、`hardware/pcb/spares.md`
+- 固件和烧录：`firmware/README_zh.md`、`docs/flashing_zh.md`
+- SD 卡和首次运行：`docs/sd-card-assets_zh.md`、`docs/action-test_zh.md`
+- SDK：`docs/sdk_zh.md`
+- 版本与配套关系：`docs/versions_zh.md`、`docs/compatibility_zh.md`
+- 硬件与 BOM：`hardware/README_zh.md`、`hardware/pcb/spares_zh.md`
+
+同时更新对应英文文档。
 
 ## 提交 PR 前的验证
 
 按改动范围运行检查：
 
-- 仅文档改动：检查链接；可行时运行仓库 policy 扫描。
+- 仅文档改动：检查中英文入口和本地链接。
 - SDK 改动：在 `python-sdk/` 下运行 `python -m pytest`。
-- 刷写或行为资源改动：完成 `docs/action-test.md` 中的 checklist。
+- 烧录工具改动：运行 `python -m pytest tools/tests -q`，并按改动范围验证目标设备。
+- 使用流程改动：复核 `docs/action-test_zh.md`。
 - 硬件资料改动：确认 BOM、CPL、Gerber、原理图、Layout 和可编辑源文件名称对应同一块板。
 
 如果你的环境缺少某个工具，请在 PR 的 Test Plan 中明确说明。

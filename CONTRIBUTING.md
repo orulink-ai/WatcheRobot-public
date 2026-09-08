@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="CONTRIBUTING_zh.md">简体中文</a></p>
+
 # Contributing
 
 Thank you for helping improve WatcheRobot. This repository publishes hardware materials, mechanical models, the Python SDK, user documentation, flashing tools, and release-asset documentation.
@@ -54,21 +56,22 @@ Binary release artifacts should be uploaded to GitHub Releases instead of enteri
 If your change affects setup, flashing, behavior assets, hardware materials, SDK usage, or Release assets, update the matching documents:
 
 - Quick start: `README.md`
-- Firmware and flashing: `firmware/README.md`
-- Flashing: `docs/flashing.md`
-- SD-card behavior assets: `docs/sd-card-assets.md`
-- First action smoke test: `docs/action-test.md`
-- SDK and public interface boundary: `docs/sdk.md`
+- Firmware and flashing: `firmware/README.md`, `docs/flashing.md`
+- SD card and first run: `docs/sd-card-assets.md`, `docs/action-test.md`
+- SDK: `docs/sdk.md`
 - Versions and compatibility: `docs/versions.md`, `docs/compatibility.md`
 - Hardware and BOM: `hardware/README.md`, `hardware/pcb/spares.md`
+
+Update the matching Chinese document at the same time.
 
 ## Validation Before PR
 
 Run checks according to the change scope:
 
-- Documentation-only changes: check links and run the repository policy scan when possible.
+- Documentation-only changes: check language switches and local links.
 - SDK changes: run `python -m pytest` under `python-sdk/`.
-- Flashing or behavior-asset changes: complete the checklist in `docs/action-test.md`.
+- Flashing-tool changes: run `python -m pytest tools/tests -q` and validate the affected target when applicable.
+- Usage-flow changes: review `docs/action-test.md`.
 - Hardware material changes: confirm BOM, CPL, Gerber, schematic, layout, and editable source filenames correspond to the same board.
 
 If your environment is missing a tool, state that clearly in the PR Test Plan.

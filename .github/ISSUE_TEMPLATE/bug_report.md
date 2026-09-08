@@ -5,6 +5,8 @@ title: "[BUG] "
 labels: bug
 ---
 
+<p><strong>English</strong> | <a href="bug_report_zh.md">简体中文</a></p>
+
 ## Component
 
 SDK / Hardware / Flashing tool / Release artifact / Documentation
