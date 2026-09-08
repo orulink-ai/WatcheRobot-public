@@ -1,104 +1,96 @@
-<p><strong>English</strong> | <a href="flashing_zh.md">简体中文</a></p>
+English | [简体中文](flashing_zh.md)
 
-# Assembly and Flashing
+# Flashing and First Use
 
-Follow this order: **assemble → flash the body board → flash the Watcher head → prepare the SD card → power on**.
+See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for parts and assembly. Once hardware is ready, follow the steps below.
 
-## 1. Download and Prepare
+## 1. Prepare Materials, Files, and Environment
 
-Open [Releases](https://github.com/orulink-ai/WatcheRobot-public/releases) and download these three attachments from the release marked Latest:
+Have the STM32 body board, Watcher head, ST-LINK V2, USB data cable, SD card, and card reader ready. Disconnect power before changing wiring or inserting/removing the SD card.
 
-- ZIP containing `STM32`: firmware for the board inside the body.
-- ZIP containing `PTL-paired`: Himax and ESP32 firmware and scripts for the Watcher head.
-- Archive containing `sd-resources`: files for the SD card.
+Download and extract these assets from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest):
 
-Choose files by the versions listed on the page. No manual checksum step is required. See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for materials and assembly.
+| Asset name contains | Purpose |
+| --- | --- |
+| STM32 | Body board firmware |
+| PTL-paired | Head Himax and ESP32-S3 firmware and paired tools |
+| sd-resources | SD card expressions, actions, and other resources |
 
-Install Python 3.10+ on the computer. On Windows, enable the option to add Python to PATH and reopen the terminal after installation. You also need ST-LINK, OpenOCD, the CH342 driver, a USB data cable, and an SD card reader. A firmware build environment is not required.
-
-## 2. Flash the STM32 Board Inside the Body
-
-1. Complete assembly, power off, check wiring, and connect ST-LINK to the body board's labeled SWD pins.
-2. Supply power as specified for the board and connect ST-LINK to the computer.
-3. Extract the STM32 ZIP and enter the folder containing `watcheRobot_STM32.bin`. Open a terminal there. On Windows, type `powershell` in the folder's address bar and press Enter.
-4. Run:
-
-```text
-openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program watcheRobot_STM32.bin verify reset exit 0x08000000"
-```
-
-After `Verified OK` and successful completion, power off before removing ST-LINK. If `openocd` is not found, add its bin directory to PATH and reopen the terminal.
-
-## 3. Create the Python Environment for the Head
-
-Extract the `PTL-paired` ZIP. Open the folder that contains **both `requirements.txt` and `tools`**, then open a terminal there. Run all remaining flashing commands from this folder.
-
-Windows PowerShell, one line at a time:
-
-```powershell
-python --version
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-macOS/Linux, one line at a time:
+Use Conda, or install [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) first. Open a Conda-enabled terminal at the repository root (Anaconda PowerShell Prompt on Windows). Create the dedicated environment once:
 
 ```sh
-python3 --version
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
+conda create -n watcherobot python=3.12 pip -y
+conda activate watcherobot
 ```
 
-The commands check Python, create a dedicated environment in this folder, and install the script dependencies. Wait for installation to succeed. Later commands use the environment's Python directly; **activation is not required**.
+Run the following commands at the repository root, replacing firmware paths with the extracted folders. The script prepares dependencies and flashing tools; initial setup requires internet access.
 
-## 4. Identify the Head's Two Ports
+## 2. Flash the STM32 Body Board
 
-Connect the Watcher head with a USB data cable. In the same terminal, run:
+Connect ST-LINK V2 to the four-pin connector on the board inside the body. Follow the labels, not wire colors.
+
+<img src="images/flashing/stm32-board-labels.jpg" alt="Body board connector labels" width="420">
+<img src="images/flashing/stlink-v2-pins.jpg" alt="ST-LINK V2 connector labels" width="420">
+
+| Body board | ST-LINK V2 |
+| --- | --- |
+| SIO | SWDIO |
+| SCK | SWCLK |
+| GND | GND |
+| 3V3 | 3.3V, subject to the actual power arrangement |
+
+Never connect 5V to 3V3. Do not parallel the ST-LINK 3.3V power output with an externally powered board. Check wiring and power, then connect ST-LINK to the computer.
 
 Windows:
 
 ```powershell
-.\.venv\Scripts\python.exe -m serial.tools.list_ports -v
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 stm32 --package "extracted-STM32-folder"
 ```
 
 macOS/Linux:
 
 ```sh
-.venv/bin/python -m serial.tools.list_ports -v
+bash tools/flash.sh stm32 --package "extracted-STM32-folder"
 ```
 
-Find the two ports on the same CH342 device: **SERIAL-B / MI_02 is the ESP32 control port; SERIAL-A / MI_00 is the Himax port**. Windows Device Manager port properties can help identify them. Do not infer roles from COM numbers. If both ports are not present, check the cable and driver.
+Wait for `Programming Finished`, `Verified OK`, and `Resetting Target` with successful completion. Disconnect power and remove ST-LINK before continuing. If the chip cannot be reached, disconnect power and check wiring at both ends.
 
-## 5. Run the Head Flashing Script
+## 3. Flash Head Himax and ESP32-S3
 
-This Windows example assumes COM5 is the control port and COM6 is the Himax port. **Replace both with the ports identified above before running it.**
+Connect the Watcher head with a USB data cable. First run this command to install dependencies and list ports; it does not write firmware:
 
 ```powershell
-.\.venv\Scripts\python.exe tools\ptl_release.py flash --port COM5 --vision-port COM6
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder"
 ```
 
-On macOS/Linux, replace both port paths:
+Identify two ports on the same CH342 device: SERIAL-B / MI_02 is control; SERIAL-A / MI_00 is Himax. Do not guess from COM number order. Replace COM5 and COM6 below with the actual ports:
 
-```sh
-.venv/bin/python tools/ptl_release.py flash --port /dev/CONTROL_PORT --vision-port /dev/VISION_PORT
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder" --port COM5 --vision-port COM6
 ```
 
-The script automatically checks the package files, then flashes Himax followed by ESP32. Keep the cable connected until `PTL paired flash completed.` appears. If a step fails, stop and retain the error message for troubleshooting.
+On macOS/Linux use the same arguments with `bash tools/flash.sh` and actual `/dev/...` port paths.
 
-### Optional: Use the Skill with an AI Assistant
+The script flashes Himax first, then ESP32-S3; no separate commands are needed. After `HX flash completed; reboot accepted.`, keep waiting until `PTL paired flash completed.` confirms the whole step. Do not unplug the cable during flashing.
 
-The Skill is an instruction file for an AI assistant, not a Python script. Open the extracted package folder in an AI coding assistant and ask:
+Stop if ports are missing or inaccessible: automatic CH342 driver installation and Linux serial permission setup are not yet supported.
 
-> Read skills/watche-ptl-release-flash/SKILL.md, create the flashing environment, identify the connected Watcher's two ports, run the paired flash, and check the result.
+## 4. Prepare the SD Card with a Card Reader
 
-No separate Skill installation is needed for the manual steps above.
+Power off, remove the card, and connect it through a card reader. Back up needed files, use a FAT32 card, and extract the SD resource archive into its root. The root must directly contain `assets/`, `official_catalog.json`, and `resource_manifest.json`, without an extra enclosing folder. Safely eject it and reinsert it with power off.
 
-## 6. Prepare the SD Card and Power On
+Do not write the SD card through the robot's USB connection. No flashing script is needed—only extract and copy files.
 
-1. Power off, remove the SD card from the Watcher head, and connect it to the computer through a card reader. Use a card reader to prepare the SD card.
-2. Back up files you want to keep, then format the card as FAT32.
-3. Extract the contents of the `sd-resources` archive to the card root. Do not copy the archive itself or add an enclosing folder.
-4. Confirm that `assets/`, `official_catalog.json`, and `resource_manifest.json` are at the root.
-5. Safely eject the card, insert it into the powered-off head, then power on.
+## 5. Power On and Use
 
-Install the client for your operating system from the Release and follow [First-Start Checks](action-test.md). For Python control, continue with [SDK Installation and Commands](sdk.md).
+Check the SD card and wiring, connect power, and press the power button. Check that the normal screen appears; the automatic reset after flashing may retain the powered-off state. Download Desktop or Android installers from the Release; use its TestFlight link for iOS. Python users can follow the [SDK Guide](sdk.md).
+
+After connecting, try an expression, a light effect, and a movement within a safe range.
+
+## Use the Skill (Optional)
+
+Open this repository in an AI coding assistant and ask:
+
+> Read skills/watche-release-flash/SKILL.md, use the dedicated Conda environment, confirm the firmware folder and connected target, then flash and report the actual result.
+
+Without an AI assistant, simply use the commands above.

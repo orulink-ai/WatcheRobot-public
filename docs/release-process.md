@@ -17,7 +17,7 @@ Each release should include:
 
 - release notes
 - compatibility matrix
-- version notes from `docs/versions.md`
+- component versions recorded in the release notes
 - `SHA256SUMS.txt`
 - a machine-readable bundle manifest
 - all required downloadable artifacts
