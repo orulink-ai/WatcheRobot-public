@@ -8,7 +8,7 @@
 
 <p>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg" alt="License: GPL-3.0"></a>
-  <img src="https://img.shields.io/badge/Package-0.1.0-brightgreen" alt="Package 0.1.0">
+  <img src="https://img.shields.io/badge/Release-latest-brightgreen" alt="最新 Release">
   <img src="https://img.shields.io/badge/Firmware-Release%20Assets-green" alt="Firmware release assets">
   <img src="https://img.shields.io/badge/Hardware-Gerber%20%7C%20BOM%20%7C%20CPL-orange" alt="Hardware: Gerber, BOM, CPL">
   <img src="https://img.shields.io/badge/SDK-Python-blue" alt="Python SDK">
@@ -33,35 +33,63 @@ WatcheRobot 是一个面向桌面陪伴、交互展示和开发者实验的机�
 ### 1. 获取仓库
 
 ```bash
-git clone https://github.com/orulink-ai/WatcheRobot-public.git
-cd WatcheRobot
+git clone --recurse-submodules https://github.com/orulink-ai/WatcheRobot-public.git
+cd WatcheRobot-public
 ```
 
-如果你计划提交改动，建议先 Fork 仓库，再从自己的 Fork 创建分支。
+如果此前克隆仓库时未包含子模块，请先执行 `git submodule update --init --recursive`，再使用 `python-sdk/`。
 
-### 2. 准备工具
+### 2. 准备环境
 
-| 用途 | 工具 |
+| 用途 | 所需环境 |
 | --- | --- |
-| 基础环境 | Git、Python 3.11+ |
-| ESP32-S3 烧录 | USB 串口驱动、仓库内烧录工具或 Release 中的 AI 烧录 Skill |
-| STM32F103 烧录 | ST-LINK 或兼容 SWD 工具，配合同版本 Release 固件包 |
-| SD 卡资源 | FAT32 格式 SD 卡、同版本 SD 卡资源包 |
-| 硬件验证 | 串口工具、万用表或基础硬件调试工具 |
+| 下载 | 浏览器 |
+| ESP32-S3 + Himax PTL 配套烧录 | Python 3.10+、CH342 驱动、支持数据传输的 USB 线、配套包内 `requirements.txt` |
+| STM32F103 烧录 | ST-LINK 或兼容 SWD 调试器、目标板供电、OpenOCD 或其他兼容烧录软件 |
+| SD 卡准备 | FAT32 格式 SD 卡、读卡器、可解压 `.tar.gz` 的工具 |
+| 桌面端 | Windows x64，或 Apple Silicon Mac |
+| 移动端 | Android 用于安装 APK；iOS 需要 TestFlight |
+| Python SDK | CPython 3.10、3.11 或 3.12，以及 `pip` |
 
-### 3. 获取固件和资源
+### 3. 下载当前 Release
 
-推荐优先从 [GitHub Releases](https://github.com/orulink-ai/WatcheRobot-public/releases) 下载同一个套装中的资源。首次复现至少需要 ESP32-S3 固件、STM32F103 固件和 SD 卡资源，不要混用不同版本的资产；Release 中也会提供 AI 烧录 Skill 压缩包，可交给 AI 助手读取后协助烧录。
+进入 [GitHub Releases](https://github.com/orulink-ai/WatcheRobot-public/releases)，打开标记为 **Latest** 的 Release，并且只使用该 Release 附带的资产。
 
-当前 `watche-v0.1.1` 套装的资源清单见 [下载说明](docs/downloads.md)。
+| 组件 | Release 附件识别方式 |
+| --- | --- |
+| ESP32-S3 + Himax PTL 配套固件 | 文件名包含 `S3` 和 `PTL-paired` 的 ZIP |
+| STM32F103 固件 | 文件名包含 `STM32` 的 ZIP |
+| 设备 SD 卡资源 | 文件名包含 `sd-resources` 的 `.tar.gz` 压缩包 |
+| Windows 桌面端 | x64 安装 `.exe` |
+| macOS 桌面端 | Apple Silicon `.dmg` |
+| Android App | `.apk` |
+| iOS App | [通过 TestFlight 安装](https://testflight.apple.com/join/XFCFsm5M) |
+| Python SDK | `watcherobot` `.whl` |
 
-### 4. 烧录固件并准备 SD 卡
+按 Release 页面标注的组件版本下载即可，不需要手动计算校验值。各平台应下载哪些文件，见[下载说明](docs/downloads_zh.md)。
 
-拿到 Release 资源后，需要先完成 STM32F103 固件烧录、ESP32-S3 固件烧录和 SD 卡资源写入，再进行启动验证。具体步骤请参考 [Firmware 说明：烧录和资源](firmware/README_zh.md#烧录和资源)。
+### 4. 按顺序准备机器人
 
-如果希望由 AI 助手协助烧录，可以下载 Release 中的 `WatcheRobot-Flashing-Skill-v0.1.1.zip`，或直接让 AI 阅读 [WatcheRobot 固件烧录 Skill](tools/flashing/README_zh.md)。这个 Skill 会引导 AI 选择同版本资源、识别串口、执行烧录并检查启动日志。
+1. 准备板卡、元器件和机械结构件并完成装配。材料入口见[立创开源硬件项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)和本仓库的[硬件资料](hardware/README_zh.md)。
+2. 保持断电，检查电源极性、排线方向、连接器和可能的短路。
+3. 找到机器人身体内部的反馈舵机 STM32 控制板，使用 ST-LINK/SWD 烧录 STM32F103。
+4. 用 USB 数据线连接上方的 Watcher 头部，按[烧录指引](docs/flashing_zh.md)创建 Python 环境，复制命令依次烧录 Himax 和 ESP32-S3。
+5. 从 Watcher 头部取出 SD 卡，用读卡器连接电脑。将卡格式化为 FAT32，把 `sd-resources` 压缩包内容解压到卡根目录，安全弹出后在机器人断电时插回。不能通过 Watcher 的 USB 或串口写入 SD 卡。
+6. 重新连接已装配硬件，上电并执行首次启动验收。
 
-### 5. 验证第一次启动
+完整命令和硬件要求见 [Firmware 说明：烧录和资源](firmware/README_zh.md#烧录和资源)。
+
+使用 AI 辅助 PTL 配套烧录时，Skill 已包含在解压后的配套 ZIP 中。用 AI 编程助手打开解压目录，让它读取 `skills/watche-ptl-release-flash/SKILL.md` 即可，不需要另外下载单独 ESP32、Himax 或 Skill 包。
+
+### 5. 安装客户端或 SDK
+
+- Windows x64：运行当前 Release 中的 x64 安装 `.exe`。
+- Apple Silicon macOS：打开当前 Release 中的 `.dmg` 并安装应用。
+- Android：安装当前 Release 中的 `.apk`；如果系统提示，请允许当前来源安装应用。
+- iOS：使用上方附件表中的 TestFlight 入口安装。
+- Python：按 [SDK 安装与运行](docs/sdk_zh.md)创建环境、安装下载的 wheel 并连接机器人。
+
+### 6. 验证第一次启动
 
 上电后按 [首次启动验证清单](docs/action-test.md) 检查：
 
@@ -85,8 +113,7 @@ hardware/
   3d-models/      机械模型导出文件
   assembly/       后续装配图片或装配文档
 
-python-sdk/
-  README.md       Python SDK 源码、示例和测试
+python-sdk/        包含 Python SDK 源码、示例和测试的 Git 子模块
 
 docs/
   flashing.md             固件刷写和工具说明
@@ -98,7 +125,6 @@ docs/
   versions.md             版本来源和追踪规则
   downloads.md            Release 资产说明
   compatibility.md        版本兼容矩阵
-  release-process.md      Release 流程和资产规则
   governance.md           仓库边界说明
 
 tools/
@@ -108,17 +134,16 @@ tools/
 ## 项目文档
 
 - [固件和烧录说明](firmware/README_zh.md)
-- [刷写工具说明](docs/flashing.md)
-- [SD 卡行为资源](docs/sd-card-assets.md)
-- [行为资源 checklist](docs/behavior-flash-skill.md)
-- [首次启动验证](docs/action-test.md)
+- [刷写工具说明](docs/flashing_zh.md)
+- [SD 卡行为资源](docs/sd-card-assets_zh.md)
+- [行为资源检查清单](docs/behavior-flash-skill_zh.md)
+- [首次启动验证](docs/action-test_zh.md)
 - 如何配置设备网络，请查看 [设备网络配置说明](docs/manuals/device-network-setup.pdf)。
 - 完整的使用说明，请查看 [WatcheRobot 使用说明书](docs/manuals/WatcheRobot-user-manual-20260724.pdf)。
-- [SDK 和公开接口边界](docs/sdk.md)
+- [SDK 和公开接口边界](docs/sdk_zh.md)
 - [Python SDK](python-sdk/README.zh-CN.md)
-- [版本追踪](docs/versions.md)
-- [贡献指南](CONTRIBUTING_zh.md)
-- [安全策略](SECURITY.md)
+- [版本追踪](docs/versions_zh.md)
+- [安全策略](SECURITY_zh.md)
 
 ## 开源范围
 
@@ -144,9 +169,12 @@ tools/
 - SD 卡资源包
 - Android App 安装包
 - 桌面端安装包
+- Python SDK wheel
 - 配套 manifest 和校验文件
 
-Release 资产类型和当前发布状态见 [docs/downloads.md](docs/downloads.md)。
+iOS App 通过 TestFlight 分发，不作为 Release 附件上传。
+
+Release 资产类型和当前发布状态见[下载说明](docs/downloads_zh.md)。
 
 ## 技术栈
 

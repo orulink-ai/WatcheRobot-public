@@ -1,22 +1,30 @@
+<p><strong>English</strong> | <a href="action-test_zh.md">简体中文</a></p>
+
 # First Action Smoke Test
 
 Use this checklist after flashing firmware and preparing the SD-card behavior assets. The goal is not full validation; it is to prove that the public package can boot and execute one visible behavior.
 
 ## Required Setup
 
-- ESP32-S3 firmware flashed from the matching Release package
-- SD card prepared with `anim/anim_manifest.bin` and `.animpack` files
+- Required attachments downloaded from the latest Release
+- STM32F103 firmware from that Release flashed
+- Himax and ESP32-S3 flashed with that Release's `PTL-paired` ZIP
+- FAT32 SD card prepared from that Release's `sd-resources` archive
+- SD card root contains `assets/`, `official_catalog.json`, and `resource_manifest.json`
 - Robot connected to power
 - Serial monitor available
 - BLE tool, WebSocket gateway, or other control path available if testing remote commands
+
+Complete the firmware and SD card preparation before installing a client. For remote validation, use a Desktop, Android, iOS, or Python SDK client distributed by the same Release.
 
 ## Boot Checks
 
 - ESP32 serial monitor opens at the expected port.
 - Boot log reaches the application startup path.
 - Display initializes.
-- No missing SD-card `anim/` asset error appears.
+- No missing SD-card resource error appears.
 - If STM32 is connected, MCU Link attempts handshake over `USART2 @ 921600 8N1`.
+- PTL camera initialization reaches the expected Himax bridge startup path without a firmware-transfer error.
 
 ## Behavior Checks
 
@@ -42,10 +50,11 @@ ws red
 ws off
 ```
 
-ESP32 behavior and network commands depend on the active app, BLE, or WebSocket bench. Keep command logs in the PR or release notes only if they do not contain Wi-Fi credentials, private paths, or local-only serial-port notes.
+ESP32 behavior and network commands depend on the active app, BLE, or WebSocket bench. Keep command logs only when they do not contain Wi-Fi credentials, private paths, or local-only serial-port notes.
 
 ## Known Limitations
 
 - This smoke test does not replace CI.
 - Cross-end protocol contract coverage is incomplete and tracked in GitHub issue #5.
-- If a matching Release package is not available, do not mix older firmware and newer SD-card assets.
+- This checklist applies only to the components distributed together in the selected Release.
+- Record hardware reflash, camera, video, audio, orientation, and continuous-run checks as unverified until they are performed on the target hardware.

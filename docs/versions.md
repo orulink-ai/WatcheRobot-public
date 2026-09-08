@@ -1,30 +1,28 @@
-# Version Tracking
+<p><strong>English</strong> | <a href="versions_zh.md">简体中文</a></p>
 
-Use this document to find the source of truth for each public WatcheRobot component.
+# Release Tracking
 
-## Current Sources
+Product version numbers change with every publication and are intentionally not duplicated in the repository documentation. The release marked **Latest** on [GitHub Releases](https://github.com/orulink-ai/WatcheRobot-public/releases), its notes, bundle manifest, and checksums are the source of truth.
 
-| Component | Current public source | Version signal | Notes |
-| --- | --- | --- | --- |
-| WatcheRobot repository package | Root `VERSION` | `0.1.0` | Current public source package version for this repository. |
-| Repository default branch | GitHub `main` | Git commit SHA | Public release readiness is gated by CI and release assets. |
-| Python SDK | `python-sdk/pyproject.toml` | Python package version | Public source is included directly in this repository export. |
-| ESP32-S3 firmware | GitHub Release asset | Release package version | Firmware source is not published in this repository. |
-| ESP32 behavior assets | GitHub Release asset | SD-card asset package version | Must match the firmware release package. |
-| STM32F103 firmware | GitHub Release asset | Release package version | Firmware source is not published in this repository. |
-| Hardware PCB package | filenames under `hardware/pcb/` | dated exports, mostly 2026-06-11 to 2026-06-18 | BOM, CPL, schematic, layout, and Gerber files should be kept in sync by board. |
-| Mechanical model | `hardware/3d-models/exports/WatcherRobot-mian.stp` | current STEP export | Current public mechanical assembly model. |
-| App, Server, Desktop | GitHub Release assets when available | release asset version | Source code is not part of this repository. |
+## Sources of Truth
 
-## Release Version Rules
+| Component | Current public source | How to identify it |
+| --- | --- | --- |
+| WatcheRobot bundle | Latest GitHub Release | Release tag and `WatcheRobot-Bundle-*.manifest.json` |
+| Repository source snapshot | Git commit | Commit SHA on the default branch |
+| Python SDK | Git submodule and Release wheel | `python-sdk/` and the `watcherobot` `.whl` asset |
+| ESP32-S3 + Himax PTL firmware | Release asset | ZIP containing `S3` and `PTL-paired` |
+| Device SD card resources | Release asset | `.tar.gz` archive containing `sd-resources` |
+| STM32F103 firmware | Release asset | ZIP containing `STM32` |
+| Windows/macOS desktop | Release assets | Windows x64 installer and macOS Apple Silicon DMG |
+| Android app | Release asset | APK |
+| iOS app | Release notes | TestFlight link |
+| Hardware | Repository files | Current files under `hardware/` and the linked OSHW project |
 
-- Every public release must update `docs/compatibility.md`.
-- Firmware releases must state the ESP32 firmware version, STM32 firmware version, SD-card asset version, and hardware compatibility.
-- Full product releases must include App, Server, Desktop, ESP32, STM32, SD-card asset, and hardware compatibility notes when those assets are included.
-- Release artifacts must include `SHA256SUMS.txt`.
+## Publication Rules
 
-## Known Current State
-
-- Current public source package version is `0.1.0`.
-- Public firmware source has been removed from this repository boundary.
-- `docs/compatibility.md` records the open compatibility matrix format.
+- Record all component versions only in the GitHub Release notes and bundle manifest.
+- Keep repository instructions version-neutral and select assets from the release marked **Latest**.
+- Update the compatibility notes when requirements, asset types, hardware support, or installation order changes.
+- Include `SHA256SUMS.txt` and a machine-readable bundle manifest with every full release.
+- Do not infer functional hardware acceptance from package-integrity verification.

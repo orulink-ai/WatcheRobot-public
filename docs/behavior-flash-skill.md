@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="behavior-flash-skill_zh.md">简体中文</a></p>
+
 # Behavior Asset Field Checklist
 
 Use this checklist when preparing or replacing a WatcheRobot SD card from a public Release bundle.
@@ -5,40 +7,41 @@ Use this checklist when preparing or replacing a WatcheRobot SD card from a publ
 ## Inputs
 
 - WatcheRobot repository checkout
-- SD card mounted on the host machine
-- SD-card asset ZIP from the same Release as the ESP32-S3 and STM32F103 firmware packages
-- Target release version noted in `docs/versions.md`
+- SD card connected to the host computer through a card reader
+- the `sd-resources` `.tar.gz` archive from the release marked **Latest**
 
 ## Procedure
 
-1. Confirm the SD card mount path.
+1. Remove the card from the Watcher head, insert it into a card reader, and confirm its mount path. Do not use the Watcher USB or serial ports to write the card.
    - Windows example: `E:\`
    - macOS example: `/Volumes/WATCHER_SD`
    - Linux example: `/media/$USER/WATCHER_SD`
 
-2. Extract the released SD-card asset ZIP to a temporary folder.
+2. Extract the downloaded `.tar.gz` to a temporary folder.
 
 3. Confirm the extracted output.
 
 ```text
-anim/anim_manifest.bin
-anim/*.animpack
+assets/
+official_catalog.json
+resource_manifest.json
 ```
 
-4. Copy the extracted `anim/` directory to the SD-card root. Replace any old `anim/` directory from another release.
+4. Format the card as FAT32, then copy the extracted contents to the SD-card root without adding another enclosing directory.
 
 5. Safely eject the SD card.
 
-6. Insert the SD card into the robot before boot.
+6. Remove the safely ejected card from the reader and insert it into the powered-off Watcher head.
 
 7. Run `docs/action-test.md`.
 
 ## Pass Criteria
 
-- SD card contains `anim/anim_manifest.bin`.
+- SD card root contains `assets/`, `official_catalog.json`, and `resource_manifest.json`.
+- `assets/anim/` contains `.animpack` files.
 - Robot boot does not report missing animation assets.
 - At least one behavior can be triggered during the first action smoke test.
 
 ## Failure Notes
 
-If an animation is missing, confirm that all firmware and SD-card resources came from the same Release bundle. Do not mix old local assets with newer firmware.
+If resources are missing, check the FAT32 filesystem and directory depth before debugging hardware.

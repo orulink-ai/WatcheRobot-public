@@ -1,76 +1,104 @@
-# Firmware Flashing Guide
+<p><strong>English</strong> | <a href="flashing_zh.md">简体中文</a></p>
 
-This guide is the public flashing entry for WatcheRobot firmware. Firmware source code is not included in this repository; use prebuilt firmware and SD-card assets from the same GitHub Release bundle.
+# Assembly and Flashing
 
-## Tool Matrix
+Follow this order: **assemble → flash the body board → flash the Watcher head → prepare the SD card → power on**.
 
-| Target | Required tools | Notes |
-| --- | --- | --- |
-| ESP32-S3 release ZIP | Python 3.11+, USB serial driver, `esptool`, `pyserial`, `rich` | Install with `python -m pip install -r tools/win_flasher/requirements.txt`. |
-| STM32F103 firmware package | ST-LINK or compatible SWD probe, vendor flashing tool | Use the firmware package from the same Release bundle. |
-| SD-card assets | FAT32 SD card and a file extraction tool | Copy the released `anim/` assets to the card root. |
+## 1. Download and Prepare
 
-## Serial Drivers and Ports
+Open [Releases](https://github.com/orulink-ai/WatcheRobot-public/releases) and download these three attachments from the release marked Latest:
+
+- ZIP containing `STM32`: firmware for the board inside the body.
+- ZIP containing `PTL-paired`: Himax and ESP32 firmware and scripts for the Watcher head.
+- Archive containing `sd-resources`: files for the SD card.
+
+Choose files by the versions listed on the page. No manual checksum step is required. See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for materials and assembly.
+
+Install Python 3.10+ on the computer. On Windows, enable the option to add Python to PATH and reopen the terminal after installation. You also need ST-LINK, OpenOCD, the CH342 driver, a USB data cable, and an SD card reader. A firmware build environment is not required.
+
+## 2. Flash the STM32 Board Inside the Body
+
+1. Complete assembly, power off, check wiring, and connect ST-LINK to the body board's labeled SWD pins.
+2. Supply power as specified for the board and connect ST-LINK to the computer.
+3. Extract the STM32 ZIP and enter the folder containing `watcheRobot_STM32.bin`. Open a terminal there. On Windows, type `powershell` in the folder's address bar and press Enter.
+4. Run:
+
+```text
+openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "program watcheRobot_STM32.bin verify reset exit 0x08000000"
+```
+
+After `Verified OK` and successful completion, power off before removing ST-LINK. If `openocd` is not found, add its bin directory to PATH and reopen the terminal.
+
+## 3. Create the Python Environment for the Head
+
+Extract the `PTL-paired` ZIP. Open the folder that contains **both `requirements.txt` and `tools`**, then open a terminal there. Run all remaining flashing commands from this folder.
+
+Windows PowerShell, one line at a time:
+
+```powershell
+python --version
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+macOS/Linux, one line at a time:
+
+```sh
+python3 --version
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+The commands check Python, create a dedicated environment in this folder, and install the script dependencies. Wait for installation to succeed. Later commands use the environment's Python directly; **activation is not required**.
+
+## 4. Identify the Head's Two Ports
+
+Connect the Watcher head with a USB data cable. In the same terminal, run:
 
 Windows:
 
-- Install the USB serial driver required by the board or USB-UART adapter.
-- Open Device Manager and confirm the `COMx` port.
-- Use explicit ports in examples, such as `--port COM7`.
-
-macOS:
-
-- Install a driver only if your adapter does not appear automatically.
-- Ports usually appear as `/dev/cu.usbserial-*` or `/dev/cu.usbmodem*`.
-- Use `ls /dev/cu.*` to list candidate ports.
-
-Linux:
-
-- Ports usually appear as `/dev/ttyUSB*` or `/dev/ttyACM*`.
-- Add your user to `dialout` or the equivalent serial group if permission is denied.
-- Re-login after changing group membership.
-
-## ESP32-S3 Release ZIP Flashing
-
-When a GitHub Release contains an ESP32 firmware flash ZIP, use the helper:
-
-```bash
-python -m pip install -r tools/win_flasher/requirements.txt
-python -m tools.win_flasher list-ports
-python -m tools.win_flasher flash --zip .\WatcheRobot-ESP32S3-v0.3.2.zip --port COM7 --monitor
+```powershell
+.\.venv\Scripts\python.exe -m serial.tools.list_ports -v
 ```
 
-The helper expects a ZIP that contains `flash_args.txt`, `bootloader.bin`, `partition-table.bin`, and the app firmware image.
+macOS/Linux:
 
-For interactive Windows flashing, you can also run:
+```sh
+.venv/bin/python -m serial.tools.list_ports -v
+```
+
+Find the two ports on the same CH342 device: **SERIAL-B / MI_02 is the ESP32 control port; SERIAL-A / MI_00 is the Himax port**. Windows Device Manager port properties can help identify them. Do not infer roles from COM numbers. If both ports are not present, check the cable and driver.
+
+## 5. Run the Head Flashing Script
+
+This Windows example assumes COM5 is the control port and COM6 is the Himax port. **Replace both with the ports identified above before running it.**
 
 ```powershell
-tools\flash-release.cmd --zip .\WatcheRobot-ESP32S3-v0.3.2.zip --port COM7 --monitor
+.\.venv\Scripts\python.exe tools\ptl_release.py flash --port COM5 --vision-port COM6
 ```
 
-## STM32F103 Board Flashing
+On macOS/Linux, replace both port paths:
 
-Board flashing depends on the physical probe and bench setup.
+```sh
+.venv/bin/python tools/ptl_release.py flash --port /dev/CONTROL_PORT --vision-port /dev/VISION_PORT
+```
 
-Minimum public expectations:
+The script automatically checks the package files, then flashes Himax followed by ESP32. Keep the cable connected until `PTL paired flash completed.` appears. If a step fails, stop and retain the error message for troubleshooting.
 
-- MCU target: `STM32F103C8Tx`
-- Debug probe: ST-LINK or compatible SWD probe
-- Local debug UART: `USART1 @ 115200 8N1`
-- ESP32 co-processor link: `USART2 @ 921600 8N1`
+### Optional: Use the Skill with an AI Assistant
 
-Use the STM32 firmware package from the same Release bundle as the ESP32 firmware and SD-card assets.
+The Skill is an instruction file for an AI assistant, not a Python script. Open the extracted package folder in an AI coding assistant and ask:
 
-## AI-Assisted Flashing
+> Read skills/watche-ptl-release-flash/SKILL.md, create the flashing environment, identify the connected Watcher's two ports, run the paired flash, and check the result.
 
-For repeated or device-specific flashing, let the AI assistant read [WatcheRobot Firmware Flashing Skill](../tools/flashing/README.md) first. The skill explains how to choose same-version assets, detect ports, run flashing tools, and check boot logs.
+No separate Skill installation is needed for the manual steps above.
 
-## Common Problems
+## 6. Prepare the SD Card and Power On
 
-| Symptom | Check |
-| --- | --- |
-| Port not found | Replug USB, check driver, confirm the OS-specific port name. |
-| Permission denied on Linux | Add user to `dialout` or run with a temporary udev rule. |
-| Flash ZIP rejected | Confirm the ZIP contains `flash_args.txt` and required binaries. |
-| STM32 flashing fails | Confirm SWD wiring, probe driver, target power, and the firmware package version. |
-| Monitor shows unreadable text | Confirm baud rate and target port. |
+1. Power off, remove the SD card from the Watcher head, and connect it to the computer through a card reader. Use a card reader to prepare the SD card.
+2. Back up files you want to keep, then format the card as FAT32.
+3. Extract the contents of the `sd-resources` archive to the card root. Do not copy the archive itself or add an enclosing folder.
+4. Confirm that `assets/`, `official_catalog.json`, and `resource_manifest.json` are at the root.
+5. Safely eject the card, insert it into the powered-off head, then power on.
+
+Install the client for your operating system from the Release and follow [First-Start Checks](action-test.md). For Python control, continue with [SDK Installation and Commands](sdk.md).

@@ -1,40 +1,67 @@
-# SDK and Public Interface Boundary
+<p><strong>English</strong> | <a href="sdk_zh.md">简体中文</a></p>
 
-The public software integration surface of this repository is the root-level Python SDK plus the runtime assets distributed through GitHub Releases. ESP32-S3 and STM32F103 firmware source code is not published here.
+# SDK Installation and Commands
 
-## Current Public Interfaces
+Complete firmware flashing and SD preparation first. These steps set up Python control from your computer.
 
-| Area | Entry point | Status |
-| --- | --- | --- |
-| Python SDK | `python-sdk/` | Public source, examples, and tests for host-side control. |
-| SDK protocol notes | `python-sdk/docs/protocol-v1.md` | Public SDK-facing protocol notes. |
-| Factory resource IDs | `python-sdk/docs/resources.md` | Public reference for supported built-in behavior, animation, and audio IDs. |
-| ESP32-S3 release flashing | `tools/win_flasher/`, `tools/flash-release.cmd` | Public helper for prebuilt release ZIPs. |
-| AI flashing skill | `tools/flashing/` | Public AI-readable workflow for firmware flashing and boot checks. |
-| Release assets | GitHub Releases | Prebuilt firmware, SD-card assets, installers, manifest, and checksums. |
+## 1. Prepare the Download Folder
 
-## Stable for Users
+Download the `watcherobot` `.whl` from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest). Put it in a separate folder with only this wheel. Use a Python version supported by the Release.
 
-Users may rely on:
+Open a terminal in that folder. On Windows, type `powershell` in its address bar and press Enter.
 
-- repository layout documented in `README.md`
-- SDK installation and examples in `python-sdk/README.md`
-- release assets being distributed through GitHub Releases
-- SD-card behavior assets being copied under `anim/`
-- hardware manufacturing files under `hardware/`
+## 2. Create the Environment and Install
 
-## Not Published Here
+Windows PowerShell, one line at a time:
 
-The following implementation details are outside this public repository:
+```powershell
+python --version
+python -m venv .venv
+$wheel = Get-Item .\watcherobot-*.whl
+.\.venv\Scripts\python.exe -m pip install $wheel.FullName
+.\.venv\Scripts\watcherobot.exe --version
+```
 
-- ESP32-S3 firmware source and internal component layout
-- STM32F103 firmware source and host tests
-- App, server, and desktop source code
-- private bring-up logs, local serial-port records, and bench-only scripts
+macOS/Linux, one line at a time:
 
-## Development Against the Public Repo
+```sh
+python3 --version
+python3 -m venv .venv
+.venv/bin/python -m pip install ./watcherobot-*.whl
+.venv/bin/watcherobot --version
+```
 
-- For SDK integration, use `python-sdk/`.
-- For hardware reproduction, use `hardware/pcb/` and `hardware/3d-models/`.
-- For flashing automation, use `tools/win_flasher` or the AI-readable workflow under `tools/flashing/`.
-- For firmware behavior, use the documented Release assets and verify device capabilities at runtime.
+The final command prints the SDK version. Activation is not required; use the programs inside this folder for the following steps.
+
+## 3. Connect the Robot
+
+For first-time network setup, use a Windows or macOS computer with Bluetooth and follow the prompts:
+
+```powershell
+.\.venv\Scripts\watcherobot.exe robot setup
+```
+
+If the robot already has Wi-Fi, connect the computer to the same network and open the Python SDK app on the robot. Replace `123456` below with the displayed six-digit pairing code:
+
+```powershell
+.\.venv\Scripts\watcherobot.exe robot pair 123456
+.\.venv\Scripts\watcherobot.exe robot status
+```
+
+On macOS/Linux, replace `..venvScriptswatcherobot.exe` with `.venv/bin/watcherobot`. Once status returns the device information, you can use the SDK.
+
+## 4. Run Your Python Script
+
+Save your script in this folder. For a script named `my_robot.py`, run on Windows:
+
+```powershell
+.\.venv\Scripts\python.exe .\my_robot.py
+```
+
+macOS/Linux:
+
+```sh
+.venv/bin/python ./my_robot.py
+```
+
+`my_robot.py` is an example filename; replace it with your saved script. See the [SDK README](../python-sdk/README.md) for API usage and examples, including any extra example dependencies.
