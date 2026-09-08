@@ -21,16 +21,16 @@
 
 - [ ] Quick Start still points to the right path.
 - [ ] Flashing instructions are still accurate.
-- [ ] SD-card behavior asset instructions are still accurate.
-- [ ] First action smoke test is still accurate.
-- [ ] Version or compatibility matrix was updated if this changes a public version.
+- [ ] SD-card, first-run, and SDK instructions are still accurate.
+- [ ] Version-source and compatibility notes were updated if this changes a public version.
 - [ ] Hardware/BOM docs were updated if this changes hardware reproduction.
+- [ ] Matching English and Chinese documents were updated together.
 
 ## Test Plan
 
 - [ ] I ran the relevant SDK tests or documentation checks.
-- [ ] I verified `python -m tools.win_flasher --help` if this changes flashing docs or tools.
-- [ ] I completed or reviewed the first action smoke test if this changes behavior assets or control paths.
+- [ ] I ran `python -m pytest tools/tests -q` and validated the affected target if this changes flashing tools.
+- [ ] I reviewed the first-run check if this changes the usage flow.
 - [ ] I did not add release binaries to Git.
 - [ ] I did not add ESP32-S3 or STM32F103 firmware source code.
 - [ ] I checked for secrets, private machine paths, and local-only serial-port notes.
