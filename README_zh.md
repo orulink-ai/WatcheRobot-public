@@ -65,13 +65,39 @@ git submodule update --init --recursive
 
 ```text
 WatcheRobot-public/
-├─ docs/          使用、烧录、SDK 和发布说明
-├─ firmware/      固件与 SD 资源下载入口
-├─ hardware/      PCB、BOM、Gerber 和机械模型
-├─ python-sdk/    Python SDK 子模块
-├─ skills/        Codex 烧录 Skill
-├─ tools/         Windows、macOS 和 Linux 烧录脚本
-└─ .github/       Issue、PR 和 CI 配置
+├─ README_zh.md / README.md       中英文项目入口
+├─ docs/
+│  ├─ flashing_zh.md / flashing.md        烧录指南
+│  ├─ sd-card-assets_zh.md / sd-card-assets.md    SD 卡资源说明
+│  ├─ action-test_zh.md / action-test.md          首次运行检查
+│  ├─ sdk_zh.md / sdk.md                   SDK 使用指南
+│  ├─ versions_zh.md / versions.md         版本来源
+│  ├─ compatibility_zh.md / compatibility.md      配套关系
+│  ├─ release-process_zh.md / release-process.md  发布规则
+│  ├─ governance_zh.md / governance.md             仓库规则
+│  ├─ images/                               文档图片
+│  └─ manuals/                              PDF 使用说明书
+├─ firmware/README_zh.md / README.md       固件下载入口
+├─ hardware/
+│  ├─ pcb/
+│  │  ├─ schematic/                         原理图
+│  │  ├─ layout/                            PCB 版图
+│  │  ├─ gerber/                            生产文件
+│  │  ├─ bom/ / cpl/                       物料和贴片坐标
+│  │  └─ pcb-source/                        EasyEDA Pro 工程源文件
+│  └─ 3d-models/exports/                    STEP 机械模型
+├─ python-sdk/                              Python SDK 子模块
+├─ skills/watche-release-flash/
+│  ├─ SKILL_zh.md                           中文烧录 Skill
+│  └─ SKILL.md                              英文烧录 Skill
+├─ tools/
+│  ├─ flash.ps1                             Windows 烧录入口
+│  ├─ flash.sh                              macOS/Linux 烧录入口
+│  └─ flash_setup.py                        依赖准备和烧录调度
+├─ .github/                                 Issue、PR 和 CI 配置
+├─ CONTRIBUTING_zh.md / CONTRIBUTING.md     贡献指南
+├─ SECURITY_zh.md / SECURITY.md             安全策略
+└─ LICENSE                                  开源许可证
 ```
 
 ## 项目文档
@@ -83,6 +109,7 @@ WatcheRobot-public/
 - [硬件资料](hardware/README_zh.md)：PCB 和机械文件入口。
 - [完整使用说明书（中文 PDF）](docs/manuals/WatcheRobot-user-manual-20260724.pdf)。
 - [版本来源](docs/versions_zh.md)、[配套关系](docs/compatibility_zh.md)、[发布规则](docs/release-process_zh.md)和[仓库规则](docs/governance_zh.md)。
+- [贡献指南](CONTRIBUTING_zh.md)和[安全策略](SECURITY_zh.md)。
 
 ## 开源范围
 

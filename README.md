@@ -65,13 +65,39 @@ See the [device network setup guide (Chinese PDF)](docs/manuals/device-network-s
 
 ```text
 WatcheRobot-public/
-├─ docs/          User, flashing, SDK, and release guides
-├─ firmware/      Firmware and SD-resource download entry point
-├─ hardware/      PCB, BOM, Gerber, and mechanical models
-├─ python-sdk/    Python SDK submodule
-├─ skills/        Codex flashing Skill
-├─ tools/         Windows, macOS, and Linux flashing scripts
-└─ .github/       Issue, PR, and CI configuration
+├─ README.md / README_zh.md       English and Chinese project entry
+├─ docs/
+│  ├─ flashing.md / flashing_zh.md        Flashing guide
+│  ├─ sd-card-assets.md / sd-card-assets_zh.md    SD-card resource guide
+│  ├─ action-test.md / action-test_zh.md          First-run check
+│  ├─ sdk.md / sdk_zh.md                  SDK guide
+│  ├─ versions.md / versions_zh.md        Version sources
+│  ├─ compatibility.md / compatibility_zh.md      Compatibility notes
+│  ├─ release-process.md / release-process_zh.md  Release rules
+│  ├─ governance.md / governance_zh.md            Repository rules
+│  ├─ images/                              Documentation images
+│  └─ manuals/                             PDF user manuals
+├─ firmware/README.md / README_zh.md       Firmware download entry
+├─ hardware/
+│  ├─ pcb/
+│  │  ├─ schematic/                        Schematics
+│  │  ├─ layout/                           PCB layouts
+│  │  ├─ gerber/                           Production files
+│  │  ├─ bom/ / cpl/                      BOM and placement files
+│  │  └─ pcb-source/                       EasyEDA Pro project source
+│  └─ 3d-models/exports/                   STEP mechanical models
+├─ python-sdk/                             Python SDK submodule
+├─ skills/watche-release-flash/
+│  ├─ SKILL.md                             English flashing Skill
+│  └─ SKILL_zh.md                          Chinese flashing Skill
+├─ tools/
+│  ├─ flash.ps1                            Windows flashing entry
+│  ├─ flash.sh                             macOS/Linux flashing entry
+│  └─ flash_setup.py                       Dependency setup and flashing dispatcher
+├─ .github/                                Issue, PR, and CI configuration
+├─ CONTRIBUTING.md / CONTRIBUTING_zh.md    Contribution guide
+├─ SECURITY.md / SECURITY_zh.md            Security policy
+└─ LICENSE                                 Open-source license
 ```
 
 ## Project Documentation
@@ -83,6 +109,7 @@ WatcheRobot-public/
 - [Hardware Files](hardware/README.md): PCB and mechanical-file entry point.
 - [Full User Manual (Chinese PDF)](docs/manuals/WatcheRobot-user-manual-20260724.pdf).
 - [Version Sources](docs/versions.md), [Compatibility](docs/compatibility.md), [Release Rules](docs/release-process.md), and [Repository Rules](docs/governance.md).
+- [Contributing Guide](CONTRIBUTING.md) and [Security Policy](SECURITY.md).
 
 ## Open-source Scope
 
