@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="release-process_zh.md">简体中文</a></p>
+
 # Release Process
 
 Release artifacts are managed through GitHub Releases, not committed to Git.
@@ -17,6 +19,9 @@ Each release should include:
 - compatibility matrix
 - version notes from `docs/versions.md`
 - `SHA256SUMS.txt`
+- a machine-readable bundle manifest
 - all required downloadable artifacts
 
-A public release must include at least the ESP32 firmware flash ZIP, SD-card behavior asset ZIP, `SHA256SUMS.txt`, release notes, and compatibility notes. Large binaries, firmware ZIPs, APKs, installers, DMGs, Gerber ZIPs, and hardware package ZIPs must be uploaded as release assets.
+A full public test release includes the ESP32-S3 + Himax PTL paired ZIP, STM32 ZIP, device SD-card `.tar.gz`, Python SDK wheel, Windows x64 installer, macOS aarch64 DMG, Android APK, bundle manifest, and `SHA256SUMS.txt`. Its iOS build is distributed through the TestFlight entry in the release notes. Standalone ESP32-S3, standalone Himax, and separate Skill packages are unnecessary when the PTL paired ZIP already contains both binaries, cross-platform tools, and the paired Skill.
+
+Large binaries, firmware packages, APKs, installers, DMGs, resource archives, Gerber ZIPs, and hardware package ZIPs must be uploaded as release assets rather than committed to Git.

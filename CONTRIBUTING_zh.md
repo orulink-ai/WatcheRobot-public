@@ -1,3 +1,5 @@
+<p><a href="CONTRIBUTING.md">English</a> | <strong>简体中文</strong></p>
+
 # 贡献指南
 
 感谢你一起完善 WatcheRobot。这个仓库用于公开硬件资料、机械模型、Python SDK、使用文档、烧录工具和 Release 资产说明。

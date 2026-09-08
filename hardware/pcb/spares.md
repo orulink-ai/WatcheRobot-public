@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="spares_zh.md">简体中文</a></p>
+
 # Event Spare Parts
 
 Use this file to track spare parts prepared for reproduction or maintenance. The BOM workbooks contain model, supplier, supplier part number, and alternate-part fields; this document records what is physically available on site.

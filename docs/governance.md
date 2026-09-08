@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="governance_zh.md">简体中文</a></p>
+
 # Governance
 
 `orulink-ai/WatcheRobot-public` is the public repository for hardware materials, mechanical models, SDK source, user documentation, flashing tools, and release coordination.

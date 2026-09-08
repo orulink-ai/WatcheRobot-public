@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="SECURITY_zh.md">简体中文</a></p>
+
 # Security Policy
 
 ## Public Repository Rules

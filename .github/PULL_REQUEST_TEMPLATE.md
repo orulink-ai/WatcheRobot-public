@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="PULL_REQUEST_TEMPLATE_zh.md">简体中文</a></p>
+
 ## Summary
 
 -

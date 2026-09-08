@@ -1,3 +1,5 @@
+<p><strong>English</strong> | <a href="CONTRIBUTING_zh.md">简体中文</a></p>
+
 # Contributing
 
 Thank you for helping improve WatcheRobot. This repository publishes hardware materials, mechanical models, the Python SDK, user documentation, flashing tools, and release-asset documentation.
