@@ -63,10 +63,19 @@ Connect the Watcher head with a USB data cable. First run this command to instal
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder"
 ```
 
-Identify two ports on the same CH342 device: SERIAL-B / MI_02 is control; SERIAL-A / MI_00 is Himax. Do not guess from COM number order. Replace COM5 and COM6 below with the actual ports:
+Find SERIAL-B and SERIAL-A in the `desc:` lines above. COM61 and COM62 below are examples; use the port numbers shown on your computer:
+
+| Device name | Port (example) | Command argument |
+| --- | --- | --- |
+| USB-Enhanced-SERIAL-B CH342 (ESP32) | COM61 | `--port COM61` |
+| USB-Enhanced-SERIAL-A CH342 (Himax) | COM62 | `--vision-port COM62` |
+
+Alternatively, open Windows Device Manager → Ports (COM & LPT) and read the COM number in parentheses after each name. Connect only one Watcher for flashing.
+
+Use SERIAL-B for `--port` and SERIAL-A for `--vision-port`. Replace both port numbers below with your actual values before running:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder" --port COM5 --vision-port COM6
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder" --port COM61 --vision-port COM62
 ```
 
 On macOS/Linux use the same arguments with `bash tools/flash.sh` and actual `/dev/...` port paths.
@@ -77,9 +86,7 @@ Stop if ports are missing or inaccessible: automatic CH342 driver installation a
 
 ## 4. Prepare the SD Card with a Card Reader
 
-Power off, remove the card, and connect it through a card reader. Back up needed files, use a FAT32 card, and extract the SD resource archive into its root. The root must directly contain `assets/`, `official_catalog.json`, and `resource_manifest.json`, without an extra enclosing folder. Safely eject it and reinsert it with power off.
-
-Do not write the SD card through the robot's USB connection. No flashing script is needed—only extract and copy files.
+Connect a FAT32-formatted SD card to your computer with a card reader, extract the SD resource archive to the card root, then reinsert the card into the head.
 
 ## 5. Power On and Use
 

@@ -63,10 +63,19 @@ bash tools/flash.sh stm32 --package "解压后的STM32目录"
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录"
 ```
 
-找到同一 CH342 设备的两个端口：SERIAL-B / MI_02 是控制口，SERIAL-A / MI_00 是 Himax 口。不要按 COM 数字大小猜。将下面的 COM5、COM6 换成实际端口：
+在上一步输出的 `desc:` 中找到 SERIAL-B 和 SERIAL-A。下面以 COM61、COM62 为例，实际端口号以你的电脑显示为准：
+
+| 设备名称 | 端口（示例） | 命令参数 |
+| --- | --- | --- |
+| USB-Enhanced-SERIAL-B CH342（ESP32） | COM61 | `--port COM61` |
+| USB-Enhanced-SERIAL-A CH342（Himax） | COM62 | `--vision-port COM62` |
+
+也可在 Windows「设备管理器 → 端口（COM 和 LPT）」查看名称后括号中的 COM 号。只连接一台待烧录的 Watcher。
+
+`--port` 填 SERIAL-B 的端口，`--vision-port` 填 SERIAL-A 的端口。将下面两处端口号替换为实际值后运行：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录" --port COM5 --vision-port COM6
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录" --port COM61 --vision-port COM62
 ```
 
 macOS/Linux 使用相同参数，将入口换成 `bash tools/flash.sh`，端口换成实际 `/dev/...` 路径。
@@ -77,9 +86,7 @@ macOS/Linux 使用相同参数，将入口换成 `bash tools/flash.sh`，端口�
 
 ## 4. 用读卡器准备 SD 卡
 
-断电取卡，通过读卡器连接电脑。备份需要保留的文件后，使用 FAT32 格式的卡，将 SD 资源压缩包内容解压到根目录。根目录应直接看到 `assets/`、`official_catalog.json` 和 `resource_manifest.json`，不要多套一层文件夹。安全弹出，断电插回头部。
-
-SD 卡不能通过机器人 USB 写入；不运行烧录脚本，只解压复制文件。
+用读卡器将 FAT32 格式的 SD 卡连接电脑，把 SD 资源压缩包解压到卡的根目录，再插回头部。
 
 ## 5. 上电并使用
 
