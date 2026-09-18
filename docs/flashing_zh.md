@@ -14,7 +14,7 @@
 | --- | --- |
 | STM32 | 身体主板固件 |
 | PTL-paired | 头部 Himax 和 ESP32-S3 固件及配套工具 |
-| sd-resources | SD 卡表情、动作等资源 |
+| sd-resources | SD 卡表情、动作等资源；脚本也可自动下载最新包 |
 
 使用已安装的 Conda；没有时先安装 [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/)。在仓库根目录打开支持 Conda 的终端（Windows 可用 Anaconda PowerShell Prompt），只需创建一次专用环境：
 
@@ -99,7 +99,21 @@ bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/S
 
 ## 4. 用读卡器准备 SD 卡
 
-用读卡器将 FAT32 格式的 SD 卡连接电脑，把 SD 资源压缩包解压到卡的根目录，再插回头部。根目录内容见 [SD 卡资源说明](sd-card-assets_zh.md)。
+断电取出 SD 卡，通过读卡器连接电脑。下面的命令会下载并校验最新官方资源，再写成设备需要的目录；将 `E:\` 或挂载路径换成实际 SD 卡。
+
+Windows：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd --drive "E:\"
+```
+
+macOS/Linux：
+
+```sh
+bash tools/flash.sh sd --drive "/Volumes/WATCHE"
+```
+
+已有 Release 中的资源包时，可在命令末尾加 `--package "watche-sd-resources-….tar.gz"`。看到 `Installed ... successfully` 才算完成；安全弹出 SD 卡后，在断电状态下插回头部。目录说明见 [SD 卡资源](sd-card-assets_zh.md)。
 
 ## 5. 上电并使用
 

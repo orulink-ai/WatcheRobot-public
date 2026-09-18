@@ -14,7 +14,7 @@ Download and extract these assets from the [Latest Release](https://github.com/o
 | --- | --- |
 | STM32 | Body board firmware |
 | PTL-paired | Head Himax and ESP32-S3 firmware and paired tools |
-| sd-resources | SD card expressions, actions, and other resources |
+| sd-resources | SD-card resources; the writer can also download the latest package |
 
 Use Conda, or install [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) first. Open a Conda-enabled terminal at the repository root (Anaconda PowerShell Prompt on Windows). Create the dedicated environment once:
 
@@ -99,7 +99,21 @@ Stop if ports are missing or inaccessible: automatic CH342 driver installation a
 
 ## 4. Prepare the SD Card with a Card Reader
 
-Connect a FAT32-formatted SD card to your computer with a card reader, extract the SD resource archive to the card root, then reinsert the card into the head. See [SD-card Resources](sd-card-assets.md) for the root contents.
+Power off, remove the SD card, and connect it through a card reader. The command downloads and verifies the latest official resources, then writes the device layout. Replace `E:\` or the mount path with the actual card.
+
+Windows:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd --drive "E:\"
+```
+
+macOS/Linux:
+
+```sh
+bash tools/flash.sh sd --drive "/Volumes/WATCHE"
+```
+
+To use the resource archive downloaded from the Release, append `--package "watche-sd-resources-….tar.gz"`. Completion requires `Installed ... successfully`. Eject the card safely and reinsert it into the powered-off head. See [SD-card Resources](sd-card-assets.md) for the installed layout.
 
 ## 5. Power On and Use
 

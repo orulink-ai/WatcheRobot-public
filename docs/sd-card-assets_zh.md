@@ -2,19 +2,37 @@
 
 # SD 卡资源
 
-从 [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 下载 SD 资源压缩包。用读卡器将 FAT32 格式的 SD 卡连接电脑，把压缩包内容解压到卡的根目录，再将卡插回 Watcher 头部。
+SD 资源包是发布归档，不应直接解压到卡根目录。使用 FAT32 SD 卡和读卡器，在已激活的专用 Conda 环境中从仓库根目录运行：
 
-当前 Release 的压缩包解压后结构如下：
+```powershell
+# Windows：自动下载最新官方资源
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd --drive "E:\"
+```
+
+```sh
+# macOS/Linux：自动下载最新官方资源
+bash tools/flash.sh sd --drive "/Volumes/WATCHE"
+```
+
+若已下载 Release 中的 `watche-sd-resources-*.tar.gz`，在相应命令末尾添加 `--package "压缩包路径"`。脚本会校验压缩包，保留已有作品，并安装为设备需要的结构：
 
 ```text
 SD 卡根目录/
-├─ assets/
-│  ├─ actions/          动作描述文件
-│  ├─ anim/             表情动画资源
-│  └─ sfx/              音效资源
-├─ fixed_states.json
-├─ official_catalog.json
-└─ resource_manifest.json
+└─ watche/
+   ├─ assets/
+   │  ├─ actions/                 动作资源对象
+   │  ├─ anim/                    表情动画对象
+   │  └─ sfx/                     音效对象
+   ├─ official/current/
+   │  ├─ official_catalog.json    官方资源目录
+   │  ├─ fixed_states.json        固定状态映射
+   │  └─ resource_manifest.json   资源完整性清单
+   ├─ works/
+   │  └─ works_catalog.json       用户作品目录
+   ├─ system/
+   │  ├─ layout.json              SD 布局标识
+   │  └─ accepted_official.json   已安装官方资源记录
+   └─ staging/                    安装事务临时目录
 ```
 
-这些目录和文件应直接位于 SD 卡根目录，不要在外面再套一层压缩包文件夹。
+日志最后出现 `Installed ... successfully` 后安全弹出卡，在机器人断电状态下插回头部。

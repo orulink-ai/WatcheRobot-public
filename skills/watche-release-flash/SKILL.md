@@ -11,8 +11,10 @@ Use the repository's `tools/flash.ps1` on Windows or `tools/flash.sh` on macOS/L
 
 Read [the guide](../../docs/flashing.md). Resolve the extracted firmware folder and the authorized target. For STM32, pass `stm32 --package <folder-containing-bin>`. For the head, pass `head --package <paired-folder> --port <control> --vision-port <vision>`. Resolve paths relative to the repository; quote paths with spaces.
 
-For head flashing, SERIAL-B / MI_02 is control and SERIAL-A / MI_00 is vision. Confirm both belong to the same CH342 USB serial number. The paired tool writes Himax before ESP32. Do not alter firmware binaries, replace the selected release, or use factory erase as a workaround.
+For head flashing, SERIAL-B / MI_02 is control and SERIAL-A / MI_00 is vision. Confirm both belong to the same CH342 USB serial number. The launcher checks the A/B roles; if they are reversed, stop and use the reported mapping instead of attempting a flash. The paired tool writes Himax before ESP32. Do not alter firmware binaries or replace the selected release.
+
+Add `--factory` to the head command only when boot logs prove that the installed ESP32 partition table is incompatible with the release package and the user explicitly authorizes overwriting ESP32 storage. Prefer backing up flash first. Never escalate an ordinary flashing failure to factory flashing automatically.
 
 `--prepare-only` downloads and checks tools without accessing hardware. It is not hardware acceptance. Windows driver installation may require administrator privileges; preserve OS prompts and stop on failure. Driver download failure must not be reported as successful preparation. CH342 driver auto-install and Linux permission setup are not yet implemented; report these limitations if encountered.
 
-For STM32, require exit code zero and OpenOCD's Programming Finished, Verified OK, and Resetting Target messages. For head flashing require successful paired completion and check startup separately. Never report simulations or environment preparation as a successful flash. SD resources are copied through a card reader only.
+For STM32, require exit code zero and OpenOCD's Programming Finished, Verified OK, and Resetting Target messages. For head flashing require successful paired completion and check startup separately. Never report simulations or environment preparation as a successful flash. Install SD resources only through a card reader and the repository writer.

@@ -44,7 +44,7 @@ Open the [Flashing Guide](docs/flashing.md) and follow its sections in order:
 
 1. Flash STM32 on the body board.
 2. Flash the Watcher head; the script writes Himax first and ESP32-S3 second.
-3. Use a card reader to extract the SD resource archive to the SD-card root, then return the card to the head.
+3. Use a card reader and the repository writer to install the SD resources, then return the card to the head.
 4. Power on and complete the startup check.
 
 ### 4. Connect and Use
@@ -90,10 +90,15 @@ WatcheRobot-public/
 ├─ skills/watche-release-flash/
 │  ├─ SKILL.md                             English flashing Skill
 │  └─ SKILL_zh.md                          Chinese flashing Skill
+├─ skills/watche-sd-card-write/
+│  ├─ SKILL.md                             English SD-card Skill
+│  └─ SKILL_zh.md                          Chinese SD-card Skill
 ├─ tools/
 │  ├─ flash.ps1                            Windows flashing entry
 │  ├─ flash.sh                             macOS/Linux flashing entry
-│  └─ flash_setup.py                       Dependency setup and flashing dispatcher
+│  ├─ flash_setup.py                       Dependency setup and flashing dispatcher
+│  ├─ install_sd_card_resources.py         SD validation and writer
+│  └─ sd_package.py                        Official SD package resolver
 ├─ .github/                                Issue, PR, and CI configuration
 ├─ CONTRIBUTING.md / CONTRIBUTING_zh.md    Contribution guide
 ├─ SECURITY.md / SECURITY_zh.md            Security policy
