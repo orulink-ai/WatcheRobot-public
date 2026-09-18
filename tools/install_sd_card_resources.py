@@ -708,26 +708,6 @@ def _cleanup_unreferenced_assets(watche: Path, plan: ArchivePlan) -> None:
         print(f"Removed unreferenced asset object: {relative}")
 
 
-def _installed_version(current: Path) -> str | None:
-    manifest_path = current / "resource_manifest.json"
-    try:
-        document = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
-    except (OSError, json.JSONDecodeError, UnicodeError):
-        return None
-    version = document.get("bundle_version") if isinstance(document, dict) else None
-    return version if isinstance(version, str) and VERSION_PATTERN.fullmatch(version) else None
-
-
-def _installed_layout_revision(current: Path) -> int | None:
-    manifest_path = current / "resource_manifest.json"
-    try:
-        document = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
-    except (OSError, json.JSONDecodeError, UnicodeError):
-        return None
-    revision = document.get("layout_revision") if isinstance(document, dict) else None
-    return revision if isinstance(revision, int) else None
-
-
 def required_free_bytes(
     plan: ArchivePlan,
     watche: Path,
@@ -783,14 +763,6 @@ def install_package_to_card(package: Package, drive: DriveInfo, force: bool) -> 
     )
     _recover_reader_transaction(watche)
 
-    print("Cleaning the previous official resource view while preserving creator works...")
-    _cleanup_legacy_entries(drive.root)
-    if current.exists() and _installed_layout_revision(current) != 2:
-        _remove_path(current)
-        print("Removed the unsupported legacy official resource view.")
-    for runtime_name in ("runtime", "runtime.next", "runtime.rollback"):
-        _remove_path(watche / runtime_name)
-    _cleanup_unreferenced_assets(watche, plan)
     _remove_path(backup)
     _remove_path(staging)
 
@@ -835,6 +807,7 @@ def install_package_to_card(package: Package, drive: DriveInfo, force: bool) -> 
         current.replace(backup)
     try:
         staging.replace(current)
+        _verify_active(watche, current, plan)
         _write_json_atomic(
             system / "accepted_official.json",
             {
@@ -844,16 +817,30 @@ def install_package_to_card(package: Package, drive: DriveInfo, force: bool) -> 
                 "manifest_sha256": plan.manifest_sha256,
             },
         )
-        _verify_active(watche, current, plan)
-        _cleanup_unreferenced_assets(watche, plan)
     except Exception:
         _remove_path(current)
         if had_current and backup.exists():
             backup.replace(current)
         raise
 
-    _remove_path(backup)
+    # Removing the transaction marker commits the verified new view. Cleanup
+    # happens afterwards so a failed extraction can never damage the old view.
     transaction.unlink(missing_ok=True)
+    _remove_path(backup)
+    print("Cleaning superseded resources while preserving creator works...")
+    try:
+        _cleanup_legacy_entries(drive.root)
+    except OSError as exc:
+        print(f"Warning: installed resources are active, but cleanup of legacy root entries was incomplete: {exc}")
+    try:
+        for runtime_name in ("runtime", "runtime.next", "runtime.rollback"):
+            _remove_path(watche / runtime_name)
+    except OSError as exc:
+        print(f"Warning: installed resources are active, but cleanup of legacy runtime views was incomplete: {exc}")
+    try:
+        _cleanup_unreferenced_assets(watche, plan)
+    except OSError as exc:
+        print(f"Warning: installed resources are active, but cleanup of asset objects was incomplete: {exc}")
     print(
         f"[8/8] Installed {package.version} successfully from {package.source}: "
         f"{plan.file_count} files, {plan.extracted_bytes / (1024 * 1024):.2f} MB."
