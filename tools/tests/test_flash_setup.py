@@ -88,10 +88,52 @@ def test_listing_ports_does_not_flash(tmp_path):
     (tmp_path / 'tools').mkdir()
     (tmp_path / 'tools/ptl_release.py').touch()
     (tmp_path / 'requirements.txt').touch()
-    with patch.object(module, 'install_dependencies'), patch.object(module, 'run') as run:
+    with patch.object(module, 'install_dependencies'), \
+            patch.object(module, 'print_head_port_mapping') as mapping, \
+            patch.object(module, 'run') as run:
         module.head(SimpleNamespace(package=tmp_path, prepare_only=False, port=None, vision_port=None))
         assert all('flash' not in call.args[0] for call in run.call_args_list)
-        assert run.call_args.args[0][-1] == '-v'
+        mapping.assert_called_once_with()
+
+
+def head_port(device, description, serial='WATCHER'):
+    return SimpleNamespace(device=device, description=description, vid=0x1A86,
+                           pid=0x55D2, serial_number=serial)
+
+
+def test_head_port_mapping_prints_arguments(capsys):
+    ports = [head_port('COM7', 'USB-Enhanced-SERIAL-A CH342'),
+             head_port('COM8', 'USB-Enhanced-SERIAL-B CH342')]
+    module.print_head_port_mapping(ports)
+    output = capsys.readouterr().out
+    assert 'SERIAL-B' in output and '--port COM8' in output
+    assert 'SERIAL-A' in output and '--vision-port COM7' in output
+
+
+def test_accepts_confirmed_head_port_roles():
+    ports = [head_port('COM7', 'USB-Enhanced-SERIAL-A CH342'),
+             head_port('COM8', 'USB-Enhanced-SERIAL-B CH342')]
+    module.validate_head_port_roles('COM8', 'COM7', ports)
+
+
+def test_reversed_head_ports_are_rejected_with_correct_mapping():
+    ports = [head_port('COM7', 'USB-Enhanced-SERIAL-A CH342'),
+             head_port('COM8', 'USB-Enhanced-SERIAL-B CH342')]
+    with pytest.raises(ValueError, match=r'--port COM8.*--vision-port COM7'):
+        module.validate_head_port_roles('COM7', 'COM8', ports)
+
+
+def test_factory_flag_is_forwarded_only_after_role_validation(tmp_path):
+    (tmp_path / 'tools').mkdir()
+    (tmp_path / 'tools/ptl_release.py').touch()
+    (tmp_path / 'requirements.txt').touch()
+    args = SimpleNamespace(package=tmp_path, prepare_only=False, port='COM8',
+                           vision_port='COM7', factory=True)
+    with patch.object(module, 'install_dependencies'), \
+            patch.object(module, 'validate_head_port_roles'), \
+            patch.object(module, 'run') as run:
+        module.head(args)
+    assert run.call_args.args[0][-1] == '--factory'
 
 
 def test_driver_fallback_is_pinned_and_rechecked(tmp_path):
@@ -103,3 +145,32 @@ def test_driver_fallback_is_pinned_and_rechecked(tmp_path):
     with patch.object(module.platform, 'system', return_value='Windows'), patch.object(module, 'CACHE', tmp_path), patch.object(module, 'extract'), patch.object(module, 'download', side_effect=[OSError('timeout'), None]) as download, patch.object(module, 'run', side_effect=[before, None, after]):
         module.windows_driver()
         assert len(download.call_args.args[2]) == 64
+
+
+def test_sd_writer_downloads_latest_when_package_is_omitted():
+    args = SimpleNamespace(package=None, drive=Path('E:/'), force=False,
+                           prepare_only=False)
+    with patch.object(module, 'run') as run:
+        module.sd_card(args)
+    command = run.call_args.args[0]
+    assert command[:2] == [module.sys.executable,
+                           str(Path(module.__file__).with_name('install_sd_card_resources.py'))]
+    assert command[2:] == ['--drive', str(Path('E:/'))]
+
+
+def test_sd_writer_forwards_local_archive_and_force(tmp_path):
+    archive = tmp_path / 'watche-sd-resources-test.tar.gz'
+    archive.touch()
+    args = SimpleNamespace(package=archive, drive=Path('E:/'), force=True,
+                           prepare_only=False)
+    with patch.object(module, 'run') as run:
+        module.sd_card(args)
+    command = run.call_args.args[0]
+    assert command[-3:] == ['--file', str(archive.resolve()), '--force']
+
+
+def test_sd_writer_requires_explicit_card_root():
+    args = SimpleNamespace(package=None, drive=None, force=False,
+                           prepare_only=False)
+    with pytest.raises(ValueError, match='--drive'):
+        module.sd_card(args)

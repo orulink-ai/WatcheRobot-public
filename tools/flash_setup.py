@@ -146,6 +146,59 @@ def stm32(args):
     except subprocess.CalledProcessError:
         print('STM32 was not verified. If OpenOCD cannot connect to the target, check board power and SIO/SWDIO, SCK/SWCLK, GND wiring. Disconnect power before changing wires; do not erase as a workaround.', file=sys.stderr)
         raise
+    print('STM32 flash verified successfully.')
+
+
+def available_serial_ports():
+    from serial.tools import list_ports
+    return list(list_ports.comports())
+
+
+def print_head_port_mapping(ports=None):
+    """Print the CH342 role-to-argument mapping used by the head flasher."""
+    ports = available_serial_ports() if ports is None else ports
+    head_ports = [port for port in ports if (port.vid, port.pid) == (0x1A86, 0x55D2)]
+    if not head_ports:
+        print('No Watcher CH342 head ports detected.')
+        return
+    print('Watcher head ports:')
+    print('Device name                            Port                 Command argument')
+    for port in sorted(head_ports, key=lambda item: (item.serial_number or '', item.description or '')):
+        description = port.description or 'Unknown CH342 port'
+        upper = description.upper()
+        if 'SERIAL-B' in upper:
+            argument = f'--port {port.device}'
+        elif 'SERIAL-A' in upper:
+            argument = f'--vision-port {port.device}'
+        else:
+            argument = 'unconfirmed role'
+        print(f'{description:<38} {port.device:<20} {argument}')
+
+
+def validate_head_port_roles(control_port, vision_port, ports=None):
+    """Require SERIAL-B for ESP32 control and SERIAL-A for Himax vision."""
+    ports = available_serial_ports() if ports is None else ports
+    found = {port.device.casefold(): port for port in ports}
+    control = found.get(control_port.casefold())
+    vision = found.get(vision_port.casefold())
+    if control is None or vision is None:
+        raise ValueError('Both specified head ports must be connected.')
+    if control_port.casefold() == vision_port.casefold():
+        raise ValueError('Control and vision ports must be different.')
+    if any((port.vid, port.pid) != (0x1A86, 0x55D2) for port in (control, vision)):
+        raise ValueError('Head flashing supports only the Watcher CH342 USB pair.')
+    if not control.serial_number or control.serial_number != vision.serial_number:
+        raise ValueError('The two head ports must belong to the same CH342 device.')
+    control_name = (control.description or '').upper()
+    vision_name = (vision.description or '').upper()
+    if 'SERIAL-A' in control_name and 'SERIAL-B' in vision_name:
+        raise ValueError(
+            f'Head ports are reversed. Use --port {vision.device} (SERIAL-B / ESP32) '
+            f'--vision-port {control.device} (SERIAL-A / Himax).')
+    if 'SERIAL-B' not in control_name or 'SERIAL-A' not in vision_name:
+        raise ValueError(
+            'Cannot confirm head port roles. --port must be SERIAL-B and '
+            '--vision-port must be SERIAL-A; do not infer from COM numbers.')
 
 
 def head(args):
@@ -161,25 +214,61 @@ def head(args):
         print('Tools ready. No device was accessed or flashed.')
         return
     if not args.port or not args.vision_port:
-        run([str(python), '-m', 'serial.tools.list_ports', '-v'])
+        print_head_port_mapping()
         if not args.port and not args.vision_port:
-            print('Ports listed; no firmware written. Run again with --port (SERIAL-B) and --vision-port (SERIAL-A).')
+            print('No firmware written. Run again with the SERIAL-B and SERIAL-A arguments shown above.')
             return
         raise ValueError('Specify --port (SERIAL-B) and --vision-port (SERIAL-A) from the same CH342 device.')
-    run([str(python), str(entry), 'flash', '--bundle', str(package), '--port', args.port, '--vision-port', args.vision_port])
+    validate_head_port_roles(args.port, args.vision_port)
+    command = [str(python), str(entry), 'flash', '--bundle', str(package),
+               '--port', args.port, '--vision-port', args.vision_port]
+    if getattr(args, 'factory', False):
+        command.append('--factory')
+    run(command)
+    print('Head flash completed successfully: Himax and ESP32-S3.')
+
+
+def sd_card(args):
+    installer = Path(__file__).with_name('install_sd_card_resources.py')
+    if args.prepare_only:
+        run([sys.executable, str(installer), '--help'])
+        print('SD-card writer ready. No card was accessed or changed.')
+        return
+    if not args.drive:
+        raise ValueError('Specify the SD-card root with --drive, for example --drive E:\\\\ on Windows.')
+    command = [sys.executable, str(installer), '--drive', str(args.drive)]
+    if args.package:
+        if not args.package.is_file():
+            raise ValueError('Select the downloaded watche-sd-resources-*.tar.gz file.')
+        command.extend(['--file', str(args.package.resolve())])
+    if args.force:
+        command.append('--force')
+    run(command)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('target', choices=['stm32', 'head'])
-    parser.add_argument('--package', type=Path, required=True)
+    parser.add_argument('target', choices=['stm32', 'head', 'sd'])
+    parser.add_argument('--package', type=Path,
+                        help='Firmware directory, or an optional local SD resource tar.gz')
+    parser.add_argument('--drive', type=Path, help='SD-card root, for example E:\\ or /Volumes/WATCHE')
     parser.add_argument('--port')
     parser.add_argument('--vision-port')
+    parser.add_argument('--factory', action='store_true',
+                        help='Head only: replace all ESP32 flash segments, including storage')
+    parser.add_argument('--force', action='store_true',
+                        help='SD only: discard an unfinished device-side SD transaction')
     parser.add_argument('--prepare-only', action='store_true', help='Prepare tools without accessing hardware')
     args = parser.parse_args()
     try:
         check_environment()
-        (stm32 if args.target == 'stm32' else head)(args)
+        if args.target in ('stm32', 'head') and args.package is None:
+            raise ValueError('--package is required for firmware flashing.')
+        if args.factory and args.target != 'head':
+            raise ValueError('--factory is valid only for head flashing.')
+        if args.force and args.target != 'sd':
+            raise ValueError('--force is valid only for SD-card writing.')
+        {'stm32': stm32, 'head': head, 'sd': sd_card}[args.target](args)
         return 0
     except (OSError, ValueError, KeyError, RuntimeError, subprocess.CalledProcessError) as exc:
         print('Flashing stopped: ' + str(exc), file=sys.stderr)

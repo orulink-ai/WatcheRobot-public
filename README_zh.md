@@ -43,9 +43,9 @@ git submodule update --init --recursive
 打开[烧录指南](docs/flashing_zh.md)，按章节依次完成：
 
 1. 烧录身体主板上的 STM32。
-2. 烧录 Watcher 头部；脚本先写入 Himax，再写入 ESP32-S3。
-3. 用读卡器把 SD 资源压缩包解压到 SD 卡根目录，并将卡插回头部。
-4. 上电并完成启动检查。
+2. 完整烧录 Watcher 头部；脚本先写入 Himax，再用发布包初始化 ESP32-S3。
+3. 用读卡器和仓库写卡脚本安装 SD 资源，并将卡插回头部。
+4. 上电，打开 Phone Control 并连接手机，再完成表情和小幅动作检查。
 
 ### 4. 连接并使用
 
@@ -90,10 +90,15 @@ WatcheRobot-public/
 ├─ skills/watche-release-flash/
 │  ├─ SKILL_zh.md                           中文烧录 Skill
 │  └─ SKILL.md                              英文烧录 Skill
+├─ skills/watche-sd-card-write/
+│  ├─ SKILL_zh.md                           中文 SD 写卡 Skill
+│  └─ SKILL.md                              英文 SD 写卡 Skill
 ├─ tools/
 │  ├─ flash.ps1                             Windows 烧录入口
 │  ├─ flash.sh                              macOS/Linux 烧录入口
-│  └─ flash_setup.py                        依赖准备和烧录调度
+│  ├─ flash_setup.py                        依赖准备和烧录调度
+│  ├─ install_sd_card_resources.py          SD 资源校验和写卡
+│  └─ sd_package.py                         SD 官方包下载和校验
 ├─ .github/                                 Issue、PR 和 CI 配置
 ├─ CONTRIBUTING_zh.md / CONTRIBUTING.md     贡献指南
 ├─ SECURITY_zh.md / SECURITY.md             安全策略

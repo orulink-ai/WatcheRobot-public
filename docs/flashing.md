@@ -13,8 +13,8 @@ Download and extract these assets from the [Latest Release](https://github.com/o
 | Asset name contains | Purpose |
 | --- | --- |
 | STM32 | Body board firmware |
-| PTL-paired | Head Himax and ESP32-S3 firmware and paired tools |
-| sd-resources | SD card expressions, actions, and other resources |
+| PTL-paired | Complete head Himax and ESP32-S3 firmware and paired tools |
+| sd-resources | SD-card resources; the writer can also download the latest package |
 
 Use Conda, or install [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) first. Open a Conda-enabled terminal at the repository root (Anaconda PowerShell Prompt on Windows). Create the dedicated environment once:
 
@@ -77,33 +77,63 @@ Identify the ports corresponding to SERIAL-B and SERIAL-A in the output. On Wind
 | USB-Enhanced-SERIAL-B CH342 (ESP32) | COM61 | `--port COM61` |
 | USB-Enhanced-SERIAL-A CH342 (Himax) | COM62 | `--vision-port COM62` |
 
-Alternatively, open Windows Device Manager → Ports (COM & LPT) and read the COM number in parentheses after each name. Connect only one Watcher for flashing.
-
-Use SERIAL-B for `--port` and SERIAL-A for `--vision-port`. Replace both port numbers below with your actual values before running:
+You can also run a read-only query; neither command writes firmware:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder" --port COM61 --vision-port COM62
+# Windows
+Get-PnpDevice -PresentOnly -Class Ports | Where-Object { $_.FriendlyName -match 'SERIAL-[AB].*CH342' } | Select-Object FriendlyName
+```
+
+```sh
+# Windows/macOS/Linux, after the tool-preparation command above
+python -m serial.tools.list_ports -v
+```
+
+Alternatively, open Windows Device Manager → Ports (COM & LPT) and read the COM number in parentheses after each name. Connect only one Watcher for flashing.
+
+The script prints a concise Device name / Port / Command argument table. Use SERIAL-B for `--port` and SERIAL-A for `--vision-port`. Replace both port numbers below with the reported values for the initial full flash:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "extracted-PTL-paired-folder" --port COM61 --vision-port COM62 --factory
 ```
 
 Full macOS/Linux flashing command:
 
 ```sh
-bash tools/flash.sh head --package "extracted-PTL-paired-folder" --port "/dev/SERIAL_B" --vision-port "/dev/SERIAL_A"
+bash tools/flash.sh head --package "extracted-PTL-paired-folder" --port "/dev/SERIAL_B" --vision-port "/dev/SERIAL_A" --factory
 ```
 
 `/dev/SERIAL_B` and `/dev/SERIAL_A` are placeholders. Replace them with the identified ESP32 and Himax serial paths respectively; do not infer the mapping from port number order. Do not flash until the mapping is confirmed.
 
-The script flashes Himax first, then ESP32-S3; no separate commands are needed. After `HX flash completed; reboot accepted.`, keep waiting until `PTL paired flash completed.` confirms the whole step. Do not unplug the cable during flashing.
+Use `--factory` for the initial installation of this complete head package so the ESP32 partition table, application, and storage all come from the same release. It overwrites existing ESP32 data and is not the data-preserving update path.
+
+The script flashes Himax first, then ESP32-S3; no separate commands are needed. After `HX flash completed; reboot accepted.`, keep waiting until both `PTL paired flash completed.` and `Head flash completed successfully` confirm the whole step. Do not unplug the cable during flashing.
 
 Stop if ports are missing or inaccessible: automatic CH342 driver installation and Linux serial permission setup are not yet supported.
 
 ## 4. Prepare the SD Card with a Card Reader
 
-Connect a FAT32-formatted SD card to your computer with a card reader, extract the SD resource archive to the card root, then reinsert the card into the head. See [SD-card Resources](sd-card-assets.md) for the root contents.
+Power off, remove the SD card, and connect it through a card reader. The command downloads and verifies the latest official resources, then writes the device layout. Replace `E:\` or the mount path with the actual card.
+
+Windows:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd --drive "E:\"
+```
+
+macOS/Linux:
+
+```sh
+bash tools/flash.sh sd --drive "/Volumes/WATCHE"
+```
+
+To use the resource archive downloaded from the Release, append `--package "watche-sd-resources-….tar.gz"`. Completion requires `Installed ... successfully`. Eject the card safely and reinsert it into the powered-off head. See [SD-card Resources](sd-card-assets.md) for the installed layout.
 
 ## 5. Power On and Use
 
-Check the SD card and wiring, connect power, and press the power button. Check that the normal screen appears; the automatic reset after flashing may retain the powered-off state. Download Desktop or Android installers from the Release; use its TestFlight link for iOS. Python users can follow the [SDK Guide](sdk.md).
+Check the SD card and wiring, connect power, and press the power button. Wait for the normal screen, then open Phone Control. If it opens and the phone connects over BLE, the ESP32, STM32 link, and head control path are working. Allow a few seconds on first entry for BLE and body-control initialization.
+
+Download Desktop or Android installers from the Release; use its TestFlight link for iOS. Python users can follow the [SDK Guide](sdk.md).
 
 After connecting, follow the [First-run Check](action-test.md) with an expression, a light effect, and a movement within a safe range.
 

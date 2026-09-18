@@ -7,8 +7,8 @@ ESP32-S3, Himax, and STM32 firmware source is not published in this repository. 
 | Target | Download from the Release | Method |
 | --- | --- | --- |
 | STM32 body board | STM32 firmware package | Connect ST-LINK V2 to the body board and run the repository script |
-| Watcher head | Paired Himax + ESP32-S3 package | Connect the head by USB and run the repository script |
-| SD card | SD resource archive | Extract it to the SD-card root with a card reader |
+| Watcher head | Paired Himax + ESP32-S3 package | Connect the head by USB and follow the guide for the initial full flash |
+| SD card | SD resource archive | Install it with a card reader and the repository writer |
 
 See the [Flashing Guide](../docs/flashing.md) for environment, wiring, and commands; [SD-card Resources](../docs/sd-card-assets.md) for card contents; and the [First-run Check](../docs/action-test.md) after startup.
 
