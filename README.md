@@ -43,9 +43,9 @@ See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for t
 Open the [Flashing Guide](docs/flashing.md) and follow its sections in order:
 
 1. Flash STM32 on the body board.
-2. Flash the Watcher head; the script writes Himax first and ESP32-S3 second.
+2. Fully flash the Watcher head; the script writes Himax first and initializes ESP32-S3 from the release package.
 3. Use a card reader and the repository writer to install the SD resources, then return the card to the head.
-4. Power on and complete the startup check.
+4. Power on, open Phone Control, connect the phone, then check one expression and one small movement.
 
 ### 4. Connect and Use
 

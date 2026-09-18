@@ -15,4 +15,4 @@ Without `--package`, the writer downloads the latest official package. For a Rel
 
 The writer must confirm FAT32, writable media, the package manifest, every file hash, and the final installed layout. It preserves creator works and uses staging before switching the official catalog. Do not format a card, delete unrelated files, or use `--force` unless the user explicitly asks to discard an unfinished device transaction.
 
-Report success only after exit code zero and the final `Installed ... successfully` message. Then instruct the user to eject the card safely and insert it into the powered-off head.
+Report card-writing success only after exit code zero and the final `Installed ... successfully` message. Then instruct the user to eject the card safely and insert it into the powered-off head. Device-side acceptance additionally requires a normal boot and one SD-backed expression to play; do not describe a successful computer-side write as proof that the robot read the card.

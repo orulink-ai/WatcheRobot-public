@@ -13,7 +13,7 @@
 | 附件名称包含 | 用途 |
 | --- | --- |
 | STM32 | 身体主板固件 |
-| PTL-paired | 头部 Himax 和 ESP32-S3 固件及配套工具 |
+| PTL-paired | 头部 Himax 和 ESP32-S3 完整固件及配套工具 |
 | sd-resources | SD 卡表情、动作等资源；脚本也可自动下载最新包 |
 
 使用已安装的 Conda；没有时先安装 [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/)。在仓库根目录打开支持 Conda 的终端（Windows 可用 Anaconda PowerShell Prompt），只需创建一次专用环境：
@@ -77,23 +77,37 @@ bash tools/flash.sh head --package "解压后的PTL-paired目录"
 | USB-Enhanced-SERIAL-B CH342（ESP32） | COM61 | `--port COM61` |
 | USB-Enhanced-SERIAL-A CH342（Himax） | COM62 | `--vision-port COM62` |
 
-也可在 Windows「设备管理器 → 端口（COM 和 LPT）」查看名称后括号中的 COM 号。只连接一台待烧录的 Watcher。
-
-`--port` 填 SERIAL-B 的端口，`--vision-port` 填 SERIAL-A 的端口。将下面两处端口号替换为实际值后运行：
+也可单独运行只读查询命令，不会写入固件：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录" --port COM61 --vision-port COM62
+# Windows
+Get-PnpDevice -PresentOnly -Class Ports | Where-Object { $_.FriendlyName -match 'SERIAL-[AB].*CH342' } | Select-Object FriendlyName
+```
+
+```sh
+# 已完成上面的工具准备后，Windows/macOS/Linux 均可运行
+python -m serial.tools.list_ports -v
+```
+
+Windows 还可在「设备管理器 → 端口（COM 和 LPT）」查看名称后括号中的 COM 号。只连接一台待烧录的 Watcher。
+
+脚本会直接打印“设备名称 / 端口 / 命令参数”表。`--port` 填 SERIAL-B，`--vision-port` 填 SERIAL-A。将下面两处端口号替换为表中实际值后运行首次完整烧录：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 head --package "解压后的PTL-paired目录" --port COM61 --vision-port COM62 --factory
 ```
 
 macOS/Linux 完整烧录命令：
 
 ```sh
-bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/SERIAL_B" --vision-port "/dev/SERIAL_A"
+bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/SERIAL_B" --vision-port "/dev/SERIAL_A" --factory
 ```
 
 `/dev/SERIAL_B` 和 `/dev/SERIAL_A` 是占位路径，分别替换成查询到的 ESP32 和 Himax 串口路径；不要按端口数字大小判断。无法确认对应关系时，先不要烧录。
 
-脚本先烧 Himax，再烧 ESP32-S3，不需要分开操作。看到 `HX flash completed; reboot accepted.` 后继续等待，直到 `PTL paired flash completed.` 才算整步完成，期间不要拔线。
+`--factory` 用于首次安装这套完整头部固件，确保 ESP32 分区表、应用和存储区来自同一发布包。它会覆盖 ESP32 中原有数据，不用于保留数据的日常升级。
+
+脚本先烧 Himax，再烧 ESP32-S3，不需要分开操作。看到 `HX flash completed; reboot accepted.` 后继续等待，直到 `PTL paired flash completed.` 和 `Head flash completed successfully` 才算整步完成，期间不要拔线。
 
 若串口未出现或无法访问，先停止：当前脚本尚不能自动处理 CH342 驱动和 Linux 串口权限。
 
@@ -117,7 +131,9 @@ bash tools/flash.sh sd --drive "/Volumes/WATCHE"
 
 ## 5. 上电并使用
 
-确认 SD 卡和接线就位，接通电源并按电源键开机，检查屏幕进入正常界面。烧录后的自动复位不一定会解除关机状态。从 Release 下载 Desktop 或 Android 安装包；iOS 使用页面中的 TestFlight。Python 用户见 [SDK 指南](sdk_zh.md)。
+确认 SD 卡和接线就位，接通电源并按电源键开机。等待正常界面出现，再打开 Phone Control；页面能进入且手机能通过 BLE 连接，说明 ESP32、STM32 通信和头部控制链路已工作。首次进入时等待几秒完成 BLE 和身体控制初始化。
+
+从 Release 下载 Desktop 或 Android 安装包；iOS 使用页面中的 TestFlight。Python 用户见 [SDK 指南](sdk_zh.md)。
 
 连接后按[首次运行检查](action-test_zh.md)尝试一个表情、灯效和安全范围内的动作。
 

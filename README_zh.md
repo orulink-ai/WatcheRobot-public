@@ -43,9 +43,9 @@ git submodule update --init --recursive
 打开[烧录指南](docs/flashing_zh.md)，按章节依次完成：
 
 1. 烧录身体主板上的 STM32。
-2. 烧录 Watcher 头部；脚本先写入 Himax，再写入 ESP32-S3。
+2. 完整烧录 Watcher 头部；脚本先写入 Himax，再用发布包初始化 ESP32-S3。
 3. 用读卡器和仓库写卡脚本安装 SD 资源，并将卡插回头部。
-4. 上电并完成启动检查。
+4. 上电，打开 Phone Control 并连接手机，再完成表情和小幅动作检查。
 
 ### 4. 连接并使用
 

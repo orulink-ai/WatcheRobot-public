@@ -146,11 +146,33 @@ def stm32(args):
     except subprocess.CalledProcessError:
         print('STM32 was not verified. If OpenOCD cannot connect to the target, check board power and SIO/SWDIO, SCK/SWCLK, GND wiring. Disconnect power before changing wires; do not erase as a workaround.', file=sys.stderr)
         raise
+    print('STM32 flash verified successfully.')
 
 
 def available_serial_ports():
     from serial.tools import list_ports
     return list(list_ports.comports())
+
+
+def print_head_port_mapping(ports=None):
+    """Print the CH342 role-to-argument mapping used by the head flasher."""
+    ports = available_serial_ports() if ports is None else ports
+    head_ports = [port for port in ports if (port.vid, port.pid) == (0x1A86, 0x55D2)]
+    if not head_ports:
+        print('No Watcher CH342 head ports detected.')
+        return
+    print('Watcher head ports:')
+    print('Device name                            Port                 Command argument')
+    for port in sorted(head_ports, key=lambda item: (item.serial_number or '', item.description or '')):
+        description = port.description or 'Unknown CH342 port'
+        upper = description.upper()
+        if 'SERIAL-B' in upper:
+            argument = f'--port {port.device}'
+        elif 'SERIAL-A' in upper:
+            argument = f'--vision-port {port.device}'
+        else:
+            argument = 'unconfirmed role'
+        print(f'{description:<38} {port.device:<20} {argument}')
 
 
 def validate_head_port_roles(control_port, vision_port, ports=None):
@@ -192,9 +214,9 @@ def head(args):
         print('Tools ready. No device was accessed or flashed.')
         return
     if not args.port or not args.vision_port:
-        run([str(python), '-m', 'serial.tools.list_ports', '-v'])
+        print_head_port_mapping()
         if not args.port and not args.vision_port:
-            print('Ports listed; no firmware written. Run again with --port (SERIAL-B) and --vision-port (SERIAL-A).')
+            print('No firmware written. Run again with the SERIAL-B and SERIAL-A arguments shown above.')
             return
         raise ValueError('Specify --port (SERIAL-B) and --vision-port (SERIAL-A) from the same CH342 device.')
     validate_head_port_roles(args.port, args.vision_port)
@@ -203,6 +225,7 @@ def head(args):
     if getattr(args, 'factory', False):
         command.append('--factory')
     run(command)
+    print('Head flash completed successfully: Himax and ESP32-S3.')
 
 
 def sd_card(args):

@@ -7,7 +7,7 @@
 | 目标 | Release 中下载什么 | 使用方式 |
 | --- | --- | --- |
 | 身体主板 STM32 | STM32 固件包 | ST-LINK V2 连接身体主板，运行仓库烧录脚本 |
-| Watcher 头部 | Himax + ESP32-S3 配套包 | USB 连接头部，运行仓库烧录脚本 |
+| Watcher 头部 | Himax + ESP32-S3 配套包 | USB 连接头部，首次安装按指南执行完整烧录 |
 | SD 卡 | SD 资源压缩包 | 用读卡器和仓库写卡脚本安装 |
 
 环境、接线和命令见[烧录指南](../docs/flashing_zh.md)，SD 卡内容见[SD 卡资源说明](../docs/sd-card-assets_zh.md)，开机后按[首次运行检查](../docs/action-test_zh.md)确认设备。

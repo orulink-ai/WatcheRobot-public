@@ -88,15 +88,26 @@ def test_listing_ports_does_not_flash(tmp_path):
     (tmp_path / 'tools').mkdir()
     (tmp_path / 'tools/ptl_release.py').touch()
     (tmp_path / 'requirements.txt').touch()
-    with patch.object(module, 'install_dependencies'), patch.object(module, 'run') as run:
+    with patch.object(module, 'install_dependencies'), \
+            patch.object(module, 'print_head_port_mapping') as mapping, \
+            patch.object(module, 'run') as run:
         module.head(SimpleNamespace(package=tmp_path, prepare_only=False, port=None, vision_port=None))
         assert all('flash' not in call.args[0] for call in run.call_args_list)
-        assert run.call_args.args[0][-1] == '-v'
+        mapping.assert_called_once_with()
 
 
 def head_port(device, description, serial='WATCHER'):
     return SimpleNamespace(device=device, description=description, vid=0x1A86,
                            pid=0x55D2, serial_number=serial)
+
+
+def test_head_port_mapping_prints_arguments(capsys):
+    ports = [head_port('COM7', 'USB-Enhanced-SERIAL-A CH342'),
+             head_port('COM8', 'USB-Enhanced-SERIAL-B CH342')]
+    module.print_head_port_mapping(ports)
+    output = capsys.readouterr().out
+    assert 'SERIAL-B' in output and '--port COM8' in output
+    assert 'SERIAL-A' in output and '--vision-port COM7' in output
 
 
 def test_accepts_confirmed_head_port_roles():

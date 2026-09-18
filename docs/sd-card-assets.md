@@ -35,4 +35,4 @@ SD-card root/
    └─ staging/                    Installation transaction workspace
 ```
 
-After the final `Installed ... successfully` message, eject the card safely and reinsert it while the robot is powered off.
+The final `Installed ... successfully` message confirms the computer-side write and verification. Eject the card safely and reinsert it while the robot is powered off. Device-side acceptance is complete after a normal boot and successful playback of one expression.
