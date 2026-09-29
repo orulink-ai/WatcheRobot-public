@@ -24,12 +24,12 @@ def test_refuses_non_removable_target():
         module.validate_format_target(drive(kind='explicit-fixed'))
 
 
-def test_wrong_confirmation_never_runs_formatter():
+def test_non_removable_target_never_runs_formatter():
     runner = Mock()
     with patch.object(module.platform, 'system', return_value='Windows'), \
-            patch.object(module, 'inspect_explicit_drive', return_value=drive()):
-        with pytest.raises(module.FormatError, match='cancelled'):
-            module.format_card(Path('F:\\'), prompt=lambda _message: 'E:', runner=runner)
+            patch.object(module, 'inspect_explicit_drive', return_value=drive(kind='explicit-fixed')):
+        with pytest.raises(module.FormatError, match='not reported as removable'):
+            module.format_card(Path('F:\\'), runner=runner)
     runner.assert_not_called()
 
 
@@ -37,12 +37,15 @@ def test_formats_fat32_with_512_byte_allocation_unit():
     runner = Mock(return_value=SimpleNamespace(returncode=0))
     with patch.object(module.platform, 'system', return_value='Windows'), \
             patch.object(module, 'inspect_explicit_drive', return_value=drive()), \
-            patch.object(module.time, 'sleep'):
-        result = module.format_card(Path('F:\\'), prompt=lambda _message: 'F:', runner=runner)
+            patch.object(module.time, 'sleep'), \
+            patch('builtins.input', side_effect=AssertionError('Unexpected confirmation prompt')):
+        result = module.format_card(Path('F:\\'), runner=runner)
+    runner.assert_called_once()
     command = runner.call_args.args[0]
     assert 'Format-Volume' in command[-1]
     assert '-FileSystem FAT32' in command[-1]
     assert '-AllocationUnitSize 512' in command[-1]
+    assert '-Confirm:$false' in command[-1]
     assert result.allocation_unit_bytes == 512
 
 
@@ -52,8 +55,8 @@ def test_changed_target_never_runs_formatter():
     changed.total_bytes *= 2
     with patch.object(module.platform, 'system', return_value='Windows'), \
             patch.object(module, 'inspect_explicit_drive', side_effect=[drive(), changed]):
-        with pytest.raises(module.FormatError, match='changed during confirmation'):
-            module.format_card(Path('F:\\'), prompt=lambda _: 'F:', runner=runner)
+        with pytest.raises(module.FormatError, match='changed before formatting'):
+            module.format_card(Path('F:\\'), runner=runner)
     runner.assert_not_called()
 
 
@@ -62,7 +65,7 @@ def test_native_failure_is_not_reported_as_success():
     with patch.object(module.platform, 'system', return_value='Windows'), \
             patch.object(module, 'inspect_explicit_drive', return_value=drive()):
         with pytest.raises(module.FormatError, match='could not format'):
-            module.format_card(Path('F:\\'), prompt=lambda _: 'F:', runner=runner)
+            module.format_card(Path('F:\\'), runner=runner)
 
 
 def test_wrong_result_fails_verification():
@@ -71,7 +74,7 @@ def test_wrong_result_fails_verification():
             patch.object(module, 'inspect_explicit_drive', return_value=drive(allocation=4096)), \
             patch.object(module.time, 'sleep'):
         with pytest.raises(module.FormatError, match='verification failed'):
-            module.format_card(Path('F:\\'), prompt=lambda _: 'F:', runner=runner)
+            module.format_card(Path('F:\\'), runner=runner)
 
 
 def test_non_windows_never_runs_formatter():

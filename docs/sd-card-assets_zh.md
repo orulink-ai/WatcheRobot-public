@@ -16,7 +16,7 @@ Windows 可在「此电脑」中右键 SD 卡 →「格式化」，选择「FAT3
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd-format --drive "E:\"
 ```
 
-核对显示的盘符和容量，输入 `E:` 确认，直接回车取消。脚本仅支持 Windows 可移动盘，完成后检查 FAT32 和 512 字节分配单元；若系统不支持该容量与格式组合，会报错停止。
+命令执行后直接格式化，不再二次确认；运行前请核对盘符并备份文件。脚本仅支持 Windows 可移动盘，完成后检查 FAT32 和 512 字节分配单元；若系统不支持该容量与格式组合，会报错停止。
 
 ## 2. 写入资源
 
