@@ -16,13 +16,17 @@ def run(command, **kwargs):
 
 
 def check_ports(control, vision):
-    from flash_setup import validate_head_port_roles
+    try:
+        from .flash_setup import validate_head_port_roles
+    except ImportError:
+        from flash_setup import validate_head_port_roles
     import serial
     validate_head_port_roles(control, vision)
     # Open both before any write, with modem lines disabled before open.
     with ExitStack() as stack:
         for name in (vision, control):
-            port = serial.Serial(port=None, baudrate=115200, timeout=0.1, write_timeout=2)
+            port = serial.Serial(port=None, baudrate=115200, timeout=0.1, write_timeout=2,
+                                 exclusive=True)
             port.dtr = False
             port.rts = False
             port.port = name
@@ -40,7 +44,7 @@ def flash(package, control, vision, factory=False, runner=run, sleep=time.sleep,
     maintenance_attempted = False
     try:
         print('[1/5] Checking package and ports', flush=True)
-        runner([sys.executable, str(entry), 'verify', '--bundle', str(package)])
+        runner([sys.executable, str(entry), 'verify', '--bundle', str(package)], timeout=120)
         manifest = json.loads((package / 'provenance.json').read_text(encoding='utf-8'))
         if manifest.get('profile') != 'ptl':
             raise ValueError('Head flashing requires a complete PTL-paired package.')
@@ -56,8 +60,8 @@ def flash(package, control, vision, factory=False, runner=run, sleep=time.sleep,
         else:
             segments = ['0x20000', str(package / 'esp32/WatcheRobot-S3.bin')]
         runner([*base, '--after', 'no-reset', 'write-flash', '--flash-mode', 'dio',
-                '--flash-freq', '80m', '--flash-size', '32MB', *segments])
-        runner([*base, '--after', 'hard-reset', 'erase-region', '0xf000', '0x2000'])
+                '--flash-freq', '80m', '--flash-size', '32MB', *segments], timeout=900)
+        runner([*base, '--after', 'hard-reset', 'erase-region', '0xf000', '0x2000'], timeout=60)
 
         stage = 'ESP32 startup and Himax power initialization'
         print('[3/5] Waiting for startup and checking Himax power initialization', flush=True)
@@ -82,7 +86,7 @@ def flash(package, control, vision, factory=False, runner=run, sleep=time.sleep,
         print('[4/5] Flashing Himax', flush=True)
         runner([sys.executable, str(package / 'tools/flash_hx_uart.py'),
                 '--s3-port', control, '--hx-port', vision, '--reset-mode', 'hx-reset',
-                '--image', str(package / 'himax/build/watcher_hx6538_webrtc_bridge.img')])
+                '--image', str(package / 'himax/build/watcher_hx6538_webrtc_bridge.img')], timeout=900)
         stage = 'restart'
         print('[5/5] Himax reboot accepted; restarting ESP32', flush=True)
         runner([*maintenance, 'exit', *ports], timeout=30)

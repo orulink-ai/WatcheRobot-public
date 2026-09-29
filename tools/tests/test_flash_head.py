@@ -130,3 +130,32 @@ def test_restart_failure_never_reports_success(package, capsys):
     with pytest.raises(RuntimeError, match='during restart'):
         execute(package, failure)
     assert 'PTL paired flash completed.' not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize('step', ['write-flash', 'flash_hx_uart.py'])
+def test_write_timeout_stops_sequence(package, step, capsys):
+    commands = []
+    def runner(command, **kwargs):
+        commands.append(command)
+        assert 0 < kwargs['timeout'] <= 900
+        if step in command or Path(command[1]).name == step:
+            raise subprocess.TimeoutExpired(command, kwargs['timeout'])
+        return SimpleNamespace(stdout='')
+    with pytest.raises(RuntimeError, match='Head flash stopped'):
+        module.flash(package, 'B', 'A', runner=runner, preflight=lambda *_: None,
+                     sleep=lambda _: None)
+    if step == 'write-flash':
+        assert not any('prepare-flash' in c for c in commands)
+    else:
+        assert 'exit' in commands[-1]
+    assert 'PTL paired flash completed.' not in capsys.readouterr().out
+
+
+def test_non_paired_package_rejected_before_ports(package):
+    (package / 'provenance.json').write_text('{"profile":"esp32"}')
+    preflight = Mock()
+    runner = Mock()
+    with pytest.raises(RuntimeError, match='complete PTL-paired'):
+        module.flash(package, 'B', 'A', runner=runner, preflight=preflight)
+    preflight.assert_not_called()
+    assert runner.call_count == 1
