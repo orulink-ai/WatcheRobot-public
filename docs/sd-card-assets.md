@@ -2,6 +2,8 @@ English | [简体中文](sd-card-assets_zh.md)
 
 # SD-card Resources
 
+For script setup, see [Prepare Materials, Files, and Environment](flashing.md#1-prepare-materials-files-and-environment).
+
 ## 1. Prepare the SD card
 
 Power off the robot, remove the SD card, and connect it through a card reader. Use **FAT32 with a 512-byte allocation unit**. A card already using these settings does not need reformatting.
