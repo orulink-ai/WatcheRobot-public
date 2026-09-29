@@ -46,6 +46,7 @@ MAX_SINGLE_FILE_BYTES = 16 * 1024 * 1024
 MAX_FILES = 512
 SPACE_RESERVE_BYTES = 4 * 1024 * 1024
 SUPPORTED_FILESYSTEMS = {"FAT32"}
+REQUIRED_ALLOCATION_UNIT_BYTES = 512
 READER_TRANSACTION_NAME = "reader_transaction.json"
 FIXED_STATES = {
     "boot",
@@ -186,6 +187,8 @@ def _drive_info(root: Path, kind: str) -> DriveInfo:
             ctypes.byref(total_clusters),
         ):
             allocation_unit_bytes = max(1, sectors_per_cluster.value * bytes_per_sector.value)
+        else:
+            raise OSError("Unable to read the SD-card allocation unit size.")
     else:
         label, filesystem, _mount = _posix_volume(root)
         allocation_unit_bytes = max(1, os.statvfs(root).f_frsize)
@@ -290,6 +293,12 @@ def validate_drive(drive: DriveInfo) -> DriveInfo:
         raise InstallError(
             f"Unsupported SD-card filesystem {actual} on {refreshed.root}. "
             "The current robot firmware requires FAT32."
+        )
+    # POSIX statvfs reports an I/O accounting unit, not reliably the FAT cluster size.
+    if os.name == "nt" and refreshed.allocation_unit_bytes != REQUIRED_ALLOCATION_UNIT_BYTES:
+        raise InstallError(
+            f"Unsupported allocation unit {refreshed.allocation_unit_bytes} bytes on {refreshed.root}. "
+            "Format the card as FAT32 with a 512-byte allocation unit before writing resources."
         )
     probe = refreshed.root / ".watche-sd-write-test.tmp"
     try:

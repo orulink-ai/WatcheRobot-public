@@ -113,7 +113,7 @@ Stop if ports are missing or inaccessible: automatic CH342 driver installation a
 
 ## 4. Prepare the SD Card with a Card Reader
 
-Power off, remove the SD card, and connect it through a card reader. The command downloads and verifies the latest official resources, then writes the device layout. Replace `E:\` or the mount path with the actual card.
+Power off, remove the SD card, and connect it through a card reader. Use **FAT32 with a 512-byte allocation unit**, configured in the Windows Format dialog or with the [SD-card formatter](sd-card-assets.md#1-prepare-the-sd-card). Formatting deletes all files on the card; back them up first. The command downloads and verifies the latest official resources, then writes the device layout. Replace `E:\` or the mount path with the actual card.
 
 Windows:
 

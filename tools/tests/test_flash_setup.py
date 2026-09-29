@@ -174,3 +174,19 @@ def test_sd_writer_requires_explicit_card_root():
                            prepare_only=False)
     with pytest.raises(ValueError, match='--drive'):
         module.sd_card(args)
+
+
+def test_sd_formatter_requires_explicit_card_root():
+    args = SimpleNamespace(drive=None, prepare_only=False)
+    with pytest.raises(ValueError, match='--drive'):
+        module.sd_format(args)
+
+
+def test_sd_formatter_delegates_to_dedicated_script():
+    args = SimpleNamespace(drive=Path('F:/'), prepare_only=False)
+    with patch.object(module, 'run') as run:
+        module.sd_format(args)
+    command = run.call_args.args[0]
+    assert command == [module.sys.executable,
+                       str(Path(module.__file__).with_name('format_sd_card.py')),
+                       '--drive', str(Path('F:/'))]

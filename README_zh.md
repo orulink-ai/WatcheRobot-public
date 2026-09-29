@@ -34,7 +34,7 @@ git submodule update --init --recursive
 | 已装配的 Watcher 头部和机器人身体 | 烧录并运行机器人 |
 | ST-LINK V2 | 烧录身体主板上的 STM32 |
 | USB 数据线 | 烧录头部的 Himax 和 ESP32-S3 |
-| SD 卡和读卡器 | 写入表情、动作等资源 |
+| SD 卡和读卡器 | FAT32，分配单元大小 512 字节；写入表情、动作等资源 |
 | Conda | 创建独立环境；其余依赖和烧录工具由脚本准备 |
 | 电脑或手机 | 使用桌面端、App 或 SDK |
 
