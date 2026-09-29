@@ -113,21 +113,7 @@ bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/S
 
 ## 4. 用读卡器准备 SD 卡
 
-断电取出 SD 卡，通过读卡器连接电脑。SD 卡须为 **FAT32，分配单元大小 512 字节**；可在 Windows 格式化窗口设置，或使用 [SD 卡格式化脚本](sd-card-assets_zh.md#1-准备-sd-卡)。格式化会删除卡内全部文件，请先备份。下面的命令会下载并校验最新官方资源，再写成设备需要的目录；将 `E:\` 或挂载路径换成实际 SD 卡。
-
-Windows：
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd --drive "E:\"
-```
-
-macOS/Linux：
-
-```sh
-bash tools/flash.sh sd --drive "/Volumes/WATCHE"
-```
-
-已有 Release 中的资源包时，可在命令末尾加 `--package "watche-sd-resources-….tar.gz"`。看到 `Installed ... successfully` 才算完成；安全弹出 SD 卡后，在断电状态下插回头部。目录说明见 [SD 卡资源](sd-card-assets_zh.md)。
+按 [SD 卡资源指南](sd-card-assets_zh.md)完成格式设置和资源写入，将卡插回头部后，继续下一步上电。
 
 ## 5. 上电并使用
 
