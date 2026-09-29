@@ -220,7 +220,7 @@ def head(args):
             return
         raise ValueError('Specify --port (SERIAL-B) and --vision-port (SERIAL-A) from the same CH342 device.')
     validate_head_port_roles(args.port, args.vision_port)
-    command = [str(python), str(entry), 'flash', '--bundle', str(package),
+    command = [str(python), str(Path(__file__).with_name('flash_head.py')), '--bundle', str(package),
                '--port', args.port, '--vision-port', args.vision_port]
     if getattr(args, 'factory', False):
         command.append('--factory')

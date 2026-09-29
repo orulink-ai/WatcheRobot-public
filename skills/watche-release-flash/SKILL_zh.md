@@ -6,7 +6,7 @@ Windows 使用仓库 `tools/flash.ps1`，macOS/Linux 使用 `tools/flash.sh`。�
 
 先读[烧录指南](../../docs/flashing_zh.md)，确定已解压固件目录和用户授权的目标。STM32 参数为 `stm32 --package <包含bin的目录>`；头部参数为 `head --package <配套包目录> --port <控制口> --vision-port <视觉口>`。路径以仓库目录为基准，含空格时加引号。
 
-头部 SERIAL-B / MI_02 为 ESP32 控制口，填写 `--port`；SERIAL-A / MI_00 为 Himax 口，填写 `--vision-port`。先运行不带端口的头部命令，使用脚本打印的三列表确认实际参数；需要复查时使用指南中的只读端口查询命令。确认两者 USB serial number 相同。入口会检查 A/B 角色，填反时必须停止并按提示修正。工具先写 Himax 再写 ESP32。不改固件、不换版本。
+头部 SERIAL-B / MI_02 为 ESP32 控制口，填写 `--port`；SERIAL-A / MI_00 为 Himax 口，填写 `--vision-port`。先运行不带端口的头部命令，使用脚本打印的三列表确认实际参数；需要复查时使用指南中的只读端口查询命令。确认两者 USB serial number 相同。入口会检查 A/B 角色，填反时必须停止并按提示修正。仓库统一流程为：检查 → 烧录 ESP32 → 启动并确认 Himax 供电初始化 → 烧录 Himax → 重启。只用一条头部命令，中途不增加输入确认，不直接调用发布包中旧的双芯片烧录入口。不改固件、不换版本。
 
 公开 Release 的首次完整安装必须在头部命令末尾添加 `--factory`，让 ESP32 分区表、应用和 storage 来自同一发布包。该参数会覆盖原有 ESP32 数据；已有设备要求保留数据时停止并说明，不把更新请求擅自改成完整安装。
 
