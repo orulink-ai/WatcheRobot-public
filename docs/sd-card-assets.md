@@ -16,7 +16,7 @@ Alternatively, activate the dedicated Conda environment in an Administrator Powe
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/flash.ps1 sd-format --drive "E:\"
 ```
 
-Check the displayed drive and capacity, then type `E:` to confirm or press Enter to cancel. The formatter supports Windows removable drives only and verifies FAT32 and the 512-byte allocation unit afterward. It stops with an error if Windows cannot format the selected capacity with these settings.
+The command formats immediately without an additional confirmation prompt; check the drive letter and back up files before running it. The formatter supports Windows removable drives only and verifies FAT32 and the 512-byte allocation unit afterward. It stops with an error if Windows cannot format the selected capacity with these settings.
 
 ## 2. Write resources
 

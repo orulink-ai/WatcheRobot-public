@@ -57,7 +57,6 @@ def validate_format_target(drive: DriveInfo) -> str:
 
 def format_card(
     target: Path,
-    prompt: Callable[[str], str] = input,
     runner: Callable[..., subprocess.CompletedProcess] = subprocess.run,
 ) -> DriveInfo:
     if platform.system() != "Windows":
@@ -67,15 +66,11 @@ def format_card(
     token = validate_format_target(drive)
     print(f"Target : {drive.root}  {drive.label or '(no label)'}  {drive.total_bytes / (1024 * 1024):.1f} MB")
     print("Format : FAT32, 512-byte allocation unit")
-    print("WARNING: formatting permanently deletes all files on this card, including resources and creator works.")
-    answer = prompt(f"Type {token} to confirm formatting, or press Enter to cancel: ").strip().upper()
-    if answer != token:
-        raise FormatError("Formatting cancelled; the confirmation did not match the target drive.")
 
     refreshed = inspect_explicit_drive(target)
     validate_format_target(refreshed)
     if (refreshed.root, refreshed.total_bytes, refreshed.label) != (drive.root, drive.total_bytes, drive.label):
-        raise FormatError("The selected drive changed during confirmation. Run again with the correct card.")
+        raise FormatError("The selected drive changed before formatting. Run again with the correct card.")
 
     letter = token[0]
     command = [

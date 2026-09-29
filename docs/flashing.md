@@ -107,7 +107,7 @@ bash tools/flash.sh head --package "extracted-PTL-paired-folder" --port "/dev/SE
 
 Use `--factory` for the initial installation of this complete head package so the ESP32 partition table, application, and storage all come from the same release. It overwrites existing ESP32 data and is not the data-preserving update path.
 
-The script flashes Himax first, then ESP32-S3; no separate commands are needed. After `HX flash completed; reboot accepted.`, keep waiting until both `PTL paired flash completed.` and `Head flash completed successfully` confirm the whole step. Do not unplug the cable during flashing.
+One command automatically checks the package and ports, flashes ESP32-S3, starts it and confirms Himax power initialization, flashes Himax, then restarts. No intermediate confirmation or separate flashing command is needed. After `HX flash completed; reboot accepted.`, wait for `PTL paired flash completed.` and `Head flash completed successfully` to confirm writing and restart commands completed. Keep the cable connected. Failures identify the stage; check normal operation in step 5.
 
 Stop if ports are missing or inaccessible: automatic CH342 driver installation and Linux serial permission setup are not yet supported.
 

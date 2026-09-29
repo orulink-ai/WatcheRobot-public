@@ -107,7 +107,7 @@ bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/S
 
 `--factory` 用于首次安装这套完整头部固件，确保 ESP32 分区表、应用和存储区来自同一发布包。它会覆盖 ESP32 中原有数据，不用于保留数据的日常升级。
 
-脚本先烧 Himax，再烧 ESP32-S3，不需要分开操作。看到 `HX flash completed; reboot accepted.` 后继续等待，直到 `PTL paired flash completed.` 和 `Head flash completed successfully` 才算整步完成，期间不要拔线。
+一条命令自动完成：检查 → 烧录 ESP32-S3 → 启动并确认 Himax 供电初始化 → 烧录 Himax → 重启。无需中途输入确认或另行烧录。看到 `HX flash completed; reboot accepted.` 后继续等待，直到 `PTL paired flash completed.` 和 `Head flash completed successfully` 表示写入及重启指令完成，期间不要拔线。若失败，按日志标明的阶段排查；正常运行按第 5 步检查。
 
 若串口未出现或无法访问，先停止：当前脚本尚不能自动处理 CH342 驱动和 Linux 串口权限。
 

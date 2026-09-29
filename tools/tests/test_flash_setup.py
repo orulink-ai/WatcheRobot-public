@@ -134,6 +134,7 @@ def test_factory_flag_is_forwarded_only_after_role_validation(tmp_path):
             patch.object(module, 'run') as run:
         module.head(args)
     assert run.call_args.args[0][-1] == '--factory'
+    assert Path(run.call_args.args[0][1]).name == 'flash_head.py'
 
 
 def test_driver_fallback_is_pinned_and_rechecked(tmp_path):
