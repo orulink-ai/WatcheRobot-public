@@ -246,9 +246,20 @@ def sd_card(args):
     run(command)
 
 
+def sd_format(args):
+    formatter = Path(__file__).with_name('format_sd_card.py')
+    if args.prepare_only:
+        run([sys.executable, str(formatter), '--help'])
+        print('SD-card formatter ready. No card was accessed or changed.')
+        return
+    if not args.drive:
+        raise ValueError('Specify the removable SD-card root with --drive, for example --drive F:\\ on Windows.')
+    run([sys.executable, str(formatter), '--drive', str(args.drive)])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('target', choices=['stm32', 'head', 'sd'])
+    parser.add_argument('target', choices=['stm32', 'head', 'sd-format', 'sd'])
     parser.add_argument('--package', type=Path,
                         help='Firmware directory, or an optional local SD resource tar.gz')
     parser.add_argument('--drive', type=Path, help='SD-card root, for example E:\\ or /Volumes/WATCHE')
@@ -268,7 +279,7 @@ def main():
             raise ValueError('--factory is valid only for head flashing.')
         if args.force and args.target != 'sd':
             raise ValueError('--force is valid only for SD-card writing.')
-        {'stm32': stm32, 'head': head, 'sd': sd_card}[args.target](args)
+        {'stm32': stm32, 'head': head, 'sd-format': sd_format, 'sd': sd_card}[args.target](args)
         return 0
     except (OSError, ValueError, KeyError, RuntimeError, subprocess.CalledProcessError) as exc:
         print('Flashing stopped: ' + str(exc), file=sys.stderr)

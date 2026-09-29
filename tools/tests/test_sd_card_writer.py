@@ -16,6 +16,15 @@ def test_non_fat_filesystem_is_not_hidden():
     assert module._normalize_filesystem('ext4') == 'EXT4'
 
 
+def test_writer_rejects_non_512_byte_allocation_unit(tmp_path: Path):
+    if module.os.name != 'nt':
+        pytest.skip('Windows allocation-unit validation')
+    drive = module.DriveInfo(tmp_path, 'TEST', 'FAT32', 1024, 2048, 'test', 4096)
+    with patch.object(module, '_drive_info', return_value=drive):
+        with pytest.raises(InstallError, match='512-byte allocation unit'):
+            module.validate_drive(drive)
+
+
 def test_failed_extraction_preserves_existing_official_assets(tmp_path: Path):
     watche = tmp_path / 'watche'
     current = watche / 'official' / 'current'

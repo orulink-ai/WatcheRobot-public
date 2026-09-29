@@ -34,7 +34,7 @@ See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for t
 | Assembled Watcher head and robot body | Flash and run the robot |
 | ST-LINK V2 | Flash STM32 on the body board |
 | USB data cable | Flash Himax and ESP32-S3 in the head |
-| SD card and card reader | Write expression, movement, and other resources |
+| SD card and card reader | FAT32, 512-byte allocation unit; write expression, movement, and other resources |
 | Conda | Create an isolated environment; the scripts prepare the remaining dependencies and tools |
 | Computer or phone | Use Desktop, App, or SDK |
 
