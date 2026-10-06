@@ -2,7 +2,7 @@ English | [简体中文](README_zh.md)
 
 # Firmware Entry Point
 
-ESP32-S3, Himax, and STM32 firmware source is not published in this repository. Flashable firmware is distributed through the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest).
+Independent ESP32 hardware SDK source and examples are provided in [sdk/](sdk/README.md) as a development preview. Official ESP32 application, Himax and STM32 implementations remain unpublished. Official flashable firmware is distributed through the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest).
 
 | Target | Download from the Release | Method |
 | --- | --- | --- |

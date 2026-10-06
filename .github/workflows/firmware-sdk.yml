@@ -1,0 +1,40 @@
+name: Firmware SDK preview
+on:
+  push:
+    paths: ["firmware/sdk/**", "tools/tests/test_firmware_sdk.py", ".github/workflows/firmware-sdk.yml"]
+  pull_request:
+    paths: ["firmware/sdk/**", "tools/tests/test_firmware_sdk.py", ".github/workflows/firmware-sdk.yml"]
+jobs:
+  examples:
+    runs-on: ubuntu-latest
+    container: espressif/idf:v6.0.2
+    strategy:
+      matrix:
+        example: [body, head, robot]
+    steps:
+      - uses: actions/checkout@v5
+      - shell: bash
+        run: |
+          . /opt/esp/idf/export.sh
+          idf.py -C firmware/sdk/examples/${{ matrix.example }} build
+  host:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        config: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v5
+      - name: SDK and shared runtime host tests
+        shell: pwsh
+        run: |
+          $suites = @("sdk/watche_hw_core", "sdk/watche_hw_body", "sdk/watche_hw_camera", "sdk/watche_hw_audio", "sdk/watche_hw_display", "services/mcu_motion_service", "services/mcu_led_service", "services/mcu_sensor_service", "services/motion_arbiter", "protocols/mcu_link")
+          foreach ($suite in $suites) {
+            $build = "build-host-" + $suite.Replace("/", "-")
+            cmake -S "firmware/sdk/components/$suite/test_support/host" -B $build -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+            cmake --build $build --config ${{ matrix.config }}
+            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+            ctest --test-dir $build -C ${{ matrix.config }} --output-on-failure
+            if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          }

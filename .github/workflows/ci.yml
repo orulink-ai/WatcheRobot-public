@@ -48,6 +48,7 @@ jobs:
             --exclude-dir=.git \
             --exclude-dir=build \
             --exclude='ci.yml' \
+            --exclude='LICENSE' \
             'Ro-In-AI|ERRORIGHT-AI|D:\\|COM37|COM57' .; then
             echo "Found old organization links, local paths, or private COM-port notes."
             exit 1

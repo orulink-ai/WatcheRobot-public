@@ -1,0 +1,34 @@
+menu "Watcher HAL Camera"
+
+    choice WATCHER_CAMERA_BACKEND
+        prompt "HX6538 camera transport"
+        default WATCHER_CAMERA_BACKEND_SSCMA
+        help
+            Factory SSCMA keeps the original HX firmware. Binary PTL requires
+            the matching custom HX bridge image and supports direct JPEG frames.
+
+        config WATCHER_CAMERA_BACKEND_SSCMA
+            bool "Factory SSCMA JSON/Base64 compatibility"
+
+        config WATCHER_CAMERA_BACKEND_PTL
+            bool "Custom binary PTL transport"
+    endchoice
+
+    config WATCHER_CAMERA_CONNECT_TIMEOUT_MS
+        int "Camera coprocessor connect timeout (ms)"
+        default 5000
+        range 1000 30000
+        help
+            Maximum time to wait for the HX6538 INIT@STAT connect event
+            after SSCMA client initialization.
+
+    config WATCHER_CAMERA_CAPTURE_TIMEOUT_MS
+        int "One-shot camera capture timeout (ms)"
+        default 5000
+        range 1000 30000
+        help
+            Maximum time to wait for a one-shot camera INVOKE result
+            containing an image payload.
+
+endmenu
+

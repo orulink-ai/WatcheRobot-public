@@ -1,0 +1,5 @@
+#pragma once
+#define BSP_SSCMA_FLASHER_UART_NUM 1
+#define BSP_SSCMA_FLASHER_UART_TX 17
+#define BSP_SSCMA_FLASHER_UART_RX 18
+

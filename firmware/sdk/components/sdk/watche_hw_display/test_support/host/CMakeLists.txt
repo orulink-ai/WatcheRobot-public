@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.20)
+project(watche_display_host C)
+enable_testing()
+add_executable(display_test test_display.c ../../watche_hw_display.c)
+target_include_directories(display_test PRIVATE include ../../include ../../../watche_hw_core/include ../../../watche_hw_core/test_support/host/include)
+if(MSVC)
+  target_compile_options(display_test PRIVATE /W4 /UNDEBUG)
+else()
+  target_compile_options(display_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+endif()
+add_test(NAME display_lifecycle COMMAND display_test)
+

@@ -1,0 +1,11 @@
+version: "2.0.0"
+description: "HAL: hal_camera"
+url: "https://github.com/orulink-ai/WatcheRobot-public/tree/main/firmware/sdk"
+license: "Apache-2.0"
+targets:
+  - esp32s3
+dependencies:
+  idf: ">=5.2"
+  sensecap-watcher: "*"
+
+

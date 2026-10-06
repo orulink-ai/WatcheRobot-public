@@ -61,6 +61,24 @@ Download the required client or SDK from the [Latest Release](https://github.com
 
 See the [device network setup guide (Chinese PDF)](docs/manuals/device-network-setup.pdf). Once connected, run one expression and one movement to check the display, lights, and motion.
 
+## Build Your Own Embedded Firmware (Development Preview, Not Publicly Released)
+
+Alongside the [Python SDK](docs/sdk.md) for host applications, we are preparing
+an independent ESP32-S3 hardware SDK. Developers own their `app_main`, UI, and
+application logic, using a unified interface for body motion, lights, body touch,
+camera, microphone, speaker, display, and screen touch. It does not require the
+official application, Python SDK, Daemon, or server.
+
+The first release targets three independently buildable examples: body, head,
+and whole robot. STM32 and Himax use a validated firmware pairing; developers
+are not expected to modify their firmware. See the
+[Embedded Development Preview](docs/embedded-sdk.md) for scope and release gates.
+
+Source and three examples are in [firmware/sdk/](firmware/sdk/README.md), currently
+a development preview without full hardware acceptance or a pinned release.
+Existing Releases and tools flash official firmware, not everyday custom builds.
+Official application and STM32/Himax implementations remain outside SDK open-source scope.
+
 ## Repository Structure
 
 ```text
@@ -71,6 +89,7 @@ WatcheRobot-public/
 │  ├─ sd-card-assets.md / sd-card-assets_zh.md    SD-card resource guide
 │  ├─ action-test.md / action-test_zh.md          First-run check
 │  ├─ sdk.md / sdk_zh.md                  SDK guide
+│  ├─ embedded-sdk.md / embedded-sdk_zh.md Embedded SDK preview and release boundaries
 │  ├─ versions.md / versions_zh.md        Version sources
 │  ├─ compatibility.md / compatibility_zh.md      Compatibility notes
 │  ├─ release-process.md / release-process_zh.md  Release rules
@@ -111,6 +130,7 @@ WatcheRobot-public/
 - [Firmware Entry Point](firmware/README.md): download package and flashing entry for each target.
 - [SD-card Resources](docs/sd-card-assets.md) and [First-run Check](docs/action-test.md).
 - [SDK Guide](docs/sdk.md): installation, pairing, and running Python scripts.
+- [Embedded Development Preview](docs/embedded-sdk.md): hardware SDK goals, examples, and current release status.
 - [Hardware Files](hardware/README.md): PCB and mechanical-file entry point.
 - [Full User Manual (Chinese PDF)](docs/manuals/WatcheRobot-user-manual-20260724.pdf).
 - [Version Sources](docs/versions.md), [Compatibility](docs/compatibility.md), [Release Rules](docs/release-process.md), and [Repository Rules](docs/governance.md).
