@@ -12,9 +12,9 @@ esp_err_t watche_hw_audio_init(uint32_t rate, uint8_t volume) {
     esp_err_t ret = converted(hal_audio_external_lease_acquire());
     if (ret != ESP_OK) { state = (watche_hw_status_t){WATCHE_HW_FAULT, ret}; return ret; }
     ret = converted(hal_audio_external_lease_get_handles(&mic, &speaker));
-    esp_codec_dev_sample_info_t format = { .sample_rate = rate, .channel = 1, .bits_per_sample = 16 };
-    if (ret == ESP_OK) ret = converted(esp_codec_dev_open(mic, &format));
-    if (ret == ESP_OK) ret = converted(esp_codec_dev_open(speaker, &format));
+    /* BSP tracks open paths and selects the physical microphone slot.
+     * Direct codec opens would bypass those flags and mismatch shared I2S. */
+    if (ret == ESP_OK) ret = converted(hal_audio_external_lease_configure(rate));
     if (ret == ESP_OK) ret = converted(esp_codec_dev_set_out_vol(speaker, volume));
     if (ret != ESP_OK) {
         (void)hal_audio_external_lease_release(); mic = NULL; speaker = NULL;
@@ -46,4 +46,3 @@ esp_err_t watche_hw_audio_status(watche_hw_status_t *out) {
     if (out == NULL) return ESP_ERR_INVALID_ARG;
     *out = state; return ESP_OK;
 }
-

@@ -8,8 +8,9 @@ bool hal_audio_is_running(void) { return running; }
 int hal_audio_external_lease_acquire(void) { int r=result(); if(!r) leased=true; return r; }
 int hal_audio_external_lease_release(void) { leased=false; releases++; return release_result; }
 int hal_audio_external_lease_get_handles(void **mic, void **speaker) { *mic=(void*)1; *speaker=(void*)2; return result(); }
+int hal_audio_external_lease_configure(uint32_t rate) { assert(leased && (rate==16000 || rate==24000)); return result(); }
 int esp_codec_dev_open(void *handle, esp_codec_dev_sample_info_t *format) {
-    assert(handle && format->channel==1 && format->bits_per_sample==16); return result();
+    (void)handle; (void)format; assert(!"SDK must configure through HAL/BSP ownership"); return -1;
 }
 int esp_codec_dev_set_out_vol(void *handle, int volume) { assert(handle && volume<=100); return result(); }
 int esp_codec_dev_read(void *handle, void *pcm, int size) { assert(handle && pcm && size==4); return result(); }
@@ -21,7 +22,7 @@ int main(void) {
     assert(watche_hw_audio_read(pcm,4)==ESP_ERR_INVALID_STATE);
     leased=true; assert(watche_hw_audio_init(16000,30)==ESP_ERR_INVALID_STATE); leased=false;
     running=true; assert(watche_hw_audio_init(16000,30)==ESP_ERR_INVALID_STATE); running=false;
-    for(int i=1;i<=5;i++) {
+    for(int i=1;i<=4;i++) {
         step=0; fail_step=i;
         assert(watche_hw_audio_init(16000,30)==ESP_FAIL);
         assert(!leased);
@@ -44,4 +45,3 @@ int main(void) {
     }
     return 0;
 }
-

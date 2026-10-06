@@ -25,3 +25,10 @@ def test_only_hardware_components_are_published():
         assert not [p for p in SDK.rglob(extension)
                     if not any(part.startswith("build") or part == "managed_components"
                                for part in p.relative_to(SDK).parts)]
+
+def test_display_power_is_prepared_before_panel_and_touch():
+    source = (SDK / "components/sensecap-watcher/sensecap-watcher.c").read_text(encoding="utf-8")
+    init = source.split("lv_disp_t *bsp_lvgl_init_with_cfg(", 1)[1].split("lv_disp_t *bsp_lvgl_get_disp", 1)[0]
+    assert init.index("bsp_io_expander_init()") < init.index("bsp_display_lcd_init(cfg)")
+    assert "bsp_io_expander_init() == NULL" in init
+    assert init.index("bsp_exp_io_set_level(BSP_PWR_LCD, 1)") < init.index("bsp_display_lcd_init(cfg)")

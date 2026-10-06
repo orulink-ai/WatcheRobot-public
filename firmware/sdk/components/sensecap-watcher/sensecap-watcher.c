@@ -1193,6 +1193,12 @@ lv_disp_t *bsp_lvgl_init(void) {
 
 lv_disp_t *bsp_lvgl_init_with_cfg(const bsp_display_cfg_t *cfg) {
     if (lvgl_disp != NULL) return lvgl_disp;
+    /* Standalone callers must power the panel before LCD/touch reset.
+     * Prepare the shared expander first: its initial output reset must not
+     * turn off a panel that has already been initialized. */
+    if (bsp_io_expander_init() == NULL) return NULL;
+    if (bsp_exp_io_set_level(BSP_PWR_LCD, 1) != ESP_OK) return NULL;
+    vTaskDelay(pdMS_TO_TICKS(20));
     if (lvgl_port_init(&cfg->lvgl_port_cfg) != ESP_OK)
         return NULL;
     if (bsp_lcd_backlight_init() != ESP_OK)
@@ -2698,4 +2704,3 @@ sscma_client_flasher_handle_t bsp_sscma_flasher_init() {
 
     return sscma_flasher_handle;
 }
-

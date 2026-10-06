@@ -96,6 +96,9 @@ int hal_audio_external_lease_acquire(void);
 /** Return the codec handles only while the external lease is active. */
 int hal_audio_external_lease_get_handles(esp_codec_dev_handle_t *microphone, esp_codec_dev_handle_t *speaker);
 
+/** Configure PCM through BSP tracking; only while the external lease is held. */
+int hal_audio_external_lease_configure(uint32_t sample_rate);
+
 /** Close any externally opened paths and return ownership to the normal HAL. */
 int hal_audio_external_lease_release(void);
 
@@ -136,4 +139,3 @@ bool hal_audio_is_initialized(void);
 bool hal_audio_is_playback_mode(void);
 
 #endif /* HAL_AUDIO_H */
-
