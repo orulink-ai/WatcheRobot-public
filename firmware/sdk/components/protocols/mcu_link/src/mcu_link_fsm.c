@@ -1,4 +1,5 @@
 #include "mcu_link_fsm.h"
+#include <stddef.h>
 
 static bool is_link_ready_state(mcu_link_state_t state) {
     return state == MCU_LINK_STATE_LINK_READY || state == MCU_LINK_STATE_READY;
@@ -88,4 +89,3 @@ bool mcu_link_fsm_is_link_ready(const mcu_link_fsm_t *fsm) {
 bool mcu_link_fsm_is_ready(const mcu_link_fsm_t *fsm) {
     return fsm != NULL && fsm->state == MCU_LINK_STATE_READY && fsm->baseline_synced;
 }
-

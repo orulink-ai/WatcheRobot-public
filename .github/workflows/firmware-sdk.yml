@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container: espressif/idf:v6.0.2
     strategy:
+      fail-fast: false
       matrix:
         example: [body, head, robot]
     steps:
@@ -20,6 +21,7 @@ jobs:
   host:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         config: [Debug, Release]
