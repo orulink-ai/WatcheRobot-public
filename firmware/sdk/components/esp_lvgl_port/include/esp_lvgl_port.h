@@ -77,6 +77,7 @@ typedef struct {
         unsigned int buff_dma : 1;    /*!< Allocated LVGL buffer will be DMA capable */
         unsigned int buff_spiram : 1; /*!< Allocated LVGL buffer will be in PSRAM */
     } flags;
+    uint32_t trans_buffer_size; /*!< Optional reusable internal DMA staging buffer, in pixels; 0 disables it */
 } lvgl_port_display_cfg_t;
 
 #ifdef ESP_LVGL_PORT_TOUCH_COMPONENT

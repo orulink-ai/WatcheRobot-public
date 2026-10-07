@@ -99,6 +99,8 @@ typedef struct {
     esp_lcd_panel_handle_t panel_handle; /* LCD panel handle */
     lvgl_port_rotation_cfg_t rotation;   /* Default values of the screen rotation */
     lv_disp_drv_t disp_drv;              /* LVGL display driver */
+    lv_color_t *trans_buffer;            /* Display-owned internal DMA staging; never per-frame allocated */
+    size_t trans_buffer_size;            /* Capacity in pixels */
 } lvgl_port_display_ctx_t;
 
 #ifdef ESP_LVGL_PORT_TOUCH_COMPONENT
@@ -306,13 +308,22 @@ lv_disp_t *lvgl_port_add_disp(const lvgl_port_display_cfg_t *disp_cfg) {
     assert(disp_cfg->vres > 0);
 
     /* Display context */
-    lvgl_port_display_ctx_t *disp_ctx = malloc(sizeof(lvgl_port_display_ctx_t));
+    lvgl_port_display_ctx_t *disp_ctx = calloc(1, sizeof(lvgl_port_display_ctx_t));
     ESP_GOTO_ON_FALSE(disp_ctx, ESP_ERR_NO_MEM, err, TAG, "Not enough memory for display context allocation!");
     disp_ctx->io_handle = disp_cfg->io_handle;
     disp_ctx->panel_handle = disp_cfg->panel_handle;
     disp_ctx->rotation.swap_xy = disp_cfg->rotation.swap_xy;
     disp_ctx->rotation.mirror_x = disp_cfg->rotation.mirror_x;
     disp_ctx->rotation.mirror_y = disp_cfg->rotation.mirror_y;
+
+    if (disp_cfg->trans_buffer_size != 0U) {
+        ESP_GOTO_ON_FALSE(!disp_cfg->monochrome && disp_cfg->trans_buffer_size >= disp_cfg->hres, ESP_ERR_INVALID_ARG,
+                          err, TAG, "DMA staging must hold a color row");
+        disp_ctx->trans_buffer =
+            heap_caps_calloc(disp_cfg->trans_buffer_size, sizeof(lv_color_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA);
+        ESP_GOTO_ON_FALSE(disp_ctx->trans_buffer, ESP_ERR_NO_MEM, err, TAG, "DMA staging allocation failed");
+        disp_ctx->trans_buffer_size = disp_cfg->trans_buffer_size;
+    }
 
     uint32_t buff_caps = MALLOC_CAP_DEFAULT;
     if (disp_cfg->flags.buff_dma && disp_cfg->flags.buff_spiram) {
@@ -376,6 +387,7 @@ err:
             free(buf2);
         }
         if (disp_ctx) {
+            free(disp_ctx->trans_buffer);
             free(disp_ctx);
         }
     }
@@ -385,26 +397,32 @@ err:
 
 esp_err_t lvgl_port_remove_disp(lv_disp_t *disp) {
     assert(disp);
+    if (!lvgl_port_lock(0)) {
+        return ESP_ERR_INVALID_STATE;
+    }
     lv_disp_drv_t *disp_drv = disp->driver;
     assert(disp_drv);
     lvgl_port_display_ctx_t *disp_ctx = (lvgl_port_display_ctx_t *)disp_drv->user_data;
 
-    /* A stopped LVGL task does not imply that queued LCD DMA has finished.
-     * Retain all callback data/buffers on timeout so shutdown can be retried. */
-    TickType_t start = xTaskGetTickCount();
-    while ((disp_drv->draw_buf != NULL && disp_drv->draw_buf->flushing) || lvgl_port_ctx.panel_direct_draw_pending) {
-        if (xTaskGetTickCount() - start >= pdMS_TO_TICKS(2000))
-            return ESP_ERR_TIMEOUT;
-        vTaskDelay(1);
+    /* A timed-out transfer still owns its source until the completion ISR.
+     * Keep the display and its storage intact so the caller can retry. */
+    if (lvgl_port_ctx.panel_direct_draw_pending || (disp_drv->draw_buf && disp_drv->draw_buf->flushing)) {
+        lvgl_port_unlock();
+        return ESP_ERR_INVALID_STATE;
     }
-    /* Drain SPI transactions and unregister the ISR before freeing its context. */
+
+    /* Drain SPI transactions and detach the ISR before freeing its context. */
     esp_err_t ret = esp_lcd_panel_io_tx_param(disp_ctx->io_handle, -1, NULL, 0);
-    if (ret != ESP_OK)
+    if (ret != ESP_OK) {
+        lvgl_port_unlock();
         return ret;
+    }
     const esp_lcd_panel_io_callbacks_t callbacks = {0};
     ret = esp_lcd_panel_io_register_event_callbacks(disp_ctx->io_handle, &callbacks, NULL);
-    if (ret != ESP_OK)
+    if (ret != ESP_OK) {
+        lvgl_port_unlock();
         return ret;
+    }
 
     if (disp_drv) {
         if (disp_drv->draw_buf && disp_drv->draw_buf->buf1) {
@@ -422,7 +440,9 @@ esp_err_t lvgl_port_remove_disp(lv_disp_t *disp) {
     }
     lv_disp_remove(disp);
 
+    free(disp_ctx->trans_buffer);
     free(disp_ctx);
+    lvgl_port_unlock();
 
     return ESP_OK;
 }
@@ -958,10 +978,54 @@ static esp_err_t lvgl_port_panel_draw_bitmap_locked(esp_lcd_panel_handle_t panel
     return ESP_OK;
 }
 
+static esp_err_t lvgl_port_flush_staged(lvgl_port_display_ctx_t *disp_ctx, const lv_area_t *area,
+                                        const lv_color_t *color_map) {
+    if (disp_ctx == NULL || area == NULL || color_map == NULL || disp_ctx->trans_buffer == NULL ||
+        area->x2 < area->x1 || area->y2 < area->y1) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    size_t width = (size_t)(area->x2 - area->x1 + 1);
+    size_t rows_per_transfer = disp_ctx->trans_buffer_size / width;
+    if (rows_per_transfer == 0U) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    for (int y = area->y1; y <= area->y2;) {
+        /* Do not overwrite storage still borrowed by a previous timed-out DMA. */
+        if (lvgl_port_ctx.panel_direct_draw_pending) {
+            return ESP_ERR_INVALID_STATE;
+        }
+        size_t rows = (size_t)(area->y2 - y + 1);
+        if (rows > rows_per_transfer) {
+            rows = rows_per_transfer;
+        }
+        size_t pixels = rows * width;
+        memcpy(disp_ctx->trans_buffer, color_map, pixels * sizeof(lv_color_t));
+        esp_err_t ret = lvgl_port_panel_draw_bitmap(disp_ctx->panel_handle, area->x1, y, area->x2 + 1, y + (int)rows,
+                                                    disp_ctx->trans_buffer, 50);
+        if (ret != ESP_OK) {
+            return ret;
+        }
+        color_map += pixels;
+        y += (int)rows;
+    }
+    return ESP_OK;
+}
+
 static void lvgl_port_flush_callback(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *color_map) {
     assert(drv != NULL);
     lvgl_port_display_ctx_t *disp_ctx = (lvgl_port_display_ctx_t *)drv->user_data;
     assert(disp_ctx != NULL);
+
+    if (disp_ctx->trans_buffer != NULL) {
+        esp_err_t ret = lvgl_port_flush_staged(disp_ctx, area, color_map);
+        if (ret != ESP_OK) {
+            ESP_LOGW(TAG, "Staged panel flush failed: %s", esp_err_to_name(ret));
+        }
+        /* Staging waits for DMA itself, so its ISR releases panel_trans_done.
+         * LVGL's original PSRAM draw buffer can now be reused, even on error. */
+        lv_disp_flush_ready(drv);
+        return;
+    }
 
     const int offsetx1 = area->x1;
     const int offsetx2 = area->x2;

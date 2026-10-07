@@ -1042,6 +1042,9 @@ static lv_disp_t *bsp_display_lcd_init(const bsp_display_cfg_t *cfg) {
                                               .panel_handle = panel_handle,
                                               .buffer_size = cfg->buffer_size,
                                               .double_buffer = cfg->double_buffer,
+                                              /* Replace per-flush SPI DMA allocations with display-owned storage.
+                                               * Keep the large/double LVGL drawing buffers in PSRAM. */
+                                              .trans_buffer_size = cfg->flags.buff_spiram ? DRV_LCD_H_RES * 4U : 0U,
                                               .hres = DRV_LCD_H_RES,
                                               .vres = DRV_LCD_V_RES,
                                               .monochrome = false,

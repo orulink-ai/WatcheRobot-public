@@ -30,7 +30,7 @@ jobs:
       - name: SDK and shared runtime host tests
         shell: pwsh
         run: |
-          $suites = @("sdk/watche_hw_core", "sdk/watche_hw_body", "sdk/watche_hw_camera", "sdk/watche_hw_audio", "sdk/watche_hw_display", "services/mcu_motion_service", "services/mcu_led_service", "services/mcu_sensor_service", "services/motion_arbiter", "protocols/mcu_link")
+          $suites = @("sdk/watche_hw_core", "sdk/watche_hw_body", "sdk/watche_hw_camera", "sdk/watche_hw_audio", "sdk/watche_hw_display", "services/mcu_motion_service", "services/mcu_led_service", "services/mcu_sensor_service", "services/motion_arbiter", "protocols/mcu_link", "esp_lvgl_port")
           foreach ($suite in $suites) {
             $build = "build-host-" + $suite.Replace("/", "-")
             cmake -S "firmware/sdk/components/$suite/test_support/host" -B $build -DCMAKE_BUILD_TYPE=${{ matrix.config }}

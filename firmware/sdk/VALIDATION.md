@@ -7,7 +7,7 @@ No stable release or fully validated firmware pairing is claimed.
 | --- | --- |
 | Public body/head/robot builds | Windows IDF 6.0.2 passed / Windows 构建通过 |
 | Separate developer project | Complete standalone flash and body command-chain HIL passed; details below / 独立完整烧录及身体命令链路测试通过，详见下文 |
-| Windows/Linux remote CI | All jobs passed at `4d00c5d`; final review corrections require fresh CI / 保活修复全部 CI 通过，合并前审查补充改动需重新验证 |
+| Windows/Linux remote CI | All jobs passed at `4d00c5d`; final integrated commit checks are recorded in [PR #6](https://github.com/orulink-ai/WatcheRobot-public/pull/6) / 最终整合版本 CI 以该 PR 的提交检查为准 |
 | STM32 commit/version | Local patched `25d70f5a78c1`, dirty, FW 0.1.0, HW 1, capability `0x47`; original image was `0x45` / 当前为本地灯光声明补丁版本 |
 | Himax PTL SHA256 | Not recorded / 未记录 |
 | Hardware: motion, lights, body touch | Repeated motion/light/stop command chain passed on patched pairing; body touch and full acceptance pending / 补丁配对下重复运动、灯光、停止链路通过，身体触摸及完整验收待完成 |
@@ -113,3 +113,10 @@ hooks are not part of the SDK API or the three public example entry points.
   The new host regressions failed before each fix and passed afterward.
 - These final corrections have host/build coverage; the prior HIL application
   checksum refers to the earlier runtime correction, not this final source.
+
+The ESP32 development branch advanced during delivery. Its display-owned DMA
+staging improvements were retained during integration, and the public snapshot
+uses the same display/BSP source. LCD release host tests now exercise SPI drain
+and ISR-detach failures, ensure resources remain intact and the LVGL lock is
+released, then retry successfully. Both LCD staging/release tests passed on
+Windows; public CI also runs them on Windows/Linux in Debug/Release.
