@@ -56,7 +56,13 @@ applications; do not use them for everyday SDK flashing. Camera requires paired
 PTL Himax firmware; current Releases are not guaranteed to contain it. Do not flash
 unknown pairs before checking [acceptance](VALIDATION.md). First flash writes the
 bootloader and partition table and may overwrite storage; do not erase flash.
-Use `app-flash` for later application updates only after confirming unchanged partitions.
+Use `app-flash` for later application updates only after confirming unchanged partitions
+on the connected device, not only in the local build. If the device's layout is
+unknown or another firmware was installed, use this example's complete `flash`.
+
+The body runtime probes a quiet peer using control-plane HELLO frames; no
+periodic sensor stream or servo-position query is required for liveness. Five
+seconds without a valid protocol event invalidates readiness and starts recovery.
 Disconnect safety depends on STM32 mechanisms, not guaranteed ESP32 stop delivery.
 
 ## Licensing and maintenance

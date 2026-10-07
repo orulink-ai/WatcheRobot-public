@@ -9,9 +9,10 @@
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include <string.h>
-/* Link stale bound assumes the official STM32 periodic sensor stream.
- * Silence invalidates readiness, then bootstrap retries HELLO; no motion replay. */
+/* Quiet firmware need not stream sensors. A control-plane HELLO probes the
+ * peer without changing readiness; unanswered probes invalidate it. */
 #define LINK_STALE_US 5000000LL
+#define LINK_PROBE_US 2000000LL
 static StaticSemaphore_t mutex_storage;
 static SemaphoreHandle_t mutex;
 static portMUX_TYPE creation_lock = portMUX_INITIALIZER_UNLOCKED;
@@ -19,6 +20,7 @@ static TaskHandle_t worker;
 static watche_hw_status_t status;
 static watche_hw_event_queue_t queue;
 static int64_t last_rx;
+static int64_t last_probe;
 static bool stopping;
 static SemaphoreHandle_t stopped;
 static StaticSemaphore_t stopped_storage;
@@ -61,11 +63,22 @@ static void runtime_task(void *ctx) {
     for (;;) {
         lock();
         if (stopping) { unlock(); break; }
+        /* The transport gate is also used by diagnostic readers. Contention
+         * is not a link failure. Hold it through polling and state updates. */
+        if (!mcu_link_uart_try_lock()) {
+            unlock();
+            vTaskDelay(pdMS_TO_TICKS(5));
+            continue;
+        }
         for (unsigned i = 0; i < 16; ++i) {
             mcu_link_event_t event = {0};
             esp_err_t ret = mcu_link_bootstrap_poll(&event);
             if (ret != ESP_OK) {
-                if (ret != ESP_ERR_NOT_FOUND) set_status(WATCHE_HW_FAULT, ret);
+                if (ret != ESP_ERR_NOT_FOUND) {
+                    mcu_link_t *link = mcu_link_bootstrap_get_link();
+                    if (link != NULL) (void)mcu_link_mark_degraded(link);
+                    set_status(WATCHE_HW_FAULT, ret);
+                }
                 break;
             }
             if (event.type == MCU_LINK_RX_EVENT_NONE) break;
@@ -94,6 +107,21 @@ static void runtime_task(void *ctx) {
         } else if (status.state == WATCHE_HW_STARTING && mcu_link_bootstrap_handshake_timed_out(5000)) {
             set_status(WATCHE_HW_FAULT, ESP_ERR_TIMEOUT);
         }
+        if (status.state == WATCHE_HW_READY &&
+            esp_timer_get_time() - last_rx >= LINK_PROBE_US &&
+            esp_timer_get_time() - last_probe >= LINK_PROBE_US) {
+            mcu_link_t *link = mcu_link_bootstrap_get_link();
+            /* send_hello_req starts a handshake; a plain HELLO frame checks
+             * liveness while leaving an already-ready link ready. */
+            esp_err_t ret = mcu_link_send_frame(link, MCU_FRAME_CLASS_SYS, MCU_SYS_MSG_HELLO_REQ,
+                MCU_FRAME_FLAG_ACK_REQ, NULL, 0, NULL, NULL);
+            last_probe = esp_timer_get_time();
+            if (ret != ESP_OK) {
+                if (link != NULL) (void)mcu_link_mark_degraded(link);
+                set_status(WATCHE_HW_FAULT, ret);
+            }
+        }
+        mcu_link_uart_unlock();
         unlock();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
@@ -121,6 +149,7 @@ esp_err_t watche_hw_body_init(void) {
         if (stopped == NULL) stopped = xSemaphoreCreateBinaryStatic(&stopped_storage);
         (void)xSemaphoreTake(stopped, 0);
         last_rx = esp_timer_get_time();
+        last_probe = last_rx;
         set_status(WATCHE_HW_STARTING, ESP_OK);
         if (xTaskCreate(runtime_task, "watche_body", 4096, NULL, 5, &worker) != pdPASS) ret = ESP_ERR_NO_MEM;
     }

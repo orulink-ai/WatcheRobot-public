@@ -9,6 +9,10 @@
 #include <assert.h>
 #include <setjmp.h>
 #include <string.h>
+#ifdef _MSC_VER
+#include <crtdbg.h>
+#include <stdlib.h>
+#endif
 static jmp_buf boundary;
 static void (*worker_fn)(void *);
 static bool link_active, link_ready, incompatible, task_fail, shutdown_timeout;
@@ -21,6 +25,11 @@ static mcu_touch_state_t latest_touch;
 static mcu_motion_lifecycle_cb_t lifecycle;
 static mcu_motion_servo_feedback_cb_t feedback;
 static mcu_motion_request_t submitted;
+static bool uart_busy;
+static esp_err_t poll_error;
+static unsigned probes;
+bool mcu_link_uart_try_lock(void) { return !uart_busy; }
+void mcu_link_uart_unlock(void) {}
 static esp_err_t step(void) { return ++stage==fail_stage ? ESP_FAIL : ESP_OK; }
 static void tick(void) { assert(worker_fn); if (setjmp(boundary)==0) worker_fn(NULL); }
 SemaphoreHandle_t xSemaphoreCreateMutexStatic(StaticSemaphore_t *s) { s->binary=0; s->count=1; return s; }
@@ -49,6 +58,8 @@ esp_err_t mcu_link_bootstrap_init(void) { esp_err_t ret=step(); if(!ret) link_ac
 esp_err_t mcu_link_bootstrap_start(void) { return step(); }
 void mcu_link_bootstrap_stop(void) { link_active=link_ready=false; stops++; }
 esp_err_t mcu_link_bootstrap_poll(mcu_link_event_t *out) {
+    if (uart_busy) return ESP_ERR_INVALID_STATE;
+    if (poll_error != ESP_OK) { esp_err_t error = poll_error; poll_error = ESP_OK; return error; }
     if (read_index==write_index) return ESP_ERR_NOT_FOUND;
     *out=incoming[read_index++]; return ESP_OK;
 }
@@ -57,6 +68,12 @@ esp_err_t mcu_link_copy_peer_info(const mcu_link_t *value, mcu_link_peer_info_t 
     out->version_valid=true; out->capability_bitmap=incompatible ? 0 : 7; return ESP_OK;
 }
 esp_err_t mcu_link_mark_degraded(mcu_link_t *value) { assert(value==&link); link_ready=false; return ESP_OK; }
+esp_err_t mcu_link_send_frame(mcu_link_t *value, uint8_t cls, uint8_t id, uint8_t flags,
+    const uint8_t *payload, uint16_t size, uint32_t *seq, size_t *wire_size) {
+    assert(value==&link && cls==MCU_FRAME_CLASS_SYS && id==MCU_SYS_MSG_HELLO_REQ);
+    assert(flags==MCU_FRAME_FLAG_ACK_REQ && payload==NULL && size==0);
+    (void)seq; (void)wire_size; ++probes; return ESP_OK;
+}
 esp_err_t mcu_runtime_complete_baseline(const mcu_link_event_t *event) { (void)event; link_ready=true; return ESP_OK; }
 esp_err_t mcu_motion_service_init(void) { return step(); }
 esp_err_t mcu_led_service_init(void) { return step(); }
@@ -100,6 +117,11 @@ static void subscriber(const watche_hw_event_t *event, void *ctx) {
     }
 }
 int main(void) {
+#ifdef _MSC_VER
+    _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+    _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+    _set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
+#endif
     watche_hw_status_t state; uint32_t seq, dropped; watche_hw_event_t event;
     assert(watche_hw_body_move(90,120,1000,&seq)==ESP_ERR_INVALID_STATE);
     assert(watche_hw_body_move(-1,120,1000,&seq)==ESP_ERR_INVALID_ARG);
@@ -128,6 +150,22 @@ int main(void) {
         assert(watche_hw_body_status(&state)==ESP_OK && state.last_error==ESP_ERR_NOT_SUPPORTED);
         assert(watche_hw_body_stop()==ESP_ERR_INVALID_STATE);
         incompatible=false; enqueue(MCU_LINK_RX_EVENT_HELLO_RSP,0); tick(); drain();
+        /* UART diagnostic readers can briefly own the gate. This must not
+         * latch a body fault while the peer remains ready. */
+        uart_busy=true; tick(); uart_busy=false;
+        assert(watche_hw_body_status(&state)==ESP_OK && state.state==WATCHE_HW_READY);
+        /* Recoverable transport errors must schedule a fresh handshake. */
+        poll_error=ESP_FAIL; tick();
+        assert(watche_hw_body_status(&state)==ESP_OK && state.state==WATCHE_HW_FAULT);
+        assert(!link_ready);
+        enqueue(MCU_LINK_RX_EVENT_HELLO_RSP,0); tick(); drain();
+        /* Quiet firmware has no periodic sensor stream. Check link health
+         * with a control-plane HELLO, never position/sensor queries. */
+        unsigned before_probes=probes;
+        now+=2100000; tick();
+        assert(probes==before_probes+1 && link_ready);
+        assert(watche_hw_body_status(&state)==ESP_OK && state.state==WATCHE_HW_READY);
+        enqueue(MCU_LINK_RX_EVENT_HELLO_RSP,0); tick(); drain();
         received=0; uint32_t delivered;
         assert(watche_hw_body_subscribe(NULL,NULL)==ESP_ERR_INVALID_ARG);
         assert(watche_hw_body_subscribe(subscriber,&received)==ESP_OK);

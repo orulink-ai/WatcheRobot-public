@@ -6,11 +6,11 @@ No stable release or fully validated firmware pairing is claimed.
 | Item / 项目 | Status / 状态 |
 | --- | --- |
 | Public body/head/robot builds | Windows IDF 6.0.2 passed / Windows 构建通过 |
-| Separate developer project | Built and app-flashed; partial HIL passed / 独立构建与应用烧录通过，部分实机通过 |
-| Windows/Linux remote CI | All preview jobs passed at `e2aa951` / 音频及显示修复版本全部通过 |
-| STM32 commit/version | Observed `25d70f5a78c1`, clean, FW 0.1.0, HW 1; capability bitmap `0x45` (no LED) / 当前配对不能通过完整身体能力门禁 |
+| Separate developer project | Complete standalone flash and body command-chain HIL passed; details below / 独立完整烧录及身体命令链路测试通过，详见下文 |
+| Windows/Linux remote CI | All preview jobs passed at `e2aa951`; runtime liveness correction awaiting fresh CI / 运行层存活修复待新一轮 CI |
+| STM32 commit/version | Local patched `25d70f5a78c1`, dirty, FW 0.1.0, HW 1, capability `0x47`; original image was `0x45` / 当前为本地灯光声明补丁版本 |
 | Himax PTL SHA256 | Not recorded / 未记录 |
-| Hardware: motion, lights, body touch | Not accepted; body rejects missing LED capability / 未验收，缺少灯光能力时明确拒绝就绪 |
+| Hardware: motion, lights, body touch | Repeated motion/light/stop command chain passed on patched pairing; body touch and full acceptance pending / 补丁配对下重复运动、灯光、停止链路通过，身体触摸及完整验收待完成 |
 | Hardware: JPEG, PCM, display | Partial results below; not full acceptance / 部分结果见下文，非完整验收 |
 
 2026-10-06: ten Windows MSVC host projects passed in Debug and Release
@@ -65,3 +65,39 @@ are not evidence of motion completion. The initial move may be larger than
 runs at boot, and no reconnect replay is implemented in the test application.
 Physical lights, button touch, motion and stop still await operator confirmation.
 Per the operator's request, no runtime feedback was read during this follow-up.
+
+2026-10-07 runtime regression and automatic HIL:
+
+- The operator confirmed one successful screen-driven color change and motion,
+  then reported `Body not ready`. ESP32 logs confirmed later clicks reached the
+  button handler but light submissions returned `ESP_ERR_INVALID_STATE`.
+- The STM32 baseline disables periodic sensor reports. The SDK incorrectly
+  treated five seconds of quiet as disconnection. A diagnostic UART reader can
+  also cause a transient gate-contention error that latched the SDK in FAULT
+  while the lower link stayed READY. Host regressions reproduced that failure
+  before the correction; Debug and Release passed afterward, along with 15
+  public SDK contract/script tests.
+- The worker now takes the recursive UART gate before polling, skips transient
+  contention, marks recoverable transport failures degraded for re-handshake,
+  and probes quiet peers with HELLO without clearing READY. Missing responses
+  still invalidate readiness; recovery does not resend movement. No position
+  or sensor query is needed for liveness.
+- A device carrying a different partition table failed to boot after an
+  app-only update (`0x20000` device app versus `0x10000` example app). Complete
+  example bootloader/partition/app flashing restored startup. Application-only
+  flashing requires checking the connected device's layout.
+- Two 55-second captures used ESP32 and the positively identified STM32 debug
+  UART. In the final run, three light submissions each completed, fixed-target
+  motion received ACK and successful completion, stopping the in-flight motion
+  emitted `STOPPED` for its original sequence after 991 ms, and a second motion
+  sequence completed. Every periodic health observation remained READY; no
+  timeout or invalid-state rejection occurred. STM32 `servo_apply` logs confirm
+  execution of the motion path. These are command/execution results, not ADC
+  position verification. The first capture's stop-completion check lacked the
+  needed application event log; the second captured it and all nine checks
+  passed. This is not a long-duration or mechanical-limits acceptance claim.
+
+Local independent test-app SHA256:
+`95eec7390ca4d1d5afccb2c7d3eeab30f006fcedd8a7b11030a7c9d832e27451`.
+The local test app adds serial commands and periodic health logs; these test
+hooks are not part of the SDK API or the three public example entry points.
