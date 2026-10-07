@@ -42,7 +42,7 @@
 
 不要提交：
 
-- ESP32-S3 或 STM32F103 固件源码
+- 官方 ESP32 应用、STM32F103 或 Himax 固件实现（`firmware/sdk/` 下的独立硬件 SDK、必要驱动和示例除外）
 - Release 产物：`.bin`、`.zip`、`.exe`、`.msi`、`.dmg`、`.apk`、`.aab`
 - 本地构建输出或生成的固件镜像
 - Wi-Fi 凭据、API key、token、私钥或 `.env` 文件

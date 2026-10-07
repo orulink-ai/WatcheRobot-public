@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.16)
+project(watche_camera_host C)
+enable_testing()
+add_executable(camera_test test_camera.c ../../watche_hw_camera.c)
+target_include_directories(camera_test PRIVATE include ../../include ../../../watche_hw_core/include ../../../watche_hw_core/test_support/host/include)
+if(MSVC)
+  target_compile_options(camera_test PRIVATE /W4 /UNDEBUG)
+else()
+  target_compile_options(camera_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+endif()
+add_test(NAME camera_lifecycle COMMAND camera_test)
+

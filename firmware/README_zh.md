@@ -2,7 +2,7 @@
 
 # 固件入口
 
-本仓库不公开 ESP32-S3、Himax 和 STM32 固件源码。可烧录固件由 [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 提供。
+本仓库在 [sdk/](sdk/README_zh.md) 提供 ESP32 独立硬件 SDK 源码与示例（开发预览）。官方 ESP32 应用、Himax 和 STM32 固件实现仍不公开。官方可烧录固件由 [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 提供。
 
 | 目标 | Release 中下载什么 | 使用方式 |
 | --- | --- | --- |

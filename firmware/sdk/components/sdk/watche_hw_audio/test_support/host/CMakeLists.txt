@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.16)
+project(watche_audio_host C)
+enable_testing()
+add_executable(audio_test test_audio.c ../../watche_hw_audio.c)
+target_include_directories(audio_test PRIVATE include ../../include ../../../watche_hw_core/include ../../../watche_hw_core/test_support/host/include)
+if(MSVC)
+  target_compile_options(audio_test PRIVATE /W4 /UNDEBUG)
+else()
+  target_compile_options(audio_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+endif()
+add_test(NAME audio_lifecycle COMMAND audio_test)
+

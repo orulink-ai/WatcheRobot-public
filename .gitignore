@@ -12,6 +12,7 @@ Thumbs.db
 
 # Build outputs
 build/
+build-host-*/
 cmake-build-*/
 out/
 dist/

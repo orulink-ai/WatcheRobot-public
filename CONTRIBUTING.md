@@ -42,7 +42,7 @@ Examples:
 
 Do not commit:
 
-- ESP32-S3 or STM32F103 firmware source code
+- Official ESP32 application, STM32F103 or Himax firmware implementations (independent hardware SDK, required drivers and examples under `firmware/sdk/` are allowed)
 - Release artifacts: `.bin`, `.zip`, `.exe`, `.msi`, `.dmg`, `.apk`, `.aab`
 - local build outputs or generated firmware images
 - Wi-Fi credentials, API keys, tokens, private keys, or `.env` files

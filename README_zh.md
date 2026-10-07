@@ -61,6 +61,21 @@ git submodule update --init --recursive
 
 网络配置见[设备网络配置说明](docs/manuals/device-network-setup.pdf)。连接后，可运行一个表情和一个动作检查屏幕、灯效和运动。
 
+## 开发自己的嵌入式固件（开发预览，尚未公开发布）
+
+除了通过 [Python SDK](docs/sdk_zh.md)编写上位机应用，我们也在准备面向
+ESP32-S3 的独立硬件 SDK：开发者拥有自己的 `app_main`、UI 和业务逻辑，
+通过统一接口使用身体运动、灯光、身体触摸，以及摄像头、麦克风、扬声器、
+屏幕和屏幕触摸，不需要启动官方应用、Python SDK、Daemon 或服务端。
+
+首版目标是提供身体、头部和整机三个可独立构建的 example；STM32 和 Himax
+使用经过验证的配对固件，不要求开发者修改它们。详细边界和发布门禁见
+[独立嵌入式开发说明](docs/embedded-sdk_zh.md)。
+
+源码与三个示例位于 [firmware/sdk/](firmware/sdk/README_zh.md)，目前为开发预览，
+尚未完成全部实机验收与固定版本发布。现有 Release 和烧录工具用于官方固件，
+不能当作自定义固件的日常烧录入口。官方应用及 STM32/Himax 实现不在 SDK 开源范围内。
+
 ## 目录结构
 
 ```text
@@ -71,6 +86,7 @@ WatcheRobot-public/
 │  ├─ sd-card-assets_zh.md / sd-card-assets.md    SD 卡资源说明
 │  ├─ action-test_zh.md / action-test.md          首次运行检查
 │  ├─ sdk_zh.md / sdk.md                   SDK 使用指南
+│  ├─ embedded-sdk_zh.md / embedded-sdk.md  独立嵌入式 SDK 预览与发布边界
 │  ├─ versions_zh.md / versions.md         版本来源
 │  ├─ compatibility_zh.md / compatibility.md      配套关系
 │  ├─ release-process_zh.md / release-process.md  发布规则
@@ -111,6 +127,7 @@ WatcheRobot-public/
 - [固件入口](firmware/README_zh.md)：各硬件对应的下载包和烧录入口。
 - [SD 卡资源](docs/sd-card-assets_zh.md)和[首次运行检查](docs/action-test_zh.md)。
 - [SDK 使用指南](docs/sdk_zh.md)：安装、配对和运行 Python 脚本。
+- [独立嵌入式开发说明](docs/embedded-sdk_zh.md)：硬件 SDK 目标、示例与当前发布状态。
 - [硬件资料](hardware/README_zh.md)：PCB 和机械文件入口。
 - [完整使用说明书（中文 PDF）](docs/manuals/WatcheRobot-user-manual-20260724.pdf)。
 - [版本来源](docs/versions_zh.md)、[配套关系](docs/compatibility_zh.md)、[发布规则](docs/release-process_zh.md)和[仓库规则](docs/governance_zh.md)。
