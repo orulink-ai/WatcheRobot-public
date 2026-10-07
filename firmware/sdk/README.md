@@ -29,6 +29,10 @@ Long presses in body examples may trigger small movements; clear the mechanism f
 
 Examples own their CMake, partitions and configuration. They never include the
 official application project. Headers document parameters, ownership and threading.
+Generic ACK/NACK are motion events only when matching the motion service's last
+32 command sequences; older replies are ignored. Typed DONE/FAULT retain their
+original sequence. Body init/close during event dispatch returns
+`ESP_ERR_INVALID_STATE`; close only after dispatch returns.
 Applications dispatch body callbacks with `dispatch_events`; submission is not motion
 completion. Commands are rejected before readiness; reconnection never replays motion.
 JPEG bytes are borrowed during callbacks; copy to retain. Blocking audio belongs in

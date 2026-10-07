@@ -1,7 +1,9 @@
 #pragma once
 #include "watche_hw_audio.h"
 typedef void *esp_codec_dev_handle_t;
-typedef struct { int sample_rate, channel, bits_per_sample; } esp_codec_dev_sample_info_t;
+typedef struct {
+    int sample_rate, channel, bits_per_sample;
+} esp_codec_dev_sample_info_t;
 bool hal_audio_external_lease_is_active(void);
 bool hal_audio_is_running(void);
 int hal_audio_external_lease_acquire(void);

@@ -17,4 +17,3 @@ esp_err_t watche_hw_audio_status(watche_hw_status_t *status);
 #ifdef __cplusplus
 }
 #endif
-

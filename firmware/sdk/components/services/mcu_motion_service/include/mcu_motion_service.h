@@ -161,4 +161,3 @@ esp_err_t mcu_motion_service_handle_link_event(const mcu_link_event_t *event);
 #endif
 
 #endif /* MCU_MOTION_SERVICE_H */
-

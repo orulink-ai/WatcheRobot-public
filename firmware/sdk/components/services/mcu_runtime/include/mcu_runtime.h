@@ -10,4 +10,3 @@ esp_err_t mcu_runtime_dispatch(const mcu_link_event_t *event, bool *overwrote);
 #ifdef __cplusplus
 }
 #endif
-

@@ -684,10 +684,15 @@ int hal_audio_external_lease_get_handles(esp_codec_dev_handle_t *microphone, esp
 }
 
 int hal_audio_external_lease_configure(uint32_t sample_rate) {
-    if ((sample_rate != 16000 && sample_rate != 24000) || !hal_audio_lock()) return -1;
-    if (!external_lease_active) { hal_audio_unlock(); return -1; }
+    if ((sample_rate != 16000 && sample_rate != 24000) || !hal_audio_lock())
+        return -1;
+    if (!external_lease_active) {
+        hal_audio_unlock();
+        return -1;
+    }
     esp_err_t ret = bsp_codec_set_fs(sample_rate, 16, 1);
-    if (ret == ESP_OK) current_sample_rate = sample_rate;
+    if (ret == ESP_OK)
+        current_sample_rate = sample_rate;
     hal_audio_unlock();
     return ret == ESP_OK ? 0 : -1;
 }

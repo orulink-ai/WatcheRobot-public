@@ -7,4 +7,3 @@ esp_err_t bsp_lvgl_deinit(void);
 esp_err_t bsp_lcd_brightness_set(int value);
 esp_lcd_panel_handle_t bsp_lcd_get_panel_handle(void);
 esp_lcd_touch_handle_t bsp_lcd_get_touch_handle(void);
-

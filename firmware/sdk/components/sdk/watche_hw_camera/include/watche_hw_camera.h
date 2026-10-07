@@ -17,4 +17,3 @@ esp_err_t watche_hw_camera_status(watche_hw_status_t *status);
 #ifdef __cplusplus
 }
 #endif
-

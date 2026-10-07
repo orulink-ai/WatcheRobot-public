@@ -47,7 +47,8 @@ esp_err_t mcu_link_send_frame(mcu_link_t *link, uint8_t msg_class, uint8_t msg_i
     s_captured.msg_id = msg_id;
     s_captured.flags = flags;
     s_captured.payload_len = payload_len;
-    if (payload_len) memcpy(s_captured.payload, payload, payload_len);
+    if (payload_len)
+        memcpy(s_captured.payload, payload, payload_len);
     s_captured.seq = 42u;
     s_captured.wire_len = payload_len + 8u;
     s_captured.send_count++;
@@ -156,12 +157,42 @@ static void test_motion_lifecycle_callback_reports_rejection(void) {
     };
 
     reset_capture();
+    assert(mcu_motion_service_init() == ESP_OK);
+    assert(mcu_motion_stop(MCU_MOTION_SOURCE_WS) == ESP_OK);
     assert(mcu_motion_set_lifecycle_callback(capture_lifecycle, NULL) == ESP_OK);
     assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
     assert(s_lifecycle_count == 1u);
     assert(s_lifecycle_event.type == MCU_MOTION_LIFECYCLE_REJECTED);
     assert(s_lifecycle_event.ref_seq == 42u);
     assert(s_lifecycle_event.reason == 0x1234u);
+}
+
+static void test_motion_lifecycle_ignores_other_services_and_keeps_recent_sequences(void) {
+    mcu_link_event_t event = {
+        .type = MCU_LINK_RX_EVENT_ACK,
+        .frame = {.header = {.payload_len = 6u}, .payload = {0x2Au, 0, 0, 0, 0, 0}},
+    };
+    reset_capture();
+    assert(mcu_motion_service_init() == ESP_OK);
+    assert(mcu_motion_stop(MCU_MOTION_SOURCE_WS) == ESP_OK); /* sequence 42 */
+    assert(mcu_motion_stop(MCU_MOTION_SOURCE_WS) == ESP_OK); /* sequence 43 */
+    assert(mcu_motion_set_lifecycle_callback(capture_lifecycle, NULL) == ESP_OK);
+    assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
+    assert(s_lifecycle_count == 1u); /* not only the most recent command */
+    event.frame.payload[0] = 43;
+    assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
+    assert(s_lifecycle_count == 2u);
+    event.frame.payload[0] = 44; /* HELLO / LED sequence, never submitted here */
+    assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
+    assert(s_lifecycle_count == 2u);
+    event.type = MCU_LINK_RX_EVENT_NACK;
+    event.frame.header.payload_len = 8;
+    assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
+    assert(s_lifecycle_count == 2u);
+    assert(mcu_motion_service_init() == ESP_OK);
+    event.frame.payload[0] = 42; /* previous runtime must not retain history */
+    assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
+    assert(s_lifecycle_count == 2u);
 }
 
 static void test_stop_clears_pending_motion_queue(void) {
@@ -444,8 +475,8 @@ int main(void) {
     test_chunked_sequence_sends_begin_chunks_and_end();
     test_motion_lifecycle_callback_preserves_ref_seq_and_terminal_result();
     test_motion_lifecycle_callback_reports_rejection();
+    test_motion_lifecycle_ignores_other_services_and_keeps_recent_sequences();
     test_motion_state_feedback_uses_stm32_payload_layout();
     test_servo_feedback_rsp_uses_compact_payload_layout();
     return 0;
 }
-

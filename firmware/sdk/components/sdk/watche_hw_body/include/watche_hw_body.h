@@ -1,8 +1,8 @@
 #pragma once
-#include "watche_hw_core.h"
 #include "mcu_led_service.h"
 #include "mcu_motion_service.h"
 #include "mcu_sensor_service.h"
+#include "watche_hw_core.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,4 +36,3 @@ esp_err_t watche_hw_body_dropped_events(uint32_t *dropped);
 #ifdef __cplusplus
 }
 #endif
-

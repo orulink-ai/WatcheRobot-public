@@ -21,6 +21,13 @@ static mcu_motion_request_t s_last_request;
 static bool s_has_last_request;
 static uint32_t s_last_command_seq;
 static bool s_command_inflight;
+/* SYS ACK/NACK carry no command class. Retain a bounded correlation window;
+ * a reply older than the last 32 motion commands is ignored, never relabelled.
+ * Typed DONE/FAULT events are not filtered, including DONE after STOP. */
+#define MOTION_REPLY_HISTORY_SIZE 32u
+static uint32_t s_reply_history[MOTION_REPLY_HISTORY_SIZE];
+static unsigned s_reply_count;
+static unsigned s_reply_next;
 static mcu_motion_servo_feedback_cb_t s_servo_feedback_cb;
 static void *s_servo_feedback_ctx;
 static mcu_motion_lifecycle_cb_t s_lifecycle_cb;
@@ -40,6 +47,28 @@ static void lifecycle_unlock(void) {
 #if defined(ESP_PLATFORM)
     portEXIT_CRITICAL(&s_lifecycle_lock);
 #endif
+}
+
+static void remember_motion_sequence(uint32_t sequence) {
+    lifecycle_lock();
+    s_reply_history[s_reply_next] = sequence;
+    s_reply_next = (s_reply_next + 1u) % MOTION_REPLY_HISTORY_SIZE;
+    if (s_reply_count < MOTION_REPLY_HISTORY_SIZE)
+        s_reply_count++;
+    lifecycle_unlock();
+}
+
+static bool is_motion_sequence(uint32_t sequence) {
+    bool found = false;
+    lifecycle_lock();
+    for (unsigned i = 0; i < s_reply_count; ++i) {
+        if (s_reply_history[i] == sequence) {
+            found = true;
+            break;
+        }
+    }
+    lifecycle_unlock();
+    return found;
 }
 
 static bool mcu_motion_source_has_access(mcu_motion_source_t source) {
@@ -152,6 +181,7 @@ static esp_err_t mcu_motion_submit_runtime_frame(const mcu_motion_request_t *req
     ESP_LOGI(TAG, "Queued SERVO_MOVE frame seq=%lu wire_len=%u axis_mask=0x%02x duration_ms=%u", (unsigned long)seq,
              (unsigned)wire_len, request->axis_mask, (unsigned)request->duration_ms);
 #endif
+    remember_motion_sequence(seq);
     s_last_command_seq = seq;
     s_command_inflight = true;
     if (out_seq != NULL) {
@@ -190,6 +220,7 @@ static esp_err_t mcu_motion_submit_stop_frame(mcu_motion_source_t source) {
     ESP_LOGI(TAG, "Queued SERVO_STOP frame seq=%lu wire_len=%u scope=all_pending source=%u", (unsigned long)seq,
              (unsigned)wire_len, (unsigned)source);
 #endif
+    remember_motion_sequence(seq);
     s_last_command_seq = seq;
     s_command_inflight = true;
     return ESP_OK;
@@ -229,6 +260,7 @@ static esp_err_t mcu_motion_submit_pwm_unlock_frame(const mcu_motion_pwm_unlock_
     ESP_LOGI(TAG, "Queued SERVO_PWM_UNLOCK frame seq=%lu wire_len=%u axis_mask=0x%02x source=%u", (unsigned long)seq,
              (unsigned)wire_len, request->axis_mask, (unsigned)request->source);
 #endif
+    remember_motion_sequence(seq);
     s_last_command_seq = seq;
     s_command_inflight = true;
     return ESP_OK;
@@ -264,6 +296,7 @@ static esp_err_t mcu_motion_submit_pwm_lock_frame(const mcu_motion_pwm_lock_requ
         return ret;
     }
 
+    remember_motion_sequence(seq);
     s_last_command_seq = seq;
     s_command_inflight = true;
     ESP_LOGI(TAG, "Queued SERVO_PWM_LOCK frame seq=%lu wire_len=%u axis_mask=0x%02x source=%u", (unsigned long)seq,
@@ -318,6 +351,7 @@ static esp_err_t mcu_motion_submit_jog_frame(const mcu_motion_jog_request_t *req
                  (unsigned)wire_len, request->axis_mask, (unsigned)request->timeout_ms);
     }
 #endif
+    remember_motion_sequence(seq);
     s_last_command_seq = seq;
     s_command_inflight = true;
     if (out_seq != NULL) {
@@ -416,6 +450,7 @@ static esp_err_t mcu_motion_submit_sequence_frame(const mcu_motion_sequence_t *s
     ESP_LOGI(TAG, "Queued SERVO_SEQUENCE frame seq=%lu wire_len=%u segments=%u source=%u", (unsigned long)seq,
              (unsigned)wire_len, (unsigned)sequence->segment_count, (unsigned)sequence->source);
 #endif
+    remember_motion_sequence(seq);
     s_last_command_seq = seq;
     s_command_inflight = true;
     if (out_seq != NULL) {
@@ -429,8 +464,15 @@ static esp_err_t mcu_motion_send_chunked_sequence_control_frame(mcu_link_t *link
                                                                 uint32_t *out_seq) {
     size_t wire_len = 0u;
 
-    return mcu_link_send_frame(link, MCU_FRAME_CLASS_MOTION, msg_id, MCU_FRAME_FLAG_ACK_REQ, payload, payload_len,
-                               out_seq, &wire_len);
+    uint32_t seq = 0;
+    esp_err_t ret = mcu_link_send_frame(link, MCU_FRAME_CLASS_MOTION, msg_id, MCU_FRAME_FLAG_ACK_REQ, payload,
+                                        payload_len, &seq, &wire_len);
+    if (ret == ESP_OK) {
+        remember_motion_sequence(seq);
+        if (out_seq != NULL)
+            *out_seq = seq;
+    }
+    return ret;
 }
 
 static void mcu_motion_chunked_sequence_frame_gap(void) {
@@ -661,6 +703,9 @@ static bool mcu_motion_direct_target_is_valid(const mcu_motion_direct_target_t *
 esp_err_t mcu_motion_service_init(void) {
     memset(&s_last_request, 0, sizeof(s_last_request));
     s_has_last_request = false;
+    memset(s_reply_history, 0, sizeof(s_reply_history));
+    s_reply_count = 0;
+    s_reply_next = 0;
     s_last_command_seq = 0u;
     s_command_inflight = false;
     s_servo_feedback_cb = NULL;
@@ -725,9 +770,9 @@ esp_err_t mcu_motion_set_servo_feedback_callback(mcu_motion_servo_feedback_cb_t 
 
 esp_err_t mcu_motion_request_feedback(void) {
     mcu_link_t *link = mcu_link_bootstrap_get_link();
-    if (link == NULL || !mcu_link_bootstrap_is_ready()) return ESP_ERR_INVALID_STATE;
-    return mcu_link_send_frame(link, MCU_FRAME_CLASS_MOTION, MCU_MOTION_MSG_SERVO_FEEDBACK_REQ,
-                               0, NULL, 0, NULL, NULL);
+    if (link == NULL || !mcu_link_bootstrap_is_ready())
+        return ESP_ERR_INVALID_STATE;
+    return mcu_link_send_frame(link, MCU_FRAME_CLASS_MOTION, MCU_MOTION_MSG_SERVO_FEEDBACK_REQ, 0, NULL, 0, NULL, NULL);
 }
 
 esp_err_t mcu_motion_set_lifecycle_callback(mcu_motion_lifecycle_cb_t cb, void *ctx) {
@@ -857,6 +902,8 @@ esp_err_t mcu_motion_service_handle_link_event(const mcu_link_event_t *event) {
             return ESP_ERR_INVALID_SIZE;
         }
         ref_seq = decode_u32_le(event->frame.payload);
+        if (!is_motion_sequence(ref_seq))
+            return ESP_OK;
         lifecycle.ref_seq = ref_seq;
         lifecycle.status = decode_u16_le(&event->frame.payload[4]);
         publish_lifecycle_event(&lifecycle);
@@ -874,6 +921,8 @@ esp_err_t mcu_motion_service_handle_link_event(const mcu_link_event_t *event) {
             return ESP_ERR_INVALID_SIZE;
         }
         ref_seq = decode_u32_le(event->frame.payload);
+        if (!is_motion_sequence(ref_seq))
+            return ESP_OK;
         lifecycle.ref_seq = ref_seq;
         lifecycle.reason = decode_u16_le(&event->frame.payload[6]);
         publish_lifecycle_event(&lifecycle);
@@ -963,4 +1012,3 @@ esp_err_t mcu_motion_service_handle_link_event(const mcu_link_event_t *event) {
         return ESP_ERR_NOT_FOUND;
     }
 }
-

@@ -1,8 +1,8 @@
 #pragma once
-#include "watche_hw_core.h"
 #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_touch.h"
 #include "lvgl.h"
+#include "watche_hw_core.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -21,4 +21,3 @@ void watche_hw_display_unlock(void);
 #ifdef __cplusplus
 }
 #endif
-

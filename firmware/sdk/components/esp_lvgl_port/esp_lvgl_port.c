@@ -264,7 +264,8 @@ esp_err_t lvgl_port_stop(void) {
 
 static volatile bool task_stopped;
 esp_err_t lvgl_port_quiesce(void) {
-    if (lvgl_port_ctx.task_handle == xTaskGetCurrentTaskHandle()) return ESP_ERR_INVALID_STATE;
+    if (lvgl_port_ctx.task_handle == xTaskGetCurrentTaskHandle())
+        return ESP_ERR_INVALID_STATE;
     /* Stop and delete timer */
     if (lvgl_port_ctx.tick_timer != NULL) {
         esp_timer_stop(lvgl_port_ctx.tick_timer);
@@ -276,7 +277,8 @@ esp_err_t lvgl_port_quiesce(void) {
     if (lvgl_port_ctx.task_handle != NULL) {
         TickType_t start = xTaskGetTickCount();
         while (!task_stopped) {
-            if (xTaskGetTickCount() - start > pdMS_TO_TICKS(2000)) return ESP_ERR_TIMEOUT;
+            if (xTaskGetTickCount() - start > pdMS_TO_TICKS(2000))
+                return ESP_ERR_TIMEOUT;
             vTaskDelay(1);
         }
         vTaskDelete(lvgl_port_ctx.task_handle);
@@ -286,7 +288,8 @@ esp_err_t lvgl_port_quiesce(void) {
 }
 esp_err_t lvgl_port_deinit(void) {
     esp_err_t ret = lvgl_port_quiesce();
-    if (ret == ESP_OK) lvgl_port_task_deinit();
+    if (ret == ESP_OK)
+        lvgl_port_task_deinit();
     return ret;
 }
 
@@ -389,17 +392,19 @@ esp_err_t lvgl_port_remove_disp(lv_disp_t *disp) {
     /* A stopped LVGL task does not imply that queued LCD DMA has finished.
      * Retain all callback data/buffers on timeout so shutdown can be retried. */
     TickType_t start = xTaskGetTickCount();
-    while ((disp_drv->draw_buf != NULL && disp_drv->draw_buf->flushing) ||
-           lvgl_port_ctx.panel_direct_draw_pending) {
-        if (xTaskGetTickCount() - start >= pdMS_TO_TICKS(2000)) return ESP_ERR_TIMEOUT;
+    while ((disp_drv->draw_buf != NULL && disp_drv->draw_buf->flushing) || lvgl_port_ctx.panel_direct_draw_pending) {
+        if (xTaskGetTickCount() - start >= pdMS_TO_TICKS(2000))
+            return ESP_ERR_TIMEOUT;
         vTaskDelay(1);
     }
     /* Drain SPI transactions and unregister the ISR before freeing its context. */
     esp_err_t ret = esp_lcd_panel_io_tx_param(disp_ctx->io_handle, -1, NULL, 0);
-    if (ret != ESP_OK) return ret;
+    if (ret != ESP_OK)
+        return ret;
     const esp_lcd_panel_io_callbacks_t callbacks = {0};
     ret = esp_lcd_panel_io_register_event_callbacks(disp_ctx->io_handle, &callbacks, NULL);
-    if (ret != ESP_OK) return ret;
+    if (ret != ESP_OK)
+        return ret;
 
     if (disp_drv) {
         if (disp_drv->draw_buf && disp_drv->draw_buf->buf1) {
@@ -444,7 +449,8 @@ lv_indev_t *lvgl_port_add_touch(const lvgl_port_touch_cfg_t *touch_cfg) {
     touch_ctx->indev_drv.read_cb = lvgl_port_touchpad_read;
     touch_ctx->indev_drv.user_data = touch_ctx;
     lv_indev_t *indev = lv_indev_drv_register(&touch_ctx->indev_drv);
-    if (indev == NULL) free(touch_ctx);
+    if (indev == NULL)
+        free(touch_ctx);
     return indev;
 }
 
@@ -801,7 +807,8 @@ static void lvgl_port_task(void *arg) {
     }
 
     task_stopped = true;
-    for (;;) vTaskSuspend(NULL);
+    for (;;)
+        vTaskSuspend(NULL);
 }
 
 static esp_err_t lvgl_port_task_create(const lvgl_port_cfg_t *cfg) {
@@ -1576,4 +1583,3 @@ static esp_err_t lvgl_port_tick_init(void) {
                         "Creating LVGL timer filed!");
     return esp_timer_start_periodic(lvgl_port_ctx.tick_timer, lvgl_port_timer_period_ms * 1000);
 }
-

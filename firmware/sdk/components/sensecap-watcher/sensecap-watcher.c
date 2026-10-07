@@ -356,7 +356,7 @@ static esp_io_expander_handle_t bsp_io_expander_init_with_initial_inputs(uint32_
     };
 
     ret = esp_io_expander_new_i2c_pca95xx_16bit_ex(s_bus_ctx.bus_handle, ESP_IO_EXPANDER_I2C_PCA9535_ADDRESS_001,
-                                                 &io_exp_config, &io_exp_handle);
+                                                   &io_exp_config, &io_exp_handle);
     if (ret != ESP_OK) {
         io_exp_handle = NULL;
         ESP_LOGE(TAG, "IO expander creation failed: %s", esp_err_to_name(ret));
@@ -1192,12 +1192,15 @@ lv_disp_t *bsp_lvgl_init(void) {
 }
 
 lv_disp_t *bsp_lvgl_init_with_cfg(const bsp_display_cfg_t *cfg) {
-    if (lvgl_disp != NULL) return lvgl_disp;
+    if (lvgl_disp != NULL)
+        return lvgl_disp;
     /* Standalone callers must power the panel before LCD/touch reset.
      * Prepare the shared expander first: its initial output reset must not
      * turn off a panel that has already been initialized. */
-    if (bsp_io_expander_init() == NULL) return NULL;
-    if (bsp_exp_io_set_level(BSP_PWR_LCD, 1) != ESP_OK) return NULL;
+    if (bsp_io_expander_init() == NULL)
+        return NULL;
+    if (bsp_exp_io_set_level(BSP_PWR_LCD, 1) != ESP_OK)
+        return NULL;
     vTaskDelay(pdMS_TO_TICKS(20));
     if (lvgl_port_init(&cfg->lvgl_port_cfg) != ESP_OK)
         return NULL;
@@ -1231,7 +1234,8 @@ esp_err_t bsp_lvgl_deinit(void) {
     /* Stop the LVGL worker before destroying borrowed handles. Shared board
      * buses are not freed: camera/audio may still be using them. */
     esp_err_t ret = lvgl_port_quiesce();
-    if (ret != ESP_OK) return ret;
+    if (ret != ESP_OK)
+        return ret;
     if (touch_indev != NULL) {
         lvgl_port_remove_touch(touch_indev);
         touch_indev = NULL;
@@ -1242,32 +1246,38 @@ esp_err_t bsp_lvgl_deinit(void) {
     }
     if (lvgl_disp != NULL) {
         ret = lvgl_port_remove_disp(lvgl_disp);
-        if (ret != ESP_OK) return ret;
+        if (ret != ESP_OK)
+            return ret;
         lvgl_disp = NULL;
     }
     if (tp_handle != NULL) {
         ret = esp_lcd_touch_del(tp_handle);
-        if (ret != ESP_OK) return ret;
+        if (ret != ESP_OK)
+            return ret;
         tp_handle = NULL;
     }
     if (tp_io_handle != NULL) {
         ret = esp_lcd_panel_io_del(tp_io_handle);
-        if (ret != ESP_OK) return ret;
+        if (ret != ESP_OK)
+            return ret;
         tp_io_handle = NULL;
     }
     if (touch_bus_handle != NULL) {
         ret = i2c_del_master_bus(touch_bus_handle);
-        if (ret != ESP_OK) return ret;
+        if (ret != ESP_OK)
+            return ret;
         touch_bus_handle = NULL;
     }
     if (panel_handle != NULL) {
         ret = esp_lcd_panel_del(panel_handle);
-        if (ret != ESP_OK) return ret;
+        if (ret != ESP_OK)
+            return ret;
         panel_handle = NULL;
     }
     if (panel_io_handle != NULL) {
         ret = esp_lcd_panel_io_del(panel_io_handle);
-        if (ret != ESP_OK) return ret;
+        if (ret != ESP_OK)
+            return ret;
         panel_io_handle = NULL;
     }
     ret = lvgl_port_deinit();
