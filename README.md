@@ -4,6 +4,14 @@ English | [简体中文](README_zh.md)
 
 The public WatcheRobot desktop-robot repository provides hardware files, mechanical models, the Python SDK, flashing tools, user guides, and Release asset documentation.
 
+## Get Your Robot
+
+Prefer a finished robot without sourcing parts and assembling it yourself? **[Pre-order WatcheRobot on JD.com](https://item.jd.com/100326823811.html)** (China).
+
+International purchasing channels are coming soon. We will add the links here when they launch. See the JD.com product page for pre-order details and delivery estimates.
+
+Want to build your own? Follow the [Quick Start](#quick-start) below for hardware resources, assembly, and flashing instructions.
+
 ## Project Preview
 
 ![WatcheRobot desktop robot](docs/images/watcher-robot-render.png)
