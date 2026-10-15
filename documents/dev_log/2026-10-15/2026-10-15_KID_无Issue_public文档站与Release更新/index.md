@@ -35,3 +35,15 @@ Release published 自动构建可下载的 wiki 产物；服务器仅向外拉�
 - 归档拒绝链接、绝对路径、上级路径和超额解压；SHA256 与版本 manifest 通过后原子切换，HTTPS 检查失败恢复前一链接；旧目录保留。
 - 不制造新产品 Release，不修改现有固件附件，不混入原 checkout 的硬件 SDK 未提交工作。
 - GitHub 官方发布事件与公开 Release API 说明已核对：<https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#release>、<https://docs.github.com/en/rest/releases/releases#get-the-latest-release>。
+
+## 部署与交付记录
+
+2026-10-15｜KID / Codex：实现已提交为 33e9b521c46ba45555528d31cd51784ef20a4a85，通过 gh 发布独立分支，创建草稿 PR：https://github.com/orulink-ai/WatcheRobot-public/pull/7 。整合站点已部署至 https://wiki.orulink.ai ，浏览器确认首页与完整导航正常。
+
+- 生产通过 HTTPS 验证首页、双语烧录、硬件、固件 SDK、旧入门与 SDK 路由，以及图片、PDF、version.json；不存在路径返回 404。
+- 线上 version.json 指向上述实际构建提交。产物 SHA256 为 abcac98b3e0e4ebd324f02e1227d88cfe3e2e3a7370df2fd2254c30882c19e41；通过更新器安装与健康检查，旧版本保留。
+- AWS 已安装受限 ubuntu 用户运行的 systemd service/timer，每五分钟检查公开正式 Release；配置验证及 Nginx 检查通过。实际执行确认现有 Release 缺少 Wiki 附件时保留当前站点。
+- GitHub Wiki 构建运行 38683467639 成功，PR 发布任务按设计跳过；原仓库检查运行 38683467599 全部通过，包括双平台烧录工具与 Python 3.10/3.11/3.12。
+- Linux 七项更新器测试及 Shell 入口验证通过。此记录为部署证据补充，无运行时代码变化，不另增镜像实现测试。
+
+交付状态：当前整合站点可用，服务器自动检查已启用，PR 待审查合入。默认分支的 Release 发布工作流尚未启用；尚未执行真实 Release Wiki 附件上传和自动下载的完整生产验证。没有新建产品版本，也没有更改现有固件附件。合入后可在正式 Release 发布时验证，或按维护说明补齐指定历史正式版本。
