@@ -1,0 +1,17 @@
+[Unit]
+Description=Update WatcheRobot Wiki from the latest stable public Release
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+ExecStart=/usr/bin/python3 /opt/watcherobot-wiki/update.py --root /www/wwwroot/wiki.orulink.ai
+UMask=0022
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/www/wwwroot/wiki.orulink.ai
+TimeoutStartSec=300

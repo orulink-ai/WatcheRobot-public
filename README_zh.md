@@ -4,6 +4,8 @@
 
 WatcheRobot 桌面机器人公开资料仓库，提供硬件资料、机械模型、Python SDK、烧录工具、使用文档和 Release 资产说明。
 
+在线文档：**[wiki.orulink.ai](https://wiki.orulink.ai/)**。网站以本仓库文档为内容源，随正式 Release 更新；[维护与发布说明](wiki/README.md)。
+
 ## 获取机器人
 
 想直接体验整机，省去采购零件和自行组装的过程？**[前往京东预购 WatcheRobot](https://item.jd.com/100326823811.html)**（中国大陆购买渠道）。

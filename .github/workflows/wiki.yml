@@ -1,0 +1,97 @@
+name: Build and publish Wiki
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths: ['wiki/**', 'docs/**', 'README*', 'hardware/**', 'firmware/README*', 'firmware/sdk/README*', 'package*.json', '.github/workflows/wiki.yml']
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing stable Release tag to build (no new product Release is created)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wiki-${{ github.event.release.tag_name || inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.source.outputs.tag }}
+      publish: ${{ steps.source.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Select and validate published source
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "$RELEASE_TAG" ]; then
+            gh release view "$RELEASE_TAG" --json isDraft,isPrerelease --jq 'if .isDraft or .isPrerelease then error("Only stable releases may deploy") else true end'
+            echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Checkout canonical content at release tag
+        if: steps.source.outputs.publish == 'true'
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.source.outputs.tag }}
+          path: .release-source
+      - run: npm ci
+      - run: npm test
+      - run: python -m unittest discover -s wiki/tests -p 'test_*.py'
+      - name: Build release content with current Wiki tooling
+        env:
+          WIKI_SOURCE_REF: ${{ steps.source.outputs.tag }}
+          WIKI_SOURCE_DIR: ${{ steps.source.outputs.publish == 'true' && format('{0}/.release-source', github.workspace) || github.workspace }}
+        run: npm run docs:build
+      - name: Package Wiki
+        shell: bash
+        run: |
+          tar -czf watcherobot-wiki.tar.gz -C wiki/.vitepress/dist .
+          sha256sum watcherobot-wiki.tar.gz > watcherobot-wiki.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wiki
+          path: |
+            watcherobot-wiki.tar.gz
+            watcherobot-wiki.tar.gz.sha256
+
+  publish:
+    if: needs.build.outputs.publish == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wiki
+      - name: Attach static Wiki to the existing Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ needs.build.outputs.tag }}
+        run: gh release upload "$RELEASE_TAG" watcherobot-wiki.tar.gz watcherobot-wiki.tar.gz.sha256 --clobber
