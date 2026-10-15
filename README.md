@@ -2,6 +2,8 @@ English | [简体中文](README_zh.md)
 
 # WatcheRobot
 
+Online documentation: **[wiki.orulink.ai](https://wiki.orulink.ai/en/)**. The Wiki builds from this repository and follows stable Releases. See [maintenance and publishing](wiki/README.en.md).
+
 The public WatcheRobot desktop-robot repository provides hardware files, mechanical models, the Python SDK, flashing tools, user guides, and Release asset documentation.
 
 ## Get Your Robot

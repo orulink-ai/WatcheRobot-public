@@ -32,6 +32,9 @@ __pycache__/
 .venv/
 venv/
 node_modules/
+wiki/.generated/
+wiki/.vitepress/cache/
+wiki/.vitepress/dist/
 
 # Local secrets and machine config
 .env

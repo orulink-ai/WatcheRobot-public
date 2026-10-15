@@ -1,0 +1,11 @@
+[Unit]
+Description=Check for a new WatcheRobot Wiki Release every five minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target
