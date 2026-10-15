@@ -15,11 +15,21 @@ npm run docs:dev
 
 Windows skips four atomic symlink tests; deployment on Windows requires symlink privileges. Run the full suite on Linux before deploying. Rebuild after editing canonical Markdown.
 
-The Wiki workflow validates PRs and main pushes without publishing. A published stable Release builds the Markdown at its tag and attaches `watcherobot-wiki.tar.gz` and its `.sha256` checksum to that existing Release. Manual workflow dispatch accepts an existing stable tag to backfill historical releases. No product tag is created or rewritten. Current checkout supplies the build tooling, while `WIKI_SOURCE_DIR` and `WIKI_SOURCE_REF` select canonical source and revision. Historical tags without supplementary guides omit them.
+## Independent publication
 
-The AWS systemd timer checks GitHub's Latest stable Release every five minutes. Drafts, prereleases and missing/incomplete assets leave the current Wiki intact. Releases not selected as Latest do not activate. SHA256, archive traversal/type/size checks and embedded revision validation precede an atomic symlink switch. A failed HTTPS health check restores the previous symlink. Network errors fail that run and retry next cycle. Replacing a Release asset updates its digest; prefer new Releases for normal changes. Immutable releases need all assets prepared before locking.
+Every main push tests and builds the exact commit, then publishes to the dedicated [wiki-site channel](https://github.com/orulink-ai/WatcheRobot-public/releases/tag/wiki-site). PRs only validate; select main for manual workflow dispatch. The channel is a prerelease explicitly excluded from Latest. It does not create firmware versions or change firmware assets.
+
+Each archive has a unique name containing its source SHA, workflow run ID and attempt. Only after upload succeeds does the workflow update the release body's JSON publication pointer containing repository, source SHA, asset name and SHA256. Publishing is serialized, with main-head checks before and after upload to prevent old reruns from replacing a newer build. The channel requires mutable releases; do not manually replace its JSON body or delete the referenced asset.
+
+AWS checks only `wiki-site` every five minutes, independently of firmware Latest. Missing or incomplete publications leave the current site intact. SHA256, archive traversal/type/size checks and embedded revision validation precede an atomic symlink switch. A failed HTTPS health check restores the previous symlink. Network errors fail that run and retry next cycle.
+
+`/version.json` records the actual source commit, not the channel tag. The tag is a fixed channel entry point and is not moved to track source revisions. Firmware Release events no longer deploy documentation, and historical Wiki assets on firmware releases are not used by the updater. For local revision checks only, `WIKI_SOURCE_DIR` and `WIKI_SOURCE_REF` still select canonical source and revision without publishing.
+
+## Server migration and operations
 
 Install `update.py` at `/opt/watcherobot-wiki/update.py` and the supplied service/timer under `/etc/systemd/system/`. The service runs as `ubuntu`, with write access limited to `/www/wwwroot/wiki.orulink.ai/`; Nginx configuration and certificates remain administrator-owned. No GitHub credential or Node.js build runtime is stored on AWS. Check `systemctl status watcherobot-wiki.service` and `journalctl -u watcherobot-wiki.service` for failures.
+
+When migrating from firmware Release updates, stop the timer and wait for any active service to finish before replacing the server's `update.py`. Run the Linux tests, start the service once, verify live `version.json`, both language homepages and deep routes, then enable the timer again. Merging this repository does not update the installed server script; without this step, the old policy remains active.
 
 Both OS entry points have identical arguments and exit codes. The npm dispatcher selects PowerShell or Bash:
 
@@ -29,4 +39,4 @@ npm run wiki:update -- --root /path/to/wiki --health-url https://wiki.orulink.ai
 
 Direct entry points are `./wiki/update.ps1` and `bash wiki/update.sh`; use `--help` for arguments. Linux systemd calls the Python core directly.
 
-Release directories remain available for rollback. Stop the timer, atomically repoint `current` to the previous directory and verify HTTPS. Change GitHub's Latest selection before restarting the timer to avoid automatically reactivating the unwanted release. Do not modify active release files.
+Release directories remain available for rollback. Stop the timer, atomically repoint `current` to the previous directory and verify HTTPS. Prefer a fix or revert on main that publishes a new package before restarting the timer. For emergency rollback, restore the `wiki-site` JSON pointer to a previously verified package. Do not change firmware Latest or modify active release files. Restarting the timer while it still points to the faulty package will redeploy it.
