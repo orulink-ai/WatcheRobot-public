@@ -2,13 +2,31 @@ English | [简体中文](flashing_zh.md)
 
 # Flashing and First Use
 
-See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for parts and assembly. Once hardware is ready, follow the steps below.
+See [parts and assembly](../hardware/pcb/spares.md). An already-working robot does not need reflashing to configure Wi-Fi; start with the [device guide](../wiki/guides/en/products/watcherobot/device-guide.md).
 
-## 1. Prepare Materials, Files, and Environment
+| Scenario | Method |
+| --- | --- |
+| Compatible firmware already installed; update ESP32-S3 only | [Web flashing](#web); check Release compatibility first |
+| DIY build, complete head recovery, or full paired installation | [Full flashing](#full): STM32, Himax, ESP32-S3, and SD resources |
+| AI-assisted execution | [Release flashing Skill](../skills/watche-release-flash/SKILL.md) |
+
+## Flash ESP32-S3 in a browser {#web}
+
+1. Open the [ORULINK flasher](https://orulink.ai/pages/developer-flash.html) in desktop Chrome/Edge. Connect the head's data USB port with a data cable. Close Desktop and serial monitors that may occupy the port.
+2. Select a device port and wait for ESP32-S3 verification. **SERIAL-B / CH342 B is ESP32; SERIAL-A / CH342 A is Himax**. If both appear as USB Dual_Serial, do not infer identity from COM number order. Disconnect before trying another port after failure.
+3. Select official firmware, check its version, and start flashing. For local firmware, choose a complete merged ESP32-S3 `.bin` intended for address `0x0`, not a ZIP or application-only binary.
+4. Keep power and data connected until an explicit success result and restart. If it does not boot, press RESET only after writing finishes; do not unplug merely because progress reaches 100%.
+5. Perform the [first-run check](action-test.md).
+
+The web tool writes ESP32 only, not STM32, Himax, or SD resources; it cannot replace a first full installation. Official packages overwrite their target partitions, and full-chip erase clears other device data too. Back up needed content first. Initialization failure alone does not prove firmware incompatibility: check port ownership, cable, drivers, and permissions.
+
+## Full Flashing: STM32, Head Firmware, and SD Resources {#full}
+
+### 1. Prepare Materials, Files, and Environment
 
 Have the STM32 body board, Watcher head, ST-LINK V2, USB data cable, SD card, and card reader ready. Disconnect power before changing wiring or inserting/removing the SD card.
 
-Download and extract these assets from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest):
+First [download or clone this repository](https://github.com/orulink-ai/WatcheRobot-public): the `tools/` commands below belong to it, not the firmware archive. Download and extract matching assets from [Releases](https://github.com/orulink-ai/WatcheRobot-public/releases); use release compatibility notes rather than version-number comparisons alone:
 
 | Asset name contains | Purpose |
 | --- | --- |
@@ -25,7 +43,7 @@ conda activate watcherobot
 
 Run the following commands at the repository root, replacing firmware paths with the extracted folders. The script prepares dependencies and flashing tools; initial setup requires internet access.
 
-## 2. Flash the STM32 Body Board
+### 2. Flash the STM32 Body Board
 
 Connect ST-LINK V2 to the four-pin connector on the board inside the body. Follow the labels, not wire colors.
 
@@ -54,7 +72,7 @@ bash tools/flash.sh stm32 --package "extracted-STM32-folder"
 
 Wait for `Programming Finished`, `Verified OK`, and `Resetting Target` with successful completion. Disconnect power and remove ST-LINK before continuing. If the chip cannot be reached, disconnect power and check wiring at both ends.
 
-## 3. Flash Head Himax and ESP32-S3
+### 3. Flash Head Himax and ESP32-S3
 
 Connect the Watcher head with a USB data cable. First run this command to install dependencies and list ports; it does not write firmware:
 
@@ -111,13 +129,15 @@ One command automatically checks the package and ports, flashes ESP32-S3, starts
 
 Stop if ports are missing or inaccessible: automatic CH342 driver installation and Linux serial permission setup are not yet supported.
 
-## 4. Prepare the SD Card with a Card Reader
+### 4. Prepare the SD Card with a Card Reader
 
 Follow the [SD-card Resources guide](sd-card-assets.md) to prepare the format and write resources. Return the card to the head, then continue to the power-on step below.
 
-## 5. Power On and Use
+### 5. Power On and Use
 
-Check the SD card and wiring, connect power, and press the power button. Wait for the normal screen, then open Phone Control. If it opens and the phone connects over BLE, the ESP32, STM32 link, and head control path are working. Allow a few seconds on first entry for BLE and body-control initialization.
+Check the SD card and wiring, then power on. Follow the [device guide](../wiki/guides/en/products/watcherobot/device-guide.md): Desktop Link for computer/SDK access, Phone Control for phone control. Allow initialization to complete.
+
+A BLE connection only proves the phone link; it does not prove STM32, servos, camera, or speaker operation. Check their physical results separately.
 
 Download Desktop or Android installers from the Release; use its TestFlight link for iOS. Python users can follow the [SDK Guide](sdk.md).
 

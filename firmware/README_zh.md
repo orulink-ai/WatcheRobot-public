@@ -12,4 +12,4 @@
 
 环境、接线和命令见[烧录指南](../docs/flashing_zh.md)，SD 卡内容见[SD 卡资源说明](../docs/sd-card-assets_zh.md)，开机后按[首次运行检查](../docs/action-test_zh.md)确认设备。
 
-Codex 用户也可以让助手读取 [`skills/watche-release-flash/SKILL_zh.md`](../skills/watche-release-flash/SKILL_zh.md)，再按提示执行烧录。
+使用 AI 编程助手时，让它读取[发布固件烧录 Skill](../skills/watche-release-flash/SKILL_zh.md)，确认固件和目标设备后协助执行。Skill 是可阅读的操作说明，不限定 Codex。

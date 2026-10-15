@@ -12,7 +12,7 @@ WatcheRobot 桌面机器人公开资料仓库，提供硬件资料、机械模�
 
 海外购买平台即将上线，上线后会在这里补充链接。预购规则及预计发货时间以京东商品页说明为准。
 
-想自己动手制作？可继续阅读下方的[快速开始](#快速开始)，获取硬件资料、装配和烧录指引。
+想自己动手制作？请查看[复现指引](wiki/guides/guide/reproduction.md)，获取硬件资料、装配和烧录步骤。
 
 ## 项目预览
 
@@ -22,54 +22,18 @@ WatcheRobot 面向桌面陪伴、交互展示和开发者实验。整机由 Watc
 
 ## 快速开始
 
-### 1. 获取仓库
+适用于已有可用整机的用户，无需先克隆仓库、准备烧录工具或重新烧录。
 
-```bash
-git clone --recurse-submodules https://github.com/orulink-ai/WatcheRobot-public.git
-cd WatcheRobot-public
-```
+1. **开机并安装客户端**：按[设备使用指南](wiki/guides/products/watcherobot/device-guide.md#install-app)下载适合电脑或手机的安装包。
+2. **配置网络**：用手机 App 扫描设备二维码，完成[Wi-Fi 配网](wiki/guides/products/watcherobot/device-guide.md#wifi)。
+3. **连接机器人**：电脑或 SDK 使用 Desktop Link；手机控制使用 Phone Control，见[连接说明](wiki/guides/guide/getting-started.md)。
+4. **开始使用**：按[首次运行检查](docs/action-test_zh.md)验证表情、灯效和安全范围内的动作。
 
-已克隆但 `python-sdk/` 为空时，运行：
+开发应用请看 [SDK 快速开始](docs/sdk_zh.md)，完整操作请看[设备使用指南](wiki/guides/products/watcherobot/device-guide.md)。
 
-```bash
-git submodule update --init --recursive
-```
+## 复现指引
 
-### 2. 准备环境和材料
-
-物料清单和装配步骤见[立创开源硬件项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)。
-
-| 准备内容 | 用途 |
-| --- | --- |
-| 已装配的 Watcher 头部和机器人身体 | 烧录并运行机器人 |
-| ST-LINK V2 | 烧录身体主板上的 STM32 |
-| USB 数据线 | 烧录头部的 Himax 和 ESP32-S3 |
-| SD 卡和读卡器 | FAT32，分配单元大小 512 字节；写入表情、动作等资源 |
-| Conda | 创建独立环境；其余依赖和烧录工具由脚本准备 |
-| 电脑或手机 | 使用桌面端、App 或 SDK |
-
-### 3. 准备机器人
-
-打开[烧录指南](docs/flashing_zh.md)，按章节依次完成：
-
-1. 烧录身体主板上的 STM32。
-2. 完整烧录 Watcher 头部；脚本先写入 Himax，再用发布包初始化 ESP32-S3。
-3. 用读卡器和仓库写卡脚本安装 SD 资源，并将卡插回头部。
-4. 上电，打开 Phone Control 并连接手机，再完成表情和小幅动作检查。
-
-### 4. 连接并使用
-
-从 [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 下载所需客户端或 SDK：
-
-| 使用方式 | 下载内容 |
-| --- | --- |
-| Windows 桌面端 | x64 `.exe` 安装包 |
-| macOS 桌面端 | Apple Silicon `.dmg` 安装包 |
-| Android App | `.apk` 安装包 |
-| iOS App | [TestFlight](https://testflight.apple.com/join/XFCFsm5M) |
-| Python SDK | `watcherobot` `.whl`，按 [SDK 使用指南](docs/sdk_zh.md)操作 |
-
-网络配置见[设备网络配置说明](docs/manuals/device-network-setup.pdf)。连接后，可运行一个表情和一个动作检查屏幕、灯效和运动。
+想自己动手制作？请按[复现指引](wiki/guides/guide/reproduction.md)获取硬件资料和物料清单，完成装配、配套固件烧录与 SD 卡资源准备，再回到快速开始连接使用。
 
 ## 开发自己的嵌入式固件（开发预览，尚未公开发布）
 
@@ -86,60 +50,16 @@ ESP32-S3 的独立硬件 SDK：开发者拥有自己的 `app_main`、UI 和业�
 尚未完成全部实机验收与固定版本发布。现有 Release 和烧录工具用于官方固件，
 不能当作自定义固件的日常烧录入口。官方应用及 STM32/Himax 实现不在 SDK 开源范围内。
 
-## 目录结构
-
-```text
-WatcheRobot-public/
-├─ README_zh.md / README.md       中英文项目入口
-├─ docs/
-│  ├─ flashing_zh.md / flashing.md        烧录指南
-│  ├─ sd-card-assets_zh.md / sd-card-assets.md    SD 卡资源说明
-│  ├─ action-test_zh.md / action-test.md          首次运行检查
-│  ├─ sdk_zh.md / sdk.md                   SDK 使用指南
-│  ├─ embedded-sdk_zh.md / embedded-sdk.md  独立嵌入式 SDK 预览与发布边界
-│  ├─ versions_zh.md / versions.md         版本来源
-│  ├─ compatibility_zh.md / compatibility.md      配套关系
-│  ├─ release-process_zh.md / release-process.md  发布规则
-│  ├─ governance_zh.md / governance.md             仓库规则
-│  ├─ images/                               文档图片
-│  └─ manuals/                              PDF 使用说明书
-├─ firmware/README_zh.md / README.md       固件下载入口
-├─ hardware/
-│  ├─ pcb/
-│  │  ├─ schematic/                         原理图
-│  │  ├─ layout/                            PCB 版图
-│  │  ├─ gerber/                            生产文件
-│  │  ├─ bom/ / cpl/                       物料和贴片坐标
-│  │  └─ pcb-source/                        EasyEDA Pro 工程源文件
-│  └─ 3d-models/exports/                    STEP 机械模型
-├─ python-sdk/                              Python SDK 子模块
-├─ skills/watche-release-flash/
-│  ├─ SKILL_zh.md                           中文烧录 Skill
-│  └─ SKILL.md                              英文烧录 Skill
-├─ skills/watche-sd-card-write/
-│  ├─ SKILL_zh.md                           中文 SD 写卡 Skill
-│  └─ SKILL.md                              英文 SD 写卡 Skill
-├─ tools/
-│  ├─ flash.ps1                             Windows 烧录入口
-│  ├─ flash.sh                              macOS/Linux 烧录入口
-│  ├─ flash_setup.py                        依赖准备和烧录调度
-│  ├─ install_sd_card_resources.py          SD 资源校验和写卡
-│  └─ sd_package.py                         SD 官方包下载和校验
-├─ .github/                                 Issue、PR 和 CI 配置
-├─ CONTRIBUTING_zh.md / CONTRIBUTING.md     贡献指南
-├─ SECURITY_zh.md / SECURITY.md             安全策略
-└─ LICENSE                                  开源许可证
-```
-
 ## 项目文档
 
 - [烧录指南](docs/flashing_zh.md)：环境、接线、固件烧录、SD 卡和开机检查。
 - [固件入口](firmware/README_zh.md)：各硬件对应的下载包和烧录入口。
 - [SD 卡资源](docs/sd-card-assets_zh.md)和[首次运行检查](docs/action-test_zh.md)。
-- [SDK 使用指南](docs/sdk_zh.md)：安装、配对和运行 Python 脚本。
+- [SDK 使用指南](docs/sdk_zh.md)：安装、配对和运行 Application。
 - [独立嵌入式开发说明](docs/embedded-sdk_zh.md)：硬件 SDK 目标、示例与当前发布状态。
 - [硬件资料](hardware/README_zh.md)：PCB 和机械文件入口。
-- [完整使用说明书（中文 PDF）](docs/manuals/WatcheRobot-user-manual-20260724.pdf)。
+- [设备使用指南](wiki/guides/products/watcherobot/device-guide.md)：开关机、扫码配网、连接电脑和手机。
+- [机器人原子能力](wiki/guides/products/watcherobot/capabilities.md)、[快速创建语音对话](wiki/guides/products/watcherobot/voice.md)和[微信社区](wiki/guides/products/watcherobot/community.md)。
 - [版本来源](docs/versions_zh.md)、[配套关系](docs/compatibility_zh.md)、[发布规则](docs/release-process_zh.md)和[仓库规则](docs/governance_zh.md)。
 - [贡献指南](CONTRIBUTING_zh.md)和[安全策略](SECURITY_zh.md)。
 
@@ -147,7 +67,7 @@ WatcheRobot-public/
 
 - 本仓库公开硬件生产文件、机械模型、Python SDK、烧录工具和说明文档。
 - Python SDK 源码通过 `python-sdk/` 子模块提供。
-- ESP32-S3、Himax、STM32、App、服务端和桌面端源码不在本仓库公开。
+- 官方 ESP32-S3 应用、Himax、STM32、App、服务端和桌面端实现不在本仓库公开；独立嵌入式硬件 SDK 以开发预览形式提供。
 - 固件、客户端安装包和 SD 卡资源通过 GitHub Releases 分发。
 
 ## 技术栈

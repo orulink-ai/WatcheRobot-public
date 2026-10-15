@@ -2,13 +2,31 @@
 
 # 烧录与首次使用
 
-材料清单和组装方法见[立创项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)。准备好硬件后，按以下步骤操作。
+材料见[物料与装配](../hardware/pcb/spares_zh.md)。已有可用整机无需为了配网而重新烧录，直接看[设备使用指南](../wiki/guides/products/watcherobot/device-guide.md)。
 
-## 1. 准备材料、文件和环境
+| 场景 | 选择 |
+| --- | --- |
+| 已有配套固件，只更新 ESP32-S3 | [网页烧录](#web)；先核对 Release 配套要求 |
+| 新复刻、修复整套头部或安装完整配套版本 | [完整烧录](#full)：STM32、Himax、ESP32-S3 和 SD 资源 |
+| 希望 AI 协助执行 | [发布固件烧录 Skill](../skills/watche-release-flash/SKILL_zh.md) |
+
+## 网页烧录 ESP32-S3 {#web}
+
+1. 在电脑 Chrome/Edge 打开 [ORULINK 烧录页](https://orulink.ai/pages/developer-flash.html)。用 USB 数据线连接头部的数据接口，关闭占用串口的桌面端和监视器。
+2. 点击“选择设备端口”，选中设备并等待 ESP32-S3 检测通过。**SERIAL-B / CH342 B 是 ESP32，SERIAL-A / CH342 A 是 Himax**。如果都显示 USB Dual_Serial，不按 COM 编号大小判断；检测失败先断开，再尝试另一口。
+3. 选择“官方固件”，核对版本后开始烧录。使用“本地固件”时，只选择适用于 ESP32-S3、从 `0x0` 写入的完整合并 `.bin`，不是 ZIP 或单独应用固件。
+4. 保持供电和数据线连接，等待明确的成功结果和重启。若未启动，在写入结束后再按 RESET；不要刚到 100% 就拔线。
+5. 按[首次运行检查](action-test_zh.md)确认实际效果。
+
+网页只写 ESP32，不更新 STM32、Himax 或 SD 卡；不能替代首次完整安装。官方包会覆盖其对应分区，选择整片擦除还会清除其他设备数据；先备份需要保留的内容。初始化失败不等于固件不兼容，应先检查串口占用、线材、驱动和权限。
+
+## 完整烧录：STM32、头部固件与 SD 卡资源 {#full}
+
+### 1. 准备材料、文件和环境
 
 准备身体 STM32 主板、Watcher 头部、ST-LINK V2、USB 数据线、SD 卡和读卡器。接线、插拔 SD 卡前先断电。
 
-从 [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 下载并解压：
+先[下载或克隆仓库](https://github.com/orulink-ai/WatcheRobot-public)，下列 `tools/` 命令来自仓库，不是固件包。再从 [Releases](https://github.com/orulink-ai/WatcheRobot-public/releases) 下载并解压相匹配的资源；按发布说明选择组合，不单凭版本数字：
 
 | 附件名称包含 | 用途 |
 | --- | --- |
@@ -25,7 +43,7 @@ conda activate watcherobot
 
 在仓库根目录运行以下命令，将固件路径替换为实际解压目录。依赖和烧录工具由脚本自动准备，首次运行需联网。
 
-## 2. 烧录身体主板 STM32
+### 2. 烧录身体主板 STM32
 
 用 ST-LINK V2 连接身体内部主板的四针接口，按印字对应，不按线色猜。
 
@@ -54,7 +72,7 @@ bash tools/flash.sh stm32 --package "解压后的STM32目录"
 
 依次看到 `Programming Finished`、`Verified OK`、`Resetting Target` 且成功结束后，断电移除 ST-LINK，再继续下一步。若连不上芯片，先断电核对两端接线。
 
-## 3. 烧录头部 Himax 和 ESP32-S3
+### 3. 烧录头部 Himax 和 ESP32-S3
 
 用 USB 数据线连接 Watcher 头部。先运行以下命令，脚本安装依赖并列出串口；此命令不写入固件：
 
@@ -111,13 +129,15 @@ bash tools/flash.sh head --package "解压后的PTL-paired目录" --port "/dev/S
 
 若串口未出现或无法访问，先停止：当前脚本尚不能自动处理 CH342 驱动和 Linux 串口权限。
 
-## 4. 用读卡器准备 SD 卡
+### 4. 用读卡器准备 SD 卡
 
 按 [SD 卡资源指南](sd-card-assets_zh.md)完成格式设置和资源写入，将卡插回头部后，继续下一步上电。
 
-## 5. 上电并使用
+### 5. 上电并使用
 
-确认 SD 卡和接线就位，接通电源并按电源键开机。等待正常界面出现，再打开 Phone Control；页面能进入且手机能通过 BLE 连接，说明 ESP32、STM32 通信和头部控制链路已工作。首次进入时等待几秒完成 BLE 和身体控制初始化。
+确认 SD 卡和接线就位，接通电源并开机。按[设备使用指南](../wiki/guides/products/watcherobot/device-guide.md)配网：电脑/SDK 使用 Desktop Link，手机控制使用 Phone Control。首次进入时等待初始化完成。
+
+BLE 连接成功只证明手机链路建立，不能证明 STM32、舵机、摄像头或扬声器都正常；仍要分别检查实际效果。
 
 从 Release 下载 Desktop 或 Android 安装包；iOS 使用页面中的 TestFlight。Python 用户见 [SDK 指南](sdk_zh.md)。
 

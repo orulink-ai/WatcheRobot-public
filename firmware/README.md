@@ -12,4 +12,4 @@ Independent ESP32 hardware SDK source and examples are provided in [sdk/](sdk/RE
 
 See the [Flashing Guide](../docs/flashing.md) for environment, wiring, and commands; [SD-card Resources](../docs/sd-card-assets.md) for card contents; and the [First-run Check](../docs/action-test.md) after startup.
 
-Codex users can also ask the assistant to read [`skills/watche-release-flash/SKILL.md`](../skills/watche-release-flash/SKILL.md) and follow it for flashing.
+With an AI coding assistant, ask it to read the [release flashing Skill](../skills/watche-release-flash/SKILL.md), confirm the firmware and target device, and help execute it. The Skill is readable guidance, not exclusive to Codex.

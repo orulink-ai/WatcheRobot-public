@@ -1,57 +1,30 @@
-# Python SDK overview
+English | [简体中文](../../sdk/index.md)
 
-`watcherobot` is the official Python SDK and includes the WatcheRobot Runtime/Daemon. Developer programs run as managed Applications and receive Desktop and Device channels from the Daemon.
+# SDK and Applications
 
-## Requirements
+The Python SDK runs on your computer and includes the Runtime/Daemon. It is separate from the [embedded hardware SDK](../../../../docs/embedded-sdk.md) compiled onto ESP32.
 
-- Python 3.10–3.12; Python 3.11 is recommended.
-- Windows or macOS with Bluetooth for first-time provisioning.
-- The computer and robot on the same local network.
-- A powered robot running compatible firmware.
+## Where to start
 
-## Install
+Follow the [Python SDK quick start](../../../../docs/sdk.md) to install, pair, create, and run an application. Then explore:
 
-```bash
-python -m venv .venv
-python -m pip install --upgrade pip
-python -m pip install watcherobot
-```
+- [Robot capabilities](../products/watcherobot/capabilities.md): interfaces and limitations.
+- [Voice conversations](../products/watcherobot/voice.md): a customizable ASR → LLM → TTS application.
 
-Activate the environment, then confirm the CLI:
+## Three roles
 
-```powershell
-# Windows PowerShell
-.\.venv\Scripts\Activate.ps1
-watcherobot --version
-```
+| Role | Responsibility |
+| --- | --- |
+| Watcher Desktop | User interface, local runtime supervision, and application entry points |
+| SDK Daemon | Device connections, pairing, application lifecycle, and message channels |
+| Application | Business logic, model services, and motion orchestration through `app.robot` and `app.desktop` |
 
-```sh
-# macOS / Linux
-source .venv/bin/activate
-watcherobot --version
-```
+Applications receive injected channels through `ApplicationContext.from_environment()` and start with `watcherobot app run`. Do not create a separate connection that bypasses the Daemon.
 
-## Pair a robot
+While an Application runs, Desktop business messages go to it to decide how to respond. Only when no Application runs does the Daemon transparently forward messages. Custom applications must handle or safely ignore unsupported desktop messages.
 
-```bash
-watcherobot robot setup
-```
+## Versions and verification
 
-If Wi-Fi is already configured, open the **Python SDK** Application on the robot and use its six-digit code:
+These Python guides were checked against 0.1.12. The installed package, Desktop-bundled runtime, source submodule, and firmware have separate versions; record each during troubleshooting.
 
-```bash
-watcherobot robot pair 123456
-watcherobot robot status
-```
-
-## Create an Application
-
-```bash
-watcherobot app init hello_robot
-cd hello_robot
-watcherobot app run
-```
-
-Always start an Application with `watcherobot app run`, not `python app.py`. The Daemon must inject the device and desktop channels.
-
-For the complete CLI, media APIs, Marketplace contract, and examples, see the versioned documentation in the [WatcheRobot Python SDK repository](https://github.com/orulink-ai/WatcheRobot_python_sdk).
+Passing `app check`, receiving an ACK, completing a Job, and observing the physical result are different verification levels. Validate your actual device and application combination before use.

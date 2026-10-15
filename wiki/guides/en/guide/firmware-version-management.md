@@ -1,6 +1,10 @@
+English | [简体中文](../../guide/firmware-version-management.md)
+
 # Firmware version management
 
-Firmware switching, Factory Reset, and USB recovery solve different problems. Factory Reset does not change the firmware version. Use Watcher Desktop and a USB connection to upgrade or downgrade firmware.
+Firmware switching, Factory Reset, and USB recovery solve different problems. Factory Reset does not change firmware. USB updates can use Watcher Desktop or the tools in the [flashing guide](../../../../docs/flashing.md), not just one entry point.
+
+Local ESP32 source `7699527` also includes on-device system updating. Availability depends on firmware build, networking, update source, and paired packages. Source presence does not mean every shipped device supports it. Updating ESP32 alone is not a full STM32/Himax/SD-resource upgrade.
 
 ## Switch firmware versions in the client
 
@@ -32,7 +36,7 @@ Factory Reset clears or resets:
 - Screen brightness and system volume, which return to the firmware defaults.
 - Client pairing information and the pairing secret. The robot must be paired with the client again.
 - Locally stored voice-service connection addresses, accounts, passwords, and access tokens.
-- The locally stored device identifier and internal runtime state. A new device identifier is generated during a later startup.
+- Runtime configuration in NVS and the internal `/spiffs/app_center` application-package cache. The current WR Device ID is derived from the hardware MAC, so a factory reset does not assign the same hardware a different WR ID; pairing is still required again.
 
 Factory Reset does not delete:
 

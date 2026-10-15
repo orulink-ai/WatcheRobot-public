@@ -2,7 +2,7 @@
 
 # 硬件资料
 
-物料和装配步骤见[立创开源硬件项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)。本目录保存 PCB、BOM、贴片坐标、Gerber 和机械模型。
+整机与板卡 BOM 见[物料与装配](pcb/spares_zh.md)，装配步骤见[立创开源硬件项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)。本目录保存 PCB、BOM、贴片坐标、Gerber 和机械模型。
 
 | 实物 | 资料位置 |
 | --- | --- |

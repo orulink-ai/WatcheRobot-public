@@ -12,7 +12,7 @@ Prefer a finished robot without sourcing parts and assembling it yourself? **[Pr
 
 International purchasing channels are coming soon. We will add the links here when they launch. See the JD.com product page for pre-order details and delivery estimates.
 
-Want to build your own? Follow the [Quick Start](#quick-start) below for hardware resources, assembly, and flashing instructions.
+Want to build your own? Follow the [DIY build guide](wiki/guides/en/guide/reproduction.md) for hardware resources, assembly, and flashing instructions.
 
 ## Project Preview
 
@@ -22,54 +22,18 @@ WatcheRobot is designed for desktop companionship, interactive demos, and develo
 
 ## Quick Start
 
-### 1. Get the Repository
+For users who already have a working, assembled robot. Cloning the repository, preparing flashing tools, or reflashing is not required.
 
-```bash
-git clone --recurse-submodules https://github.com/orulink-ai/WatcheRobot-public.git
-cd WatcheRobot-public
-```
+1. **Power on and install a client**: download an installer for your computer or phone from the [device guide](wiki/guides/en/products/watcherobot/device-guide.md#install-app).
+2. **Configure networking**: scan the robot's QR code in the phone App and complete [Wi-Fi setup](wiki/guides/en/products/watcherobot/device-guide.md#wifi).
+3. **Connect the robot**: use Desktop Link for a computer or SDK, and Phone Control for phone control; see [Getting started](wiki/guides/en/guide/getting-started.md).
+4. **Start using it**: perform the [first-run check](docs/action-test.md) for expressions, lights, and movements within a safe range.
 
-If `python-sdk/` is empty in an existing clone, run:
+For application development, see the [SDK quick start](docs/sdk.md). For full operating instructions, see the [device guide](wiki/guides/en/products/watcherobot/device-guide.md).
 
-```bash
-git submodule update --init --recursive
-```
+## DIY Build Guide
 
-### 2. Prepare the Environment and Materials
-
-See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for the bill of materials and assembly steps.
-
-| Prepare | Purpose |
-| --- | --- |
-| Assembled Watcher head and robot body | Flash and run the robot |
-| ST-LINK V2 | Flash STM32 on the body board |
-| USB data cable | Flash Himax and ESP32-S3 in the head |
-| SD card and card reader | FAT32, 512-byte allocation unit; write expression, movement, and other resources |
-| Conda | Create an isolated environment; the scripts prepare the remaining dependencies and tools |
-| Computer or phone | Use Desktop, App, or SDK |
-
-### 3. Prepare the Robot
-
-Open the [Flashing Guide](docs/flashing.md) and follow its sections in order:
-
-1. Flash STM32 on the body board.
-2. Fully flash the Watcher head; the script writes Himax first and initializes ESP32-S3 from the release package.
-3. Use a card reader and the repository writer to install the SD resources, then return the card to the head.
-4. Power on, open Phone Control, connect the phone, then check one expression and one small movement.
-
-### 4. Connect and Use
-
-Download the required client or SDK from the [Latest Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest):
-
-| Interface | Download |
-| --- | --- |
-| Windows Desktop | x64 `.exe` installer |
-| macOS Desktop | Apple Silicon `.dmg` installer |
-| Android App | `.apk` installer |
-| iOS App | [TestFlight](https://testflight.apple.com/join/XFCFsm5M) |
-| Python SDK | `watcherobot` `.whl`; follow the [SDK Guide](docs/sdk.md) |
-
-See the [device network setup guide (Chinese PDF)](docs/manuals/device-network-setup.pdf). Once connected, run one expression and one movement to check the display, lights, and motion.
+Want to build your own? Follow the [DIY build guide](wiki/guides/en/guide/reproduction.md) for hardware files, the BOM, assembly, paired firmware flashing, and SD resources. Then return to Quick Start to connect and use the robot.
 
 ## Build Your Own Embedded Firmware (Development Preview, Not Publicly Released)
 
@@ -89,60 +53,16 @@ a development preview without full hardware acceptance or a pinned release.
 Existing Releases and tools flash official firmware, not everyday custom builds.
 Official application and STM32/Himax implementations remain outside SDK open-source scope.
 
-## Repository Structure
-
-```text
-WatcheRobot-public/
-├─ README.md / README_zh.md       English and Chinese project entry
-├─ docs/
-│  ├─ flashing.md / flashing_zh.md        Flashing guide
-│  ├─ sd-card-assets.md / sd-card-assets_zh.md    SD-card resource guide
-│  ├─ action-test.md / action-test_zh.md          First-run check
-│  ├─ sdk.md / sdk_zh.md                  SDK guide
-│  ├─ embedded-sdk.md / embedded-sdk_zh.md Embedded SDK preview and release boundaries
-│  ├─ versions.md / versions_zh.md        Version sources
-│  ├─ compatibility.md / compatibility_zh.md      Compatibility notes
-│  ├─ release-process.md / release-process_zh.md  Release rules
-│  ├─ governance.md / governance_zh.md            Repository rules
-│  ├─ images/                              Documentation images
-│  └─ manuals/                             PDF user manuals
-├─ firmware/README.md / README_zh.md       Firmware download entry
-├─ hardware/
-│  ├─ pcb/
-│  │  ├─ schematic/                        Schematics
-│  │  ├─ layout/                           PCB layouts
-│  │  ├─ gerber/                           Production files
-│  │  ├─ bom/ / cpl/                      BOM and placement files
-│  │  └─ pcb-source/                       EasyEDA Pro project source
-│  └─ 3d-models/exports/                   STEP mechanical models
-├─ python-sdk/                             Python SDK submodule
-├─ skills/watche-release-flash/
-│  ├─ SKILL.md                             English flashing Skill
-│  └─ SKILL_zh.md                          Chinese flashing Skill
-├─ skills/watche-sd-card-write/
-│  ├─ SKILL.md                             English SD-card Skill
-│  └─ SKILL_zh.md                          Chinese SD-card Skill
-├─ tools/
-│  ├─ flash.ps1                            Windows flashing entry
-│  ├─ flash.sh                             macOS/Linux flashing entry
-│  ├─ flash_setup.py                       Dependency setup and flashing dispatcher
-│  ├─ install_sd_card_resources.py         SD validation and writer
-│  └─ sd_package.py                        Official SD package resolver
-├─ .github/                                Issue, PR, and CI configuration
-├─ CONTRIBUTING.md / CONTRIBUTING_zh.md    Contribution guide
-├─ SECURITY.md / SECURITY_zh.md            Security policy
-└─ LICENSE                                 Open-source license
-```
-
 ## Project Documentation
 
 - [Flashing Guide](docs/flashing.md): environment, wiring, firmware flashing, SD card, and startup checks.
 - [Firmware Entry Point](firmware/README.md): download package and flashing entry for each target.
 - [SD-card Resources](docs/sd-card-assets.md) and [First-run Check](docs/action-test.md).
-- [SDK Guide](docs/sdk.md): installation, pairing, and running Python scripts.
+- [SDK Guide](docs/sdk.md): installation, pairing, and running Applications.
 - [Embedded Development Preview](docs/embedded-sdk.md): hardware SDK goals, examples, and current release status.
 - [Hardware Files](hardware/README.md): PCB and mechanical-file entry point.
-- [Full User Manual (Chinese PDF)](docs/manuals/WatcheRobot-user-manual-20260724.pdf).
+- [Device Guide](wiki/guides/en/products/watcherobot/device-guide.md): power, Wi-Fi, computer and phone connections.
+- [Robot Capabilities](wiki/guides/en/products/watcherobot/capabilities.md), [Voice Conversations](wiki/guides/en/products/watcherobot/voice.md), and [WeChat Community](wiki/guides/en/products/watcherobot/community.md).
 - [Version Sources](docs/versions.md), [Compatibility](docs/compatibility.md), [Release Rules](docs/release-process.md), and [Repository Rules](docs/governance.md).
 - [Contributing Guide](CONTRIBUTING.md) and [Security Policy](SECURITY.md).
 
@@ -150,7 +70,7 @@ WatcheRobot-public/
 
 - This repository publishes hardware production files, mechanical models, the Python SDK, flashing tools, and documentation.
 - Python SDK source is provided through the `python-sdk/` submodule.
-- ESP32-S3, Himax, STM32, App, server, and Desktop source code is not published here.
+- Official ESP32-S3 application, Himax, STM32, App, server, and Desktop implementations are not published here; an independent embedded hardware SDK is available as a development preview.
 - Firmware, client installers, and SD-card resources are distributed through GitHub Releases.
 
 ## Technology Stack
