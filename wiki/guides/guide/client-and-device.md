@@ -1,4 +1,8 @@
+[English](../en/guide/client-and-device.md) | 简体中文
+
 # 客户端与设备
+
+首次连接先按[设备使用指南](../products/watcherobot/device-guide.md)完成扫码配网，再进入 **Desktop Link** 配对电脑。手机控制使用 **Phone Control**；两个入口不能混为一套操作。
 
 Watcher Desktop 是用户操作入口，但它不直接复制一套设备通信实现。客户端监管 SDK Daemon，Daemon 统一拥有设备连接并管理当前 Application。
 

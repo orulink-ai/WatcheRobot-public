@@ -1,36 +1,33 @@
+English | [简体中文](../../guide/getting-started.md)
+
 # Getting started
 
-Follow this path when setting up a WatcheRobot for the first time. At the end, Watcher Desktop should recognize the robot and you can use an official Application or continue with SDK development.
+This page is for users with a working, assembled robot. Start with power and networking; source downloads and reflashing are not prerequisites. To build your own robot, follow the [DIY build guide](reproduction.md).
 
-## Before you begin
+## 1. Power on and install a client
 
-- Keep the robot powered and near the computer.
-- First-time provisioning requires Bluetooth on Windows or macOS.
-- After provisioning, connect the computer and robot to the same local network.
-- Do not run multiple Watcher Desktop or SDK Runtime instances during setup.
+Use stable power and a safe, level surface. Find phone and desktop downloads in the [device guide](../products/watcherobot/device-guide.md#install-app), choosing the installer for your system.
 
-## 1. Install Watcher Desktop
+## 2. Configure Wi-Fi with a QR code
 
-Download the installer for your operating system from [Watcher Desktop Release Assets](https://github.com/orulink-ai/WatcheRobot-public/releases/latest).
+First boot without saved credentials opens provisioning automatically. Alternatively open **Settings → Wi-Fi**. In the phone app, select **Scan QR code**, scan the robot, choose Wi-Fi, and enter the password. Wait for app success and Connected/IP on the robot.
 
-Watcher Desktop owns the user interface and supervises the local runtime. The bundled SDK Daemon owns pairing, device connections, and Application lifecycle.
+See the [illustrated Wi-Fi guide](../products/watcherobot/device-guide.md#wifi). The phone needs Bluetooth and camera permissions; computer Bluetooth is not required. Do not repeatedly use Disconnect on a working network: it clears saved Wi-Fi.
 
-## 2. Provision the network
+## 3. Choose a connection
 
-Open **Settings > Wi-Fi** on the robot and follow the on-device instructions. Once credentials are saved, the robot connects to the local network.
+| Goal | Robot mode | Next step |
+| --- | --- | --- |
+| Computer client | Desktop Link | Same LAN; enter the six-digit robot code when prompted |
+| Phone control | Phone Control | Tap Add Device in the app and match the Device ID |
+| Develop an application | Desktop Link | Follow the [SDK quick start](../../../../docs/sdk.md) to pair and run an Application |
 
-## 3. Pair the robot
+Pairing does not mean an application is running. See [Client and device](client-and-device.md) for connection states.
 
-1. Open Watcher Desktop.
-2. Confirm that the displayed device identity matches the robot.
-3. Open the matching connection entry on the robot.
-4. Enter the six-digit pairing code shown on the robot.
-5. Wait until the client reports a connected state.
+## 4. Verify and continue
 
-See [Client and device](./client-and-device.md) for the connection model and state meanings.
+Check one expression, light effect, and small movement in a safe area using the [first-run check](../../../../docs/action-test.md). On a computer, select and start an installed official or custom Application in the client.
 
-## 4. Choose the next path
-
-- Read [Firmware version management](./firmware-version-management.md) before upgrading or downgrading.
-- Open the [Python SDK overview](../sdk/index.md) to build an Application.
-- Start with [Troubleshooting](../troubleshooting/index.md) if the connection fails.
+- Update firmware: [flashing](../../../../docs/flashing.md) and [version management](firmware-version-management.md).
+- Build applications: [capabilities](../products/watcherobot/capabilities.md) and [voice conversations](../products/watcherobot/voice.md).
+- Connection issues: [troubleshooting](../troubleshooting/index.md); discuss with the [WeChat community](../products/watcherobot/community.md).

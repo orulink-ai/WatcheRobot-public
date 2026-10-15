@@ -1,11 +1,22 @@
+[English](../en/troubleshooting/index.md) | 简体中文
+
 # 故障排查
 
 从最小范围开始定位问题，不要一开始就清除数据或整片擦除 Flash。
+
+## 扫码配网失败
+
+- 使用 WatcheRobot App 内的 Scan QR code，不是微信扫码；检查手机蓝牙和相机权限。
+- 设备停在 Preparing 时，等待广播就绪；不要把等待状态当作二维码或密码错误。
+- 输入密码后等 App 成功通知和设备 Connected/IP；错误密码按提示重试。
+- 已联网的信息页没有二维码是正常状态。Disconnect 会清除 Wi-Fi，只在需要更换网络时使用。
+- 图文步骤见[设备使用指南](../products/watcherobot/device-guide.md#wifi)。
 
 ## 客户端找不到设备
 
 1. 确认机器人已经完成启动并保持供电。
 2. 确认电脑与机器人位于同一局域网。
+   在机器人上打开 Desktop Link，而不是 Phone Control。
 3. 暂停其他正在运行的 Watcher Desktop 或 SDK Runtime 实例。
 4. 检查防火墙是否阻止本地网络发现。
 5. 重启客户端后再次观察设备列表。
@@ -40,3 +51,5 @@
 - 设备连接方式和网络环境；
 - 可复现步骤、预期结果和实际结果；
 - 脱敏后的相关日志。
+
+可以通过 [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues) 或[微信社区](../products/watcherobot/community.md)交流；不要公开 Wi-Fi 密码、配对码或服务密钥。

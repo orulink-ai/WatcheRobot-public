@@ -1,22 +1,19 @@
-<p><strong>English</strong> | <a href="spares_zh.md">简体中文</a></p>
+English | [简体中文](spares_zh.md)
 
-# Event Spare Parts
+# Parts and assembly
 
-Use this file to track spare parts prepared for reproduction or maintenance. The BOM workbooks contain model, supplier, supplier part number, and alternate-part fields; this document records what is physically available on site.
+Start with the whole-robot assembly workbook, then download board BOMs as needed. These links point to existing Excel files; there is no empty spare-parts template to fill in.
 
-## Spare Parts Template
+| File | Purpose |
+| --- | --- |
+| [Whole-robot assembly parts](bom/BOM_Assembly_整机组装料.xlsx) | Procurement and assembly reference; about 68 MiB, download to view |
+| [STM32 servo controller BOM](bom/BOM_STM32Servo_反馈舵机控制板.xlsx) | Body board components |
+| [Foot charger BOM](bom/BOM_FootCharger_脚底充电板.xlsx) | Foot charging board components |
+| [Wireless base BOM](bom/BOM_WirelessBase_无线充电底座.xlsx) | Charging base components |
+| [Side light BOM](bom/BOM_SideLight_侧边灯板.xlsx) | Side light board components |
 
-| Board | Part or designator | Recommended spare qty | Supplier link | Alternate part | Event location | Notes |
-| --- | --- | ---: | --- | --- | --- | --- |
-| Feedback servo STM32 co-processor board | TBD | TBD | TBD | TBD | TBD | Fill before release. |
-| Foot charging board | TBD | TBD | TBD | TBD | TBD | Fill before release. |
-| Wireless charging base | TBD | TBD | TBD | TBD | TBD | Fill before release. |
-| Side LED board | TBD | TBD | TBD | TBD | TBD | Fill before release. |
+See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for assembly and [MakerWorld](https://makerworld.com.cn/zh/models/2911544-watcherobot) for printable models. Find PCB sources, Gerbers, placement files, and mechanical models in [hardware resources](../README.md).
 
-## Minimum Event Checklist
+Match BOM, Gerber, and CPL revisions to the actual board. This index is not an inventory or purchasing record. Use the workbooks and assembly instructions for part numbers, quantities, screws, and cables; ask the maintainers about omissions rather than guessing substitutes.
 
-- Confirm every spare item maps to a BOM row.
-- Add a purchase or supplier link where possible.
-- Mark spare parts that are prepared but not normally assembled.
-- Keep the physical storage location clear enough for builders and maintainers.
-- Update this file before publishing a full hardware release.
+After assembly and unpowered wiring checks, continue with [flashing and first use](../../docs/flashing.md).

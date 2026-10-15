@@ -1,4 +1,8 @@
+English | [简体中文](../../guide/client-and-device.md)
+
 # Client and device
+
+For first use, follow the [device guide](../products/watcherobot/device-guide.md) to provision Wi-Fi, then open **Desktop Link** for computer pairing. Phone control uses **Phone Control**; these are separate workflows.
 
 Watcher Desktop is the user-facing control surface. It supervises the SDK Daemon instead of maintaining a second device-connection implementation.
 
@@ -31,3 +35,9 @@ A short disconnect does not imply corrupt credentials. Allow automatic reconnect
 Desktop business messages enter the selected Application first. The Application decides how to interact with the device. When no Application is running, the Daemon can transparently forward desktop and device traffic.
 
 This boundary gives third-party Applications ownership of their protocol without allowing the desktop to open a second business connection to the robot.
+
+## Next steps
+
+- [Firmware version management](firmware-version-management.md)
+- [SDK and Applications](../sdk/index.md)
+- [Troubleshooting](../troubleshooting/index.md)

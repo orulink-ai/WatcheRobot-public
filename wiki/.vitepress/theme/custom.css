@@ -138,6 +138,29 @@ body {
   text-underline-offset: 3px;
 }
 
+.device-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  align-items: start;
+  gap: 16px;
+}
+
+.device-guide-grid p { margin: 0; min-width: 0; }
+.device-guide-grid img {
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+  object-position: center top;
+}
+.device-guide-controls img { height: 240px; }
+.community-qr img { width: 280px; max-width: 100%; height: auto; }
+.vp-doc h1, .vp-doc h2, .vp-doc h3, .VPNavBarTitle .title { letter-spacing: 0; }
+
+@media (max-width: 480px) {
+  .device-guide-grid { grid-template-columns: 1fr; }
+  .device-guide-grid img { height: auto; max-height: 400px; }
+}
+
 .vp-doc div[class*="language-"] {
   border: 1px solid var(--vp-c-divider);
   border-radius: var(--wr-radius-md);

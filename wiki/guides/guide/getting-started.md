@@ -1,41 +1,33 @@
+[English](../en/guide/getting-started.md) | 简体中文
+
 # 快速开始
 
-这条路径适合第一次使用 WatcheRobot 的用户。完成后，Watcher Desktop 能识别设备，你也可以继续体验官方 Application 或开始 SDK 开发。
+本页面向已有可用整机的用户，从开机和配网开始，不需要先下载源码或重新烧录。想自己动手制作，请看[复现指引](reproduction.md)。
 
-## 开始前
+## 1. 开机并安装客户端
 
-- 给机器人稳定供电，并将它放在电脑附近。
-- 首次配网需要 Windows 或 macOS 电脑提供蓝牙能力。
-- 配网完成后，电脑与机器人应连接到同一个局域网。
-- 不要在连接过程中同时运行多个 Watcher Desktop 或 SDK Runtime 实例。
+稳定供电，在安全、平整的位置开机。手机 App 和桌面端下载入口见[设备使用指南](../products/watcherobot/device-guide.md#install-app)，按你的系统选择安装包。
 
-## 1. 安装 Watcher Desktop
+## 2. 扫码配置 Wi-Fi
 
-从 [Watcher Desktop Release Assets](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 下载与你的系统匹配的安装包并完成安装。
+第一次开机没有已保存的网络时，设备会自动打开配网页；也可进入 **Settings → Wi-Fi**。打开手机 App 的 **Scan QR code**，扫描机器人屏幕二维码，选择 Wi-Fi 并输入密码，等待手机提示成功和设备显示 Connected/IP。
 
-Watcher Desktop 负责界面和本地运行时监管；实际设备连接、配对和 Application 生命周期由随客户端安装的 SDK Daemon 管理。
+完整图文见[扫码配网](../products/watcherobot/device-guide.md#wifi)。手机需要蓝牙与相机权限；不要求电脑有蓝牙。已连接正确网络时不要反复点击 Disconnect，它会清除已保存的 Wi-Fi。
 
-## 2. 给设备配置网络
+## 3. 选择连接方式
 
-在机器人上打开 **Settings > Wi-Fi**，按照界面提示选择设备并输入 Wi-Fi 信息。配网成功后，设备会保存网络凭据并尝试连接局域网。
+| 你要做什么 | 设备入口 | 下一步 |
+| --- | --- | --- |
+| 使用电脑客户端 | Desktop Link | 电脑与机器人同一局域网，按客户端提示输入设备六位配对码 |
+| 用手机控制 | Phone Control | App 点击 Add Device，核对 Device ID 后连接 |
+| 开发自己的应用 | Desktop Link | 按 [SDK 快速开始](../../../docs/sdk_zh.md)配对并运行 Application |
 
-::: tip
-如果设备已经连入正确的 Wi-Fi，不需要重复清除网络。直接进入下一步即可。
-:::
+配对成功不等于应用已运行。连接状态见[客户端与设备](client-and-device.md)。
 
-## 3. 完成配对
+## 4. 检查并继续
 
-1. 打开 Watcher Desktop。
-2. 确认客户端显示的设备身份与机器人一致。
-3. 在机器人上打开对应的连接入口。
-4. 按客户端提示输入机器人显示的六位配对码。
-5. 等待状态变为已连接。
+先在安全范围内检查一个表情、灯效和小幅动作，见[首次运行检查](../../../docs/action-test_zh.md)。使用电脑时，在客户端选择并启动已安装的官方或自定义 Application。
 
-更完整的状态解释见[客户端与设备](./client-and-device.md)。
-
-## 4. 选择下一条路径
-
-- 只使用机器人：在客户端中选择已安装的官方 Application。
-- 管理固件：阅读[固件版本管理](./firmware-version-management.md)。
-- 开发自己的体验：进入 [Python SDK 概览](../sdk/index.md)。
-- 无法连接：从[故障排查](../troubleshooting/index.md)开始检查。
+- 更新固件：[烧录指南](../../../docs/flashing_zh.md)与[版本管理](firmware-version-management.md)。
+- 编写应用：[原子能力](../products/watcherobot/capabilities.md)与[语音对话](../products/watcherobot/voice.md)。
+- 连接异常：[故障排查](../troubleshooting/index.md)；需要交流时加入[微信社区](../products/watcherobot/community.md)。
