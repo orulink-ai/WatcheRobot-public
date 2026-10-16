@@ -11,12 +11,10 @@ import shutil
 import tarfile
 import tempfile
 from urllib.error import HTTPError
-from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 REPOSITORY = 'orulink-ai/WatcheRobot-public'
-ARCHIVE = 'watcherobot-wiki.tar.gz'
-CHECKSUM = ARCHIVE + '.sha256'
+WIKI_TAG = 'wiki-site'
 MAX_DOWNLOAD = 64 * 1024 * 1024
 MAX_EXPANDED = 256 * 1024 * 1024
 
@@ -31,16 +29,26 @@ def download(url, limit=MAX_DOWNLOAD):
 
 
 def release_assets(release):
-    if release.get('draft') or release.get('prerelease'):
+    if release.get('draft') or not release.get('prerelease') or release.get('tag_name') != WIKI_TAG:
         return None
+    body = release.get('body', '')
+    if not body or body == 'Documentation publication pending.':
+        return None
+    publication = json.loads(body)
+    source_ref = publication.get('sourceRef', '')
+    name = publication.get('archive', '')
+    if (publication.get('repository') != REPOSITORY
+            or not re.fullmatch(r'[a-f0-9]{40}', source_ref)
+            or not re.fullmatch(r'[a-f0-9]{64}', publication.get('sha256', ''))
+            or not re.fullmatch(r'watcherobot-wiki-' + source_ref + r'-[1-9][0-9]*-[1-9][0-9]*\.tar\.gz', name)):
+        raise ValueError('Invalid Wiki publication manifest')
     assets = {asset['name']:asset for asset in release.get('assets', [])}
-    if not all(name in assets for name in (ARCHIVE, CHECKSUM)):
+    if name not in assets:
         return None
-    prefix = f"https://github.com/{REPOSITORY}/releases/download/{quote(release['tag_name'], safe='')}/"
-    for name in (ARCHIVE, CHECKSUM):
-        if assets[name]['browser_download_url'] != prefix + name:
-            raise ValueError('Unexpected release asset destination')
-    return assets
+    url = f'https://github.com/{REPOSITORY}/releases/download/{WIKI_TAG}/{name}'
+    if assets[name]['browser_download_url'] != url:
+        raise ValueError('Unexpected release asset destination')
+    return publication, url
 
 
 @contextmanager
@@ -133,34 +141,32 @@ def install_bundle(root, payload, digest, tag, release_id, health):
 def run(root, health_url):
     with update_lock(root):
         try:
-            release = json.loads(download(f'https://api.github.com/repos/{REPOSITORY}/releases/latest', 1024 * 1024))
+            release = json.loads(download(f'https://api.github.com/repos/{REPOSITORY}/releases/tags/{WIKI_TAG}', 8 * 1024 * 1024))
         except HTTPError as error:
             if error.code == 404:
-                print('No published stable Release yet; keeping current Wiki')
+                print('No independent Wiki publication yet; keeping current Wiki')
                 return
             raise
         assets = release_assets(release)
         if assets is None:
-            print('Latest Release has no complete Wiki assets yet; keeping current Wiki')
+            print('Wiki publication is incomplete; keeping current Wiki')
             return
-        checksum = download(assets[CHECKSUM]['browser_download_url'], 1024).decode('ascii').strip()
-        match = re.fullmatch(r'([a-f0-9]{64})\s+\*?' + re.escape(ARCHIVE), checksum)
-        if not match:
-            raise ValueError('Invalid checksum file')
-        digest = match[1]
+        publication, archive_url = assets
+        digest = publication['sha256']
+        source_ref = publication['sourceRef']
         target = f"releases/{release['id']}-{digest[:16]}"
         if (root / 'current').is_symlink() and os.readlink(root / 'current') == target:
-            print(f"Wiki already current: {release['tag_name']}")
+            print(f'Wiki already current: {source_ref}')
             return
-        payload = download(assets[ARCHIVE]['browser_download_url'])
+        payload = download(archive_url)
         def health():
             version = json.loads(download(health_url.rstrip('/') + '/version.json', 4096))
-            if version.get('sourceRef') != release['tag_name']:
+            if version.get('repository') != REPOSITORY or version.get('sourceRef') != source_ref:
                 raise RuntimeError('Live Wiki version mismatch')
             if b'<html' not in download(health_url, 4 * 1024 * 1024).lower():
                 raise RuntimeError('Live homepage unavailable')
-        install_bundle(root, payload, digest, release['tag_name'], release['id'], health)
-        print(f"Wiki updated to {release['tag_name']}")
+        install_bundle(root, payload, digest, source_ref, release['id'], health)
+        print(f'Wiki updated to {source_ref}')
 
 
 if __name__ == '__main__':
