@@ -12,4 +12,6 @@ See [parts and assembly](pcb/spares.md) for whole-robot and board BOMs, and the 
 | Side light board | Files containing `SideLight` under `pcb/` |
 | Mechanical assembly | `3d-models/exports/WatcherRobot-mian.stp` |
 
+See [PCB Fabrication and SMT Assembly](../docs/pcb-fabrication.md) for design export, order specifications, and BOM matching.
+
 Complete assembly and unpowered wiring checks before flashing. Flash the body STM32 through ST-LINK/SWD; flash head Himax and ESP32-S3 through USB.

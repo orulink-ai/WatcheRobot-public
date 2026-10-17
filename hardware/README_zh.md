@@ -12,4 +12,6 @@
 | 侧边灯板 | `pcb/` 中名称包含 `SideLight` 的文件 |
 | 机械结构 | `3d-models/exports/WatcherRobot-mian.stp` |
 
+下单制作电路板请看[PCB 制作与 SMT 贴片](../docs/pcb-fabrication_zh.md)，包含工程导出、参数核对和 BOM 匹配步骤。
+
 先完成装配并断电检查接线，再开始烧录。身体主板使用 ST-LINK/SWD 烧录 STM32；上方 Watcher 头部通过 USB 烧录 Himax 和 ESP32-S3。

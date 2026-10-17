@@ -49,7 +49,7 @@ Open the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) and 
 3. Confirm layers, thickness, dimensions, quantity, and manufacturing requirements against that board's design. Do not reuse one board's parameters for every board.
 4. Review the preview and quotation before confirming an order yourself.
 
-See [How to obtain the PCBs](https://mcnsslrwxv50.feishu.cn/wiki/YSAlwY4EZiuR0jkYcu2ctHzKn3R) for illustrated steps using the STM32 board (Chinese). Platform controls may change.
+See [PCB Fabrication and SMT Assembly](../../../../docs/pcb-fabrication.md) for the ordering flow and key options, using the STM32 controller as an example.
 
 Alternatively, provide the matching [Gerber files](../../../../hardware/pcb/gerber/) to a PCB manufacturer. Gerbers describe bare-board fabrication. Editable projects are in [pcb-source](../../../../hardware/pcb/pcb-source/); schematic and layout PDFs are inspection references, not substitutes for production Gerbers.
 
@@ -108,4 +108,4 @@ Follow [Getting started](getting-started.md) for networking and connection, then
 
 This completes the path from parts to a usable robot. Application development is optional; continue with the [SDK quick start](../../../../docs/sdk.md).
 
-> Detailed PCB ordering and assembly photographs currently remain in the linked Feishu guides and may require access permission. This page covers the full fabrication workflow and resource entry points, not every illustrated mounting location or pin connection. If those guides cannot be opened, obtain the materials from maintainers before assembly.
+> Illustrated PCB ordering is now available in [PCB Fabrication and SMT Assembly](../../../../docs/pcb-fabrication.md). Detailed assembly photographs remain in the linked Feishu guide and may require access permission. This page does not replace illustrations of every mounting location and pin connection; obtain those materials from maintainers before assembly if the guide cannot be opened.
