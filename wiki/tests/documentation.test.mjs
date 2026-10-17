@@ -76,7 +76,7 @@ test('quick start is for assembled robots and DIY instructions have a separate g
     assert.ok(guide.indexOf('oshwhub.com') < guide.indexOf('{#firmware}'));
     assert.match(guide, /BOM_Assembly/);
     assert.match(guide, /PNhqwdCVEiqizvkelq9c2q7Qnth/);
-    assert.match(guide, /YSAlwY4EZiuR0jkYcu2ctHzKn3R/);
+    assert.match(guide, /pcb-fabrication(?:_zh)?\.md/);
     assert.match(guide, /flashing(?:_zh)?\.md#full/);
     assert.match(guide, /getting-started\.md/);
   }
