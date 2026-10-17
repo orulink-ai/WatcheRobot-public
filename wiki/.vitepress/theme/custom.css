@@ -170,6 +170,120 @@ body {
   border-radius: var(--wr-radius-md);
 }
 
+.vp-doc img {
+  cursor: zoom-in;
+}
+
+.vp-doc img:focus-visible {
+  outline: 3px solid var(--vp-c-brand-1);
+  outline-offset: 4px;
+}
+
+body.wr-image-lightbox-open {
+  overflow: hidden;
+}
+
+.wr-image-lightbox[hidden] {
+  display: none;
+}
+
+.wr-image-lightbox {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(4 10 18 / 92%);
+  color: #fff;
+}
+
+.wr-image-lightbox__viewport {
+  position: absolute;
+  inset: 64px 24px 76px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  cursor: zoom-out;
+  touch-action: none;
+}
+
+.wr-image-lightbox__image {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--wr-radius-sm);
+  box-shadow: 0 20px 70px rgb(0 0 0 / 48%);
+  cursor: zoom-in;
+  transform-origin: center;
+  user-select: none;
+  transition: transform 100ms ease-out;
+  -webkit-user-drag: none;
+}
+
+.wr-image-lightbox__image.is-zoomed {
+  cursor: grab;
+  transition: none;
+}
+
+.wr-image-lightbox__image.is-zoomed:active {
+  cursor: grabbing;
+}
+
+.wr-image-lightbox__close,
+.wr-image-lightbox__controls button {
+  border: 1px solid rgb(255 255 255 / 22%);
+  background: rgb(16 28 44 / 88%);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.wr-image-lightbox__close:hover,
+.wr-image-lightbox__controls button:hover,
+.wr-image-lightbox__close:focus-visible,
+.wr-image-lightbox__controls button:focus-visible {
+  border-color: var(--wr-color-brand);
+  outline: none;
+}
+
+.wr-image-lightbox__close {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.wr-image-lightbox__controls {
+  position: absolute;
+  z-index: 2;
+  bottom: 20px;
+  left: 50%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+.wr-image-lightbox__controls button {
+  min-width: 52px;
+  min-height: 40px;
+  border-width: 0 1px 0 0;
+}
+
+.wr-image-lightbox__controls button:last-child {
+  border-right: 0;
+}
+
+@media (max-width: 640px) {
+  .wr-image-lightbox__viewport {
+    inset: 58px 10px 72px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
