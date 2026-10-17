@@ -4,5 +4,12 @@ import "@fontsource-variable/noto-sans-sc";
 import "@fontsource-variable/jetbrains-mono";
 
 import "./custom.css";
+import { setupImageLightbox } from "./image-lightbox";
 
-export default DefaultTheme;
+export default {
+  ...DefaultTheme,
+  enhanceApp(context) {
+    DefaultTheme.enhanceApp?.(context);
+    if (typeof window !== "undefined") setupImageLightbox(context.router);
+  },
+};
