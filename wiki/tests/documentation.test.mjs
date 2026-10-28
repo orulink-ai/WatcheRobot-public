@@ -26,6 +26,20 @@ test('product navigation groups user tasks and only links to available release c
   assert.deepEqual(buildSidebar([], 'zh'), []);
 });
 
+test('preview-only developer guides stay out of the public sidebar', () => {
+  const hidden = ['/docs/embedded-sdk', '/firmware/sdk/', '/guide/hardware-in-the-loop'];
+  for (const lang of ['zh', 'en']) {
+    const prefix = lang === 'zh' ? '' : '/en';
+    const catalog = hidden.map((route, index) => ({
+      lang,
+      route: prefix + route,
+      title: `Hidden preview ${index}`,
+    }));
+    const links = JSON.stringify(buildSidebar(catalog, lang));
+    for (const route of hidden) assert.doesNotMatch(links, new RegExp(route.replaceAll('/', '\\/')));
+  }
+});
+
 test('new guides have bilingual counterparts and locally owned image assets', async () => {
   for (const name of ['device-guide', 'capabilities', 'community', 'voice']) {
     const zhPath = `wiki/guides/products/watcherobot/${name}.md`;
