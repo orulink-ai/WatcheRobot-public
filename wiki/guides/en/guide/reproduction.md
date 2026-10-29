@@ -66,7 +66,7 @@ Inspect for incorrect, missing, reversed, poorly soldered, or bridged components
 
 While fabrication is underway, source the remaining parts from step 1. Sort deliveries and verify models, quantities, and connectors before assembly. Do not improvise with unidentified screws or cables.
 
-Start with the [whole-robot assembly tutorial](assembly.md), which provides visual parts clips, the complete video, and text steps. The [illustrated robot assembly instructions](https://mcnsslrwxv50.feishu.cn/wiki/PNhqwdCVEiqizvkelq9c2q7Qnth) remain a supplementary reference. Confirm holes, ribbon orientation, pin order, and screw lengths from the tutorial, BOM, and physical labels; this summary and wire colors alone are not wiring instructions.
+Start with the [whole-robot assembly tutorial](assembly.md), which provides visual parts clips, the complete video, and a chapter timeline. The [illustrated robot assembly instructions](https://mcnsslrwxv50.feishu.cn/wiki/PNhqwdCVEiqizvkelq9c2q7Qnth) remain a supplementary reference. Confirm holes, ribbon orientation, pin order, and screw lengths from the tutorial, BOM, and physical labels; this summary and wire colors alone are not wiring instructions.
 
 | Assembly area | Work to complete | Check |
 | --- | --- | --- |

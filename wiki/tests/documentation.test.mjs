@@ -40,7 +40,7 @@ test('preview-only developer guides stay out of the public sidebar', () => {
   }
 });
 
-test('assembly tutorial is bilingual, linked from hardware entry points, and uses local preview media', async () => {
+test('assembly tutorial is bilingual, linked from hardware entry points, and uses published media', async () => {
   const pages = [
     ['wiki/guides/guide/assembly.md', '/guide/assembly', '整机拼装教程'],
     ['wiki/guides/en/guide/assembly.md', '/en/guide/assembly', 'Whole-robot assembly tutorial'],
@@ -61,7 +61,9 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
     assert.match(JSON.stringify(buildSidebar(catalog, lang)), /assembly/);
   }
   for (const path of ['wiki/guides/guide/reproduction.md', 'wiki/guides/en/guide/reproduction.md', 'hardware/pcb/spares_zh.md', 'hardware/pcb/spares.md']) {
-    assert.match(await read(path), /assembly\.md/);
+    const content = await read(path);
+    assert.match(content, /assembly\.md/);
+    assert.doesNotMatch(content, /文字步骤|text steps/);
   }
 });
 
