@@ -73,7 +73,7 @@ export async function generate(sourceRoot, destination, ref = 'main') {
     await writeFile(output, rewriteLinks(content, source, routes, ref));
     catalog.push({source, route, title:content.match(/^#\s+(.+)$/m)?.[1] ?? source, lang:route.startsWith('/en/') ? 'en' : 'zh'});
   }
-  for(const asset of ['docs/images', 'docs/manuals']) {
+  for(const asset of ['docs/images', 'docs/manuals', 'docs/assembly']) {
     try { await cp(join(sourceRoot, asset), join(destination, 'public/media', asset), {recursive:true}); }
     catch(error) { if(error.code !== 'ENOENT') throw error; }
   }

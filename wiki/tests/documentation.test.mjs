@@ -26,6 +26,47 @@ test('product navigation groups user tasks and only links to available release c
   assert.deepEqual(buildSidebar([], 'zh'), []);
 });
 
+test('preview-only developer guides stay out of the public sidebar', () => {
+  const hidden = ['/docs/embedded-sdk', '/firmware/sdk/', '/guide/hardware-in-the-loop'];
+  for (const lang of ['zh', 'en']) {
+    const prefix = lang === 'zh' ? '' : '/en';
+    const catalog = hidden.map((route, index) => ({
+      lang,
+      route: prefix + route,
+      title: `Hidden preview ${index}`,
+    }));
+    const links = JSON.stringify(buildSidebar(catalog, lang));
+    for (const route of hidden) assert.doesNotMatch(links, new RegExp(route.replaceAll('/', '\\/')));
+  }
+});
+
+test('assembly tutorial is bilingual, linked from hardware entry points, and uses published media', async () => {
+  const pages = [
+    ['wiki/guides/guide/assembly.md', '/guide/assembly', '整机拼装教程'],
+    ['wiki/guides/en/guide/assembly.md', '/en/guide/assembly', 'Whole-robot assembly tutorial'],
+  ];
+  for (const [path, route, title] of pages) {
+    const content = await read(path);
+    assert.match(content, new RegExp(`^# ${title}`, 'm'));
+    for (const media of ['parts-overview.mp4', 'electronics-overview.mp4', 'fasteners-overview.mp4']) {
+      assert.match(content, new RegExp(`/media/docs/assembly/${media}`));
+    }
+    assert.match(content, /https:\/\/github\.com\/orulink-ai\/WatcheRobot-public\/releases\/download\/wiki-media-assembly-20261028\/watcherobot-assembly-tutorial-720p-7cd0f58e\.mp4/);
+    assert.doesNotMatch(content, /\/media\/docs\/assembly\/watcherobot-assembly-tutorial/);
+    const sections = [...content.matchAll(/^## .+\{#([^}]+)\}/gm)].map(match => match[1]);
+    assert.deepEqual(sections, ['parts', 'video']);
+    assert.doesNotMatch(content, /\{#steps\}|\{#check\}/);
+    const lang = route.startsWith('/en/') ? 'en' : 'zh';
+    const catalog = [{lang, route, title}];
+    assert.match(JSON.stringify(buildSidebar(catalog, lang)), /assembly/);
+  }
+  for (const path of ['wiki/guides/guide/reproduction.md', 'wiki/guides/en/guide/reproduction.md', 'hardware/pcb/spares_zh.md', 'hardware/pcb/spares.md']) {
+    const content = await read(path);
+    assert.match(content, /assembly\.md/);
+    assert.doesNotMatch(content, /文字步骤|text steps/);
+  }
+});
+
 test('new guides have bilingual counterparts and locally owned image assets', async () => {
   for (const name of ['device-guide', 'capabilities', 'community', 'voice']) {
     const zhPath = `wiki/guides/products/watcherobot/${name}.md`;
