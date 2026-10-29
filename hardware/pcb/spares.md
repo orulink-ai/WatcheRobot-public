@@ -12,7 +12,7 @@ Start with the whole-robot assembly workbook, then download board BOMs as needed
 | [Wireless base BOM](bom/BOM_WirelessBase_无线充电底座.xlsx) | Charging base components |
 | [Side light BOM](bom/BOM_SideLight_侧边灯板.xlsx) | Side light board components |
 
-See the [OSHW project](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) for assembly and [MakerWorld](https://makerworld.com.cn/zh/models/2911544-watcherobot) for printable models. Find PCB sources, Gerbers, placement files, and mechanical models in [hardware resources](../README.md).
+See the [whole-robot assembly tutorial](../../wiki/guides/en/guide/assembly.md) for visual parts clips, screw groups, and the complete assembly video. Printable models are on [MakerWorld](https://makerworld.com.cn/zh/models/2911544-watcherobot); find PCB sources, Gerbers, placement files, and mechanical models in [hardware resources](../README.md).
 
 Match BOM, Gerber, and CPL revisions to the actual board. This index is not an inventory or purchasing record. Use the workbooks and assembly instructions for part numbers, quantities, screws, and cables; ask the maintainers about omissions rather than guessing substitutes.
 

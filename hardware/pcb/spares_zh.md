@@ -12,7 +12,7 @@
 | [无线充电底座 BOM](bom/BOM_WirelessBase_无线充电底座.xlsx) | 充电底座元件 |
 | [侧边灯板 BOM](bom/BOM_SideLight_侧边灯板.xlsx) | 侧边灯板元件 |
 
-装配说明见[立创开源硬件项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)，打印模型见 [MakerWorld](https://makerworld.com.cn/zh/models/2911544-watcherobot)。PCB 工程、Gerber、贴片坐标与机械模型位置见[硬件资料](../README_zh.md)。
+部件动画、螺丝分类和完整装配视频见[整机拼装教程](../../wiki/guides/guide/assembly.md)。打印模型见 [MakerWorld](https://makerworld.com.cn/zh/models/2911544-watcherobot)，PCB 工程、Gerber、贴片坐标与机械模型位置见[硬件资料](../README_zh.md)。
 
 按实际板卡版本核对 BOM、Gerber 和 CPL，不混用不同版本。不要将本文的文件列表当作库存或已采购数量；元件型号、数量、螺丝和线材规格以对应清单及装配说明为准，缺项应向维护者确认，不能猜测替代。
 
