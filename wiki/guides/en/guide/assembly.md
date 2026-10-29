@@ -44,7 +44,7 @@ The source shows M2×6, M2×8, and M2×20 screw groups. Do not interchange lengt
 ## 2. Complete assembly video {#video}
 
 <video controls playsinline preload="metadata" poster="/media/docs/assembly/assembly-poster.jpg" style="width: 100%; border-radius: 12px;">
-  <source src="https://github.com/orulink-ai/WatcheRobot-public/releases/download/wiki-media-assembly-20261028/watcherobot-assembly-tutorial-720p-7cd0f58e.mp4" type="video/mp4">
+  <source src="https://wiki.orulink.ai/media-assets/assembly/watcherobot-assembly-tutorial-720p-7cd0f58e.mp4" type="video/mp4">
   This browser cannot play the video. Use the chapter timeline below to locate the content.
 </video>
 
