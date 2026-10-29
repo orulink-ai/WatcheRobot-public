@@ -44,7 +44,7 @@
 ## 2. 完整拼装视频 {#video}
 
 <video controls playsinline preload="metadata" poster="/media/docs/assembly/assembly-poster.jpg" style="width: 100%; border-radius: 12px;">
-  <source src="https://github.com/orulink-ai/WatcheRobot-public/releases/download/wiki-media-assembly-20261028/watcherobot-assembly-tutorial-720p-7cd0f58e.mp4" type="video/mp4">
+  <source src="https://wiki.orulink.ai/media-assets/assembly/watcherobot-assembly-tutorial-720p-7cd0f58e.mp4" type="video/mp4">
   当前浏览器无法播放视频，请使用下方章节时间轴定位内容。
 </video>
 

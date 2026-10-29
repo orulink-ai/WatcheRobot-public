@@ -51,8 +51,8 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
     for (const media of ['parts-overview.mp4', 'electronics-overview.mp4', 'fasteners-overview.mp4']) {
       assert.match(content, new RegExp(`/media/docs/assembly/${media}`));
     }
-    assert.match(content, /https:\/\/github\.com\/orulink-ai\/WatcheRobot-public\/releases\/download\/wiki-media-assembly-20261028\/watcherobot-assembly-tutorial-720p-7cd0f58e\.mp4/);
-    assert.doesNotMatch(content, /\/media\/docs\/assembly\/watcherobot-assembly-tutorial/);
+    assert.match(content, /https:\/\/wiki\.orulink\.ai\/media-assets\/assembly\/watcherobot-assembly-tutorial-720p-7cd0f58e\.mp4/);
+    assert.doesNotMatch(content, /github\.com\/orulink-ai\/WatcheRobot-public\/releases\/download\/wiki-media-assembly/);
     const sections = [...content.matchAll(/^## .+\{#([^}]+)\}/gm)].map(match => match[1]);
     assert.deepEqual(sections, ['parts', 'video']);
     assert.doesNotMatch(content, /\{#steps\}|\{#check\}/);
