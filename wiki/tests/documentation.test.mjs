@@ -21,22 +21,26 @@ test('product navigation groups user tasks and only links to available release c
   assert.equal(sidebar[0].text, 'WatcheRobot');
   const links = JSON.stringify(sidebar);
   assert.match(links, /设备使用指南/);
-  assert.match(links, /开发者文档/);
+  assert.match(links, /Python SDK/);
   assert.doesNotMatch(links, /\/en\/|community/);
   assert.deepEqual(buildSidebar([], 'zh'), []);
 });
 
-test('preview-only developer guides stay out of the public sidebar', () => {
-  const hidden = ['/docs/embedded-sdk', '/firmware/sdk/', '/guide/hardware-in-the-loop'];
+test('C SDK preview is separate from Python and HIL maintenance stays hidden', () => {
+  const visible = ['/docs/embedded-sdk', '/firmware/sdk/', '/firmware/sdk/docs/getting-started', '/firmware/sdk/docs/hardware-check'];
   for (const lang of ['zh', 'en']) {
     const prefix = lang === 'zh' ? '' : '/en';
-    const catalog = hidden.map((route, index) => ({
+    const catalog = [...visible, '/guide/hardware-in-the-loop', '/docs/sdk', '/hardware/'].map((route, index) => ({
       lang,
       route: prefix + route,
       title: `Hidden preview ${index}`,
     }));
     const links = JSON.stringify(buildSidebar(catalog, lang));
-    for (const route of hidden) assert.doesNotMatch(links, new RegExp(route.replaceAll('/', '\\/')));
+    for (const route of visible) assert.ok(links.includes(prefix + route));
+    assert.match(links, /C SDK/);
+    assert.match(links, /Python SDK/);
+    assert.match(links, /Hardware|硬件专区/);
+    assert.doesNotMatch(links, /hardware-in-the-loop/);
   }
 });
 

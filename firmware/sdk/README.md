@@ -2,79 +2,55 @@ English | [简体中文](README_zh.md)
 
 # ESP32 Embedded Hardware SDK (Development Preview)
 
-This directory contains `watche_hw_*` source, required drivers and three independent
-ESP-IDF projects. Developers own `app_main`, without the official app, Python SDK,
-Daemon, server, SD card or models. Full hardware acceptance is pending; this is not
-a stable release.
+Write your own `app_main` with `watcher_hw_*`, independently of the official app,
+Python SDK, Daemon, server, SD card and models. This is a hardware-only source
+snapshot, **not a stable release or complete paired-device acceptance**.
 
-## Getting started
+## Start here
 
-1. Download this repository or run `git clone https://github.com/orulink-ai/WatcheRobot-public.git`.
-2. Install ESP-IDF **6.0.2** with ESP32-S3 tools and activate its terminal environment.
-3. Edit `firmware/sdk/examples/robot/main/app_main.c`: this is your application.
-4. From the repository root run `idf.py -C firmware/sdk/examples/robot build`.
-5. Verify the port and paired firmware, back up required data, then run
-   `idf.py -C firmware/sdk/examples/robot -p <PORT> flash monitor`.
+1. [Pin public source, install ESP-IDF 6.0.2 and build](docs/getting-started.md).
+2. [Run the 8-group / 26-item hardware check](docs/hardware-check.md).
+3. Edit `examples/robot/main/app_main.c`, then build from repository root:
+   `idf.py -C firmware/sdk/examples/robot build`.
 
-Replace `<PORT>` with the actual serial port. Target: ESP32-S3, 16MB flash and
-octal PSRAM for head examples. A successful build is not hardware safety evidence.
-Long presses in body examples may trigger small movements; clear the mechanism first.
+Flashing changes the ESP32 application/partitions and can overwrite storage.
+Verify your ESP32 port and paired STM32/Himax images **before flashing**; setup,
+custom flash, official recovery and expected results are in the first guide.
+Current servos have **no physical position feedback**. Reference X90/Y120 can
+require large movement from an unknown start. ACK/DONE is not a position sensor.
 
-## Examples and modules
+## What do you want to do?
 
-- `examples/body`: motion, lights, body touch. No motion without fresh valid position feedback.
-- `examples/head`: LVGL and screen touch, JPEG capture, short PCM recording/playback.
-- `examples/robot`: combined application; recommended starting point.
-- `components/sdk/watche_hw_*`: public headers; other components are required dependencies.
+| Goal | Entry |
+| --- | --- |
+| Check real hardware, safely and one item at a time | [Hardware check](docs/hardware-check.md) |
+| Build/flash/restore or use your own project | [Getting started](docs/getting-started.md) |
+| Migrate the old namespace | [Migration](MIGRATION.md) |
+| Understand open-loop motion | [Current hardware contract](docs/servo-open-loop.md) |
+| Inspect public headers | `components/sdk/watcher_hw_{core,body,camera,audio,display}/include/` |
+| Understand ownership, locks and event overflow | Headers, [audit](AUDIT.md), [setup](docs/getting-started.md) |
+| Review actual evidence, not assumptions | [Historical validation](VALIDATION.md), [current sync evidence](SYNC_VALIDATION.md) |
+| Develop on a computer with existing official firmware | [Python SDK](../../docs/sdk.md) — separate route |
 
-Examples own their CMake, partitions and configuration. They never include the
-official application project. Headers document parameters, ownership and threading.
-Generic ACK/NACK are motion events only when matching the motion service's last
-32 command sequences; older replies are ignored. Typed DONE/FAULT retain their
-original sequence. Body init/close during event dispatch returns
-`ESP_ERR_INVALID_STATE`; close only after dispatch returns.
-Applications dispatch body callbacks with `dispatch_events`; submission is not motion
-completion. Commands are rejected before readiness; reconnection never replays motion.
-JPEG bytes are borrowed during callbacks; copy to retain. Blocking audio belongs in
-application tasks. Lock LVGL access; never record or close display while holding its lock.
+`examples/body`, `head`, `robot`, and `hardware_check` are independent ESP-IDF projects.
+`examples/common` contains shared UI, pure flow, open-loop body adapter and CC0
+speech assets. Do not include the official firmware top-level project.
 
-## Using a separate project
+## Provenance, scope and licensing
 
-Keep a pinned checkout of this repository beside your project. In your top-level
-CMake, set `HW_BODY` / `HW_HEAD` and include this SDKs `examples/sdk.cmake` before
-`project()`, then call `watche_hw_check_idf()`. It finds components relative to itself,
-not a private repository. Declare selected `watche_hw_*` main-component dependencies
-and reuse the matching example manifest, partitions and sdkconfig.defaults.
-Disable `HW_HEAD` for body-only projects. Do not ship products against floating main.
+[SOURCE.json](SOURCE.json) pins upstream ESP32 commit
+`ab4e324e2b15a1be5431c34de106f05d55ccb99e` and inventories exported file hashes.
+The public checkout commit is the delivery version; the private upstream is provenance
+only, not a user prerequisite. The allowlist exporter is `tools/export_firmware_sdk.py`
+in the public repository. Only component-root and unused private bridge include paths
+are adapted in build files; documentation adaptations are recorded in the inventory.
+No official app/cloud/voice business services, models, credentials or firmware binaries
+are exported. Downloaded managed dependencies/build outputs are excluded.
 
-## Scripts and flashing
-
-Windows: `./firmware/sdk/examples/hardware-sdk.ps1 robot build`.
-macOS/Linux: `bash firmware/sdk/examples/hardware-sdk.sh robot build`.
-Both accept example (default robot), action (default build), port. Actions are
-build/flash/monitor; flash and monitor require an explicit port.
-
-See the [official flashing guide](../../docs/flashing.md) for initial STM32/Himax
-preparation and restoring official firmware. Official tools replace custom ESP32
-applications; do not use them for everyday SDK flashing. Camera requires paired
-PTL Himax firmware; current Releases are not guaranteed to contain it. Do not flash
-unknown pairs before checking [acceptance](VALIDATION.md). First flash writes the
-bootloader and partition table and may overwrite storage; do not erase flash.
-Use `app-flash` for later application updates only after confirming unchanged partitions
-on the connected device, not only in the local build. If the device's layout is
-unknown or another firmware was installed, use this example's complete `flash`.
-
-The body runtime probes a quiet peer using control-plane HELLO frames; no
-periodic sensor stream or servo-position query is required for liveness. Five
-seconds without a valid protocol event invalidates readiness and starts recovery.
-Disconnect safety depends on STM32 mechanisms, not guaranteed ESP32 stop delivery.
-
-## Licensing and maintenance
-
-First-party source in this directory retains the upstream ESP32 [Apache-2.0](LICENSE)
-license; the repository-root GPL-3.0 does not replace it. Seeed BSP, SSCMA, expander
-and Espressif codec directories retain original licenses and copyright notices.
-Registry dependencies keep their respective licenses. This is a public delivery
-snapshot; the internal ESP32 repository remains the development source. Fixes must
-flow back upstream, not create an independently maintained duplicate. Official
-application and STM32/Himax implementations remain outside this publication scope.
+First-party snapshot code retains upstream [Apache-2.0](LICENSE), not the repository
+root GPL replacement. Seeed, SSCMA, codec, expander and Espressif files keep their
+original copyright/licenses. Registry dependencies retain their own licenses.
+This is a delivery snapshot, not an independently maintained fork; fixes should flow
+upstream. Historical names/hashes in evidence remain untouched and do not prove
+acceptance of this renamed snapshot. Complete physical pairing, safety and restoration
+checks remain pending. No stable v1 or production deployment is claimed.

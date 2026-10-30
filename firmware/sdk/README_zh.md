@@ -2,71 +2,49 @@
 
 # ESP32 嵌入式硬件 SDK（开发预览）
 
-这里提供 `watche_hw_*` 源码、必要驱动和三个独立 ESP-IDF 工程。
-开发者拥有自己的 `app_main`，不需要官方应用、Python SDK、Daemon、服务端、
-SD 卡或模型。尚未完成全部实机验收，不是稳定版发布。
+使用 `watcher_hw_*` 编写自己的 `app_main`；不需要官方应用、Python SDK、Daemon、
+服务端、SD 卡或模型。本目录是纯硬件源码交付快照，**不是稳定发布或完整配对实机验收**。
 
-## 小白从这里开始
+## 从这里开始
 
-1. 下载本仓库，或执行 `git clone https://github.com/orulink-ai/WatcheRobot-public.git`。
-2. 安装 ESP-IDF **6.0.2** 和 ESP32-S3 工具链，在 ESP-IDF 终端执行后续命令。
-3. 打开 `firmware/sdk/examples/robot/main/app_main.c`，这是你自己的应用。
-4. 在仓库根目录执行 `idf.py -C firmware/sdk/examples/robot build`。
-5. 确认设备端口和配套固件，备份需要的数据，再执行
-   `idf.py -C firmware/sdk/examples/robot -p <PORT> flash monitor`。
+1. [固定公开版本、安装 ESP-IDF 6.0.2 并构建](docs/getting-started_zh.md)。
+2. [执行 8 组／26 细项硬件体检](docs/hardware-check_zh.md)。
+3. 修改 `examples/robot/main/app_main.c`，在公开仓库根目录执行
+   `idf.py -C firmware/sdk/examples/robot build`。
 
-`<PORT>` 替换为实际串口名称，不要原样输入。工程目标为 ESP32-S3、16MB Flash，
-头部示例启用 octal PSRAM。构建不等于实机安全验收。身体示例长按可能触发小幅运动，
-首次操作前保持机构运动空间畅通。
+烧录会替换自定义 ESP32 应用／分区并可能覆盖存储，先确认实际 ESP32 端口和
+STM32/Himax 配对镜像。首次准备、日常自定义烧录、官方恢复与预期结果见上手指南。
+当前舵机**没有物理位置反馈**；从未知起点到 X90/Y120 参考姿态可能是大行程，
+ACK/DONE 不等于位置测量或机械停止证明。
 
-## 示例与模块
+## 你想做什么？
 
-- `examples/body`：运动、灯光、身体触摸。未收到新鲜有效位置反馈不运动。
-- `examples/head`：LVGL 页面和屏幕触摸、JPEG 拍照、短时 PCM 录放音。
-- `examples/robot`：上述能力组合，建议作为开发起点。
-- `components/sdk/watche_hw_*`：公共接口；`components` 其余目录是必要底层依赖。
+| 目标 | 入口 |
+| --- | --- |
+| 一次一个细项地安全检查实物 | [硬件体检](docs/hardware-check_zh.md) |
+| 构建／烧录／恢复／创建自己的工程 | [上手指南](docs/getting-started_zh.md) |
+| 迁移旧名称 | [命名与丢事件迁移](MIGRATION.md) |
+| 理解无反馈运动 | [当前硬件合同](docs/servo-open-loop_zh.md) |
+| 阅读公共头文件 | `components/sdk/watcher_hw_{core,body,camera,audio,display}/include/` |
+| 了解所有权、锁与事件溢出 | 头文件、[审计](AUDIT.md)、[上手](docs/getting-started_zh.md) |
+| 查看真实证据 | [历史验收](VALIDATION.md)、[本次同步验证](SYNC_VALIDATION.md) |
+| 在电脑上开发现有官方固件应用 | [Python SDK](../../docs/sdk_zh.md)，与 C 路线分开 |
 
-全部示例有自己的 CMake、分区和配置，不引入官方固件顶层工程。
-公共头文件说明参数、所有权和线程限制。身体回调由应用调用 `dispatch_events`
-分发，运动提交成功不是运动完成；未就绪拒绝控制，重连不重放动作。
-通用 ACK/NACK 仅在匹配运动服务最近 32 个命令时报告为运动事件，超出窗口的
-迟到回复忽略；带类型的完成/故障保留原始序列。事件分发期间 init/close 返回
-`ESP_ERR_INVALID_STATE`，应用应在分发返回后再关闭。
-身体运行层在通信安静时发送 HELLO 存活探测，不要求 STM32 周期上报传感器，
-也不查询舵机位置。超过 5 秒未收到有效协议事件会退出就绪并重新握手。
-摄像头回调 JPEG 只在回调内有效，需保存则复制；音频阻塞操作放应用任务；
-LVGL 操作使用显示锁，不能在持锁时录音或关闭显示。
+`examples/body`、`head`、`robot`、`hardware_check` 是四个独立 ESP-IDF 工程。
+`examples/common` 包含共享 UI、纯状态机、开环身体适配器及 CC0 测试语音。
+不能 include 官方固件顶层工程。
 
-## 在自己的新工程中使用
+## 来源、公开边界与许可
 
-将本仓库的固定版本作为依赖保留在项目旁边。自己的顶层 CMake 在
-`project()` 前设置 `HW_BODY` / `HW_HEAD`，并 include 本 SDK 的
-`examples/sdk.cmake`；它使用自己的位置寻找组件，不依赖私有仓库。
-在 `project()` 后调用 `watche_hw_check_idf()`。主组件声明实际使用的
-`watche_hw_*` 依赖，并沿用相应示例的依赖清单、分区和 sdkconfig.defaults。
-只需身体时关闭 `HW_HEAD`，不会初始化头部。不要依赖浮动 main 发布产品。
+[SOURCE.json](SOURCE.json) 固定上游 ESP32
+`ab4e324e2b15a1be5431c34de106f05d55ccb99e`，记录逐文件来源与输出哈希。
+公开 checkout commit 才是交付版本；内部 SHA 仅用于追溯，不要求读者访问私库。
+公开仓库 `tools/export_firmware_sdk.py` 使用显式白名单；构建文件只调整组件根目录与
+移除无用私有 bridge include 路径，文档路径／当前硬件更正也记录在清单。
+不导出官方应用／云／语音业务服务、模型、凭据、固件二进制或下载／生成目录。
 
-## 脚本与烧录边界
-
-Windows：`./firmware/sdk/examples/hardware-sdk.ps1 robot build`。
-macOS/Linux：`bash firmware/sdk/examples/hardware-sdk.sh robot build`。
-两个入口的参数都是：示例（默认 robot）、操作（默认 build）、端口。
-操作支持 build/flash/monitor；flash 和 monitor 必须显式指定端口。
-
-首次准备 STM32/Himax 和恢复官方整机见[官方烧录指南](../../docs/flashing_zh.md)。
-现有官方工具会替换自定义 ESP32 应用，不要用于日常 SDK 烧录。
-SDK 摄像头需要 PTL 配对 Himax；现有 Release 不保证包含该配对，
-未经[兼容验收](VALIDATION.md)确认不要直接刷写未知镜像。
-自定义首次 flash 会写 bootloader 和分区表，可能覆盖存储；不要执行 erase-flash。
-确认连接设备上的分区不变后日常可用 `app-flash`，不能只检查本地构建配置。
-设备布局未知或曾安装另一份固件时，使用本示例的完整 `flash`。
-断线停止依赖 STM32 安全机制，
-不能承诺断线后 ESP32 还能发送停止命令。
-
-## 许可证与维护
-
-本目录自有代码沿用内部 ESP32 源码的 [Apache-2.0](LICENSE)，
-不以公开仓库根目录 GPL-3.0 替代原许可。Seeed BSP、SSCMA、I/O expander
-和 Espressif codec 等保留各目录原有许可证与版权；注册表依赖也适用其各自许可。
-本目录是 SDK 的对外交付快照，开发源仍在内部 ESP32 仓库；对外修复应回流开发源，
-不能维护两套独立实现。官方应用、STM32/Himax 实现不在本目录公开范围内。
+第一方代码保留上游 [Apache-2.0](LICENSE)，根目录 GPL 不替换此许可。
+Seeed、SSCMA、codec、expander、Espressif 等保留原版权与许可，注册表依赖维持各自许可。
+这是交付快照而非独立维护分叉，修复应回流上游。历史名称与哈希按原记录保留，
+不能冒充改名后重新实测。完整实机配对、机械安全与恢复验收仍未完成，
+不宣称稳定 v1，不更新生产。
