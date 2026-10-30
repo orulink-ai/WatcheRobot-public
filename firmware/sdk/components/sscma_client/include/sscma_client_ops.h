@@ -434,4 +434,3 @@ esp_err_t sscma_client_ota_abort(sscma_client_handle_t client);
 #ifdef __cplusplus
 }
 #endif
-

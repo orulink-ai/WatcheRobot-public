@@ -42,4 +42,3 @@ const audio_codec_if_t *tas5805m_codec_new(tas5805m_codec_cfg_t *codec_cfg);
 #endif
 
 #endif
-

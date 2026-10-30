@@ -30,4 +30,3 @@ esp_err_t uart_flush_input(uart_port_t port);
 #ifdef __cplusplus
 }
 #endif
-

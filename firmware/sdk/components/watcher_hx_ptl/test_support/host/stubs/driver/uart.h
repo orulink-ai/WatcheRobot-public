@@ -14,4 +14,3 @@ int uart_param_config(int port, const uart_config_t *config);
 int uart_set_pin(int port, int tx, int rx, int rts, int cts);
 int uart_write_bytes(int port, const void *data, size_t size);
 int uart_read_bytes(int port, void *data, size_t size, unsigned timeout);
-

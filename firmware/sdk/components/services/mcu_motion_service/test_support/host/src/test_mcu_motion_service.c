@@ -18,6 +18,9 @@ typedef struct {
 
 static mcu_link_t s_link = {0};
 static bool s_ready = true;
+static bool s_motion_access = true;
+static unsigned s_revoke_at_gap;
+static uint8_t s_fail_msg_id;
 static captured_frame_t s_captured;
 static captured_frame_t s_history[8];
 static unsigned s_history_count;
@@ -29,6 +32,10 @@ static void *s_feedback_ctx;
 static mcu_motion_lifecycle_event_t s_lifecycle_event;
 static unsigned s_lifecycle_count;
 static void *s_lifecycle_ctx;
+static bool s_inject_early_nack;
+static bool s_inject_early_done;
+static uint32_t s_done_inside_send_ref;
+static void observed_event(mcu_link_rx_event_type_t type, uint32_t ref, uint32_t rx, uint8_t result);
 
 mcu_link_t *mcu_link_bootstrap_get_link(void) {
     return &s_link;
@@ -42,6 +49,14 @@ esp_err_t mcu_link_send_frame(mcu_link_t *link, uint8_t msg_class, uint8_t msg_i
                               const uint8_t *payload, uint16_t payload_len, uint32_t *out_seq, size_t *out_wire_len) {
     assert(link == &s_link);
     assert(payload_len <= sizeof(s_captured.payload));
+    if (msg_id == s_fail_msg_id) {
+        return ESP_ERR_INVALID_STATE;
+    }
+    if (s_done_inside_send_ref) {
+        uint32_t ref = s_done_inside_send_ref;
+        s_done_inside_send_ref = 0;
+        observed_event(MCU_LINK_RX_EVENT_MOTION_DONE, ref, 903, MCU_MOTION_RESULT_SUCCESS);
+    }
 
     s_captured.msg_class = msg_class;
     s_captured.msg_id = msg_id;
@@ -84,6 +99,9 @@ static void reset_capture(void) {
     s_lifecycle_count = 0u;
     s_lifecycle_ctx = NULL;
     s_ready = true;
+    s_motion_access = true;
+    s_revoke_at_gap = 0u;
+    s_fail_msg_id = 0u;
     assert(mcu_motion_set_servo_feedback_callback(NULL, NULL) == ESP_OK);
     assert(mcu_motion_set_lifecycle_callback(NULL, NULL) == ESP_OK);
 }
@@ -93,6 +111,18 @@ void mcu_motion_test_record_frame_gap(uint32_t delay_ms) {
         s_frame_gap_ms[s_frame_gap_count] = delay_ms;
     }
     s_frame_gap_count++;
+    if (s_frame_gap_count == s_revoke_at_gap) {
+        s_motion_access = false;
+    }
+    if (s_inject_early_nack && s_frame_gap_count == 1)
+        observed_event(MCU_LINK_RX_EVENT_NACK, s_history[0].seq, 700, 0);
+    if (s_inject_early_done && s_frame_gap_count == 2)
+        observed_event(MCU_LINK_RX_EVENT_MOTION_DONE, s_history[1].seq, 701, 0);
+}
+
+bool mcu_motion_test_source_has_access(mcu_motion_source_t source) {
+    (void)source;
+    return s_motion_access;
 }
 
 static void capture_feedback(const mcu_motion_servo_feedback_t *feedback, void *ctx) {
@@ -115,7 +145,7 @@ static void test_motion_lifecycle_callback_preserves_ref_seq_and_terminal_result
         .type = MCU_LINK_RX_EVENT_MOTION_DONE,
         .frame =
             {
-                .header = {.payload_len = 11u},
+                .header = {.payload_len = 11u, .seq = 99u},
                 .payload =
                     {
                         0x78u,
@@ -140,6 +170,7 @@ static void test_motion_lifecycle_callback_preserves_ref_seq_and_terminal_result
     assert(s_lifecycle_ctx == &sentinel);
     assert(s_lifecycle_event.type == MCU_MOTION_LIFECYCLE_DONE);
     assert(s_lifecycle_event.ref_seq == 0x12345678u);
+    assert(s_lifecycle_event.event_seq == 99u);
     assert(s_lifecycle_event.result == MCU_MOTION_RESULT_SUCCESS);
     assert(s_lifecycle_event.final_x_deg_x10 == 1234);
     assert(s_lifecycle_event.final_y_deg_x10 == 567);
@@ -408,15 +439,10 @@ static void test_motion_state_feedback_uses_stm32_payload_layout(void) {
 
     reset_capture();
 
-    assert(mcu_motion_set_servo_feedback_callback(capture_feedback, &sentinel) == ESP_OK);
+    assert(mcu_motion_set_servo_feedback_callback(capture_feedback, &sentinel) == ESP_ERR_NOT_SUPPORTED);
     assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
-    assert(s_feedback_count == 1u);
-    assert(s_feedback_ctx == &sentinel);
-    assert(s_feedback.axis_mask == (MCU_MOTION_AXIS_X | MCU_MOTION_AXIS_Y));
-    assert(s_feedback.x_angle_x10 == 1234);
-    assert(s_feedback.y_angle_x10 == 567);
-    assert(s_feedback.x_raw == 2500u);
-    assert(s_feedback.y_raw == 1500u);
+    assert(s_feedback_count == 0u);
+    assert(s_captured.send_count == 0);
 }
 
 static void test_servo_feedback_rsp_uses_compact_payload_layout(void) {
@@ -447,25 +473,78 @@ static void test_servo_feedback_rsp_uses_compact_payload_layout(void) {
 
     reset_capture();
 
-    assert(mcu_motion_set_servo_feedback_callback(capture_feedback, &sentinel) == ESP_OK);
+    assert(mcu_motion_set_servo_feedback_callback(capture_feedback, &sentinel) == ESP_ERR_NOT_SUPPORTED);
     assert(mcu_motion_service_handle_link_event(&event) == ESP_OK);
-    assert(s_feedback_count == 1u);
-    assert(s_feedback_ctx == &sentinel);
-    assert(s_feedback.axis_mask == (MCU_MOTION_AXIS_X | MCU_MOTION_AXIS_Y));
-    assert(s_feedback.x_angle_x10 == 444);
-    assert(s_feedback.y_angle_x10 == 222);
-    assert(s_feedback.x_raw == 3333u);
-    assert(s_feedback.y_raw == 1111u);
+    assert(s_feedback_count == 0u);
+    assert(s_captured.send_count == 0);
 }
 
-int main(void) {
+#include "observed_sequence_test.inc"
+
+int main(int argc, char **argv) {
+    if (argc > 1) {
+        if (strcmp(argv[1], "late-motion") == 0)
+            test_late_face_done_origin(0);
+        else if (strcmp(argv[1], "late-hello") == 0)
+            test_late_face_done_origin(1);
+        else if (strcmp(argv[1], "late-fault") == 0)
+            test_late_face_done_origin(2);
+        else if (strcmp(argv[1], "stop-history") == 0)
+            test_stop_history_retains_32_commands();
+        else if (strcmp(argv[1], "late-send") == 0)
+            test_late_face_done_origin(3);
+        else
+            return 2;
+        return 0;
+    }
+    test_late_face_done_origin(0);
+    test_late_face_done_origin(1);
+    test_late_face_done_origin(2);
+    test_late_face_done_origin(3);
+    test_stop_history_retains_32_commands();
+    test_stopped_jog_control_origin();
+    test_stop_handoff();
+    test_observed_sequence();
+    {
+        mcu_motion_sequence_receipt_t receipt;
+        mcu_motion_chunked_sequence_t sequence = {
+            .sequence_id = 1u, .source = MCU_MOTION_SOURCE_WS, .segment_count = 2u};
+        reset_capture();
+        for (unsigned i = 0u; i < 2u; i++) {
+            sequence.segments[i] = (mcu_motion_segment_t){.axis_mask = MCU_MOTION_AXIS_X | MCU_MOTION_AXIS_Y,
+                                                          .x_deg_x10 = 900,
+                                                          .y_deg_x10 = 1080,
+                                                          .duration_ms = 200u};
+        }
+        assert(mcu_motion_submit_tracked_sequence(&sequence, &receipt) == ESP_OK);
+        assert(receipt.begin_seq == 42u && receipt.chunk_seq == 43u && receipt.end_seq == 44u);
+        assert(receipt.segment_count == 2u && s_history_count == 3u);
+        const uint8_t control_ids[] = {MCU_MOTION_MSG_SERVO_SEQUENCE_BEGIN, MCU_MOTION_MSG_SERVO_SEQUENCE_CHUNK,
+                                       MCU_MOTION_MSG_SERVO_SEQUENCE_END};
+        for (unsigned i = 0u; i < 3u; i++) {
+            reset_capture();
+            s_fail_msg_id = control_ids[i];
+            assert(mcu_motion_submit_tracked_sequence(&sequence, &receipt) == ESP_ERR_INVALID_STATE);
+            assert(s_history_count == i && receipt.segment_count == 0u);
+        }
+        for (unsigned gap = 1u; gap <= 2u; gap++) {
+            reset_capture();
+            s_revoke_at_gap = gap;
+            assert(mcu_motion_submit_tracked_sequence(&sequence, &receipt) == ESP_ERR_INVALID_STATE);
+            assert(s_history_count == gap && receipt.end_seq == 0u);
+        }
+        reset_capture();
+        sequence.segment_count = 16u;
+        assert(mcu_motion_submit_tracked_sequence(&sequence, &receipt) == ESP_ERR_INVALID_ARG);
+        assert(s_history_count == 0u && receipt.segment_count == 0u);
+    }
     reset_capture();
     s_ready = false;
-    assert(mcu_motion_request_feedback() == ESP_ERR_INVALID_STATE);
+    assert(mcu_motion_request_feedback() == ESP_ERR_NOT_SUPPORTED);
     assert(s_captured.send_count == 0);
     s_ready = true;
-    assert(mcu_motion_request_feedback() == ESP_OK);
-    assert(s_captured.msg_id == MCU_MOTION_MSG_SERVO_FEEDBACK_REQ);
+    assert(mcu_motion_request_feedback() == ESP_ERR_NOT_SUPPORTED);
+    assert(s_captured.send_count == 0);
     assert(s_captured.payload_len == 0);
     test_stop_clears_pending_motion_queue();
     test_sequence_encodes_segments_into_single_frame();

@@ -55,4 +55,3 @@ config WATCHER_MCU_LINK_UART_TX_BUFFER
 endif
 
 endmenu
-

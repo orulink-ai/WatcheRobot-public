@@ -16,4 +16,3 @@ void esp_codec_dev_sleep(int ms)
 {
     vTaskDelay(ms / TICK_PER_MS);
 }
-

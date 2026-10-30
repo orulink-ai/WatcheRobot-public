@@ -312,4 +312,3 @@ static esp_err_t del(esp_io_expander_t *handle) {
     free(pca);
     return ESP_OK;
 }
-

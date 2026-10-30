@@ -291,4 +291,3 @@ esp_err_t mcu_led_service_handle_link_event(const mcu_link_event_t *event) {
     mcu_led_submit_unlock();
     return ret;
 }
-

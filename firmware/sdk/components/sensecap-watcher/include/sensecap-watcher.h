@@ -499,13 +499,29 @@ typedef bool (*bsp_i2s_tx_reference_cb_t)(const void *data, size_t size, void *c
 esp_err_t bsp_i2s_set_tx_reference_callback(bsp_i2s_tx_reference_cb_t callback, void *ctx);
 /** Wait until every TX DMA descriptor that could contain previously written audio has completed. */
 esp_err_t bsp_i2s_wait_tx_drain(uint32_t timeout_ms);
+/** Lifetime count of unread RX DMA buffers evicted by the driver. */
+uint32_t bsp_i2s_rx_overflow_count(void);
 esp_err_t bsp_codec_set_fs(uint32_t rate, uint32_t bits_cfg, i2s_slot_mode_t ch);
 esp_err_t bsp_codec_volume_set(int volume, int *volume_set);
 esp_err_t bsp_codec_mute_set(bool enable);
 esp_err_t bsp_codec_dev_stop(void);
 esp_err_t bsp_codec_dev_resume(void);
 
+/** On failure partial objects (including mutex-only construction with NULL
+ * codec getters) remain owned by the caller. Always use checked deinit; init
+ * never hides destructive cleanup errors. Refresh getters after cleanup. */
 esp_err_t bsp_codec_init(void);
+/** Output-only construction; does not construct or start the microphone codec. */
+esp_err_t bsp_codec_init_output(void);
+/** Construct both handles without programming/enabling ADC until explicit open. */
+esp_err_t bsp_codec_init_idle(void);
+/** Close existing capture (checked), configure output only; never opens input. */
+esp_err_t bsp_codec_set_output_fs(uint32_t rate, uint32_t bits_cfg, i2s_slot_mode_t ch);
+/** Check codec close and owned I2S channel stop before destroying. On either
+ * failure all objects/channels/mutex remain valid for retry; an already stopped
+ * channel is accepted. Once destruction starts, handles are invalidated even on error;
+ * callers must inspect getters and must not retry using cached handles.
+ * A destruction error does not certify hardware shutdown. */
 esp_err_t bsp_codec_deinit(void);
 esp_codec_dev_handle_t bsp_codec_speaker_get(void);
 esp_codec_dev_handle_t bsp_codec_microphone_get(void);

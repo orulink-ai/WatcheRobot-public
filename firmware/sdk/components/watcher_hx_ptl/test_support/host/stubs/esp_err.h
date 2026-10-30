@@ -11,4 +11,3 @@ static inline const char *esp_err_to_name(int error) {
     (void)error;
     return "error";
 }
-

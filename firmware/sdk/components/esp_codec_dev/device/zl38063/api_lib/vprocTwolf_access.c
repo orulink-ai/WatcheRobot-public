@@ -1066,4 +1066,3 @@ VprocStatusType VprocTwolfFirmwareStop(void)
     buf = HOST_CMD_FWR_STOP;
     return VprocTwolfcmdRegWr(buf);
 }
-

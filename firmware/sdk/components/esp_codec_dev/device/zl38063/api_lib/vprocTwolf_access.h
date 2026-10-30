@@ -72,4 +72,3 @@ VprocStatusType VprocTwolfGetAppStatus(uint16 *status);
 }
 #endif
 #endif /* VPROCTWOLFACCESS_H */
-

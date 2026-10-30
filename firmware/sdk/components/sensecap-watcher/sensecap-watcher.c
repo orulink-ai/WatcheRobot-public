@@ -96,6 +96,7 @@ static i2s_chan_handle_t i2s_tx_chan = NULL;
 static i2s_chan_handle_t i2s_rx_chan = NULL;
 static const audio_codec_data_if_t *i2s_data_if = NULL;
 static volatile uint32_t i2s_tx_done_count = 0U;
+static volatile uint32_t i2s_rx_overflow_count = 0U;
 static portMUX_TYPE i2s_tx_reference_lock = portMUX_INITIALIZER_UNLOCKED;
 static bsp_i2s_tx_reference_cb_t i2s_tx_reference_cb = NULL;
 static void *i2s_tx_reference_ctx = NULL;
@@ -111,6 +112,18 @@ static bool IRAM_ATTR bsp_i2s_tx_sent_callback(i2s_chan_handle_t handle, i2s_eve
     }
     portEXIT_CRITICAL_ISR(&i2s_tx_reference_lock);
     return should_yield;
+}
+
+static bool IRAM_ATTR bsp_i2s_rx_overflow_callback(i2s_chan_handle_t handle, i2s_event_data_t *event, void *ctx) {
+    (void)handle;
+    (void)event;
+    (void)ctx;
+    __atomic_fetch_add(&i2s_rx_overflow_count, 1U, __ATOMIC_RELAXED);
+    return false;
+}
+
+uint32_t bsp_i2s_rx_overflow_count(void) {
+    return __atomic_load_n(&i2s_rx_overflow_count, __ATOMIC_RELAXED);
 }
 
 static esp_err_t bsp_codec_close_play_locked(void) {
@@ -2059,6 +2072,8 @@ esp_err_t bsp_audio_init(const i2s_std_config_t *i2s_config) {
         };
         __atomic_store_n(&i2s_tx_done_count, 0U, __ATOMIC_RELAXED);
         BSP_ERROR_CHECK_RETURN_ERR(i2s_channel_register_event_callback(i2s_tx_chan, &callbacks, NULL));
+        const i2s_event_callbacks_t rx_callbacks = {.on_recv_q_ovf = bsp_i2s_rx_overflow_callback};
+        BSP_ERROR_CHECK_RETURN_ERR(i2s_channel_register_event_callback(i2s_rx_chan, &rx_callbacks, NULL));
     }
 
     /* Setup I2S channels */
@@ -2193,7 +2208,7 @@ esp_codec_dev_handle_t bsp_audio_codec_speaker_init(void) {
     return dev_handle;
 }
 
-esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void) {
+static esp_codec_dev_handle_t bsp_audio_codec_microphone_init_mode(bool start_disabled) {
     const audio_codec_data_if_t *i2s_data_if = bsp_audio_get_codec_itf();
     const audio_codec_if_t *es7243_dev = NULL;
     const audio_codec_ctrl_if_t *i2c_ctrl_if = NULL;
@@ -2234,6 +2249,7 @@ esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void) {
 
         es7243_codec_cfg_t es7243_cfg = {
             .ctrl_if = i2c_ctrl_if,
+            .start_disabled = start_disabled,
         };
         es7243_dev = es7243_codec_new(&es7243_cfg);
     } else {
@@ -2247,6 +2263,7 @@ esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void) {
         BSP_NULL_CHECK(i2c_ctrl_if, NULL);
         es7243e_codec_cfg_t es7243e_cfg = {
             .ctrl_if = i2c_ctrl_if,
+            .start_disabled = start_disabled,
         };
         es7243_dev = es7243e_codec_new(&es7243e_cfg);
     }
@@ -2273,6 +2290,10 @@ esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void) {
     record_codec_if = es7243_dev;
     record_ctrl_if = i2c_ctrl_if;
     return dev_handle;
+}
+
+esp_codec_dev_handle_t bsp_audio_codec_microphone_init(void) {
+    return bsp_audio_codec_microphone_init_mode(false);
 }
 
 esp_err_t bsp_i2s_read(void *audio_buffer, size_t len, size_t *bytes_read, uint32_t timeout_ms) {
@@ -2372,6 +2393,24 @@ esp_err_t bsp_codec_set_fs(uint32_t rate, uint32_t bits_cfg, i2s_slot_mode_t ch)
     return ret;
 }
 
+esp_err_t bsp_codec_set_output_fs(uint32_t rate, uint32_t bits_cfg, i2s_slot_mode_t ch) {
+    esp_codec_dev_sample_info_t fs = {.sample_rate = rate, .bits_per_sample = bits_cfg, .channel = ch};
+    xSemaphoreTake(codec_mutex, portMAX_DELAY);
+    /* Close existing wake capture before opening TX. Never construct/open ADC. */
+    esp_err_t ret = bsp_codec_close_record_locked();
+    if (ret == ESP_OK)
+        ret = bsp_codec_close_play_locked();
+    if (ret == ESP_OK && play_dev_handle) {
+        ret = esp_codec_dev_open(play_dev_handle, &fs);
+        if (ret == ESP_OK)
+            play_dev_open = true;
+    } else if (ret == ESP_OK) {
+        ret = ESP_FAIL;
+    }
+    xSemaphoreGive(codec_mutex);
+    return ret;
+}
+
 esp_err_t bsp_codec_volume_set(int volume, int *volume_set) {
     esp_err_t ret = ESP_OK;
     float v = volume;
@@ -2419,6 +2458,29 @@ esp_err_t bsp_codec_dev_resume(void) {
     return bsp_codec_set_fs(DRV_AUDIO_SAMPLE_RATE, DRV_AUDIO_SAMPLE_BITS, DRV_AUDIO_CHANNELS);
 }
 
+esp_err_t bsp_codec_init_output(void) {
+    const bool cold = codec_mutex == NULL && record_dev_handle == NULL;
+    if (codec_mutex == NULL) {
+        codec_mutex = xSemaphoreCreateMutex();
+        if (codec_mutex == NULL)
+            return ESP_ERR_NO_MEM;
+    }
+    if (play_dev_handle == NULL)
+        play_dev_handle = bsp_audio_codec_speaker_init();
+    if (play_dev_handle == NULL && cold)
+        (void)bsp_codec_deinit();
+    return play_dev_handle != NULL ? ESP_OK : ESP_FAIL;
+}
+
+esp_err_t bsp_codec_init_idle(void) {
+    esp_err_t ret = bsp_codec_init_output();
+    if (ret != ESP_OK)
+        return ret;
+    if (record_dev_handle == NULL)
+        record_dev_handle = bsp_audio_codec_microphone_init_mode(true);
+    return record_dev_handle != NULL ? ESP_OK : ESP_FAIL;
+}
+
 esp_err_t bsp_codec_init(void) {
     if (play_dev_handle != NULL && record_dev_handle != NULL) {
         return ESP_OK;
@@ -2433,19 +2495,18 @@ esp_err_t bsp_codec_init(void) {
 
     play_dev_handle = bsp_audio_codec_speaker_init();
     if (play_dev_handle == NULL) {
-        (void)bsp_codec_deinit();
         return ESP_FAIL;
     }
 
     record_dev_handle = bsp_audio_codec_microphone_init();
     if (record_dev_handle == NULL) {
-        (void)bsp_codec_deinit();
         return ESP_FAIL;
     }
 
     esp_err_t ret = bsp_codec_set_fs(DRV_AUDIO_SAMPLE_RATE, DRV_AUDIO_SAMPLE_BITS, DRV_AUDIO_CHANNELS);
     if (ret != ESP_OK) {
-        (void)bsp_codec_deinit();
+        /* HAL owns checked cleanup, including partial construction. Hidden
+         * destructive cleanup here loses its failure/ownership distinction. */
         return ret;
     }
     return ESP_OK;
@@ -2457,18 +2518,41 @@ esp_err_t bsp_codec_deinit(void) {
     if (codec_mutex != NULL) {
         xSemaphoreTake(codec_mutex, portMAX_DELAY);
     }
+    /* Do not destroy a codec whose physical close failed. FD callers open
+     * handles directly, so the BSP open flags are not sufficient here. */
+    esp_err_t close_ret = play_dev_handle != NULL ? esp_codec_dev_close(play_dev_handle) : ESP_OK;
+    esp_err_t record_ret = record_dev_handle != NULL ? esp_codec_dev_close(record_dev_handle) : ESP_OK;
+    if (close_ret != ESP_OK || record_ret != ESP_OK) {
+        if (codec_mutex != NULL)
+            xSemaphoreGive(codec_mutex);
+        return close_ret != ESP_OK ? close_ret : record_ret;
+    }
+    /* Codec close can succeed without stopping an I2S channel. Check the
+     * actual owned channels before freeing any object needed for retry. */
+    if (i2s_tx_chan != NULL) {
+        esp_err_t ret = i2s_channel_disable(i2s_tx_chan);
+        if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+            if (codec_mutex != NULL)
+                xSemaphoreGive(codec_mutex);
+            return ret;
+        }
+    }
+    if (i2s_rx_chan != NULL) {
+        esp_err_t ret = i2s_channel_disable(i2s_rx_chan);
+        if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+            if (codec_mutex != NULL)
+                xSemaphoreGive(codec_mutex);
+            return ret;
+        }
+    }
+    play_dev_open = false;
+    record_dev_open = false;
 
     if (play_dev_handle != NULL) {
-        if (bsp_codec_close_play_locked() != ESP_OK) {
-            status = ESP_FAIL;
-        }
         esp_codec_dev_delete(play_dev_handle);
         play_dev_handle = NULL;
     }
     if (record_dev_handle != NULL) {
-        if (bsp_codec_close_record_locked() != ESP_OK) {
-            status = ESP_FAIL;
-        }
         esp_codec_dev_delete(record_dev_handle);
         record_dev_handle = NULL;
     }
@@ -2498,13 +2582,6 @@ esp_err_t bsp_codec_deinit(void) {
     }
     i2s_data_if = NULL;
 
-    if (play_dev_open && i2s_tx_chan != NULL) {
-        esp_err_t ret = i2s_channel_disable(i2s_tx_chan);
-        if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-            status = ESP_FAIL;
-        }
-        play_dev_open = false;
-    }
     if (i2s_tx_chan != NULL) {
         esp_err_t ret;
         ret = i2s_del_channel(i2s_tx_chan);
@@ -2512,13 +2589,6 @@ esp_err_t bsp_codec_deinit(void) {
             status = ESP_FAIL;
         }
         i2s_tx_chan = NULL;
-    }
-    if (record_dev_open && i2s_rx_chan != NULL) {
-        esp_err_t ret = i2s_channel_disable(i2s_rx_chan);
-        if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-            status = ESP_FAIL;
-        }
-        record_dev_open = false;
     }
     if (i2s_rx_chan != NULL) {
         esp_err_t ret;

@@ -23,4 +23,3 @@ uint16_t mcu_crc16_ccitt_false(const void *data, size_t len);
 #endif
 
 #endif /* MCU_CRC16_H */
-

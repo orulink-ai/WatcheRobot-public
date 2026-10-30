@@ -124,4 +124,3 @@ const char *hal_camera_jpeg_integrity_status_name(hal_camera_jpeg_integrity_stat
         return "unknown";
     }
 }
-

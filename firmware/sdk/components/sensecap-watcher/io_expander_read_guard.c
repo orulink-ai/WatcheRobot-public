@@ -59,4 +59,3 @@ bool io_expander_read_guard_should_report(const io_expander_read_guard_t *guard)
     }
     return guard->consecutive_failures == 1U || guard->consecutive_failures % 10U == 0U;
 }
-

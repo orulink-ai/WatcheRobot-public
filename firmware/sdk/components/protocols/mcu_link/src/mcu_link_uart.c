@@ -261,4 +261,3 @@ esp_err_t mcu_link_uart_flush_input(void) {
     mcu_link_uart_unlock();
     return result;
 }
-

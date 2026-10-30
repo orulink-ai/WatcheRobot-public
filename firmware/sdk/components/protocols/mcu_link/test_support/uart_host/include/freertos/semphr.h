@@ -11,4 +11,3 @@ void vSemaphoreDelete(SemaphoreHandle_t semaphore);
 #ifdef __cplusplus
 }
 #endif
-

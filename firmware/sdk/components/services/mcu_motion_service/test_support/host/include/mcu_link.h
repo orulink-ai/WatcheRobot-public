@@ -27,6 +27,7 @@
 typedef uint8_t mcu_motion_msg_id_t;
 
 typedef struct {
+    uint32_t seq;
     uint16_t payload_len;
     uint8_t msg_id;
 } test_mcu_frame_header_t;
@@ -46,6 +47,7 @@ typedef enum {
     MCU_LINK_RX_EVENT_FAULT,
     MCU_LINK_RX_EVENT_MOTION_DONE,
     MCU_LINK_RX_EVENT_SERVO_FEEDBACK,
+    MCU_LINK_RX_EVENT_HELLO_RSP,
 } mcu_link_rx_event_type_t;
 
 typedef struct {
@@ -53,14 +55,7 @@ typedef struct {
     test_mcu_frame_t frame;
 } mcu_link_event_t;
 
-esp_err_t mcu_link_send_frame(mcu_link_t *link,
-                              uint8_t msg_class,
-                              uint8_t msg_id,
-                              uint8_t flags,
-                              const uint8_t *payload,
-                              uint16_t payload_len,
-                              uint32_t *out_seq,
-                              size_t *out_wire_len);
+esp_err_t mcu_link_send_frame(mcu_link_t *link, uint8_t msg_class, uint8_t msg_id, uint8_t flags,
+                              const uint8_t *payload, uint16_t payload_len, uint32_t *out_seq, size_t *out_wire_len);
 
 #endif /* TEST_MCU_LINK_H */
-

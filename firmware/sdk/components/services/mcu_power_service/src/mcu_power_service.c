@@ -118,4 +118,3 @@ esp_err_t mcu_power_service_handle_link_event(const mcu_link_event_t *event) {
         return ESP_ERR_NOT_FOUND;
     }
 }
-

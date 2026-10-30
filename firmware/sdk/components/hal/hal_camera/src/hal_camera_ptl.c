@@ -47,6 +47,8 @@ typedef struct {
     bool stream_cleanup_pending;
     bool photo_prepared;
     bool inferencing, inference_stop;
+    bool inference_jpeg_only;
+    bool inference_generation_lost; /* Only fresh control STATUS can confirm loss. */
     char *inference_image;
     SemaphoreHandle_t inference_stopped;
     TaskHandle_t inference_task;
@@ -391,13 +393,15 @@ static esp_err_t prepare_capture_locked(void) {
     if (s_ctx.preview_owned)
         return ESP_ERR_INVALID_STATE;
     watcher_hx_ptl_frame_t frame;
-    const int64_t capture_deadline_us =
-        esp_timer_get_time() + (int64_t)CONFIG_WATCHER_CAMERA_CAPTURE_TIMEOUT_MS * 1000LL;
     esp_err_t stopped;
     esp_err_t ret = watcher_hx_control_mode(1, 0);
     if (ret != ESP_OK)
         return ret;
     s_ctx.preview_owned = true;
+    /* MODE may spend most of its own bounded timeout stopping/restarting HX.
+     * The AE budget starts only once the new sensor mode is confirmed ready. */
+    const int64_t capture_deadline_us =
+        esp_timer_get_time() + (int64_t)CONFIG_WATCHER_CAMERA_CAPTURE_TIMEOUT_MS * 1000LL;
     /* A mode switch resets sensor AE. Three stale-frame discards aren't a
      * warm-up: the measured first JPEG was dark and AE settled ~0.8s later.
      * Wait for time AND valid frames, then take a new frame after the shutter. */
@@ -667,6 +671,10 @@ static void inference_task(void *arg) {
         xSemaphoreGive(s_ctx.lock);
         if (stop)
             break;
+        /* Freeze the local acquisition boundary before reading. Encoding and
+         * status queries must not relabel an already-read JPEG as post-request.
+         * This is a host monotonic fence, not a sensor exposure timestamp. */
+        const uint32_t acquisition_ms = (uint32_t)(esp_timer_get_time() / 1000);
         watcher_hx_result_t result = {0};
         size_t image_size = 0;
         esp_err_t received;
@@ -676,8 +684,16 @@ static void inference_task(void *arg) {
             received = watcher_hx_ptl_read(&jpeg, 200);
             if (received == ESP_OK) {
                 ++preview_reads;
-                if (!wff_unpack(jpeg.jpeg, jpeg.jpeg_size, &paired) ||
-                    !hal_camera_jpeg_dimensions_match(jpeg.jpeg, jpeg.jpeg_size, 640, 480)) {
+                if (s_ctx.inference_jpeg_only) {
+                    result.sequence = jpeg.sequence;
+                    result.width = HX_MEDIA_SOURCE_WIDTH;
+                    result.height = HX_MEDIA_SOURCE_HEIGHT;
+                    if (!hal_camera_jpeg_dimensions_match(jpeg.jpeg, jpeg.jpeg_size, HX_MEDIA_SOURCE_WIDTH,
+                                                          HX_MEDIA_SOURCE_HEIGHT) ||
+                        mbedtls_base64_encode((unsigned char *)s_ctx.inference_image, 175000, &image_size, jpeg.jpeg,
+                                              jpeg.jpeg_size) != 0)
+                        image_size = 0;
+                } else if (!wff_unpack(jpeg.jpeg, jpeg.jpeg_size, &paired)) {
                     received = ESP_ERR_INVALID_RESPONSE;
                     ++preview_rejected;
                 } else {
@@ -691,10 +707,22 @@ static void inference_task(void *arg) {
                         result.boxes[i] =
                             (watcher_hx_box_t){b->x, b->y, b->width, b->height, (uint8_t)b->score, (uint8_t)b->target};
                     }
-                    if (mbedtls_base64_encode((unsigned char *)s_ctx.inference_image, 175000, &image_size, jpeg.jpeg,
-                                              jpeg.jpeg_size) != 0)
-                        received = ESP_ERR_INVALID_SIZE;
+                    /* Metadata remains usable when optional image validation or
+                     * encoding fails. Never publish partial/stale base64. */
+                    if (!hal_camera_jpeg_dimensions_match(jpeg.jpeg, jpeg.jpeg_size, 640, 480) ||
+                        mbedtls_base64_encode((unsigned char *)s_ctx.inference_image, 175000, &image_size, jpeg.jpeg,
+                                              jpeg.jpeg_size) != 0) {
+                        image_size = 0;
+                        ++preview_rejected;
+                    }
                 }
+            }
+            if (received != ESP_OK && !s_ctx.inference_jpeg_only) {
+                /* One control request per failed preview iteration; no retry
+                 * loop. Control boxes have their own generation/sequence and
+                 * must never be paired with a previous preview image. */
+                image_size = 0;
+                received = watcher_hx_control_boxes(&result);
             }
             const int64_t now_us = esp_timer_get_time();
             if (now_us - preview_log_us > 3000000) {
@@ -710,12 +738,38 @@ static void inference_task(void *arg) {
         hal_camera_inference_frame_t frame = {0};
         hal_camera_inference_cb_t callback = NULL;
         void *context = NULL;
+        /* Delayed/old preview and BOXES frames are not an ownership oracle.
+         * Never hold the HAL state lock across a UART transaction. */
+        bool confirmed_lost = false;
+        if (s_ctx.inference_jpeg_only) {
+            /* Raw JPEG has no generation. Fresh status also detects an idle
+             * or foreign owner when no more JPEG frames are arriving. */
+            watcher_hx_state_t actual;
+            esp_err_t status = watcher_hx_control_status(&actual);
+            if (status == ESP_OK) {
+                confirmed_lost = actual.generation != s_ctx.inference_generation;
+                result.generation = actual.generation;
+                if (actual.mode != 1 || actual.error)
+                    received = ESP_ERR_INVALID_RESPONSE;
+            } else {
+                received = status;
+            }
+        } else if (received == ESP_OK && result.generation != s_ctx.inference_generation) {
+            watcher_hx_state_t actual;
+            confirmed_lost = watcher_hx_control_status(&actual) == ESP_OK &&
+                             actual.generation != s_ctx.inference_generation;
+        }
         xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
+        if (confirmed_lost && !s_ctx.inference_generation_lost) {
+            s_ctx.inference_generation_lost = true;
+            ESP_LOGW(TAG, "inference owner lost expected=%lu; fresh HX status differs",
+                     (unsigned long)s_ctx.inference_generation);
+        }
         if (received == ESP_OK && result.generation == s_ctx.inference_generation && result.sequence != last_sequence &&
-            !s_ctx.inference_stop) {
+            !s_ctx.inference_stop && !s_ctx.inference_generation_lost) {
             last_sequence = result.sequence;
             frame.sequence = result.sequence;
-            frame.timestamp_ms = (uint32_t)(esp_timer_get_time() / 1000);
+            frame.timestamp_ms = acquisition_ms;
             frame.frame_width = result.width;
             frame.frame_height = result.height;
             frame.preview_image_base64 = image_size ? s_ctx.inference_image : NULL;
@@ -740,15 +794,20 @@ static void inference_task(void *arg) {
         vTaskDelay(pdMS_TO_TICKS(10));
     }
     xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
-    s_ctx.inference_task = NULL;
-    xSemaphoreGive(s_ctx.lock);
+    /* No callbacks or shared buffers are used after this completion signal.
+     * Keep the handle for the serialized owner: WithCaps self-deletion would
+     * allocate a temporary cleanup task and can abort under memory pressure. */
     xSemaphoreGive(s_ctx.inference_stopped);
-    vTaskDeleteWithCaps(NULL);
+    xSemaphoreGive(s_ctx.lock);
+    for (;;)
+        (void)ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 }
 
 esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
                                         const hal_camera_inference_options_t *options) {
     if (!cb)
+        return ESP_ERR_INVALID_ARG;
+    if (options && options->jpeg_only && !options->include_preview_image)
         return ESP_ERR_INVALID_ARG;
     ESP_RETURN_ON_ERROR(hal_camera_init(), TAG, "Initialize inference control");
     xSemaphoreTake(s_ctx.operation_lock, portMAX_DELAY);
@@ -776,11 +835,15 @@ esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
     xSemaphoreGive(s_ctx.lock);
     /* Keep the camera indicator on until the sensor is confirmed stopped. */
     publish_activity(true);
-    esp_err_t result = watcher_hx_control_mode_preview(2, s_selected_model, s_ctx.inference_image != NULL);
+    bool jpeg_only = options && options->jpeg_only;
+    esp_err_t result = watcher_hx_control_mode_preview(jpeg_only ? 1 : 2, jpeg_only ? 0 : s_selected_model,
+                                                       !jpeg_only && s_ctx.inference_image != NULL);
     if (result == ESP_OK) {
         xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
         s_ctx.inferencing = true;
+        s_ctx.inference_jpeg_only = jpeg_only;
         s_ctx.inference_stop = false;
+        s_ctx.inference_generation_lost = false;
         s_ctx.inference_cb = cb;
         s_ctx.inference_ctx = ctx;
         s_ctx.inference_generation = watcher_hx_control_generation();
@@ -795,6 +858,15 @@ esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
         esp_err_t stopped = watcher_hx_control_mode(0, 0);
         xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
         s_ctx.inferencing = stopped != ESP_OK;
+        if (stopped != ESP_OK) {
+            /* A failed MODE can leave this new owner active. Do not let a
+             * previous stop/lost generation hide it from acquisition rollback. */
+            s_ctx.inference_stop = false;
+            s_ctx.inference_generation_lost = false;
+            s_ctx.inference_generation = watcher_hx_control_generation();
+        }
+        s_ctx.inference_cb = stopped != ESP_OK ? cb : NULL;
+        s_ctx.inference_ctx = stopped != ESP_OK ? ctx : NULL;
         xSemaphoreGive(s_ctx.lock);
         if (stopped == ESP_OK) {
             free(s_ctx.inference_image);
@@ -806,12 +878,13 @@ esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
     return result;
 }
 
-esp_err_t hal_camera_stop_inference(void) {
+static esp_err_t stop_inference_internal(hal_camera_inference_cb_t cb, void *ctx) {
     if (!s_ctx.operation_lock)
         return ESP_OK;
     xSemaphoreTake(s_ctx.operation_lock, portMAX_DELAY);
     xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
-    if (!s_ctx.inferencing) {
+    /* Keep operation_lock across identity validation, task join and mode stop. */
+    if (!s_ctx.inferencing || (cb != NULL && (s_ctx.inference_cb != cb || s_ctx.inference_ctx != ctx))) {
         xSemaphoreGive(s_ctx.lock);
         xSemaphoreGive(s_ctx.operation_lock);
         return ESP_OK;
@@ -822,8 +895,25 @@ esp_err_t hal_camera_stop_inference(void) {
     esp_err_t result = ESP_OK;
     if (has_task && xSemaphoreTake(s_ctx.inference_stopped, pdMS_TO_TICKS(2000)) != pdTRUE)
         result = ESP_ERR_TIMEOUT;
+    if (has_task && result == ESP_OK) {
+        /* External WithCaps deletion releases both stack and TCB without a
+         * new allocation. Retire the handle even if sensor STOP later fails,
+         * so a retry cannot wait on the already-consumed completion signal. */
+        /* Join the worker's final critical section as well: the semaphore
+         * can wake us on the other core before xSemaphoreGive returns. */
+        xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
+        TaskHandle_t task = s_ctx.inference_task;
+        xSemaphoreGive(s_ctx.lock);
+        vTaskDeleteWithCaps(task);
+        xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
+        s_ctx.inference_task = NULL;
+        xSemaphoreGive(s_ctx.lock);
+    }
+    /* Fresh identity check and expected-generation STOP are one control
+     * transaction. Neither stale frames nor a cached lost flag can skip it. */
+    bool sensor_stopped = false;
     if (result == ESP_OK)
-        result = watcher_hx_control_mode(0, 0);
+        result = watcher_hx_control_stop_owned(s_ctx.inference_generation, &sensor_stopped);
     if (result == ESP_OK) {
         xSemaphoreTake(s_ctx.lock, portMAX_DELAY);
         s_ctx.inferencing = false;
@@ -832,10 +922,48 @@ esp_err_t hal_camera_stop_inference(void) {
         free(s_ctx.inference_image);
         s_ctx.inference_image = NULL;
         xSemaphoreGive(s_ctx.lock);
-        publish_activity(false);
+        if (sensor_stopped) {
+            publish_activity(false);
+            /* Visible at the production WARN threshold, once per retired
+             * lifecycle; repeated empty stops return before this branch. */
+            ESP_LOGW(TAG, "inference stop confirmed expected=%lu mode=0 model=0 error=0",
+                     (unsigned long)s_ctx.inference_generation);
+        } else
+            ESP_LOGI(TAG, "inference retired expected=%lu; foreign HX owner preserved",
+                     (unsigned long)s_ctx.inference_generation);
     }
     xSemaphoreGive(s_ctx.operation_lock);
     return result;
+}
+
+esp_err_t hal_camera_stop_inference(void) {
+    return stop_inference_internal(NULL, NULL);
+}
+
+esp_err_t hal_camera_stop_inference_owned(hal_camera_inference_cb_t cb, void *ctx) {
+    if (cb == NULL)
+        return ESP_ERR_INVALID_ARG;
+    return stop_inference_internal(cb, ctx);
+}
+
+esp_err_t hal_camera_inference_owner_status(hal_camera_inference_cb_t cb, void *ctx) {
+    if (!s_ctx.lock || !cb || xSemaphoreTake(s_ctx.lock, 0) != pdTRUE)
+        return ESP_ERR_TIMEOUT;
+    bool lost = !s_ctx.inferencing || s_ctx.inference_stop || s_ctx.inference_cb != cb || s_ctx.inference_ctx != ctx ||
+                s_ctx.inference_generation_lost;
+    xSemaphoreGive(s_ctx.lock);
+    return lost ? ESP_ERR_INVALID_STATE : ESP_OK;
+}
+
+bool hal_camera_inference_owned_by(hal_camera_inference_cb_t cb, void *ctx) {
+    if (!s_ctx.lock || !cb)
+        return false;
+    if (xSemaphoreTake(s_ctx.lock, 0) != pdTRUE)
+        return false;
+    bool owned = s_ctx.inferencing && !s_ctx.inference_stop && !s_ctx.inference_generation_lost &&
+                 s_ctx.inference_cb == cb && s_ctx.inference_ctx == ctx;
+    xSemaphoreGive(s_ctx.lock);
+    return owned;
 }
 
 bool hal_camera_is_inferencing(void) {
@@ -866,4 +994,3 @@ bool hal_camera_is_streaming(void) {
     }
     return streaming;
 }
-

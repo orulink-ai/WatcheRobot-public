@@ -116,4 +116,3 @@ const char *watcher_input_reject_name(watcher_input_reject_t reject);
 #endif
 
 #endif /* WATCHER_INPUT_ROUTER_H */
-

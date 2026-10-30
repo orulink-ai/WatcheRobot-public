@@ -136,6 +136,13 @@ esp_err_t watcher_hx_ptl_init(void) {
     s_ctx.expander = bsp_io_expander_init();
     ESP_RETURN_ON_FALSE(s_ctx.expander != NULL, ESP_ERR_INVALID_STATE, TAG, "PCA9535 unavailable");
     ESP_RETURN_ON_ERROR(bsp_exp_io_set_level(BSP_PWR_AI_CHIP, 1), TAG, "Power HX6538");
+    /* The board initializes P0.7 as an input. Unlike the legacy SSCMA client,
+     * this backend has no client reset routine to release the active-low pin.
+     * Configure the output before setting its inactive level as required by
+     * the expander driver. The initialized guard avoids disturbing capture. */
+    ESP_RETURN_ON_ERROR(esp_io_expander_set_dir(s_ctx.expander, BSP_SSCMA_CLIENT_RST, IO_EXPANDER_OUTPUT), TAG,
+                        "Configure HX reset output");
+    ESP_RETURN_ON_ERROR(bsp_exp_io_set_level(BSP_SSCMA_CLIENT_RST, 1), TAG, "Release HX reset");
     vTaskDelay(pdMS_TO_TICKS(20));
     ESP_RETURN_ON_ERROR(bsp_spi_bus_init(), TAG, "Initialize shared SPI2 bus");
     ESP_RETURN_ON_ERROR(esp_io_expander_set_dir(s_ctx.expander, WATCHER_HX_PTL_SYNC_MASK, IO_EXPANDER_INPUT), TAG,
@@ -355,4 +362,3 @@ esp_err_t watcher_hx_ptl_deinit(void) {
     s_ctx.expander = NULL;
     return ret;
 }
-

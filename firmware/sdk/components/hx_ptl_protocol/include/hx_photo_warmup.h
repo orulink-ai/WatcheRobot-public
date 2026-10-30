@@ -6,4 +6,3 @@ typedef struct {
     unsigned valid_frames;
 } hx_photo_warmup_t;
 bool hx_photo_warmup_observe(hx_photo_warmup_t *policy, uint64_t now_us, bool valid_frame);
-

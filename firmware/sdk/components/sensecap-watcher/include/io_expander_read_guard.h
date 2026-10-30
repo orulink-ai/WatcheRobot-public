@@ -27,4 +27,3 @@ bool io_expander_read_guard_should_report(const io_expander_read_guard_t *guard)
 #ifdef __cplusplus
 }
 #endif
-

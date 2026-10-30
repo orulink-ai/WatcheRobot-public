@@ -14,4 +14,3 @@ idf_component_register(
         "${IDF_PATH}/components/fatfs/vfs"
     REQUIRES ${requires}
 )
-

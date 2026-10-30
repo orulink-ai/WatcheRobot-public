@@ -138,4 +138,3 @@ const audio_codec_vol_if_t *audio_codec_new_sw_vol(void)
     vol->cur = vol->gain = 0;
     return &vol->base;
 }
-

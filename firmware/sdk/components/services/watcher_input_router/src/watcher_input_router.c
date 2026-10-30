@@ -465,4 +465,3 @@ const char *watcher_input_reject_name(watcher_input_reject_t reject) {
         return "unknown";
     }
 }
-

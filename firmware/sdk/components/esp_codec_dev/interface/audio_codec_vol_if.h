@@ -39,4 +39,3 @@ int audio_codec_delete_vol_if(const audio_codec_vol_if_t *vol_if);
 #endif
 
 #endif
-

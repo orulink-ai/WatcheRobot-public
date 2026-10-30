@@ -31,6 +31,12 @@ int hal_audio_init(void);
  */
 int hal_audio_deinit(void);
 
+/** Read-only, lock-independent terminal cleanup-fault snapshot. True means
+ * destroyed codec objects cannot be retried and hardware shutdown is unproven.
+ * This latch lasts until reboot; querying it does not clear leases or publish
+ * capture-off. False alone is not proof that capture is stopped. */
+bool hal_audio_has_terminal_fault(void);
+
 /**
  * Start audio capture/playback
  */
@@ -62,6 +68,11 @@ int hal_audio_drain_playback(uint32_t timeout_ms);
  * Stop audio capture/playback
  */
 int hal_audio_stop(void);
+/** Checked input-only physical stop. Caller quiesces reads. Keeps an active
+ * speaker running; failure retains state and must not acknowledge privacy-off. */
+int hal_audio_capture_pause(void);
+/** Prepare output without constructing/opening input; checked failure retains cleanup ownership. */
+int hal_audio_prepare_playback(uint8_t volume);
 
 /**
  * Declare whether a live wake-word runtime currently needs the shared
@@ -96,12 +107,22 @@ int hal_audio_external_lease_acquire(void);
 /** Return the codec handles only while the external lease is active. */
 int hal_audio_external_lease_get_handles(esp_codec_dev_handle_t *microphone, esp_codec_dev_handle_t *speaker);
 
-/** Configure PCM through BSP tracking; only while the external lease is held. */
+/** Explicitly open full-duplex PCM through BSP tracking while leased.
+ * Opens microphone RX; privacy-gated callers must not call during idle prepare. */
 int hal_audio_external_lease_configure(uint32_t sample_rate);
+
+/** Prepare PA power, unmute and bounded volume after reopening a leased path.
+ * Does not modify the official application's preferred volume. */
+int hal_audio_external_lease_prepare_output(uint8_t volume);
+/* Wait for leased output DMA, retaining codec ownership; timeout_ms > 0. */
+int hal_audio_external_lease_drain(uint32_t timeout_ms);
 
 /** Close any externally opened paths and return ownership to the normal HAL. */
 int hal_audio_external_lease_release(void);
 
+/** Lock-independent retained-lease snapshot, including terminal cleanup.
+ * Only successful checked release clears it. True grants no codec access;
+ * false alone does not prove capture stopped or permit terminal recovery. */
 bool hal_audio_external_lease_is_active(void);
 
 /**

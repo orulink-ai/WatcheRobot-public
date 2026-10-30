@@ -21,4 +21,3 @@ menu "Watcher HAL Audio"
             Initial speaker volume. Values above 80 may cause clipping.
 
 endmenu
-

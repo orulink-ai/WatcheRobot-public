@@ -36,4 +36,3 @@ bool sscma_client_command_name_equal(const char *left, const char *right) {
     sscma_client_command_name(right, normalized_right, sizeof(normalized_right));
     return normalized_left[0] != '\0' && strcmp(normalized_left, normalized_right) == 0;
 }
-

@@ -25,4 +25,3 @@ bool hal_camera_jpeg_read_dimensions(const uint8_t *jpeg, size_t size, uint16_t 
 bool hal_camera_jpeg_dimensions_match(const uint8_t *jpeg, size_t size, uint16_t expected_width,
                                       uint16_t expected_height);
 const char *hal_camera_jpeg_integrity_status_name(hal_camera_jpeg_integrity_status_t status);
-

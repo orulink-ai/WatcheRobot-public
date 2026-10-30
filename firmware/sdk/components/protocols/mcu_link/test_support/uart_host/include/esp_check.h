@@ -11,4 +11,3 @@
         if (e != ESP_OK)                                                                                               \
             return e;                                                                                                  \
     } while (0)
-

@@ -23,4 +23,3 @@ int main(void) {
     puts("hx_ptl_resync_tests: PASS");
     return 0;
 }
-

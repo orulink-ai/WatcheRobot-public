@@ -40,4 +40,3 @@ add_test(NAME mcu_link_host_tests COMMAND mcu_link_host_tests)
 
 # Keep real-driver concurrency coverage in the standard host/CI entry point.
 add_subdirectory("${MCU_LINK_TEST_SUPPORT_DIR}/uart_host" uart_gate)
-

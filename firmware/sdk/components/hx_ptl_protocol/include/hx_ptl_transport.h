@@ -37,4 +37,3 @@ hx_ptl_transport_result_t hx_ptl_transport_read_body(const hx_ptl_transport_io_t
 #ifdef __cplusplus
 }
 #endif
-

@@ -44,4 +44,3 @@ Print all pins's status to the log:
 ```
     esp_io_expander_print_state(io_expander);
 ```
-

@@ -1,90 +1,47 @@
 English | [简体中文](embedded-sdk_zh.md)
 
-# Independent Embedded Hardware SDK: Development Preview
+# Embedded C SDK (Development Preview)
 
-## Current Status
+## Pick your development route
 
-This document describes direction and interface boundaries. Development-preview
-source, independent examples and build instructions are in
-[firmware/sdk](../firmware/sdk/README.md). There is no stable release or complete
-hardware-validated STM32/Himax pairing yet; do not treat the preview as stable.
+| Route | Where your code runs | Start here |
+| --- | --- | --- |
+| Python SDK | Computer-side Applications, existing firmware and Runtime/Daemon | [Python quick start](sdk.md) |
+| Embedded C SDK | ESP32-S3, your own `app_main`, UI and hardware policy | [Public source and setup](../firmware/sdk/README.md) |
 
-The available development entry remains the [Python SDK](sdk.md). Existing
-firmware and client assets are listed in
-[Releases](https://github.com/orulink-ai/WatcheRobot-public/releases).
+These are independent routes, not prerequisites for each other. The embedded
+examples need no Python SDK, official app, Daemon, server, SD card or models.
 
-## Two Development Paths
+## First steps
 
-| Path | Runs on | Developer ownership | Status |
-| --- | --- | --- | --- |
-| Python SDK | Host computer | Applications using existing device firmware | Public entry available; see the SDK guide |
-| Embedded hardware SDK | ESP32-S3 | Own app_main, UI, interactions, and hardware calls | Development preview; not publicly released |
+1. [Pin a public commit and install ESP-IDF 6.0.2](../firmware/sdk/docs/getting-started.md).
+2. Build `hardware_check`, then verify paired firmware/recovery and your ESP32 port
+   before any flash. Build commands run from the **public repository root**.
+3. [Follow the 8-group / 26-item check](../firmware/sdk/docs/hardware-check.md), then
+   edit body/head/robot application code for your own product.
 
-The embedded SDK aims to run independently of the official application, without
-the Python SDK, Daemon, or server. It does not change the existing
-Python SDK/Daemon/Application architecture.
+The public snapshot includes `watcher_hw_{core,body,camera,audio,display}`, their
+hardware-only dependencies, common UI/flow helpers, licensed test speech, four
+independent projects and Shell/PowerShell entries. Headers specify ownership and
+threading; [migration](../firmware/sdk/MIGRATION.md) covers the old namespace.
+The full immutable upstream SHA and per-file provenance are in
+[SOURCE.json](../firmware/sdk/SOURCE.json). No private checkout is needed.
 
-## First-release Target Capabilities
+## Current hardware and release boundary
 
-| Module | Target interfaces |
-| --- | --- |
-| Body motion | Target angles in degrees, duration, stop; completion, rejection, and fault events |
-| Body lights | Zone colors, brightness, and basic effects |
-| Body touch | Ordered press, release, and long-press events |
-| Camera | PTL backend; single capture, continuous JPEG frames, stop, and status |
-| Microphone and speaker | PCM capture, playback, volume, and format configuration |
-| Display and screen touch | Standard LCD/LVGL/touch handles and access protection |
+Current servos have **no physical position feedback**. Position queries return
+`ESP_ERR_NOT_SUPPORTED`; command coordinates and ACK/DONE are not measurements.
+Motion tests explicitly confirm full-travel safety before commanding X90/Y120,
+which can be a large move from an unknown start. STOP still requires physical
+observation and STM32-side safety. [Read before moving](../firmware/sdk/docs/hardware-check.md).
 
-Modules are optional components named `watche_hw_*`; developers own application
-behavior. Voice assistants, cloud connections, official expressions, AI inference,
-and model management are outside the first release. The target toolchain is
-ESP-IDF **6.0.2** and ESP32-S3, with required dependencies pinned.
+This is a **development preview**, not a stable Release, complete STM32/Himax
+pairing, factory certificate or mechanical-safety guarantee. Camera requires PTL
+Himax firmware; public official Releases must not be assumed compatible. Missing
+verified pair or recovery images blocks flashing. [Setup/custom flash/official
+recovery](../firmware/sdk/docs/getting-started.md) are separate workflows.
 
-The runtime owns MCU handshaking, event collection, state transitions, and disconnect
-handling. Applications subscribe to events. Successful motion submission does not
-mean completion; commands must be rejected before readiness, and reconnects must
-not replay old motion. Callbacks handle lightweight events; expensive work belongs
-in application tasks. Published SDK documentation must specify resource contracts,
-including JPEG buffer lifetime and display locking.
-
-## Independent Example Targets
-
-- Body: touch changes lights, user-triggered small motion, completion/fault logging.
-- Head: simple LVGL page, screen touch, JPEG capture, short PCM recording/playback.
-- Whole robot: combine these capabilities and demonstrate resource ownership.
-
-Basic examples require neither an SD card nor model resources. Developers edit
-example application code without starting the official top-level firmware project
-or modifying STM32/Himax firmware.
-
-## Flashing and Safety Boundaries
-
-The final delivery must distinguish first-time STM32/Himax preparation, everyday
-custom ESP32 flashing, and restoration of official whole-robot firmware.
-
-The current [Flashing Guide](flashing.md) covers official firmware. Existing tools
-may write the official ESP32 application and must not be used to preserve a custom
-application. Custom partition layouts may overwrite storage; the released guide
-must document backup and restoration. Until the independent development entry is
-released, this preview provides no unverified custom flashing commands.
-
-After disconnection, ESP32 cannot guarantee delivery of a stop command; safety
-depends on STM32-side mechanisms. Motion examples require limit, small-movement,
-and stop validation. A successful build is not evidence of motion safety.
-
-## Public Release Gates
-
-- Confirm public source delivery, licensing, and a fixed Git revision; update
-  the published open-source scope accordingly.
-- Validate installation, all three builds, and application-only edits from a clean checkout.
-- Run Windows/Linux host tests and pinned-IDF CI, including official firmware regression.
-- Validate motion, lights, all three body-touch events, JPEG decoding, PCM recording/
-  playback, screen touch, and combined operation on hardware. Missing or incompatible
-  modules must not hang the device or unintentionally drive motors.
-- Record SDK/STM32 versions, Himax image checksum, board revision, and acceptance evidence.
-- Validate custom flashing and official restoration, with equivalent PowerShell/Shell entries.
-
-Do not release version one until both head and body pass acceptance. This document
-does not promise a release date.
-
-[Back to the project](../README.md)
+[Historical records](../firmware/sdk/VALIDATION.md) retain original names, hashes
+and limitations. [This sync's software evidence](../firmware/sdk/SYNC_VALIDATION.md)
+does not establish new audible, visual or mechanical acceptance. No production
+publication or stable v1 is performed by this source/documentation change.

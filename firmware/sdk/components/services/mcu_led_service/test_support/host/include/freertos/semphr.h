@@ -34,4 +34,3 @@ static inline BaseType_t xSemaphoreGive(SemaphoreHandle_t semaphore) {
 }
 
 #endif /* TEST_SEMPHR_H */
-

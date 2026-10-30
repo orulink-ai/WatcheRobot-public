@@ -119,4 +119,3 @@ typedef struct {
 #endif
 
 #endif /* VP_API_TYPES_H */
-

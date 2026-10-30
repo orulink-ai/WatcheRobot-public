@@ -217,4 +217,3 @@ const audio_codec_ctrl_if_t *audio_codec_new_i2c_ctrl(audio_codec_i2c_cfg_t *i2c
     ctrl->is_open = true;
     return &ctrl->base;
 }
-

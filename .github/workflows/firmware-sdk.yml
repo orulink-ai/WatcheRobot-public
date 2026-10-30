@@ -1,9 +1,11 @@
 name: Firmware SDK preview
 on:
   push:
-    paths: ["firmware/sdk/**", "tools/tests/test_firmware_sdk.py", ".github/workflows/firmware-sdk.yml"]
+    paths: ["firmware/sdk/**", "tools/export_firmware_sdk.py", "tools/tests/test_firmware_sdk*.py", ".github/workflows/firmware-sdk.yml"]
   pull_request:
-    paths: ["firmware/sdk/**", "tools/tests/test_firmware_sdk.py", ".github/workflows/firmware-sdk.yml"]
+    paths: ["firmware/sdk/**", "tools/export_firmware_sdk.py", "tools/tests/test_firmware_sdk*.py", ".github/workflows/firmware-sdk.yml"]
+permissions:
+  contents: read
 jobs:
   examples:
     runs-on: ubuntu-latest
@@ -11,13 +13,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        example: [body, head, robot]
+        example: [body, head, robot, hardware_check]
     steps:
       - uses: actions/checkout@v5
       - shell: bash
         run: |
           . /opt/esp/idf/export.sh
           idf.py -C firmware/sdk/examples/${{ matrix.example }} build
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest tools/tests -q
   host:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -27,16 +38,34 @@ jobs:
         config: [Debug, Release]
     steps:
       - uses: actions/checkout@v5
-      - name: SDK and shared runtime host tests
+      - name: Fetch immutable LVGL 8.4.0 source
+        uses: actions/checkout@v5
+        with:
+          repository: lvgl/lvgl
+          ref: 4495f428630cc1741bd8bfd977f080e8460e8e8d
+          path: .local/lvgl
+      - name: Fetch immutable cJSON 1.7.19 source
+        uses: actions/checkout@v5
+        with:
+          repository: DaveGamble/cJSON
+          ref: c859b25da02955fef659d658b8f324b5cde87be3
+          path: .local/cjson
+      # Includes sdk/watcher_hw_core and every discovered hardware host suite,
+      # including SSCMA resolved against the pinned cJSON checkout above.
+      - name: watcher_hw, shared runtime, examples/common and real LVGL tests
         shell: pwsh
         run: |
-          $suites = @("sdk/watche_hw_core", "sdk/watche_hw_body", "sdk/watche_hw_camera", "sdk/watche_hw_audio", "sdk/watche_hw_display", "services/mcu_motion_service", "services/mcu_led_service", "services/mcu_sensor_service", "services/motion_arbiter", "protocols/mcu_link", "esp_lvgl_port")
+          $suites = Get-ChildItem firmware/sdk -Recurse -Filter CMakeLists.txt |
+            Where-Object { $_.Directory.Name -in @("host", "uart_host") } |
+            Sort-Object FullName
           foreach ($suite in $suites) {
-            $build = "build-host-" + $suite.Replace("/", "-")
-            cmake -S "firmware/sdk/components/$suite/test_support/host" -B $build -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+            $source = $suite.Directory.FullName
+            $relative = [IO.Path]::GetRelativePath((Get-Location).Path, $source)
+            $build = "build-host-" + ($relative -replace '[/\\]', '-')
+            cmake -S $source -B $build -DCMAKE_BUILD_TYPE=${{ matrix.config }} "-DLVGL_SOURCE_DIR=$((Get-Location).Path)/.local/lvgl" "-DCJSON_SOURCE_DIR=$((Get-Location).Path)/.local/cjson"
             if ($LASTEXITCODE) { exit $LASTEXITCODE }
-            cmake --build $build --config ${{ matrix.config }}
+            cmake --build $build --config ${{ matrix.config }} --parallel 2
             if ($LASTEXITCODE) { exit $LASTEXITCODE }
-            ctest --test-dir $build -C ${{ matrix.config }} --output-on-failure
+            ctest --test-dir $build -C ${{ matrix.config }} --output-on-failure --no-tests=error
             if ($LASTEXITCODE) { exit $LASTEXITCODE }
           }

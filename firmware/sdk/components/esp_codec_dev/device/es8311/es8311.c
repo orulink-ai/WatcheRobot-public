@@ -335,13 +335,15 @@ static int es8311_set_mute(const audio_codec_if_t *h, bool mute)
     }
     int regv;
     int ret = es8311_read_reg(codec, ES8311_DAC_REG31, &regv);
+    if (ret != ESP_CODEC_DEV_OK) {
+        return ret;
+    }
     regv &= 0x9f;
     if (mute) {
-        es8311_write_reg(codec, ES8311_DAC_REG31, regv | 0x60);
+        return es8311_write_reg(codec, ES8311_DAC_REG31, regv | 0x60);
     } else {
-        es8311_write_reg(codec, ES8311_DAC_REG31, regv);
+        return es8311_write_reg(codec, ES8311_DAC_REG31, regv);
     }
-    return ret;
 }
 
 static int es8311_set_vol(const audio_codec_if_t *h, float db_value)
@@ -685,4 +687,3 @@ const audio_codec_if_t *es8311_codec_new(es8311_codec_cfg_t *codec_cfg)
     }
     return NULL;
 }
-

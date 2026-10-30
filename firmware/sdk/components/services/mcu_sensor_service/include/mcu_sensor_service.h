@@ -93,4 +93,3 @@ esp_err_t mcu_sensor_service_get_stats(mcu_sensor_service_stats_t *out_stats);
 #endif
 
 #endif /* MCU_SENSOR_SERVICE_H */
-

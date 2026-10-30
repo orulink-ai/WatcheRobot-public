@@ -73,4 +73,3 @@ void motion_arbiter_reset(void) {
     s_owner = MOTION_ARBITER_OWNER_NONE;
     MOTION_ARBITER_UNLOCK();
 }
-

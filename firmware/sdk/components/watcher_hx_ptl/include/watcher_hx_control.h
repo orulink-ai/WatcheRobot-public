@@ -27,4 +27,9 @@ typedef struct {
     unsigned mode, model, error;
 } watcher_hx_state_t;
 esp_err_t watcher_hx_control_status(watcher_hx_state_t *out);
-
+/* Fresh STATUS and conditional MODE IDLE share control_lock. A foreign actual
+ * generation is an OK no-op (*stopped=false); failures retain cleanup ownership.
+ * An unacknowledged MODE leaves identity unknown: active STATUS then returns
+ * INVALID_STATE, not foreign success, until fully idle STATUS reconciles it.
+ * MODE carries the expected generation so remote replacement also rejects it. */
+esp_err_t watcher_hx_control_stop_owned(uint32_t expected_generation, bool *stopped);

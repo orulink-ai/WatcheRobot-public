@@ -27,4 +27,3 @@ static inline const char *esp_err_to_name(esp_err_t err)
 }
 
 #endif /* ESP_ERR_H */
-
