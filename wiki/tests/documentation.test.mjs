@@ -48,9 +48,10 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
   for (const [path, route, title] of pages) {
     const content = await read(path);
     assert.match(content, new RegExp(`^# ${title}`, 'm'));
-    for (const media of ['parts-overview.mp4', 'electronics-overview.mp4', 'fasteners-overview.mp4']) {
-      assert.match(content, new RegExp(`/media/docs/assembly/${media}`));
+    for (const media of ['01_parts_reveal_preview_full_cover.gif', '02_electronics_reveal_full_cover.gif', '03_screws_reveal_full_cover.gif']) {
+      assert.match(content, new RegExp(`/media/docs/assembly/${media.replace('.', '\\.')}`));
     }
+    assert.doesNotMatch(content, /(?:parts|electronics|fasteners)-overview\.mp4/);
     assert.match(content, /https:\/\/wiki\.orulink\.ai\/media-assets\/assembly\/watcherobot-assembly-tutorial-720p-7cd0f58e\.mp4/);
     assert.doesNotMatch(content, /github\.com\/orulink-ai\/WatcheRobot-public\/releases\/download\/wiki-media-assembly/);
     const sections = [...content.matchAll(/^## .+\{#([^}]+)\}/gm)].map(match => match[1]);
