@@ -1252,8 +1252,8 @@
       "source": "firmware/s3/components/hal/hal_audio/idf_component.yml",
       "destination": "components/hal/hal_audio/idf_component.yml",
       "source_sha256": "7b7b83df79a1e2c86d9aa0445821be9c43fc3a0b3b432bfdad57e55e8fdc79f8",
-      "sha256": "7b7b83df79a1e2c86d9aa0445821be9c43fc3a0b3b432bfdad57e55e8fdc79f8",
-      "transform": null
+      "sha256": "be1ce450c2d694e175ec1ed837b7182882c8bb366585a079090a44a86d41c322",
+      "transform": "public repository metadata URL"
     },
     {
       "source": "firmware/s3/components/hal/hal_audio/include/hal_audio.h",
@@ -1301,8 +1301,8 @@
       "source": "firmware/s3/components/hal/hal_camera/idf_component.yml",
       "destination": "components/hal/hal_camera/idf_component.yml",
       "source_sha256": "581401ab1bbd5f6deca53d7a852d2a3439e3b21befc7aa61b9aedd77cfd3e7cd",
-      "sha256": "581401ab1bbd5f6deca53d7a852d2a3439e3b21befc7aa61b9aedd77cfd3e7cd",
-      "transform": null
+      "sha256": "b6aa593d01a3c7c8ec613ac140b102036342d1bfb60b48f58b1bf22a7b0b4252",
+      "transform": "public repository metadata URL"
     },
     {
       "source": "firmware/s3/components/hal/hal_camera/include/hal_camera.h",
@@ -1805,8 +1805,8 @@
       "source": "firmware/s3/components/protocols/mcu_link/idf_component.yml",
       "destination": "components/protocols/mcu_link/idf_component.yml",
       "source_sha256": "0db2581238909527cb07d450f71f90feb1e81696567a75db291ae88e83d36567",
-      "sha256": "0db2581238909527cb07d450f71f90feb1e81696567a75db291ae88e83d36567",
-      "transform": null
+      "sha256": "8c19fe6f48ca2171a4de34b0e6c755939a60990b607f367af9fe7d0c536b2959",
+      "transform": "public repository metadata URL"
     },
     {
       "source": "firmware/s3/components/protocols/mcu_link/include/mcu_cobs.h",
@@ -2883,8 +2883,8 @@
       "source": "firmware/s3/components/sscma_client/test_support/host/CMakeLists.txt",
       "destination": "components/sscma_client/test_support/host/CMakeLists.txt",
       "source_sha256": "6ade84ba765c259a57dcbe904624f2c58650acdb0e95b81a6d4cdc62da8f8588",
-      "sha256": "6ade84ba765c259a57dcbe904624f2c58650acdb0e95b81a6d4cdc62da8f8588",
-      "transform": null
+      "sha256": "060a0ee734452729829781a8da1eccecc3b39686266d8176feb95b0406a20326",
+      "transform": "public host-test cJSON source path parameter and active Release assertions"
     },
     {
       "source": "firmware/s3/components/sscma_client/test_support/host/src/test_sscma_client_command.c",

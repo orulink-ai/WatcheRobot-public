@@ -1,6 +1,6 @@
 version: "0.1.0"
 description: "UART protocol core for the STM32 coprocessor link"
-url: "https://github.com/Ro-In-AI/WatcheRobot-Firmware"
+url: "https://github.com/orulink-ai/WatcheRobot-public"
 license: "Apache-2.0"
 targets:
   - esp32s3

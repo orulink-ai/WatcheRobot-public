@@ -44,18 +44,25 @@ jobs:
           repository: lvgl/lvgl
           ref: 4495f428630cc1741bd8bfd977f080e8460e8e8d
           path: .local/lvgl
-      # Includes sdk/watcher_hw_core and all hardware suites below; SSCMA needs a separately resolved cJSON tree.
+      - name: Fetch immutable cJSON 1.7.19 source
+        uses: actions/checkout@v5
+        with:
+          repository: DaveGamble/cJSON
+          ref: c859b25da02955fef659d658b8f324b5cde87be3
+          path: .local/cjson
+      # Includes sdk/watcher_hw_core and every discovered hardware host suite,
+      # including SSCMA resolved against the pinned cJSON checkout above.
       - name: watcher_hw, shared runtime, examples/common and real LVGL tests
         shell: pwsh
         run: |
           $suites = Get-ChildItem firmware/sdk -Recurse -Filter CMakeLists.txt |
-            Where-Object { $_.Directory.Name -in @("host", "uart_host") -and $_.FullName -notmatch "sscma_client" } |
+            Where-Object { $_.Directory.Name -in @("host", "uart_host") } |
             Sort-Object FullName
           foreach ($suite in $suites) {
             $source = $suite.Directory.FullName
             $relative = [IO.Path]::GetRelativePath((Get-Location).Path, $source)
             $build = "build-host-" + ($relative -replace '[/\\]', '-')
-            cmake -S $source -B $build -DCMAKE_BUILD_TYPE=${{ matrix.config }} "-DLVGL_SOURCE_DIR=$((Get-Location).Path)/.local/lvgl"
+            cmake -S $source -B $build -DCMAKE_BUILD_TYPE=${{ matrix.config }} "-DLVGL_SOURCE_DIR=$((Get-Location).Path)/.local/lvgl" "-DCJSON_SOURCE_DIR=$((Get-Location).Path)/.local/cjson"
             if ($LASTEXITCODE) { exit $LASTEXITCODE }
             cmake --build $build --config ${{ matrix.config }} --parallel 2
             if ($LASTEXITCODE) { exit $LASTEXITCODE }

@@ -64,9 +64,16 @@ def export(source, ref):
             raise ValueError(f'Unexpected sensitive/generated file in allowlist: {path}')
         selected.append((path, target))
     sdk = ROOT / 'firmware/sdk'
-    # This regression harness was authored in the public repository, not upstream.
+    # Public-only LCD harness adaptations are preserved; SSCMA has an explicit
+    # reproducible template transform below.
     public_tests = sdk / 'components/esp_lvgl_port/test_support/host'
     preserved = {p.relative_to(sdk): p.read_bytes() for p in public_tests.rglob('*') if p.is_file()}
+    # Dependency locks are generated from real public-path IDF builds, not
+    # copied from upstream or silently replaced by a future snapshot export.
+    for example in ('body', 'head', 'robot', 'hardware_check'):
+        lock = sdk / 'examples' / example / 'dependencies.lock'
+        if lock.is_file():
+            preserved[lock.relative_to(sdk)] = lock.read_bytes()
     for path in (sdk / 'components', sdk / 'examples'):
         if path.exists():
             shutil.rmtree(path)
@@ -81,6 +88,15 @@ def export(source, ref):
         elif target == 'components/hal/hal_camera/CMakeLists.txt':
             data = data.replace(b' "../../../../hx6538_video_bridge/include"', b'')
             transform = 'remove unused private bridge include directory'
+        elif target in ('components/hal/hal_audio/idf_component.yml',
+                        'components/hal/hal_camera/idf_component.yml',
+                        'components/protocols/mcu_link/idf_component.yml'):
+            data = re.sub(rb'^url:.*$', b'url: "https://github.com/orulink-ai/WatcheRobot-public"',
+                          data, flags=re.MULTILINE)
+            transform = 'public repository metadata URL'
+        elif target == 'components/sscma_client/test_support/host/CMakeLists.txt':
+            data = (ROOT / 'tools/templates/sscma-client-host.cmake').read_bytes()
+            transform = 'public host-test cJSON source path parameter and active Release assertions'
         elif target == 'examples/hardware_check/README.md':
             data = ('# Hardware check / 硬件体检\n\n'
                     'Current public instructions / 当前公开操作指南：\n\n'

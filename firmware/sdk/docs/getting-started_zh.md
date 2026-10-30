@@ -6,10 +6,11 @@
 Daemon、服务端、SD 卡或模型；电脑上的 [Python Application 开发](../../../docs/sdk_zh.md)
 是另一条路线。当前不是稳定发布，完整配对实机验收未完成。
 
-## 下载开发预览（待发布）
+## 下载测试固件（开发预览）
 
-[硬件体检开发预览](https://github.com/orulink-ai/WatcheRobot-public/releases/tag/hardware-check-preview-20261030)当前**待发布**，draft 对公开读者可能不可见，
-不是稳定产品 Release。二进制来源、源码提交、哈希和资产操作方式**跟随该 Release**，
+使用[硬件体检开发预览 Release](https://github.com/orulink-ai/WatcheRobot-public/releases/tag/hardware-check-preview-20261030)，
+不是官方整机稳定版。附件不可见或无法下载时，先联系维护者，不能替换成同名相似文件。
+二进制来源、源码提交、哈希和资产操作方式**跟随该 Release**，
 不能默认二进制来源等于本快照上游 SHA。下载包要求 **Python 3.10+** 与说明中的 esptool 依赖。
 应用单独 `.bin` **不能**交给网页烧录器从 `0x0` 写入；必须使用完整生成的烧录文件集、
 准确偏移及已验证的包入口，不能猜偏移。

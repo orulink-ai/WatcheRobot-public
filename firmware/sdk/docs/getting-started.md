@@ -7,11 +7,11 @@ need no Python SDK, Daemon, official application, server, SD card or model.
 Python Applications on your computer are a [separate route](../../../docs/sdk.md).
 This snapshot is a development preview, not a stable or fully hardware-accepted release.
 
-## Download preview (pending publication)
+## Download the test firmware (development preview)
 
-The [hardware-check development preview](https://github.com/orulink-ai/WatcheRobot-public/releases/tag/hardware-check-preview-20261030) is **pending publication**;
-the current draft may be invisible to public readers. This is not a stable product
-release. Follow that Release's source/provenance, hashes and exact asset instructions;
+Use the [hardware-check development preview Release](https://github.com/orulink-ai/WatcheRobot-public/releases/tag/hardware-check-preview-20261030),
+not the official stable product release. If assets are unavailable, stop and contact
+maintainers rather than substituting a similarly named binary. Follow that Release's source/provenance, hashes and exact asset instructions;
 do not assume its binary source equals this snapshot's upstream SHA. Download packages
 require **Python 3.10+** and the documented esptool dependency. An application-only
 `.bin` must **not** be flashed at `0x0` with a web flasher. Use the complete generated
