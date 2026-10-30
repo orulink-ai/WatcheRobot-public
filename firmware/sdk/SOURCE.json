@@ -619,6 +619,13 @@
       "transform": "public-relative component root"
     },
     {
+      "source": "firmware/hx6538_video_bridge/include/watcher_face_frame.h",
+      "destination": "components/hal/hal_camera/include/watcher_face_frame.h",
+      "source_sha256": "f70d98fab6991cffa1bc9e0c0456197c9de66c6a5e7babaa364f284eb1d6fa8f",
+      "sha256": "f70d98fab6991cffa1bc9e0c0456197c9de66c6a5e7babaa364f284eb1d6fa8f",
+      "transform": null
+    },
+    {
       "source": "firmware/s3/components/esp_codec_dev/CHANGELOG.md",
       "destination": "components/esp_codec_dev/CHANGELOG.md",
       "source_sha256": "a6362f48b8d655df9b3a3fe2981dcce5f961cc09048b148ee9ad6e93208420de",
@@ -2996,13 +3003,6 @@
       "destination": "components/watcher_hx_ptl/watcher_hx_ptl.c",
       "source_sha256": "7628e44a9d2af0fe5407ab0e8d5ccbebb141e54058af96597849da73dba522b4",
       "sha256": "7628e44a9d2af0fe5407ab0e8d5ccbebb141e54058af96597849da73dba522b4",
-      "transform": null
-    },
-    {
-      "source": "firmware/hx6538_video_bridge/include/watcher_face_frame.h",
-      "destination": "components/hal/hal_camera/include/watcher_face_frame.h",
-      "source_sha256": "f70d98fab6991cffa1bc9e0c0456197c9de66c6a5e7babaa364f284eb1d6fa8f",
-      "sha256": "f70d98fab6991cffa1bc9e0c0456197c9de66c6a5e7babaa364f284eb1d6fa8f",
       "transform": null
     }
   ]
