@@ -2,7 +2,7 @@
 
 ## Scope / 范围
 
-- Fixed upstream / 固定来源: `orulink-ai/WatcheRobot_esp32` commit `ab4e324e2b15a1be5431c34de106f05d55ccb99e`.
+- Fixed upstream / 固定来源: `orulink-ai/WatcheRobot_esp32` commit `e23bee2a642f6c90753b370cb18c46815e0c8f58` (includes the on-screen reference-motion warning from internal PR #290).
 - Delivery / 交付: public branch `feat/embedded-sdk-watcher-hw-public-sync`; use the draft PR's current head for public checkout, not the upstream SHA.
 - `SOURCE.json`: 429 allowlisted source files with upstream/output SHA256 and explicit transforms. The three public-only `esp_lvgl_port/test_support/host` files are preserved from public HEAD; public guides, exporter, tests and CI are maintained outside this upstream inventory.
 - Excluded / 不导出: official app/business services, models, credentials, `.a` archives, `test_apps`, audio `test_support/privacy`, generated builds and managed dependencies.
@@ -16,7 +16,7 @@
 | Python, Node, static Wiki / 自动回归 | PASS with explicit skips / 通过，跳过项见下 |
 | Host CTest and real LVGL 8.4.0 / 主机测试 | Selected suites PASS; SSCMA blocked / 选定套件通过，SSCMA 阻塞 |
 | Public ESP-IDF 6.0.2, all four examples / 公开 IDF 四工程 | **Pending**: parent agent will build the public tree and generate new dependency locks; old locks were not restored. / 父 agent 后续构建并生成新锁，不恢复旧锁冒充验证。 |
-| On-screen full-travel safety warning regression / 屏幕全行程警示 | **Pending**: separate upstream patch is being prepared; parent agent must apply it to this public snapshot, update provenance and rerun affected tests/builds. Documentation warnings do not fix missing device UI warnings. / 独立上游补丁待父 agent 应用并更新来源、重测重构建；文档警示不替代屏幕修复。 |
+| On-screen full-travel safety warning regression / 屏幕全行程警示 | **PASS (software)**: upstream PR #290 exported at the pinned commit; actual LVGL 8.4.0 tests pass 22/22 in Debug and 22/22 in Release, including visible warning text, circular geometry and confirmation input. No physical-device acceptance is claimed. / 已同步，双配置各 22 项通过，实机显示触摸未验收。 |
 | Robot acceptance / 实机验收 | **NOT PERFORMED in this task**: no flashing, paired STM32/Himax qualification, full motion/STOP, touch, optical/acoustic or long-duration acceptance. / 本任务未烧录、未配对与实机验收。 |
 | Official recovery / 官方恢复 | **Pending** physical verification; first custom flash overwrites official `agentcfg` 0x12000–0x20000; backup and complete official restore are mandatory. / 首刷覆盖配置，必须备份及完整官方恢复，实机验证未完成。 |
 

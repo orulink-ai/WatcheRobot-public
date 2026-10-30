@@ -12,7 +12,7 @@
 static QueueHandle_t inputs;
 static check_view_model_t shown;
 static lv_obj_t *heading, *eyebrow, *status, *visual, *picture, *buttons[2], *button_text[2], *bar, *meter;
-static lv_obj_t *targets[3], *rows[4], *row_text[4], *slider, *volume_text, *replay_note;
+static lv_obj_t *targets[3], *rows[4], *row_text[4], *slider, *volume_text, *replay_note, *motion_warning;
 static demo_image_t retained;
 static lv_img_dsc_t descriptor;
 static uint32_t image_attempt;
@@ -131,6 +131,10 @@ void check_view_create(QueueHandle_t queue) {
     visual = text(screen, 156, 256, &lv_font_montserrat_48);
     status = text(screen, 260, 280, &lv_font_montserrat_16);
     lv_label_set_long_mode(status, LV_LABEL_LONG_CLIP);
+    /* Confirmation precedes a potentially full-travel reference move, not
+     * just the later small steps. Keep this warning out of clipped status. */
+    motion_warning = text(screen, 150, 280, &lv_font_montserrat_16);
+    lv_label_set_text(motion_warning, "Reference X90/Y120 first.\nClear full travel.\nNo position sensor");
     picture = lv_img_create(screen);
     lv_obj_add_flag(picture, LV_OBJ_FLAG_CLICKABLE);
     bind(picture, CHECK_IMAGE, 0, LV_EVENT_CLICKED);
@@ -290,7 +294,8 @@ void check_view_render(const check_view_model_t *m) {
                                                zoom ? 180 : 126));
         lv_obj_align(picture, LV_ALIGN_CENTER, 0, CHECK_RESULT_Y - CHECK_SCREEN_SIZE / 2);
     }
-    visible(visual, !has_image && m->page != CHECK_AUDIO_PAGE && m->page != CHECK_REPORT_PAGE && m->page != CHECK_DETAIL_PAGE);
+    visible(motion_warning, m->page == CHECK_SAFETY_PAGE);
+    visible(visual, !has_image && m->page != CHECK_SAFETY_PAGE && m->page != CHECK_AUDIO_PAGE && m->page != CHECK_REPORT_PAGE && m->page != CHECK_DETAIL_PAGE);
     visible(status, !zoom && m->page != CHECK_REPORT_PAGE && m->page != CHECK_DETAIL_PAGE);
     visible(bar, test && busy && !has_image && f->step != HC_SCREEN);
     lv_bar_set_value(bar, (int)m->progress, LV_ANIM_OFF);

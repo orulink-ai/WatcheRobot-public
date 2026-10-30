@@ -39,7 +39,7 @@ speech assets. Do not include the official firmware top-level project.
 ## Provenance, scope and licensing
 
 [SOURCE.json](SOURCE.json) pins upstream ESP32 commit
-`ab4e324e2b15a1be5431c34de106f05d55ccb99e` and inventories exported file hashes.
+`e23bee2a642f6c90753b370cb18c46815e0c8f58` and inventories exported file hashes.
 The public checkout commit is the delivery version; the private upstream is provenance
 only, not a user prerequisite. The allowlist exporter is `tools/export_firmware_sdk.py`
 in the public repository. Only component-root and unused private bridge include paths

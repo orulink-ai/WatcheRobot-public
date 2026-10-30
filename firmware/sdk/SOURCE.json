@@ -1,5 +1,5 @@
 {
-  "source_commit": "ab4e324e2b15a1be5431c34de106f05d55ccb99e",
+  "source_commit": "e23bee2a642f6c90753b370cb18c46815e0c8f58",
   "source_repository": "orulink-ai/WatcheRobot_esp32",
   "files": [
     {
@@ -390,8 +390,8 @@
     {
       "source": "examples/hardware_sdk/hardware_check/main/check_view.c",
       "destination": "examples/hardware_check/main/check_view.c",
-      "source_sha256": "5b4d17516d126694a0671e62fbaafc38a74baaa487a857e02cb4cd8eb6ce8195",
-      "sha256": "5b4d17516d126694a0671e62fbaafc38a74baaa487a857e02cb4cd8eb6ce8195",
+      "source_sha256": "6b5f8fea43947a9b858a1cd806a5ef92d76bc6a5d9fd2d13ac2a93efd3f9c611",
+      "sha256": "6b5f8fea43947a9b858a1cd806a5ef92d76bc6a5d9fd2d13ac2a93efd3f9c611",
       "transform": null
     },
     {
@@ -432,8 +432,8 @@
     {
       "source": "examples/hardware_sdk/hardware_check/test_support/host/CMakeLists.txt",
       "destination": "examples/hardware_check/test_support/host/CMakeLists.txt",
-      "source_sha256": "3a7195e3112e76599be7bbba3eb0652c138262519b8584df9bc3bda491817123",
-      "sha256": "3a7195e3112e76599be7bbba3eb0652c138262519b8584df9bc3bda491817123",
+      "source_sha256": "5d40eeab7ca116298e47cb34ed3d3c073d2e52335b3ac0bbcd27a16097cdc01b",
+      "sha256": "5d40eeab7ca116298e47cb34ed3d3c073d2e52335b3ac0bbcd27a16097cdc01b",
       "transform": null
     },
     {
@@ -502,8 +502,8 @@
     {
       "source": "examples/hardware_sdk/hardware_check/test_support/host/test_check_view.c",
       "destination": "examples/hardware_check/test_support/host/test_check_view.c",
-      "source_sha256": "bcd3f148fe4cf2cbe9c08f61dc57e69b410f66b60dd226c3824e11dd85909acb",
-      "sha256": "bcd3f148fe4cf2cbe9c08f61dc57e69b410f66b60dd226c3824e11dd85909acb",
+      "source_sha256": "15721228b1b2580428375e94adce2587ee4a912d8ab30bf8e6dd6577859a48cd",
+      "sha256": "15721228b1b2580428375e94adce2587ee4a912d8ab30bf8e6dd6577859a48cd",
       "transform": null
     },
     {

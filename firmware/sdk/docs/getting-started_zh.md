@@ -32,7 +32,7 @@ idf.py -C firmware/sdk/examples/hardware_check build
 不是内部 ESP32 SHA。合并前先执行 `git fetch origin pull/<PR_NUMBER>/head`，再执行
 `git checkout --detach FETCH_HEAD`；所有占位符必须替换。不需要私库权限或 Python 子模块。
 保存 `git rev-parse HEAD`、`idf.py --version` 和 `firmware/sdk/SOURCE.json`。
-该清单固定上游来源 `ab4e324e2b15a1be5431c34de106f05d55ccb99e`，记录逐文件哈希及公开路径适配。
+该清单固定上游来源 `e23bee2a642f6c90753b370cb18c46815e0c8f58`，记录逐文件哈希及公开路径适配。
 公开提交才标识这份交付文档；内部 SHA 仅用于来源追溯，不是要求读者检出的公开版本。
 
 **后续命令统一在 WatcheRobot-public 仓库根目录、已激活 IDF 的终端执行。**

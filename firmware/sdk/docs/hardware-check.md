@@ -56,6 +56,10 @@ confirmation. Natural completion is an issue for the stop test. Errors conservat
 latch body controls until reboot. Disconnect cannot deliver Stop; STM32 safety is
 required. See the [current open-loop contract](servo-open-loop.md).
 
+![Software-rendered motion confirmation showing the reference pose, full-travel warning and lack of position sensor](../../../docs/images/embedded-sdk/hardware-check-motion-safety.png)
+
+This is a real LVGL host-rendered illustration, not a photograph of a robot. It does not establish physical display, touch or motion acceptance.
+
 ## Audio, camera and cancellation
 
 Voice/Record/Replay open **Audio setup**. Output is 0–95, default 90, zero means

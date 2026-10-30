@@ -37,7 +37,7 @@ ACK/DONE 不等于位置测量或机械停止证明。
 ## 来源、公开边界与许可
 
 [SOURCE.json](SOURCE.json) 固定上游 ESP32
-`ab4e324e2b15a1be5431c34de106f05d55ccb99e`，记录逐文件来源与输出哈希。
+`e23bee2a642f6c90753b370cb18c46815e0c8f58`，记录逐文件来源与输出哈希。
 公开 checkout commit 才是交付版本；内部 SHA 仅用于追溯，不要求读者访问私库。
 公开仓库 `tools/export_firmware_sdk.py` 使用显式白名单；构建文件只调整组件根目录与
 移除无用私有 bridge include 路径，文档路径／当前硬件更正也记录在清单。

@@ -36,7 +36,7 @@ from GitHub, not the private upstream SHA. Before merge, fetch the PR explicitly
 with `git fetch origin pull/<PR_NUMBER>/head` and use `git checkout --detach FETCH_HEAD`.
 Do not type placeholders literally. No private-repository access or Python submodule is needed.
 Record `git rev-parse HEAD`, `idf.py --version` and `firmware/sdk/SOURCE.json`.
-The latter pins upstream source to `ab4e324e2b15a1be5431c34de106f05d55ccb99e`
+The latter pins upstream source to `e23bee2a642f6c90753b370cb18c46815e0c8f58`
 and records individual file hashes and all recorded public export adaptations.
 The public commit identifies this documentation and export; the upstream SHA is provenance, not a public checkout command.
 

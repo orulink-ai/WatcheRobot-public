@@ -347,6 +347,49 @@ static bool test_status(void) {
     REQUIRE(visible(status) && bounds(status).y1 == 260 && bounds(status).y2 <= 280);
     return true;
 }
+static bool test_motion_safety(void) {
+    static const char warning[] = "Reference X90/Y120 first.\nClear full travel.\nNo position sensor";
+    model.flow.step = HC_MOTION; model.flow.phase = HC_IDLE;
+    model.page = CHECK_SAFETY_PAGE;
+    snprintf(model.status, sizeof(model.status), "%s", "Clear space. Keep hands away");
+    for (unsigned item = 0; item < hc_item_count(HC_MOTION); item++) {
+        model.flow.item = item; render();
+        lv_obj_t *label = find_label(lv_scr_act(), warning);
+        REQUIRE(visible(label));
+        lv_area_t a = bounds(label);
+        lv_point_t needed;
+        lv_txt_get_size(&needed, warning, lv_obj_get_style_text_font(label, 0),
+                        lv_obj_get_style_text_letter_space(label, 0),
+                        lv_obj_get_style_text_line_space(label, 0),
+                        lv_obj_get_content_width(label), LV_TEXT_FLAG_NONE);
+        REQUIRE(needed.x <= lv_obj_get_content_width(label));
+        REQUIRE(needed.y <= lv_obj_get_content_height(label));
+        REQUIRE(lv_obj_get_style_text_font(label, 0)->line_height >= 18);
+        /* Entire label rectangle fits the physical circular aperture. */
+        const int xs[] = {a.x1, a.x2}, ys[] = {a.y1, a.y2};
+        for (unsigned x = 0; x < 2; x++) for (unsigned y = 0; y < 2; y++) {
+            int64_t dx = 2 * xs[x] - 411, dy = 2 * ys[y] - 411;
+            REQUIRE(dx * dx + dy * dy <= 412LL * 412);
+        }
+        for (uint32_t i = 0; i < lv_obj_get_child_cnt(lv_scr_act()); i++) {
+            lv_obj_t *child = lv_obj_get_child(lv_scr_act(), (int32_t)i);
+            if (child != label && visible(child)) REQUIRE(!overlap(a, bounds(child)));
+        }
+        REQUIRE(visible(find_label(lv_scr_act(), "Clear space?")));
+        REQUIRE(visible(find_label(lv_scr_act(), model.status)));
+        REQUIRE(center(find_label(lv_scr_act(), "Test"), 304, 340));
+        REQUIRE(!lv_obj_has_state(nav("Test"), LV_STATE_DISABLED));
+        queue.count = 0; tap(108, 340); tap(304, 340);
+        REQUIRE(queue.count == 2 && queue.items[0].kind == CHECK_LEFT && queue.items[1].kind == CHECK_RIGHT);
+        REQUIRE(queue.items[1].navigation == check_view_navigation(&model));
+        REQUIRE(queue.items[1].phase == HC_IDLE && queue.items[1].attempt == model.flow.attempt);
+    }
+    model.page = CHECK_TEST_PAGE; render();
+    REQUIRE(!visible(find_label(lv_scr_act(), warning)));
+    REQUIRE(visible(root_with_font(&lv_font_montserrat_48)));
+    model.page = CHECK_SAFETY_PAGE; render(); /* Diagnostic software snapshot. */
+    return true;
+}
 static bool test_running_content(void) {
     model.flow.phase = HC_RUNNING;
     for (unsigned step = 0; step < HC_STEP_COUNT; step++) {
@@ -713,6 +756,7 @@ int main(int argc, char **argv) {
         {"config", test_config}, {"geometry_oracle", test_geometry_oracle},
         {"nav_geometry", test_nav_geometry}, {"nav_pixels", test_nav_pixels},
         {"labels", test_labels}, {"content", test_content}, {"status", test_status},
+        {"motion_safety", test_motion_safety},
         {"running_content", test_running_content}, {"report", test_report}, {"detail_tail", test_detail_tail},
         {"stop", test_stop}, {"stopping", test_stopping},
         {"pressed", test_pressed}, {"busy", test_busy}, {"native_input", test_native_input},

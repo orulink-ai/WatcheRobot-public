@@ -45,7 +45,7 @@ endif()
 if(HOST_WRITE_PPM)
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/snapshots")
 endif()
-foreach(scenario config geometry_oracle nav_geometry nav_pixels labels content status running_content report detail_tail stop stopping pressed busy native_input release_outside release_disabled photo live_image stale_image image_arrival_attempt)
+foreach(scenario config geometry_oracle nav_geometry nav_pixels labels content status motion_safety running_content report detail_tail stop stopping pressed busy native_input release_outside release_disabled photo live_image stale_image image_arrival_attempt)
   if(HOST_WRITE_PPM)
     add_test(NAME check_view_${scenario} COMMAND check_view_tests ${scenario}
       --ppm "${CMAKE_CURRENT_BINARY_DIR}/snapshots/${scenario}.ppm")
