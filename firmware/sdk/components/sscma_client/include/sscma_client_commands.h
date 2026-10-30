@@ -66,4 +66,3 @@ typedef enum {
     CMD_EPERM = 9,
     CMD_EUNKNOWN = 10
 } sscma_client_error_t;
-

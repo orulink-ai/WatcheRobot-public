@@ -14,4 +14,3 @@ typedef StaticSemaphore_t *SemaphoreHandle_t;
 SemaphoreHandle_t xSemaphoreCreateMutexStatic(StaticSemaphore_t *storage);
 int xSemaphoreTake(SemaphoreHandle_t lock, unsigned timeout);
 int xSemaphoreGive(SemaphoreHandle_t lock);
-

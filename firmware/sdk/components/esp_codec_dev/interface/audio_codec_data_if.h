@@ -44,4 +44,3 @@ int audio_codec_delete_data_if(const audio_codec_data_if_t *data_if);
 #endif
 
 #endif
-

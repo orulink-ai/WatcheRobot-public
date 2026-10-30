@@ -1698,4 +1698,3 @@ err:
     vTaskResume(client->process_task.handle);
     return ret;
 }
-

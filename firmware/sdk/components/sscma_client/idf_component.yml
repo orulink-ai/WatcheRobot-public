@@ -6,4 +6,3 @@ dependencies:
   espressif/cjson: "^1.7.19"
   esp_io_expander:
     version: "^1.0.1"
-

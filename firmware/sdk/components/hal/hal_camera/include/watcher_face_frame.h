@@ -70,4 +70,3 @@ static inline bool wff_unpack(const uint8_t *jpeg, size_t size, wff_frame_t *out
     if (!wff_valid(&f)) return false;
     *out=f; return true;
 }
-

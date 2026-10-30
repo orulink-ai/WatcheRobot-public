@@ -236,4 +236,3 @@ void esp_codec_dev_delete(esp_codec_dev_handle_t codec);
 #endif
 
 #endif
-

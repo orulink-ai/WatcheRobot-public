@@ -35,4 +35,3 @@ void mcu_link_stats_copy(mcu_link_stats_t *dst, const mcu_link_stats_t *src);
 #endif
 
 #endif /* MCU_LINK_STATS_H */
-

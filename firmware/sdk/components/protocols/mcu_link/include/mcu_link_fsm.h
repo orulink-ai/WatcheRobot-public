@@ -46,4 +46,3 @@ bool mcu_link_fsm_is_ready(const mcu_link_fsm_t *fsm);
 #endif
 
 #endif /* MCU_LINK_FSM_H */
-

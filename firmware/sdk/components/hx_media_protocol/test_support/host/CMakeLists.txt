@@ -22,4 +22,3 @@ endif()
 
 add_test(NAME hx_media_protocol_host_tests COMMAND hx_media_protocol_host_tests)
 
-

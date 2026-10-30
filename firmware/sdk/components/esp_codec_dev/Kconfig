@@ -61,4 +61,3 @@ menu "Audio Codec Device Configuration"
             Enable this option to support codec ZL38063.
             ZL38063 firmware only support xtensa, don't enable for RISC-V IC.
  endmenu
-

@@ -13,4 +13,3 @@ endif()
 target_link_libraries(mcu_uart_gate_tests PRIVATE Threads::Threads)
 add_test(NAME mcu_uart_gate_tests COMMAND mcu_uart_gate_tests)
 set_tests_properties(mcu_uart_gate_tests PROPERTIES TIMEOUT 10)
-

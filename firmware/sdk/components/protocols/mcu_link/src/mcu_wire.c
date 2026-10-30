@@ -70,4 +70,3 @@ esp_err_t mcu_wire_decode_frame(const uint8_t *wire, size_t wire_len, mcu_frame_
 
     return mcu_frame_unpack(raw, raw_len, frame, payload_len);
 }
-

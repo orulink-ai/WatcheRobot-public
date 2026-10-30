@@ -1,4 +1,4 @@
-idf_component_register(
+﻿idf_component_register(
     SRCS
         "src/mcu_crc16.c"
         "src/mcu_cobs.c"
@@ -12,4 +12,3 @@ idf_component_register(
     INCLUDE_DIRS "include"
     REQUIRES driver esp_timer esp_driver_uart
 )
-

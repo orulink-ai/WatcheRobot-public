@@ -10,6 +10,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "freertos/task.h"
+#include "media_lib_adapter.h"
+#include "media_lib_mem_trace.h"
 
 #define TAG "HAL_OPUS"
 #define HAL_OPUS_SAMPLE_RATE 16000
@@ -77,6 +79,23 @@ static SemaphoreHandle_t hal_opus_get_lock(void) {
     return lock;
 }
 
+static int hal_opus_prepare_memory_locked(void) {
+    media_lib_mem_t memory = {0};
+    if (media_lib_get_mem_lib(&memory) != ESP_OK) {
+        return -1;
+    }
+    if (memory.malloc != NULL && memory.free != NULL) {
+        return 0;
+    }
+    /* Codec module allocation can use libc while close calls SAL's free.
+     * Install the OS adapter before the first allocation, without replacing
+     * an existing provider or silently accepting a partial registration. */
+    if (memory.malloc != NULL || memory.free != NULL) {
+        return -1;
+    }
+    return media_lib_add_default_os_adapter() == ESP_OK ? 0 : -1;
+}
+
 static void hal_opus_deinit_locked(void) {
     if (s_encoder != NULL) {
         esp_opus_enc_close(s_encoder);
@@ -96,6 +115,11 @@ static int hal_opus_init_locked(void) {
 
     if (s_encoder != NULL) {
         return 0;
+    }
+
+    if (hal_opus_prepare_memory_locked() != 0) {
+        ESP_LOGE(TAG, "Opus memory provider is not ready");
+        return -1;
     }
 
     config = hal_opus_encoder_config();
@@ -154,8 +178,17 @@ int hal_opus_reset(void) {
     if (lock == NULL || xSemaphoreTake(lock, portMAX_DELAY) != pdTRUE) {
         return -1;
     }
-    hal_opus_deinit_locked();
     result = hal_opus_init_locked();
+    if (result == 0) {
+        if (esp_opus_enc_reset(s_encoder) != ESP_AUDIO_ERR_OK) {
+            ESP_LOGE(TAG, "failed to reset Opus encoder");
+            hal_opus_deinit_locked();
+            result = -1;
+        } else {
+            s_encoded_frames = 0U;
+            s_encode_stack_min_free = SIZE_MAX;
+        }
+    }
     xSemaphoreGive(lock);
     return result;
 }
@@ -210,4 +243,3 @@ int hal_opus_decode(const uint8_t *in_data, int in_len, uint8_t *pcm_out, int pc
     ESP_LOGE(TAG, "Opus downlink decoding is not enabled; TTS remains PCM");
     return -1;
 }
-

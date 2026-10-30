@@ -157,4 +157,3 @@ const audio_codec_ctrl_if_t *audio_codec_new_spi_ctrl(audio_codec_spi_cfg_t *spi
     }
     return &ctrl->base;
 }
-

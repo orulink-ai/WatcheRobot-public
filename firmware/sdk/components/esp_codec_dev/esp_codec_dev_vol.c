@@ -59,4 +59,3 @@ float esp_codec_dev_col_calc_hw_gain(esp_codec_dev_hw_gain_t *hw_gain)
     }
     return 20 * log10(dac_voltage / pa_voltage) + hw_gain->pa_gain;
 }
-

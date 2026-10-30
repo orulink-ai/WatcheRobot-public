@@ -28,4 +28,3 @@ endif()
 if("usb_host_hid" IN_LIST build_components)
     target_link_libraries(${COMPONENT_LIB} PRIVATE idf::usb_host_hid)
 endif()
-

@@ -80,4 +80,3 @@ if(NOT _esp_capture_patch_ret EQUAL 0)
         "(ret=${_esp_capture_patch_ret}); refusing a build that can deadlock RTC video startup"
     )
 endif()
-

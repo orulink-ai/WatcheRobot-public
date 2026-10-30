@@ -248,4 +248,3 @@ int main(void) {
     test_effect_light_preserves_effect_identity_on_wire();
     return 0;
 }
-

@@ -69,4 +69,3 @@ esp_err_t watcher_hx_ptl_deinit(void);
 #ifdef __cplusplus
 }
 #endif
-

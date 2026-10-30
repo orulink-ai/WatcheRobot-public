@@ -15,6 +15,7 @@ typedef struct {
 } lvgl_port_display_ctx_t;
 static struct {
     bool panel_direct_draw_pending;
+    void *panel_mux;
 } lvgl_port_ctx;
 #define ESP_OK 0
 #define ESP_ERR_INVALID_STATE 1
@@ -24,7 +25,7 @@ static int calls, fail_at;
 static lv_color_t captured[64];
 static size_t captured_count;
 static int last_y;
-static esp_err_t lvgl_port_panel_draw_bitmap(void *panel, int x1, int y1, int x2, int y2, const void *data,
+static esp_err_t lvgl_port_panel_draw_bitmap_locked(void *panel, int x1, int y1, int x2, int y2, const void *data,
                                              uint32_t timeout) {
     (void)panel;
     (void)timeout;
@@ -41,6 +42,11 @@ static esp_err_t lvgl_port_panel_draw_bitmap(void *panel, int x1, int y1, int x2
     last_y = y2;
     return ESP_OK;
 }
+#define pdTRUE 1
+#define pdMS_TO_TICKS(ms) (ms)
+static int xSemaphoreTake(void *mutex, unsigned ticks) { (void)ticks; return mutex != NULL; }
+static void xSemaphoreGive(void *mutex) { (void)mutex; }
+#include "lcd_draw_staged_locked.inc"
 #include "lcd_flush_staged.inc"
 #define CHECK(c)                                                                                                       \
     do {                                                                                                               \
@@ -48,6 +54,7 @@ static esp_err_t lvgl_port_panel_draw_bitmap(void *panel, int x1, int y1, int x2
             return __LINE__;                                                                                           \
     } while (0)
 int main(void) {
+    lvgl_port_ctx.panel_mux = &lvgl_port_ctx;
     lv_color_t source[25], staging[10];
     for (unsigned i = 0; i < 25; ++i)
         source[i] = (lv_color_t)(0x1200 + i);

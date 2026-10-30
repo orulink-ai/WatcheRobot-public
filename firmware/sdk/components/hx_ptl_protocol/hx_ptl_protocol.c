@@ -108,4 +108,3 @@ const char *hx_ptl_result_name(hx_ptl_result_t result) {
         return "unknown";
     }
 }
-

@@ -8,4 +8,3 @@ typedef struct {
     size_t used;
 } hx_ptl_resync_t;
 bool hx_ptl_resync_push(hx_ptl_resync_t *scan, uint8_t byte, size_t maximum, hx_ptl_base_header_t *parsed);
-

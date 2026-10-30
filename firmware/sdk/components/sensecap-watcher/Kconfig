@@ -57,8 +57,9 @@ menu "SenseCAP Watcher BSP Configuration"
             range 4 412
             default 412
             help
-                LVGL draw buffer height (rows). Four rows limit each 412-pixel
-                RGB565 transfer to 3296 bytes when internal DMA memory is fragmented.
+                LVGL PSRAM draw buffer height (rows). A full-height buffer avoids
+                repeatedly drawing the page in narrow bands. Internal DMA staging
+                is separately limited by the BSP to four rows (3296 bytes).
 
         config LVGL_PORT_TASK_STACK_SIZE
             int "LVGL TASK STACK SIZE"
@@ -268,4 +269,3 @@ menu "SenseCAP Watcher BSP Configuration"
     endmenu
 
 endmenu
-

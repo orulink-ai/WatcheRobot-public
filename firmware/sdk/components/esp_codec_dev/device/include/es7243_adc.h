@@ -20,6 +20,7 @@ extern "C" {
  */
 typedef struct {
     const audio_codec_ctrl_if_t *ctrl_if; /*!< Codec Control interface */
+    bool start_disabled; /*!< Defer all ADC register programming until enable(true). */
 } es7243_codec_cfg_t;
 
 /**
@@ -37,4 +38,3 @@ const audio_codec_if_t *es7243_codec_new(es7243_codec_cfg_t *codec_cfg);
 #endif
 
 #endif
-

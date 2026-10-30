@@ -113,6 +113,7 @@ typedef enum {
 typedef struct {
     mcu_motion_lifecycle_event_type_t type;
     uint32_t ref_seq;
+    uint32_t event_seq; /* RX frame identity; distinct for each segment DONE. */
     uint16_t status;
     uint16_t reason;
     uint16_t fault_code;
@@ -132,8 +133,34 @@ typedef struct {
     mcu_motion_segment_t segments[MCU_MOTION_CHUNKED_SEQUENCE_MAX_SEGMENTS];
 } mcu_motion_chunked_sequence_t;
 
+typedef struct {
+    uint32_t begin_seq;
+    uint32_t chunk_seq;
+    uint32_t end_seq;
+    uint8_t segment_count;
+} mcu_motion_sequence_receipt_t;
+
+/* Independent single-slot observer. Release before submitting again. A zero
+ * token represents no motion; missing DONE never becomes completion. */
+#define MCU_MOTION_COMPLETION_API 1
+typedef enum {
+    MCU_MOTION_COMPLETION_PENDING = 0,
+    MCU_MOTION_COMPLETION_COMPLETED,
+    MCU_MOTION_COMPLETION_FAILED,
+} mcu_motion_completion_status_t;
+esp_err_t mcu_motion_submit_observed_sequence(const mcu_motion_chunked_sequence_t *sequence, uint32_t *out_token);
+esp_err_t mcu_motion_sequence_status(uint32_t token, mcu_motion_completion_status_t *out_status);
+void mcu_motion_sequence_release(uint32_t token);
+/* Independent STOP barrier; completion means matching successful MCU ACK, not enqueue. */
+esp_err_t mcu_motion_submit_observed_stop(mcu_motion_source_t source, uint32_t *out_token);
+esp_err_t mcu_motion_stop_status(uint32_t token, mcu_motion_completion_status_t *status, uint32_t *ack_rx_seq);
+void mcu_motion_stop_release(uint32_t token);
+/* Control coordinates confirmed by face-jog STOPPED DONE or a fully completed
+ * observed face trajectory, never ADC or a
+ * pending trajectory target. Requires a matching successful STOP barrier. */
+esp_err_t mcu_motion_stop_control_origin(uint32_t token, int16_t *x, int16_t *y);
 esp_err_t mcu_motion_service_init(void);
-/* Read-only position query; response delivered via the feedback callback. */
+/* Legacy physical query: current hardware always returns ESP_ERR_NOT_SUPPORTED. */
 esp_err_t mcu_motion_request_feedback(void);
 esp_err_t mcu_motion_submit_with_seq(const mcu_motion_request_t *request, uint32_t *out_seq);
 esp_err_t mcu_motion_submit(const mcu_motion_request_t *request);
@@ -146,8 +173,12 @@ esp_err_t mcu_motion_submit_sequence(const mcu_motion_sequence_t *sequence);
 esp_err_t mcu_motion_submit_chunked_sequence_with_seq(const mcu_motion_chunked_sequence_t *sequence,
                                                       uint32_t *out_end_seq);
 esp_err_t mcu_motion_submit_chunked_sequence(const mcu_motion_chunked_sequence_t *sequence);
+/* Bounded one-CHUNK playback using the existing STM32 protocol. */
+esp_err_t mcu_motion_submit_tracked_sequence(const mcu_motion_chunked_sequence_t *sequence,
+                                             mcu_motion_sequence_receipt_t *out_receipt);
 esp_err_t mcu_motion_pwm_unlock(const mcu_motion_pwm_unlock_request_t *request);
 esp_err_t mcu_motion_pwm_lock(const mcu_motion_pwm_lock_request_t *request);
+/* Legacy subscription: non-NULL is unsupported; NULL unregister remains idempotent. */
 esp_err_t mcu_motion_set_servo_feedback_callback(mcu_motion_servo_feedback_cb_t cb, void *ctx);
 /* The lifecycle callback runs on the MCU link task and must remain non-blocking.
  * Register/unregister it from another task, not recursively from the callback itself. */

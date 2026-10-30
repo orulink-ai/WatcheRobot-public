@@ -21,4 +21,3 @@ extern const dataArr st_twConfig[];
 #endif
 
 #endif
-

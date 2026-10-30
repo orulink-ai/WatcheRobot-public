@@ -4,8 +4,10 @@ param(
     [string]$Port=''
 )
 $ErrorActionPreference='Stop'
-if ($Example -cnotin @('body','head','robot') -or $Action -cnotin @('build','flash','monitor')) {
-    [Console]::Error.WriteLine('Example must be body/head/robot; Action must be build/flash/monitor'); exit 2
+# Defaults apply only to omitted arguments; explicit empty values are invalid.
+# Match the Shell entry: reject a blank flash/monitor port before invoking IDF.
+if ($Example -cnotin @('body','head','robot','hardware_check') -or $Action -cnotin @('build','flash','monitor')) {
+    [Console]::Error.WriteLine('Example must be body/head/robot/hardware_check; Action must be build/flash/monitor'); exit 2
 }
 if ($Action -ne 'build' -and [string]::IsNullOrWhiteSpace($Port)) {
     [Console]::Error.WriteLine('flash/monitor requires an explicit Port'); exit 2
@@ -17,4 +19,3 @@ $argsForIdf=@('-C', (Join-Path $PSScriptRoot $Example))
 if ($Port) { $argsForIdf+=@('-p',$Port) }
 & idf.py @argsForIdf $Action
 exit $LASTEXITCODE
-

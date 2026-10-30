@@ -11,4 +11,3 @@ static inline bool hx_model_identity_verified(unsigned slot, uint32_t crc) {
     return slot >= 1 && slot <= 4 &&
            (crc == historical[slot - 1] || (slot == 4 && crc == 834922487U));
 }
-

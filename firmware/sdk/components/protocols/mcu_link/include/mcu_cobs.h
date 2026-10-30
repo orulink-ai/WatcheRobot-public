@@ -26,4 +26,3 @@ esp_err_t mcu_cobs_decode(const uint8_t *input, size_t input_len, uint8_t *outpu
 #endif
 
 #endif /* MCU_COBS_H */
-

@@ -310,4 +310,3 @@ const audio_codec_if_t *zl38063_codec_new(zl38063_codec_cfg_t *codec_cfg)
     }
     return NULL;
 }
-

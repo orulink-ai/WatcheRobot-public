@@ -60,4 +60,3 @@ esp_err_t sscma_client_new_flasher_we2_spi(const sscma_client_io_handle_t io,
 #ifdef __cplusplus
 }
 #endif
-

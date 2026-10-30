@@ -18,4 +18,3 @@ target_include_directories(
 )
 
 add_test(NAME sscma_client_command_host_tests COMMAND sscma_client_command_host_tests)
-

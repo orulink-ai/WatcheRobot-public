@@ -110,4 +110,3 @@ esp_err_t sscma_client_flasher_xmodem_create(sscma_client_io_t *io, sscma_client
 #ifdef __cplusplus
 }
 #endif
-

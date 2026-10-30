@@ -103,4 +103,3 @@ int main(void) {
     puts("hx_media_protocol_host_tests: PASS");
     return 0;
 }
-

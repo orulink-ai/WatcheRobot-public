@@ -161,4 +161,3 @@ int main(void) {
     puts("hx_ptl_protocol_host_tests: PASS");
     return 0;
 }
-

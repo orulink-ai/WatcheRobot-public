@@ -6,8 +6,8 @@ SDK = ROOT / "firmware/sdk"
 
 def test_public_sdk_contains_all_entry_points():
     for module in ("core", "body", "camera", "audio", "display"):
-        assert (SDK / f"components/sdk/watche_hw_{module}/include/watche_hw_{module}.h").is_file()
-    for example in ("body", "head", "robot"):
+        assert (SDK / f"components/sdk/watcher_hw_{module}/include/watcher_hw_{module}.h").is_file()
+    for example in ("body", "head", "robot", "hardware_check"):
         assert (SDK / f"examples/{example}/main/app_main.c").is_file()
     assert (SDK / "LICENSE").is_file()
 

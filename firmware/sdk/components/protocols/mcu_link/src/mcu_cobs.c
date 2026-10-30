@@ -88,4 +88,3 @@ esp_err_t mcu_cobs_decode(const uint8_t *input, size_t input_len, uint8_t *outpu
     *decoded_len = write_index;
     return ESP_OK;
 }
-

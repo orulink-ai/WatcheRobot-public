@@ -8,5 +8,5 @@ idf_component_register(
     PRIV_REQUIRES
         "sensecap-watcher"
         "esp_audio_codec"
+        "media_lib_sal"
 )
-

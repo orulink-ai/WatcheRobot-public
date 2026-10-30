@@ -431,4 +431,3 @@ const audio_codec_if_t *es8388_codec_new(es8388_codec_cfg_t *codec_cfg)
     }
     return NULL;
 }
-

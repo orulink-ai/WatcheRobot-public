@@ -110,4 +110,3 @@ const audio_codec_data_if_t *audio_codec_new_i2s_data(audio_codec_i2s_cfg_t *i2s
 #endif
 
 #endif
-

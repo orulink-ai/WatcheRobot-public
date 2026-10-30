@@ -104,4 +104,3 @@ float esp_codec_dev_col_calc_hw_gain(esp_codec_dev_hw_gain_t* hw_gain);
 #endif
 
 #endif
-

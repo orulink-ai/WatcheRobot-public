@@ -88,6 +88,8 @@ typedef struct lvgl_port_ctx_s {
 #endif
     bool running;
     volatile bool panel_direct_draw_pending;
+    uint32_t panel_flush_generation;         /* LVGL-lock protected; direct-render history invalidation. */
+    uint32_t panel_flush_failure_generation; /* Same lock; retry lost LVGL invalidations. */
     int task_max_sleep_ms;
 #ifdef ESP_LVGL_PORT_USB_HOST_HID_COMPONENT
     lvgl_port_usb_hid_ctx_t hid_ctx;
@@ -799,6 +801,18 @@ esp_err_t lvgl_port_panel_draw_bitmap(esp_lcd_panel_handle_t panel_handle, int x
     return ret;
 }
 
+uint32_t lvgl_port_panel_flush_generation(void) {
+    return lvgl_port_ctx.panel_flush_generation;
+}
+
+uint32_t lvgl_port_panel_flush_failure_generation(void) {
+    return lvgl_port_ctx.panel_flush_failure_generation;
+}
+
+bool lvgl_port_panel_draw_pending(void) {
+    return lvgl_port_ctx.panel_direct_draw_pending;
+}
+
 void lvgl_port_flush_ready(lv_disp_t *disp) {
     assert(disp);
     assert(disp->driver);
@@ -978,40 +992,81 @@ static esp_err_t lvgl_port_panel_draw_bitmap_locked(esp_lcd_panel_handle_t panel
     return ESP_OK;
 }
 
-static esp_err_t lvgl_port_flush_staged(lvgl_port_display_ctx_t *disp_ctx, const lv_area_t *area,
-                                        const lv_color_t *color_map) {
-    if (disp_ctx == NULL || area == NULL || color_map == NULL || disp_ctx->trans_buffer == NULL ||
-        area->x2 < area->x1 || area->y2 < area->y1) {
+/* LVGL and panel mutexes are held. Display owns the only DMA staging buffer. */
+static esp_err_t lvgl_port_draw_staged_locked(lvgl_port_display_ctx_t *disp_ctx, const lv_area_t *area,
+                                              const lv_color_t *pixels, size_t stride, uint32_t timeout_ms) {
+    if (disp_ctx == NULL || area == NULL || pixels == NULL || disp_ctx->trans_buffer == NULL || area->x2 < area->x1 ||
+        area->y2 < area->y1)
         return ESP_ERR_INVALID_ARG;
-    }
-    size_t width = (size_t)(area->x2 - area->x1 + 1);
-    size_t rows_per_transfer = disp_ctx->trans_buffer_size / width;
-    if (rows_per_transfer == 0U) {
+    const size_t width = (size_t)(area->x2 - area->x1 + 1);
+    const size_t height = (size_t)(area->y2 - area->y1 + 1);
+    const size_t max_pixels = SIZE_MAX / sizeof(lv_color_t);
+    if (stride < width || (height > 1U && stride > (max_pixels - width) / (height - 1U)))
         return ESP_ERR_INVALID_ARG;
-    }
+    const size_t rows_per_transfer = disp_ctx->trans_buffer_size / width;
+    if (rows_per_transfer == 0U)
+        return ESP_ERR_INVALID_ARG;
     for (int y = area->y1; y <= area->y2;) {
-        /* Do not overwrite storage still borrowed by a previous timed-out DMA. */
-        if (lvgl_port_ctx.panel_direct_draw_pending) {
+        /* A timed-out DMA still borrows this storage until its completion ISR. */
+        if (lvgl_port_ctx.panel_direct_draw_pending)
             return ESP_ERR_INVALID_STATE;
-        }
         size_t rows = (size_t)(area->y2 - y + 1);
-        if (rows > rows_per_transfer) {
+        if (rows > rows_per_transfer)
             rows = rows_per_transfer;
-        }
-        size_t pixels = rows * width;
-        memcpy(disp_ctx->trans_buffer, color_map, pixels * sizeof(lv_color_t));
-        esp_err_t ret = lvgl_port_panel_draw_bitmap(disp_ctx->panel_handle, area->x1, y, area->x2 + 1, y + (int)rows,
-                                                    disp_ctx->trans_buffer, 50);
-        if (ret != ESP_OK) {
+        for (size_t row = 0U; row < rows; ++row)
+            memcpy(disp_ctx->trans_buffer + row * width, pixels + row * stride, width * sizeof(lv_color_t));
+        const esp_err_t ret = lvgl_port_panel_draw_bitmap_locked(disp_ctx->panel_handle, area->x1, y, area->x2 + 1,
+                                                                 y + (int)rows, disp_ctx->trans_buffer, timeout_ms);
+        if (ret != ESP_OK)
             return ret;
-        }
-        color_map += pixels;
         y += (int)rows;
+        if (y <= area->y2)
+            pixels += rows * stride;
     }
     return ESP_OK;
 }
 
+static esp_err_t lvgl_port_flush_staged(lvgl_port_display_ctx_t *disp_ctx, const lv_area_t *area,
+                                        const lv_color_t *color_map) {
+    if (area == NULL || area->x2 < area->x1 || lvgl_port_ctx.panel_mux == NULL)
+        return ESP_ERR_INVALID_ARG;
+    if (xSemaphoreTake(lvgl_port_ctx.panel_mux, pdMS_TO_TICKS(50)) != pdTRUE)
+        return ESP_ERR_TIMEOUT;
+    const esp_err_t ret =
+        lvgl_port_draw_staged_locked(disp_ctx, area, color_map, (size_t)(area->x2 - area->x1 + 1), 50);
+    xSemaphoreGive(lvgl_port_ctx.panel_mux);
+    return ret;
+}
+
+esp_err_t lvgl_port_panel_draw_staged(lv_disp_t *disp, const lv_area_t *area, const lv_color_t *pixels, size_t stride,
+                                      uint32_t timeout_ms) {
+    if (disp == NULL || disp->driver == NULL || area == NULL || pixels == NULL || area->x1 < 0 || area->y1 < 0 ||
+        area->x2 >= disp->driver->hor_res || area->y2 >= disp->driver->ver_res)
+        return ESP_ERR_INVALID_ARG;
+    lvgl_port_display_ctx_t *ctx = (lvgl_port_display_ctx_t *)disp->driver->user_data;
+    if (ctx == NULL || ctx->trans_buffer == NULL)
+        return ESP_ERR_NOT_SUPPORTED;
+    if (lvgl_port_ctx.panel_mux == NULL || lvgl_port_ctx.panel_trans_done == NULL)
+        return ESP_ERR_INVALID_STATE;
+    const TickType_t ticks = timeout_ms == 0 ? portMAX_DELAY : pdMS_TO_TICKS(timeout_ms);
+    if (xSemaphoreTake(lvgl_port_ctx.panel_mux, ticks) != pdTRUE)
+        return ESP_ERR_TIMEOUT;
+    const esp_err_t ret = lvgl_port_draw_staged_locked(ctx, area, pixels, stride, timeout_ms);
+    xSemaphoreGive(lvgl_port_ctx.panel_mux);
+    return ret;
+}
+
+bool lvgl_port_panel_has_staging(lv_disp_t *disp) {
+    if (disp == NULL || disp->driver == NULL || disp->driver->user_data == NULL)
+        return false;
+    const lvgl_port_display_ctx_t *ctx = (const lvgl_port_display_ctx_t *)disp->driver->user_data;
+    return ctx->trans_buffer != NULL && ctx->trans_buffer_size > 0U;
+}
+
 static void lvgl_port_flush_callback(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *color_map) {
+    /* A queued LVGL background/overlay may overwrite direct LCD pixels.
+     * Invalidate borrowed display history even if the transfer later fails. */
+    ++lvgl_port_ctx.panel_flush_generation;
     assert(drv != NULL);
     lvgl_port_display_ctx_t *disp_ctx = (lvgl_port_display_ctx_t *)drv->user_data;
     assert(disp_ctx != NULL);
@@ -1019,6 +1074,7 @@ static void lvgl_port_flush_callback(lv_disp_drv_t *drv, const lv_area_t *area, 
     if (disp_ctx->trans_buffer != NULL) {
         esp_err_t ret = lvgl_port_flush_staged(disp_ctx, area, color_map);
         if (ret != ESP_OK) {
+            ++lvgl_port_ctx.panel_flush_failure_generation;
             ESP_LOGW(TAG, "Staged panel flush failed: %s", esp_err_to_name(ret));
         }
         /* Staging waits for DMA itself, so its ISR releases panel_trans_done.
@@ -1035,6 +1091,7 @@ static void lvgl_port_flush_callback(lv_disp_drv_t *drv, const lv_area_t *area, 
     esp_err_t ret =
         esp_lcd_panel_draw_bitmap(disp_ctx->panel_handle, offsetx1, offsety1, offsetx2 + 1, offsety2 + 1, color_map);
     if (ret != ESP_OK) {
+        ++lvgl_port_ctx.panel_flush_failure_generation;
         ESP_LOGW(TAG, "Panel flush failed: %s", esp_err_to_name(ret));
         lv_disp_flush_ready(drv);
     }

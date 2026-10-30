@@ -56,4 +56,3 @@ hx_ptl_transport_result_t hx_ptl_transport_read_body(const hx_ptl_transport_io_t
     }
     return HX_PTL_TRANSPORT_OK;
 }
-

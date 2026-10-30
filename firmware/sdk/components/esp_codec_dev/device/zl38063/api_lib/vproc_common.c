@@ -83,4 +83,3 @@ int VprocHALRead(unsigned short *pVal)
     }
     return ret;
 }
-

@@ -78,4 +78,3 @@ if (CONFIG_CODEC_ZL38063_SUPPORT)
     target_link_libraries(${COMPONENT_TARGET} INTERFACE firmware)
   endif()
 endif()
-

@@ -21,4 +21,3 @@ int main(void) {
     puts("PASS: control integers, version, overflow, exact framing and bounds");
     return 0;
 }
-

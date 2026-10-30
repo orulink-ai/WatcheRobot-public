@@ -2,13 +2,15 @@ menu "Watcher HAL Camera"
 
     choice WATCHER_CAMERA_BACKEND
         prompt "HX6538 camera transport"
-        default WATCHER_CAMERA_BACKEND_SSCMA
+        default WATCHER_CAMERA_BACKEND_PTL
         help
-            Factory SSCMA keeps the original HX firmware. Binary PTL requires
-            the matching custom HX bridge image and supports direct JPEG frames.
+            Binary PTL is the supported product transport and requires the
+            matching custom HX bridge image. Factory SSCMA is retired.
 
         config WATCHER_CAMERA_BACKEND_SSCMA
-            bool "Factory SSCMA JSON/Base64 compatibility"
+            bool "Factory SSCMA JSON/Base64 compatibility (retired)"
+            # Retain the symbol for archived source compatibility, never selectable.
+            depends on n
 
         config WATCHER_CAMERA_BACKEND_PTL
             bool "Custom binary PTL transport"
@@ -31,4 +33,3 @@ menu "Watcher HAL Camera"
             containing an image payload.
 
 endmenu
-

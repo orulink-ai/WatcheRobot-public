@@ -30,4 +30,3 @@ else()
     target_compile_options(mcu_sensor_service_host_tests PRIVATE -UNDEBUG)
 endif()
 add_test(NAME mcu_sensor_service_host_tests COMMAND mcu_sensor_service_host_tests)
-

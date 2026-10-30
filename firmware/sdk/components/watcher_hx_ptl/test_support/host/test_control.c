@@ -5,10 +5,16 @@
 #include <stdio.h>
 #include <string.h>
 static int failures, held, bad_boxes;
-static unsigned generation, mode, model;
+static unsigned generation, mode, model, mode_requests;
+static bool inject_foreign;
+static bool lose_mode_ack;
+static bool lose_completion;
+static unsigned reject_mode;
 static int64_t clock_us;
 static char reply[1024];
 static size_t offset;
+static int broken_until_reset, never_reply, reset_failure, configure_failure;
+static unsigned reset_asserts, reset_releases, uart_deletes;
 #define CHECK(x)                                                                                                       \
     do {                                                                                                               \
         if (!(x)) {                                                                                                    \
@@ -51,11 +57,24 @@ int uart_driver_install(int port, int rx, int tx, int queue, void *handle, int f
 int uart_driver_delete(int port) {
     (void)port;
     CHECK(held == 1);
+    ++uart_deletes;
     return ESP_OK;
 }
 int uart_param_config(int port, const uart_config_t *config) {
     (void)port;
     (void)config;
+    return configure_failure ? ESP_FAIL : ESP_OK;
+}
+int bsp_exp_io_set_level(unsigned mask, unsigned level) {
+    CHECK(held == 1 && mask == 128);
+    if (reset_failure)
+        return ESP_FAIL;
+    if (level == 0)
+        ++reset_asserts;
+    else {
+        ++reset_releases;
+        broken_until_reset = 0;
+    }
     return ESP_OK;
 }
 int uart_set_pin(int port, int tx, int rx, int rts, int cts) {
@@ -71,9 +90,40 @@ int uart_write_bytes(int port, const void *data, size_t size) {
     CHECK(held == 1);
     unsigned id = 0, expected = 0;
     const char *request = data;
+    unsigned requested_mode, requested_model;
+    if (reject_mode && sscanf(request, "WV1 MODE %u %u %u %u", &id, &expected,
+                              &requested_mode, &requested_model) == 4) {
+        ++mode_requests;
+        if (reject_mode == 4)
+            ++generation; /* Foreign replacement between STATUS and MODE. */
+        snprintf(reply, sizeof(reply), "WV1 STATE %u %u %u %u %u 0 0\r\n",
+                 id, reject_mode, generation, mode, model);
+        reject_mode = 0;
+        offset = 0;
+        return (int)size;
+    }
+    if (broken_until_reset || never_reply) {
+        reply[0] = 0;
+        offset = 0;
+        return (int)size;
+    }
     if (sscanf(request, "WV1 MODE %u %u %u %u", &id, &expected, &mode, &model) == 4) {
+        ++mode_requests;
         CHECK(expected == generation);
         ++generation;
+        if (lose_mode_ack) {
+            lose_mode_ack = false;
+            reply[0] = 0;
+            offset = 0;
+            return (int)size;
+        }
+        if (lose_completion) {
+            lose_completion = false;
+            snprintf(reply, sizeof(reply), "WV1 STATE %u 1 %u 3 %u 0 0\r\n", id, generation, model);
+            offset = 0;
+            never_reply = 1;
+            return (int)size;
+        }
     } else if (sscanf(request, "WV1 CATALOG %u", &id) == 1) {
         snprintf(reply, sizeof(reply), "WV1 CATALOG %u 1 2 3 4\r\n", id);
         offset = 0;
@@ -82,8 +132,15 @@ int uart_write_bytes(int port, const void *data, size_t size) {
         snprintf(reply, sizeof(reply), "WV1 BOXES %u %u 2 18 320 240 %u\r\n", id, generation, bad_boxes ? 9 : 0);
         offset = 0;
         return (int)size;
-    } else
+    } else {
         CHECK(sscanf(request, "WV1 STATUS %u", &id) == 1);
+        if (inject_foreign) {
+            ++generation;
+            mode = 2;
+            model = 4;
+            inject_foreign = false;
+        }
+    }
     /* A stale nonce must not satisfy a new request. */
     snprintf(reply, sizeof(reply), "WV1 STATE 0 0 999 4 0 0 6\r\nWV1 STATE %u 0 %u %u %u 0 0\r\n", id, generation, mode,
              model);
@@ -122,8 +179,94 @@ int main(void) {
     CHECK(watcher_hx_control_boxes(&result) == ESP_ERR_INVALID_RESPONSE && result.sequence == 18);
     CHECK(watcher_hx_control_mode(0, 0) == ESP_OK);
     CHECK(watcher_hx_control_status(&state) == ESP_OK && state.mode == 0 && state.model == 0);
+    bool stopped = false;
+    unsigned requests = mode_requests;
+    CHECK(watcher_hx_control_stop_owned(generation, &stopped) == ESP_OK && stopped);
+    CHECK(mode_requests == requests + 1);
+    unsigned old = generation;
+    inject_foreign = true; /* Change at the fresh STATUS, while control_lock is held. */
+    requests = mode_requests;
+    stopped = true;
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) == ESP_OK && !stopped);
+    CHECK(mode_requests == requests && mode == 2 && model == 4);
+    /* A newer, fully idle generation already proves the sensor stopped. */
+    old = generation;
+    ++generation;
+    mode = model = 0;
+    stopped = false;
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) == ESP_OK && stopped);
+    CHECK(mode_requests == requests);
+    model = 4; /* An inconsistent idle/model is not proof of shutdown. */
+    stopped = true;
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) != ESP_OK && !stopped);
+    CHECK(mode_requests == requests);
+    model = 0;
+    never_reply = 1;
+    stopped = true;
+    CHECK(watcher_hx_control_stop_owned(generation, &stopped) == ESP_ERR_TIMEOUT && !stopped);
+    CHECK(mode_requests == requests);
+    never_reply = 0;
+    /* Remote accepted G -> G+1, but its ACK was lost. A later active
+     * STATUS is not evidence of a foreign owner and cannot release cleanup. */
+    old = watcher_hx_control_generation();
+    lose_mode_ack = true;
+    CHECK(watcher_hx_control_mode(2, 4) == ESP_ERR_TIMEOUT);
+    never_reply = 1;
+    CHECK(watcher_hx_control_mode(0, 0) == ESP_ERR_TIMEOUT);
+    never_reply = 0;
+    requests = mode_requests;
+    stopped = true;
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) != ESP_OK && !stopped);
+    CHECK(mode_requests == requests && mode == 2);
+    CHECK(watcher_hx_control_mode(0, 0) != ESP_OK);
+    CHECK(mode_requests == requests);
+    /* Only independently confirmed complete idle can clear ambiguity. */
+    mode = model = 0;
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) == ESP_OK && stopped);
+    /* An accepted ACK confirms G+1 even if completion STATUS times out. */
+    lose_completion = true;
+    CHECK(watcher_hx_control_mode(2, 4) == ESP_ERR_TIMEOUT);
+    CHECK(watcher_hx_control_generation() == generation);
+    never_reply = 0;
+    requests = mode_requests;
+    CHECK(watcher_hx_control_stop_owned(watcher_hx_control_generation(), &stopped) == ESP_OK && stopped);
+    CHECK(mode_requests == requests + 1 && mode == 0);
+    CHECK(watcher_hx_control_mode(2, 4) == ESP_OK);
+    old = watcher_hx_control_generation();
+    reject_mode = 3; /* BUSY: rejected request did not replace this owner. */
+    CHECK(watcher_hx_control_mode(0, 0) == ESP_ERR_INVALID_STATE);
+    CHECK(watcher_hx_control_generation() == old);
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) == ESP_OK && stopped);
+    CHECK(watcher_hx_control_mode(2, 4) == ESP_OK);
+    old = watcher_hx_control_generation();
+    reject_mode = 4; /* STALE: rejected reply reports a foreign generation. */
+    CHECK(watcher_hx_control_mode(0, 0) == ESP_ERR_INVALID_STATE);
+    CHECK(watcher_hx_control_generation() == old);
+    requests = mode_requests;
+    stopped = true;
+    CHECK(watcher_hx_control_stop_owned(old, &stopped) == ESP_OK && !stopped);
+    CHECK(mode_requests == requests && mode == 2);
     watcher_hx_control_deinit();
     CHECK(held == 0);
+    CHECK(reset_asserts == 0 && reset_releases == 0); /* Healthy/live control is never reset. */
+    broken_until_reset = 1;
+    CHECK(watcher_hx_control_init() == ESP_OK);
+    CHECK(reset_asserts == 1 && reset_releases == 1);
+    CHECK(watcher_hx_control_init() == ESP_OK && reset_asserts == 1);
+    watcher_hx_control_deinit();
+    never_reply = 1;
+    CHECK(watcher_hx_control_init() == ESP_ERR_TIMEOUT);
+    CHECK(reset_asserts == 2 && reset_releases == 2); /* Exactly one bounded recovery attempt. */
+    never_reply = 0;
+    configure_failure = 1;
+    CHECK(watcher_hx_control_init() == ESP_FAIL && reset_asserts == 2);
+    configure_failure = 0;
+    broken_until_reset = reset_failure = 1;
+    CHECK(watcher_hx_control_init() == ESP_FAIL && reset_asserts == 2);
+    reset_failure = 0;
+    broken_until_reset = 0;
+    CHECK(watcher_hx_control_init() == ESP_OK && held == 0);
+    watcher_hx_control_deinit();
+    CHECK(uart_deletes == 6);
     return failures ? 1 : 0;
 }
-

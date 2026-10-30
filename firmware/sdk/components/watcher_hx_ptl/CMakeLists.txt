@@ -5,4 +5,3 @@ idf_component_register(
              heap hx_media_protocol hx_ptl_protocol log sensecap-watcher
 )
 
-

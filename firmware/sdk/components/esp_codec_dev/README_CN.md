@@ -235,4 +235,3 @@ audio_codec_data_if_t ..> esp_codec_dev
 	```
 
 更细节的实现可以参考测试代码 [my_codec.c](test_apps/codec_dev_test/main/my_codec.c)。
-

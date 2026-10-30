@@ -5,4 +5,3 @@ dependencies:
   idf: ">=4.4.2"
   esp_io_expander:
     version: "1.0.1"
-

@@ -122,4 +122,3 @@ extern int VprocHALRead(unsigned short *pVal);
 #endif
 
 #endif /* VPROC_COMMON_H */
-

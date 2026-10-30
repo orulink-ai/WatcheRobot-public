@@ -14,6 +14,9 @@
 #define SAMPLE_RATE_PLAY 24000   /* 火山引擎 TTS uses 24kHz */
 
 static bool codec_initialized = false; /* codec init is global, only once */
+/* Destructive cleanup failed: old objects are gone, physical resource state
+ * is not proven. Terminal until reboot; never reopen or publish capture-off. */
+static bool codec_cleanup_fault = false;
 static bool is_running = false;        /* current running state */
 static bool is_playback_mode = false;  /* recording input or playback output */
 #ifdef CONFIG_ENABLE_WAKE_WORD
@@ -31,6 +34,8 @@ static void *capture_activity_ctx = NULL;
 static bool capture_activity_active = false;
 static bool external_lease_active = false;
 static bool external_lease_owns_codec_lifetime = false;
+/* Retain a failed cold-gain initialization for a later lease retry. */
+static bool external_microphone_default_gain_pending = false;
 
 static bool hal_audio_lock(void) {
     if (audio_lock == NULL) {
@@ -41,7 +46,13 @@ static bool hal_audio_lock(void) {
         }
     }
 
-    return xSemaphoreTakeRecursive(audio_lock, portMAX_DELAY) == pdTRUE;
+    if (xSemaphoreTakeRecursive(audio_lock, portMAX_DELAY) != pdTRUE)
+        return false;
+    if (__atomic_load_n(&codec_cleanup_fault, __ATOMIC_ACQUIRE)) {
+        xSemaphoreGiveRecursive(audio_lock);
+        return false;
+    }
+    return true;
 }
 
 static void hal_audio_unlock(void) {
@@ -88,26 +99,33 @@ int hal_audio_set_capture_activity_callback(hal_audio_capture_activity_cb_t cb, 
     return 0;
 }
 
-static void hal_audio_prepare_output(void) {
+static esp_err_t hal_audio_prepare_output(uint8_t volume) {
     esp_err_t ret;
 
-    (void)bsp_io_expander_init();
+    if (bsp_io_expander_init() == NULL) {
+        return ESP_FAIL;
+    }
 
     ret = bsp_exp_io_set_level(BSP_PWR_CODEC_PA, 1);
     if (ret != ESP_OK) {
         ESP_LOGW(TAG, "Failed to enable codec PA power: %s", esp_err_to_name(ret));
+        return ret;
     }
 
-    ret = bsp_codec_mute_set(false);
+    ret = bsp_codec_mute_set(volume == 0);
     if (ret != ESP_OK) {
-        ESP_LOGW(TAG, "Failed to unmute codec output: %s", esp_err_to_name(ret));
+        ESP_LOGW(TAG, "Failed to set codec output mute: %s", esp_err_to_name(ret));
+        return ret;
     }
 
-    ret = bsp_codec_volume_set(current_volume, NULL);
+    ret = bsp_codec_volume_set(volume, NULL);
     if (ret != ESP_OK) {
         ESP_LOGW(TAG, "Failed to set codec output volume: %s", esp_err_to_name(ret));
     }
+    return ret;
 }
+
+static esp_err_t hal_audio_deinit_codec_locked(void);
 
 /* Initialize codec once at system startup */
 int hal_audio_init(void) {
@@ -117,7 +135,16 @@ int hal_audio_init(void) {
         return -1;
     }
 
-    if (codec_initialized) {
+    if (codec_initialized && mic_handle != NULL) {
+        /* An interrupted idle lease may leave a new mic awaiting its default.
+         * Complete that initialization before a normal HAL owner can tune it. */
+        if (external_microphone_default_gain_pending) {
+            if (esp_codec_dev_set_in_gain(mic_handle, DRV_AUDIO_MIC_GAIN) != ESP_OK) {
+                hal_audio_unlock();
+                return -1;
+            }
+            external_microphone_default_gain_pending = false;
+        }
         hal_audio_unlock();
         return 0;
     }
@@ -125,15 +152,20 @@ int hal_audio_init(void) {
     ESP_LOGI(TAG, "Initializing audio codec via SDK...");
 
     esp_err_t ret = bsp_codec_init();
+    /* BSP may retain partial construction on error. Publish ownership before
+     * cleanup, including an input added to an output-only baseline. */
+    mic_handle = bsp_codec_microphone_get();
+    speaker_handle = bsp_codec_speaker_get();
+    codec_initialized = mic_handle != NULL || speaker_handle != NULL;
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Failed to init codec: %s", esp_err_to_name(ret));
+        /* Even with no codec handle, BSP init may own a mutex/data interface.
+         * Force checked cleanup of that partial lifetime, under this lock. */
+        codec_initialized = true;
+        (void)hal_audio_deinit_codec_locked();
         hal_audio_unlock();
         return -1;
     }
-
-    /* Get microphone and speaker handles */
-    mic_handle = bsp_codec_microphone_get();
-    speaker_handle = bsp_codec_speaker_get();
 
     if (!mic_handle) {
         ESP_LOGE(TAG, "Failed to get microphone handle");
@@ -148,11 +180,23 @@ int hal_audio_init(void) {
     }
 
     codec_initialized = true;
-    is_running = true; /* Keep codec running always */
-
-    bsp_codec_set_fs(initial_sample_rate, 16, 1);
+    ret = bsp_codec_set_fs(initial_sample_rate, 16, 1);
+    if (ret == ESP_OK)
+        external_microphone_default_gain_pending = false;
+    if (ret == ESP_OK) {
+        ret = hal_audio_prepare_output(current_volume);
+    }
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to prepare audio path: %s", esp_err_to_name(ret));
+        /* Keep valid objects on close failure, or latch terminal destruction
+         * failure. Neither case acknowledges physical capture-off. */
+        (void)hal_audio_deinit_codec_locked();
+        is_running = false;
+        hal_audio_unlock();
+        return -1;
+    }
+    is_running = true;
     current_sample_rate = initial_sample_rate;
-    hal_audio_prepare_output();
 
     ESP_LOGI(TAG, "Audio codec initialized (%luHz, volume=%u)", current_sample_rate, (unsigned)current_volume);
 
@@ -161,6 +205,8 @@ int hal_audio_init(void) {
 }
 
 static esp_err_t hal_audio_deinit_codec_locked(void) {
+    if (__atomic_load_n(&codec_cleanup_fault, __ATOMIC_ACQUIRE))
+        return ESP_ERR_INVALID_STATE;
     if (!codec_initialized) {
         mic_handle = NULL;
         speaker_handle = NULL;
@@ -168,6 +214,16 @@ static esp_err_t hal_audio_deinit_codec_locked(void) {
     }
 
     const esp_err_t ret = bsp_codec_deinit();
+    /* A close failure retains BSP objects for retry. After destructive cleanup
+     * an error instead means unknown hardware state, not reusable handles. */
+    mic_handle = bsp_codec_microphone_get();
+    speaker_handle = bsp_codec_speaker_get();
+    codec_initialized = mic_handle != NULL || speaker_handle != NULL;
+    if (mic_handle == NULL)
+        external_microphone_default_gain_pending = false;
+    if (ret != ESP_OK && !codec_initialized) {
+        __atomic_store_n(&codec_cleanup_fault, true, __ATOMIC_RELEASE);
+    }
     if (ret != ESP_OK) {
         return ret;
     }
@@ -176,6 +232,11 @@ static esp_err_t hal_audio_deinit_codec_locked(void) {
     speaker_handle = NULL;
     codec_initialized = false;
     return ESP_OK;
+}
+
+bool hal_audio_has_terminal_fault(void) {
+    /* Must remain observable after the normal audio lock rejects operations. */
+    return __atomic_load_n(&codec_cleanup_fault, __ATOMIC_ACQUIRE);
 }
 
 bool hal_audio_is_initialized(void) {
@@ -211,7 +272,6 @@ int hal_audio_deinit(void) {
     if (ret != ESP_OK) {
         ESP_LOGW(TAG, "Audio codec deinit returned warning: %s", esp_err_to_name(ret));
         hal_audio_unlock();
-        hal_audio_publish_capture_activity(false);
         return -1;
     }
 
@@ -336,8 +396,9 @@ int hal_audio_start(void) {
         return -1;
     }
 
-    /* Ensure codec is initialized */
-    if (!codec_initialized) {
+    /* Output-only preparation intentionally has no microphone handle. A
+     * permitted capture start must complete the legacy capture initialization. */
+    if (!codec_initialized || (!is_playback_mode && mic_handle == NULL)) {
         if (hal_audio_init() != 0) {
             hal_audio_unlock();
             return -1;
@@ -347,7 +408,10 @@ int hal_audio_start(void) {
     if (is_running) {
         consecutive_read_failures = 0;
         if (is_playback_mode) {
-            hal_audio_prepare_output();
+            if (hal_audio_prepare_output(current_volume) != ESP_OK) {
+                hal_audio_unlock();
+                return -1;
+            }
         }
         ESP_LOGD(TAG, "Audio already running (sample rate: %lu Hz, playback=%d)", current_sample_rate,
                  is_playback_mode);
@@ -364,11 +428,15 @@ int hal_audio_start(void) {
         return -1;
     }
 
-    is_running = true;
     consecutive_read_failures = 0;
     if (is_playback_mode) {
-        hal_audio_prepare_output();
+        if (hal_audio_prepare_output(current_volume) != ESP_OK) {
+            (void)bsp_codec_dev_stop();
+            hal_audio_unlock();
+            return -1;
+        }
     }
+    is_running = true;
     ESP_LOGI(TAG, "Audio started (sample rate: %lu Hz)", current_sample_rate);
     capture_active = !is_playback_mode;
     hal_audio_unlock();
@@ -569,6 +637,62 @@ void hal_audio_set_wake_word_stream_desired(bool enable) {
 #endif
 }
 
+int hal_audio_prepare_playback(uint8_t volume) {
+    if (volume > 100 || !hal_audio_lock())
+        return -1;
+    if (external_lease_active) {
+        hal_audio_unlock();
+        return -1;
+    }
+    esp_err_t ret = bsp_codec_init_output();
+    /* Retain even partial output construction for checked cleanup/retry. */
+    speaker_handle = bsp_codec_speaker_get();
+    mic_handle = bsp_codec_microphone_get();
+    if (speaker_handle != NULL)
+        codec_initialized = true;
+    if (ret == ESP_OK)
+        ret = bsp_codec_set_output_fs(SAMPLE_RATE_RECORD, 16, 1);
+    if (ret == ESP_OK)
+        ret = hal_audio_prepare_output(volume);
+    if (ret == ESP_OK) {
+#ifdef CONFIG_ENABLE_WAKE_WORD
+        wake_word_stream_desired = false;
+#endif
+        current_volume = volume;
+        current_sample_rate = SAMPLE_RATE_RECORD;
+        is_playback_mode = is_running = true;
+        consecutive_read_failures = 0;
+    }
+    hal_audio_unlock();
+    if (ret == ESP_OK)
+        hal_audio_publish_capture_activity(false);
+    return ret == ESP_OK ? 0 : -1;
+}
+
+int hal_audio_capture_pause(void) {
+    if (!hal_audio_lock())
+        return -1;
+    if (external_lease_active) {
+        hal_audio_unlock();
+        return -1;
+    }
+    /* Do not close the speaker or restore the wake stream. The ADC close is
+     * checked; a failed close must retain the activity/owner state for retry. */
+    if (codec_initialized && mic_handle != NULL && esp_codec_dev_close(mic_handle) != ESP_OK) {
+        hal_audio_unlock();
+        return -1;
+    }
+#ifdef CONFIG_ENABLE_WAKE_WORD
+    /* Explicit app capture resume, not a later playback stop, owns reopening. */
+    wake_word_stream_desired = false;
+#endif
+    if (!is_playback_mode)
+        is_running = false;
+    hal_audio_unlock();
+    hal_audio_publish_capture_activity(false);
+    return 0;
+}
+
 int hal_audio_enter_app_idle(void) {
     esp_err_t ret;
 
@@ -580,6 +704,13 @@ int hal_audio_enter_app_idle(void) {
         return -1;
     }
 
+    ret = codec_initialized ? bsp_codec_dev_stop() : ESP_OK;
+    if (ret != ESP_OK) {
+        ESP_LOGW(TAG, "Failed to close audio path for app idle: %s", esp_err_to_name(ret));
+        hal_audio_unlock();
+        return -1;
+    }
+
 #ifdef CONFIG_ENABLE_WAKE_WORD
     wake_word_stream_desired = false;
 #endif
@@ -587,22 +718,6 @@ int hal_audio_enter_app_idle(void) {
     is_running = false;
     current_sample_rate = SAMPLE_RATE_RECORD;
     consecutive_read_failures = 0;
-
-    if (!codec_initialized) {
-        ESP_LOGI(TAG, "Audio entered app-idle state (codec not initialized)");
-        hal_audio_unlock();
-        hal_audio_publish_capture_activity(false);
-        return 0;
-    }
-
-    ret = bsp_codec_dev_stop();
-    if (ret != ESP_OK) {
-        ESP_LOGW(TAG, "Failed to close audio path for app idle: %s", esp_err_to_name(ret));
-        hal_audio_unlock();
-        hal_audio_publish_capture_activity(false);
-        return -1;
-    }
-
     ESP_LOGI(TAG, "Audio entered app-idle state");
     hal_audio_unlock();
     hal_audio_publish_capture_activity(false);
@@ -639,11 +754,26 @@ int hal_audio_external_lease_acquire(void) {
     }
 
     const bool codec_initialized_for_lease = !codec_initialized;
-    if (hal_audio_init() != 0) {
+    const bool microphone_created_for_lease = bsp_codec_microphone_get() == NULL;
+    ret = bsp_codec_init_idle();
+    mic_handle = bsp_codec_microphone_get();
+    speaker_handle = bsp_codec_speaker_get();
+    if (mic_handle != NULL || speaker_handle != NULL)
+        codec_initialized = true; /* Partial construction remains owned for cleanup. */
+    if (microphone_created_for_lease && mic_handle != NULL)
+        external_microphone_default_gain_pending = true;
+    if (ret != ESP_OK || mic_handle == NULL || speaker_handle == NULL) {
         hal_audio_unlock();
         return -1;
     }
     ret = bsp_codec_dev_stop();
+    if (ret == ESP_OK && external_microphone_default_gain_pending) {
+        /* Codec settings can be applied while ADC/RX remains closed. Do not
+         * overwrite a shared microphone's previously selected (possibly low) gain. */
+        ret = esp_codec_dev_set_in_gain(mic_handle, DRV_AUDIO_MIC_GAIN);
+        if (ret == ESP_OK)
+            external_microphone_default_gain_pending = false;
+    }
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Failed to idle codec before external lease: %s", esp_err_to_name(ret));
         if (codec_initialized_for_lease) {
@@ -659,8 +789,8 @@ int hal_audio_external_lease_acquire(void) {
     is_playback_mode = false;
     current_sample_rate = SAMPLE_RATE_RECORD;
     consecutive_read_failures = 0;
-    external_lease_active = true;
     external_lease_owns_codec_lifetime = codec_initialized_for_lease;
+    __atomic_store_n(&external_lease_active, true, __ATOMIC_RELEASE);
     ESP_LOGI(TAG, "External full-duplex audio lease acquired (codec=%s)",
              external_lease_owns_codec_lifetime ? "transient" : "shared");
     hal_audio_unlock();
@@ -690,9 +820,33 @@ int hal_audio_external_lease_configure(uint32_t sample_rate) {
         hal_audio_unlock();
         return -1;
     }
+    /* Explicit duplex opt-in for SDK capture. JoyInside prepare only acquires
+     * idle handles; its capture source opens RX after authorization. */
     esp_err_t ret = bsp_codec_set_fs(sample_rate, 16, 1);
     if (ret == ESP_OK)
         current_sample_rate = sample_rate;
+    hal_audio_unlock();
+    return ret == ESP_OK ? 0 : -1;
+}
+
+int hal_audio_external_lease_prepare_output(uint8_t volume) {
+    if (volume > 100 || !hal_audio_lock()) {
+        return -1;
+    }
+    esp_err_t ret = ESP_ERR_INVALID_STATE;
+    if (external_lease_active && codec_initialized && speaker_handle != NULL) {
+        ret = hal_audio_prepare_output(volume);
+    }
+    hal_audio_unlock();
+    return ret == ESP_OK ? 0 : -1;
+}
+
+int hal_audio_external_lease_drain(uint32_t timeout_ms) {
+    if (!timeout_ms || !hal_audio_lock())
+        return -1;
+    esp_err_t ret = ESP_ERR_INVALID_STATE;
+    if (external_lease_active && codec_initialized && speaker_handle != NULL)
+        ret = bsp_i2s_wait_tx_drain(timeout_ms);
     hal_audio_unlock();
     return ret == ESP_OK ? 0 : -1;
 }
@@ -711,7 +865,10 @@ int hal_audio_external_lease_release(void) {
     if (codec_initialized) {
         ret = bsp_codec_dev_stop();
     }
-    external_lease_active = false;
+    if (ret != ESP_OK) {
+        hal_audio_unlock();
+        return -1;
+    }
     is_running = false;
     is_playback_mode = false;
     current_sample_rate = SAMPLE_RATE_RECORD;
@@ -719,11 +876,16 @@ int hal_audio_external_lease_release(void) {
     if (external_lease_owns_codec_lifetime) {
         released_transient_codec = true;
         const esp_err_t deinit_ret = hal_audio_deinit_codec_locked();
+        if (deinit_ret != ESP_OK) {
+            hal_audio_unlock();
+            return -1;
+        }
         if (ret == ESP_OK) {
             ret = deinit_ret;
         }
     }
     external_lease_owns_codec_lifetime = false;
+    __atomic_store_n(&external_lease_active, false, __ATOMIC_RELEASE);
     ESP_LOGI(TAG, "External full-duplex audio lease released (codec=%s): %s",
              released_transient_codec ? "transient-freed" : "shared-retained", esp_err_to_name(ret));
     hal_audio_unlock();
@@ -732,11 +894,8 @@ int hal_audio_external_lease_release(void) {
 }
 
 bool hal_audio_external_lease_is_active(void) {
-    bool active = false;
-
-    if (hal_audio_lock()) {
-        active = external_lease_active;
-        hal_audio_unlock();
-    }
-    return active;
+    /* Lock refusal, including terminal cleanup, never proves owner release.
+     * Only successful checked release publishes false. This is metadata,
+     * not permission to use codec handles or reopen an unproven device. */
+    return __atomic_load_n(&external_lease_active, __ATOMIC_ACQUIRE);
 }

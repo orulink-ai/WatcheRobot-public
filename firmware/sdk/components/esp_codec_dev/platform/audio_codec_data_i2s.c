@@ -382,6 +382,11 @@ static int _i2s_data_enable(const audio_codec_data_if_t *h, esp_codec_dev_type_t
     #endif
         else {
             ret = _i2s_drv_enable(i2s_data, playback, enable);
+            /* Keep the logical owner on a failed physical transition so a
+             * later checked close/reset can retry the actual channel. */
+            if (ret != ESP_CODEC_DEV_OK) {
+                return ret;
+            }
             // Disable TX when RX disable if TX disable is pending
             if (enable == false) {
                 if (playback == false && i2s_data->out_disable_pending)  {
@@ -439,8 +444,19 @@ static int _i2s_data_set_fmt(const audio_codec_data_if_t *h, esp_codec_dev_type_
     if ((dev_type & ESP_CODEC_DEV_TYPE_OUT) && i2s_data->out_enable) {
         _i2s_drv_enable(i2s_data, true, false);
     }
-    if ((dev_type & ESP_CODEC_DEV_TYPE_IN) && i2s_data->in_enable) {
-        _i2s_drv_enable(i2s_data, false, false);
+    if ((dev_type & ESP_CODEC_DEV_TYPE_IN) && (i2s_data->in_enable || i2s_data->in_disable_pending)) {
+        /* HW1 may defer RX stop to keep TX alive (S3/IDF6 uses HW2).
+         * Before reopening capture,
+         * really stop RX: IDF disable clears curr_ptr/rw_pos, and enable resets
+         * the RX queue/FIFO/DMA. This invalidates prior-cycle read references;
+         * it does not erase the DMA backing memory.
+         * This is bounded driver reset, not an unbounded read/drain loop. */
+        int stop_ret = _i2s_drv_enable(i2s_data, false, false);
+        if (stop_ret != ESP_CODEC_DEV_OK) {
+            return stop_ret;
+        }
+        i2s_data->in_enable = false;
+        i2s_data->in_disable_pending = false;
     }
     int ret;
     if ((dev_type & ESP_CODEC_DEV_TYPE_IN) != 0 &&
@@ -566,4 +582,3 @@ const audio_codec_data_if_t *audio_codec_new_i2s_data(audio_codec_i2s_cfg_t *i2s
     }
     return &i2s_data->base;
 }
-

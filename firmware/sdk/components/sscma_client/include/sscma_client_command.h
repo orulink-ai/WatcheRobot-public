@@ -13,4 +13,3 @@ bool sscma_client_command_name_equal(const char *left, const char *right);
 #ifdef __cplusplus
 }
 #endif
-
