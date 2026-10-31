@@ -44,6 +44,18 @@ test('C SDK preview is separate from Python and HIL maintenance stays hidden', (
   }
 });
 
+test('resource indexes and support rules use a single sidebar entry in each language', () => {
+  const hardware = ['/guide/reproduction', '/docs/pcb-fabrication', '/guide/assembly', '/hardware/'];
+  const removed = ['/hardware/pcb/spares', '/firmware/', '/docs/versions', '/docs/compatibility', '/CONTRIBUTING', '/SECURITY', '/docs/governance', '/docs/release-process', '/skills/watche-release-flash/', '/skills/watche-sd-card-write/', '/troubleshooting/'];
+  for (const lang of ['zh', 'en']) {
+    const prefix = lang === 'zh' ? '' : '/en';
+    const catalog = [...hardware, ...removed, '/products/watcherobot/community'].map(route => ({lang, route:prefix + route, title:route}));
+    const groups = buildSidebar(catalog, lang)[0].items;
+    assert.deepEqual(groups.find(g => g.text === (lang === 'zh' ? '硬件专区' : 'Hardware')).items.map(i => i.link), hardware.map(r => prefix + r));
+    assert.deepEqual(groups.find(g => g.text === (lang === 'zh' ? '支持与贡献' : 'Support and contribution')).items.map(i => i.link), [prefix + '/products/watcherobot/community']);
+  }
+});
+
 test('assembly tutorial is bilingual, linked from hardware entry points, and uses published media', async () => {
   const pages = [
     ['wiki/guides/guide/assembly.md', '/guide/assembly', '整机拼装教程'],

@@ -1,17 +1,22 @@
 <p><a href="README.md">English</a> | <strong>简体中文</strong></p>
 
-# 硬件资料
+# 资源与下载
 
-整机与板卡 BOM 见[物料与装配](pcb/spares_zh.md)，装配步骤见[立创开源硬件项目](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl)。本目录保存 PCB、BOM、贴片坐标、Gerber 和机械模型。
+## 硬件与物料 {#hardware}
 
-| 实物 | 资料位置 |
+| 你要做什么 | 资源入口 |
 | --- | --- |
-| 身体主板，也就是反馈舵机 STM32 控制板 | `pcb/` 中名称包含 `STM32Servo` 的文件 |
-| 脚底充电板 | `pcb/` 中名称包含 `FootCharger` 的文件 |
-| 无线充电底座 | `pcb/` 中名称包含 `WirelessBase` 的文件 |
-| 侧边灯板 | `pcb/` 中名称包含 `SideLight` 的文件 |
-| 机械结构 | `3d-models/exports/WatcherRobot-mian.stp` |
+| 查看原始 PCB 工程 | [嘉立创开源硬件原项目（外部网站）](https://oshwhub.com/team_efhmhuqf/project_gbxcghnl) |
+| 下载打印模型 | [MakerWorld 模型页面（外部网站）](https://makerworld.com.cn/zh/models/2911544-watcherobot) |
+| 配齐组装料与板卡元件 | [整机组装 BOM（Excel）](pcb/bom/BOM_Assembly_整机组装料.xlsx) · [全部 BOM（GitHub 目录）](https://github.com/orulink-ai/WatcheRobot-public/tree/main/hardware/pcb/bom) |
+| 查找 PCB、Gerber、CPL 和机械模型 | [hardware（GitHub 目录）](https://github.com/orulink-ai/WatcheRobot-public/tree/main/hardware) |
 
-下单制作电路板请看[PCB 制作与 SMT 贴片](../docs/pcb-fabrication_zh.md)，包含工程导出、参数核对和 BOM 匹配步骤。
+制作前核对 BOM、Gerber 和 CPL 对应同一板卡版本；操作见 [PCB 制作与 SMT 贴片](../docs/pcb-fabrication_zh.md)和[整机拼装教程](../wiki/guides/guide/assembly.md)。
 
-先完成装配并断电检查接线，再开始烧录。身体主板使用 ST-LINK/SWD 烧录 STM32；上方 Watcher 头部通过 USB 烧录 Himax 和 ESP32-S3。
+## 固件与 SD 卡资源 {#firmware}
+
+从 [GitHub 最新 Release](https://github.com/orulink-ai/WatcheRobot-public/releases/latest) 下载发布说明指定的固件和 SD 卡资源，再按[烧录指南](../docs/flashing_zh.md)与 [SD 卡资源指南](../docs/sd-card-assets_zh.md)操作。烧录前完成装配与断电接线检查。
+
+## 版本与配套 {#versions}
+
+版本来源和配套要求以对应 [Release 发布说明](https://github.com/orulink-ai/WatcheRobot-public/releases)为准。按说明选择头部、身体固件与 SD 卡资源；未说明的组合先向[社区](../wiki/guides/products/watcherobot/community.md#report)确认，不凭文件名或版本号猜兼容性。

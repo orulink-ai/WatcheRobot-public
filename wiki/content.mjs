@@ -35,7 +35,14 @@ export function rewriteLinks(content, source, routes, ref) {
     if(!match) return target;
     const path = posix.normalize(posix.join(posix.dirname(source), decodeURI(match[1])));
     const suffix = match[2];
-    if(routes.has(path)) return routes.get(path) + suffix;
+    if(routes.has(path)) {
+      const mapped = routes.get(path);
+      if (!mapped.includes('#')) return mapped + suffix;
+      // Old article sections no longer exist: land on the hub's relevant section.
+      const [route, anchor] = mapped.split('#');
+      const query = suffix.startsWith('?') ? suffix.split('#')[0] : '';
+      return route + query + '#' + anchor;
+    }
     if(path.startsWith('docs/images/') || path.startsWith('docs/manuals/')) return '/media/' + path + suffix;
     if(path.startsWith('python-sdk/')) return 'https://github.com/orulink-ai/WatcheRobot_python_sdk/blob/main/' + path.slice(11) + suffix;
     return `${repository}/blob/${encodeURIComponent(ref)}/${path.split('/').map(encodeURIComponent).join('/')}${suffix}`;
@@ -52,6 +59,21 @@ export function rewriteLinks(content, source, routes, ref) {
   ).join('');
 }
 
+// Repository policy/tool documents stay in GitHub; Wiki readers use the two hubs.
+// Preserve old public URLs as non-indexed redirects, not duplicate Wiki articles.
+const consolidatedPages = [
+  ['hardware/pcb/spares', 'hardware/README', 'hardware'],
+  ['firmware/README', 'hardware/README', 'firmware'],
+  ['docs/versions', 'hardware/README', 'versions'],
+  ['docs/compatibility', 'hardware/README', 'versions'],
+  ['CONTRIBUTING', 'community', 'contribute'],
+  ['SECURITY', 'community', 'security'],
+  ['docs/governance', 'community', 'contribute'],
+  ['docs/release-process', 'community', 'contribute'],
+  ['skills/watche-release-flash/SKILL', 'community', 'tools'],
+  ['skills/watche-sd-card-write/SKILL', 'community', 'tools'],
+];
+
 export async function generate(sourceRoot, destination, ref = 'main') {
   const candidates = ['README.md', 'README_zh.md', 'CONTRIBUTING.md', 'CONTRIBUTING_zh.md', 'SECURITY.md', 'SECURITY_zh.md',
     'firmware/README.md', 'firmware/README_zh.md', 'firmware/sdk/README.md', 'firmware/sdk/README_zh.md',
@@ -64,10 +86,32 @@ export async function generate(sourceRoot, destination, ref = 'main') {
   const sources = [];
   for(const source of candidates) if(await exists(join(sourceRoot, source))) sources.push(source);
   const routes = new Map(sources.map(source => [source, routeFor(source)]));
+  const redirects = new Map();
+  for (const suffix of ['_zh', '']) {
+    for (const [page, hub, anchor] of consolidatedPages) {
+      const source = page + suffix + '.md';
+      const targetSource = hub === 'community'
+        ? `wiki/guides/${suffix ? '' : 'en/'}products/watcherobot/community.md`
+        : hub + suffix + '.md';
+      if (routes.has(source) && routes.has(targetSource)
+          && (await readFile(join(sourceRoot, targetSource), 'utf8')).includes(`{#${anchor}}`)) {
+        const target = routes.get(targetSource) + '#' + anchor;
+        redirects.set(source, {route:routeFor(source), target});
+        routes.set(source, target);
+      }
+    }
+  }
   await rm(destination, {recursive:true, force:true});
   await mkdir(join(destination, 'public'), {recursive:true});
   const catalog = [];
   for(const source of sources) {
+    if (redirects.has(source)) {
+      const {route, target} = redirects.get(source);
+      const output = join(destination, 'public', route + (route.endsWith('/') ? 'index.html' : '.html'));
+      await mkdir(dirname(output), {recursive:true});
+      await writeFile(output, `<!doctype html><html lang="${route.startsWith('/en/') ? 'en' : 'zh-CN'}"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=${target}"><link rel="canonical" href="${target}"><title>${route.startsWith('/en/') ? 'Page moved' : '页面已合并'}</title></head><body><a href="${target}">${route.startsWith('/en/') ? 'Continue to the consolidated guide' : '前往合并后的指引'}</a></body></html>`);
+      continue;
+    }
     const content = await readFile(join(sourceRoot, source), 'utf8');
     const route = routes.get(source);
     const output = join(destination, route + (route.endsWith('/') ? 'index.md' : '.md'));
