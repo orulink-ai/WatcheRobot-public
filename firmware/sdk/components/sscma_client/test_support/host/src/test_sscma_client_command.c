@@ -74,4 +74,3 @@ int main(void) {
     puts("sscma_client_command_host_tests: PASS");
     return 0;
 }
-

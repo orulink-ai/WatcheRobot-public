@@ -47,4 +47,3 @@ esp_err_t mcu_link_test_support_parse_packet(const uint8_t *wire, size_t wire_le
     frame->header.payload_len = (uint16_t)payload_len;
     return ESP_OK;
 }
-

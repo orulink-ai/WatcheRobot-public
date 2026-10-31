@@ -137,7 +137,13 @@ typedef struct {
  *
  */
 #define ESP_LVGL_PORT_INIT_CONFIG()                                                                                    \
-    { .task_priority = 4, .task_stack = 4096, .task_affinity = -1, .task_max_sleep_ms = 500, .timer_period_ms = 5, }
+    {                                                                                                                  \
+        .task_priority = 4,                                                                                            \
+        .task_stack = 4096,                                                                                            \
+        .task_affinity = -1,                                                                                           \
+        .task_max_sleep_ms = 500,                                                                                      \
+        .timer_period_ms = 5,                                                                                          \
+    }
 
 /**
  * @brief Initialize LVGL portation
@@ -353,6 +359,32 @@ void lvgl_port_unlock(void);
  */
 esp_err_t lvgl_port_panel_draw_bitmap(esp_lcd_panel_handle_t panel_handle, int x_start, int y_start, int x_end,
                                       int y_end, const void *color_data, uint32_t timeout_ms);
+
+/** Whether an unfinished direct transfer still borrows its source buffer.
+ * Call with the LVGL lock before reusing a direct-render DMA buffer. */
+bool lvgl_port_panel_draw_pending(void);
+
+/** Synchronously draw an inclusive native RGB565 region using display-owned DMA.
+ * disp was returned by lvgl_port_add_disp. Caller holds the LVGL lock and
+ * provides pixels at the region's first pixel; stride is the source row width.
+ * Source contains at least (height - 1) * stride + width pixels and is never
+ * borrowed after return. Timeout applies to lock and each band, 0 is unlimited.
+ * After timeout, the display retains its DMA storage until the completion ISR.
+ * This bypasses LVGL transforms/composition; caller must exclude overlays.
+ * Returns ESP_ERR_NOT_SUPPORTED if the display has no staging buffer. */
+esp_err_t lvgl_port_panel_draw_staged(lv_disp_t *disp, const lv_area_t *area, const lv_color_t *pixels, size_t stride,
+                                      uint32_t timeout_ms);
+/** Caller holds the LVGL lock to keep the display and its resources alive. */
+bool lvgl_port_panel_has_staging(lv_disp_t *disp);
+
+/** LVGL flush revision for direct renderers sharing the panel.
+ * Call with the LVGL lock. A changed revision invalidates cached panel pixels;
+ * direct panel writes do not advance it. */
+uint32_t lvgl_port_panel_flush_generation(void);
+
+/** Failed LVGL flush revision. Call with the LVGL lock; a change requires
+ * retrying cached invalidations even when the source pixels are unchanged. */
+uint32_t lvgl_port_panel_flush_failure_generation(void);
 
 /**
  * @brief Notify LVGL, that data was flushed to LCD display

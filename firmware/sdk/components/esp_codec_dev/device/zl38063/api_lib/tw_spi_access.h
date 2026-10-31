@@ -8,4 +8,3 @@
 int tw_upload_dsp_firmware(int mode);
 
 #endif
-

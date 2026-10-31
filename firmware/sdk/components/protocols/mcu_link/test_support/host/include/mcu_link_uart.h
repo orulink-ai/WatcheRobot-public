@@ -27,4 +27,3 @@ esp_err_t mcu_link_uart_get_buffered_bytes(size_t *out_bytes);
 #endif
 
 #endif /* MCU_LINK_HOST_TEST_UART_H */
-

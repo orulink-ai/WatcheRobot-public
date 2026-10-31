@@ -52,4 +52,3 @@ const audio_codec_if_t *es7210_codec_new(es7210_codec_cfg_t *codec_cfg);
 #endif
 
 #endif
-

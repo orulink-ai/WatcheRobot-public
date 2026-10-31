@@ -17,4 +17,3 @@ typedef int32_t esp_err_t;
 #define ESP_ERR_TIMEOUT -9
 
 #endif /* MCU_LINK_HOST_TEST_ESP_ERR_H */
-

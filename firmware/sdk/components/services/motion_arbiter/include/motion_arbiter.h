@@ -24,4 +24,3 @@ void motion_arbiter_reset(void);
 #ifdef __cplusplus
 }
 #endif
-

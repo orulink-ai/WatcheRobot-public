@@ -763,4 +763,3 @@ const audio_codec_if_t *es8374_codec_new(es8374_codec_cfg_t *codec_cfg)
     }
     return NULL;
 }
-

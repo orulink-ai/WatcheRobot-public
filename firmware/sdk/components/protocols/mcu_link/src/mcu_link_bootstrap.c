@@ -408,4 +408,3 @@ mcu_link_state_t mcu_link_bootstrap_get_state(void) {
     mcu_link_uart_unlock();
     return result;
 }
-

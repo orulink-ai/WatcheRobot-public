@@ -56,4 +56,3 @@ const audio_codec_gpio_if_t *audio_codec_new_gpio(void)
     gpio_if->get = _gpio_get;
     return gpio_if;
 }
-

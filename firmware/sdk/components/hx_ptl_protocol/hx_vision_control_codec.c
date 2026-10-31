@@ -27,4 +27,3 @@ bool hx_vision_control_numbers(const char *line, const char *prefix, uint32_t *v
             return false;
     }
 }
-

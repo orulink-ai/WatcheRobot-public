@@ -6,4 +6,3 @@ bool hx_photo_warmup_observe(hx_photo_warmup_t *policy, uint64_t now_us, bool va
         ++policy->valid_frames;
     return policy->valid_frames >= 12U && now_us - policy->started_us >= UINT64_C(1200000);
 }
-

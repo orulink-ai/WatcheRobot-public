@@ -30,7 +30,7 @@ def test_requires_matching_python(tmp_path):
 
 def test_accepts_dedicated_named_environment(tmp_path):
     (tmp_path / 'conda-meta').mkdir()
-    with patch.dict(os.environ, {'CONDA_PREFIX': str(tmp_path), 'CONDA_DEFAULT_ENV': 'watcherobot-flash-test'}), patch.object(module.sys, 'prefix', str(tmp_path)):
+    with patch.dict(os.environ, {'CONDA_PREFIX': str(tmp_path), 'CONDA_DEFAULT_ENV': 'watcherobot-flash-test'}), patch.object(module.sys, 'prefix', str(tmp_path)), patch.object(module.sys, 'version_info', (3, 12)):
         module.check_environment()
 
 

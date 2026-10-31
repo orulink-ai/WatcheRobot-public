@@ -74,4 +74,3 @@ const char *hx_media_result_name(hx_media_result_t result);
 #ifdef __cplusplus
 }
 #endif
-

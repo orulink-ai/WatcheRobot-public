@@ -33,4 +33,3 @@ esp_err_t sscma_client_flasher_delete(sscma_client_flasher_handle_t handle) {
     ESP_RETURN_ON_FALSE(handle->del, ESP_ERR_NOT_SUPPORTED, TAG, "not supported");
     return handle->del(handle);
 }
-

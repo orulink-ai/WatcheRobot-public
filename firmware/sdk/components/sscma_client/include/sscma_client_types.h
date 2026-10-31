@@ -164,4 +164,3 @@ struct sscma_client_t {
 #ifdef __cplusplus
 }
 #endif
-

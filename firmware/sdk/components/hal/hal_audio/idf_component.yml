@@ -1,6 +1,6 @@
 version: "2.0.0"
 description: "HAL: hal_audio"
-url: "https://github.com/orulink-ai/WatcheRobot-public/tree/main/firmware/sdk"
+url: "https://github.com/orulink-ai/WatcheRobot-public"
 license: "Apache-2.0"
 targets:
   - esp32s3

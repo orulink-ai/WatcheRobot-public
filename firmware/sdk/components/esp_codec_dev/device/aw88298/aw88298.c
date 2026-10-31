@@ -365,4 +365,3 @@ const audio_codec_if_t *aw88298_codec_new(aw88298_codec_cfg_t *codec_cfg)
         return &codec->base;
     } while (0);
 }
-

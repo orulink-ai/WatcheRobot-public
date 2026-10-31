@@ -6,4 +6,3 @@
 #define ESP_LOGE(tag, format, ...) ((void)0)
 
 #endif /* ESP_LOG_H */
-

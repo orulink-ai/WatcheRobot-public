@@ -37,4 +37,3 @@ else()
     target_compile_options(hx_ptl_protocol_host_tests PRIVATE -Wall -Wextra -Werror)
 endif()
 add_test(NAME hx_ptl_protocol_host_tests COMMAND hx_ptl_protocol_host_tests)
-

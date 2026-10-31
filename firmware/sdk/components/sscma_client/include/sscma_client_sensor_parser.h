@@ -14,4 +14,3 @@ bool sscma_client_parse_sensor_payload(const cJSON *payload, int *id, int *type,
 #ifdef __cplusplus
 }
 #endif
-

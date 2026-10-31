@@ -40,4 +40,3 @@ bool mcu_link_bootstrap_handshake_timed_out(uint32_t timeout_ms);
 #endif
 
 #endif /* MCU_LINK_BOOTSTRAP_H */
-

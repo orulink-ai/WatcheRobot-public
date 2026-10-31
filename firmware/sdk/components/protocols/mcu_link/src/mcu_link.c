@@ -878,4 +878,3 @@ esp_err_t mcu_link_poll(mcu_link_t *link, mcu_link_event_t *out_event) {
     mcu_link_uart_unlock();
     return result;
 }
-

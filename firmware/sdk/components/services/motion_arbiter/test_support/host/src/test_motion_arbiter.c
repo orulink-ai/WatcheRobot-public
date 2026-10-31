@@ -19,4 +19,3 @@ int main(void) {
     puts("motion_arbiter_host_tests: PASS");
     return 0;
 }
-

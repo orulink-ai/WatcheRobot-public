@@ -156,4 +156,3 @@ esp_err_t sscma_client_io_flush(sscma_client_io_handle_t io);
 #ifdef __cplusplus
 }
 #endif
-

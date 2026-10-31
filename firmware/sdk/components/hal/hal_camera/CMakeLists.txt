@@ -17,4 +17,3 @@ idf_component_register(
         hx_ptl_protocol
         jpeg_integrity
 )
-

@@ -52,4 +52,3 @@ int audio_codec_delete_gpio_if(const audio_codec_gpio_if_t *gpio_if);
 #endif
 
 #endif
-

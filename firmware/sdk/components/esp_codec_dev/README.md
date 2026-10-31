@@ -236,4 +236,3 @@ The steps below take the ES8311 codec as an example to illustrate how to play an
 	```
 
 For details, refer to the sample code [my_codec.c](test_apps/codec_dev_test/main/my_codec.c).
-

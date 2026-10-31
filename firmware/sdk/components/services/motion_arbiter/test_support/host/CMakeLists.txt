@@ -22,4 +22,3 @@ else()
     target_compile_options(motion_arbiter_host_tests PRIVATE -UNDEBUG)
 endif()
 add_test(NAME motion_arbiter_host_tests COMMAND motion_arbiter_host_tests)
-

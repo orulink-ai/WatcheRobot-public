@@ -46,4 +46,3 @@ void mcu_link_uart_unlock(void);
 #endif
 
 #endif /* MCU_LINK_UART_H */
-

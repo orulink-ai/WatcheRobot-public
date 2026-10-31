@@ -15,4 +15,3 @@
     } while (0)
 
 #endif /* ESP_LOG_H */
-

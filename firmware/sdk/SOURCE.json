@@ -1,0 +1,3009 @@
+{
+  "source_commit": "e23bee2a642f6c90753b370cb18c46815e0c8f58",
+  "source_repository": "orulink-ai/WatcheRobot_esp32",
+  "files": [
+    {
+      "source": "LICENSE",
+      "destination": "LICENSE",
+      "source_sha256": "73b213137d3960dec0496f06e10f24bc5385cb235df87fb48724a40a62998b81",
+      "sha256": "73b213137d3960dec0496f06e10f24bc5385cb235df87fb48724a40a62998b81",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/AUDIT.md",
+      "destination": "AUDIT.md",
+      "source_sha256": "372f9f5dc0d19c5bbea430284356c653b9f6e6737c3b77981c6be62a990c03ca",
+      "sha256": "21b542933deda0ed357dd3c78f78764f53591efa73008989080525d105664c39",
+      "transform": "public component links"
+    },
+    {
+      "source": "examples/hardware_sdk/DESIGN.md",
+      "destination": "DESIGN.md",
+      "source_sha256": "c290a3fabd64958d252f639a2a50f61102274c2446699524559791b2c0fffe97",
+      "sha256": "c290a3fabd64958d252f639a2a50f61102274c2446699524559791b2c0fffe97",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/MIGRATION.md",
+      "destination": "MIGRATION.md",
+      "source_sha256": "56fd250c4eb071980aba8b3bb5dc302e57cf672992f3f0e8490c68cd4f971cee",
+      "sha256": "56fd250c4eb071980aba8b3bb5dc302e57cf672992f3f0e8490c68cd4f971cee",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/PRODUCT.md",
+      "destination": "PRODUCT.md",
+      "source_sha256": "4aa7b6647af13f70be476c6c4793040fb391de1a2a9d75b8ad2ac8cb3059e046",
+      "sha256": "4aa7b6647af13f70be476c6c4793040fb391de1a2a9d75b8ad2ac8cb3059e046",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/UX_REVIEW.md",
+      "destination": "UX_REVIEW.md",
+      "source_sha256": "ff7f779971eff50c98a463c91364d2b3ea73d0af4bcc0eac4b0f5106aaf2995e",
+      "sha256": "ff7f779971eff50c98a463c91364d2b3ea73d0af4bcc0eac4b0f5106aaf2995e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/VALIDATION.md",
+      "destination": "history/UPSTREAM_VALIDATION.md",
+      "source_sha256": "7cf923bfc4d782c3cea7a399f6f77c1a0042df1808d9c20c8e30db1eb72d7ac3",
+      "sha256": "7cf923bfc4d782c3cea7a399f6f77c1a0042df1808d9c20c8e30db1eb72d7ac3",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/body/CMakeLists.txt",
+      "destination": "examples/body/CMakeLists.txt",
+      "source_sha256": "bf15498c4d50ab5c7196bf497e9a2747446b58104bf54d345cde44a4e1fd8d32",
+      "sha256": "bf15498c4d50ab5c7196bf497e9a2747446b58104bf54d345cde44a4e1fd8d32",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/body/main/CMakeLists.txt",
+      "destination": "examples/body/main/CMakeLists.txt",
+      "source_sha256": "822fe0691eeaad5b51981af096666aa979be2b6401f73aa6013c5f7e21c2e286",
+      "sha256": "822fe0691eeaad5b51981af096666aa979be2b6401f73aa6013c5f7e21c2e286",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/body/main/app_main.c",
+      "destination": "examples/body/main/app_main.c",
+      "source_sha256": "0462bacb3dd4926b4c0357e78ba8c74ebe3b8a451d803d5f331bec5675dc4a5a",
+      "sha256": "0462bacb3dd4926b4c0357e78ba8c74ebe3b8a451d803d5f331bec5675dc4a5a",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/body/main/idf_component.yml",
+      "destination": "examples/body/main/idf_component.yml",
+      "source_sha256": "36a4002307911f0c9f3f95c3d27a83c36ddfd86ceac2ded22905701ca57eec91",
+      "sha256": "36a4002307911f0c9f3f95c3d27a83c36ddfd86ceac2ded22905701ca57eec91",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/body/partitions.csv",
+      "destination": "examples/body/partitions.csv",
+      "source_sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/body/sdkconfig.defaults",
+      "destination": "examples/body/sdkconfig.defaults",
+      "source_sha256": "f9eed6147f3489786ba513821d715330d353c080d8587f22c81b165dec15b99a",
+      "sha256": "f9eed6147f3489786ba513821d715330d353c080d8587f22c81b165dec15b99a",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/assets/README.md",
+      "destination": "examples/common/assets/README.md",
+      "source_sha256": "2f422d18859794890f78e32fd8dced13a9089fa2385d47ca18159bcded2ac724",
+      "sha256": "2f422d18859794890f78e32fd8dced13a9089fa2385d47ca18159bcded2ac724",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/assets/speaker_pcm.inc",
+      "destination": "examples/common/assets/speaker_pcm.inc",
+      "source_sha256": "4bd3a92827ce886218335ce91dc40b3f1144e8d7fdba27d8ce82a8d64eb75e22",
+      "sha256": "4bd3a92827ce886218335ce91dc40b3f1144e8d7fdba27d8ce82a8d64eb75e22",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/check_body.c",
+      "destination": "examples/common/check_body.c",
+      "source_sha256": "82df30dcd5d32127d11321f2f57586e7bf2703c2e7411386ee8676e32b80c618",
+      "sha256": "82df30dcd5d32127d11321f2f57586e7bf2703c2e7411386ee8676e32b80c618",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/check_body.h",
+      "destination": "examples/common/check_body.h",
+      "source_sha256": "1a71cd6cd86c198b1c8f8a545ce479454897c7e3f5939dbca1637b0ae271725c",
+      "sha256": "1a71cd6cd86c198b1c8f8a545ce479454897c7e3f5939dbca1637b0ae271725c",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/check_flow.c",
+      "destination": "examples/common/check_flow.c",
+      "source_sha256": "0e76a29bb96f5620c6d40217bb44e7c21082899475fd7a1e8030b52a1b8e1b50",
+      "sha256": "0e76a29bb96f5620c6d40217bb44e7c21082899475fd7a1e8030b52a1b8e1b50",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/check_flow.h",
+      "destination": "examples/common/check_flow.h",
+      "source_sha256": "cac1872597487affa157bfa8410b91b899429559755cdb2e1c51d463882c9206",
+      "sha256": "cac1872597487affa157bfa8410b91b899429559755cdb2e1c51d463882c9206",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_audio.c",
+      "destination": "examples/common/demo_audio.c",
+      "source_sha256": "d4be4d37ae4f0a048e0f31b3ccd7bdba7586e875d45399d2d306ccff4e054de0",
+      "sha256": "d4be4d37ae4f0a048e0f31b3ccd7bdba7586e875d45399d2d306ccff4e054de0",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_audio.h",
+      "destination": "examples/common/demo_audio.h",
+      "source_sha256": "c4b8980a0d3666d4041e7cc81c798e9acab5b7df08b863bd1c2593e889d4c939",
+      "sha256": "c4b8980a0d3666d4041e7cc81c798e9acab5b7df08b863bd1c2593e889d4c939",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_image.c",
+      "destination": "examples/common/demo_image.c",
+      "source_sha256": "0e0efe59179ab0f6917e3ed6b11083c9970e76ff892dfc847d496d7f2f89bd01",
+      "sha256": "0e0efe59179ab0f6917e3ed6b11083c9970e76ff892dfc847d496d7f2f89bd01",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_image.h",
+      "destination": "examples/common/demo_image.h",
+      "source_sha256": "5d5d7c8b805aa6bf4452182ad9b2df2e69e3499ecd2d8d3214a73f7471595e78",
+      "sha256": "5d5d7c8b805aa6bf4452182ad9b2df2e69e3499ecd2d8d3214a73f7471595e78",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_playback.c",
+      "destination": "examples/common/demo_playback.c",
+      "source_sha256": "d2a3850c1499717b453744e634b3f5bdcb49f7599397e04a25fa7f6cb4ca8d39",
+      "sha256": "d2a3850c1499717b453744e634b3f5bdcb49f7599397e04a25fa7f6cb4ca8d39",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_playback.h",
+      "destination": "examples/common/demo_playback.h",
+      "source_sha256": "5c449b0ac5d8401d286e6e5a323d6ada8d49dc001e0c7491b59c1b69eb18c846",
+      "sha256": "5c449b0ac5d8401d286e6e5a323d6ada8d49dc001e0c7491b59c1b69eb18c846",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_record.c",
+      "destination": "examples/common/demo_record.c",
+      "source_sha256": "a0e36300d21b2f198aceaae1d52b45c5ae7bef386c461a42c98788f20cf71638",
+      "sha256": "a0e36300d21b2f198aceaae1d52b45c5ae7bef386c461a42c98788f20cf71638",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_record.h",
+      "destination": "examples/common/demo_record.h",
+      "source_sha256": "5a019ac8588585e978549c2230fe4453dbd9ef43bd32c38a109653647b1d82e6",
+      "sha256": "5a019ac8588585e978549c2230fe4453dbd9ef43bd32c38a109653647b1d82e6",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_speech.c",
+      "destination": "examples/common/demo_speech.c",
+      "source_sha256": "6179792a9546086add067c2a08d602c3787a49afee8dc2a0e32c9ee7f25bb8a1",
+      "sha256": "6179792a9546086add067c2a08d602c3787a49afee8dc2a0e32c9ee7f25bb8a1",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_speech.h",
+      "destination": "examples/common/demo_speech.h",
+      "source_sha256": "c02b1469682ba16ad2311442b8472715d828d2c80bcd78053b4ddc45fa57aceb",
+      "sha256": "c02b1469682ba16ad2311442b8472715d828d2c80bcd78053b4ddc45fa57aceb",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_state.c",
+      "destination": "examples/common/demo_state.c",
+      "source_sha256": "0c51de38d630ddecf281f7d64b2667bebaa2b32110d888f57fb4fb049d435b45",
+      "sha256": "0c51de38d630ddecf281f7d64b2667bebaa2b32110d888f57fb4fb049d435b45",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/demo_state.h",
+      "destination": "examples/common/demo_state.h",
+      "source_sha256": "7a4fd977e0a329f3cf019baac80086bc83792bcc55f5bb6c4d5725c434314628",
+      "sha256": "7a4fd977e0a329f3cf019baac80086bc83792bcc55f5bb6c4d5725c434314628",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/head_demo.c",
+      "destination": "examples/common/head_demo.c",
+      "source_sha256": "2b8703d459c16584fbd999e958f7464905fcf7499e18846696f0cdb3237c5a63",
+      "sha256": "2b8703d459c16584fbd999e958f7464905fcf7499e18846696f0cdb3237c5a63",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/head_demo.h",
+      "destination": "examples/common/head_demo.h",
+      "source_sha256": "99e5b22a12a62f11a873bc3b6339b67a8365f9f306aefba4a66d4f1218b2c832",
+      "sha256": "99e5b22a12a62f11a873bc3b6339b67a8365f9f306aefba4a66d4f1218b2c832",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/CMakeLists.txt",
+      "destination": "examples/common/test_support/host/CMakeLists.txt",
+      "source_sha256": "2b09f5d1bda500e824f7664d040a55a794335521a024d652e7cd5f36a8121961",
+      "sha256": "2b09f5d1bda500e824f7664d040a55a794335521a024d652e7cd5f36a8121961",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/include/esp_err.h",
+      "destination": "examples/common/test_support/host/include/esp_err.h",
+      "source_sha256": "c0b008609465a9be693b2b9bc5591f277bca3bcf6991c5f677270cb6a9c017db",
+      "sha256": "c0b008609465a9be693b2b9bc5591f277bca3bcf6991c5f677270cb6a9c017db",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_check_body.c",
+      "destination": "examples/common/test_support/host/test_check_body.c",
+      "source_sha256": "5fca65f5c7c7af43f22ed6f8d3d8a075e4d5e3ef004c992fada2fd17ce4055a3",
+      "sha256": "5fca65f5c7c7af43f22ed6f8d3d8a075e4d5e3ef004c992fada2fd17ce4055a3",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_check_flow.c",
+      "destination": "examples/common/test_support/host/test_check_flow.c",
+      "source_sha256": "3c004d3efa2b03f76a90c98903aad17bdc6117adbbc67e1cf5f6bd5b3d1e4fd7",
+      "sha256": "3c004d3efa2b03f76a90c98903aad17bdc6117adbbc67e1cf5f6bd5b3d1e4fd7",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_check_layout.c",
+      "destination": "examples/common/test_support/host/test_check_layout.c",
+      "source_sha256": "b0a4f64fcb706ca6a548db4d33cd860e911b6d6f370a1239a93b5e3ec7bc4d31",
+      "sha256": "b0a4f64fcb706ca6a548db4d33cd860e911b6d6f370a1239a93b5e3ec7bc4d31",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_demo_audio.c",
+      "destination": "examples/common/test_support/host/test_demo_audio.c",
+      "source_sha256": "0e9e26a33f40210bfe29f217b2646086ab6df7eaccd5e881396a54ef339a4f67",
+      "sha256": "0e9e26a33f40210bfe29f217b2646086ab6df7eaccd5e881396a54ef339a4f67",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_demo_playback.c",
+      "destination": "examples/common/test_support/host/test_demo_playback.c",
+      "source_sha256": "420b3d1f99c91a7588f241abdc3c4be107d92e08288c0f0fe1cd66d1f165cfef",
+      "sha256": "420b3d1f99c91a7588f241abdc3c4be107d92e08288c0f0fe1cd66d1f165cfef",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_demo_record.c",
+      "destination": "examples/common/test_support/host/test_demo_record.c",
+      "source_sha256": "a1b5ea04ed72ac0ca53cf915e1c02e267de1db2b0028d7fad6ddb5a03c55605e",
+      "sha256": "a1b5ea04ed72ac0ca53cf915e1c02e267de1db2b0028d7fad6ddb5a03c55605e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_demo_speech.c",
+      "destination": "examples/common/test_support/host/test_demo_speech.c",
+      "source_sha256": "c33895f6bf60041d798318beffd1a305b762531b5e114a22a31710827cd4541e",
+      "sha256": "c33895f6bf60041d798318beffd1a305b762531b5e114a22a31710827cd4541e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/common/test_support/host/test_demo_state.c",
+      "destination": "examples/common/test_support/host/test_demo_state.c",
+      "source_sha256": "44d9af46e7d5975bcd72b4dc56e3fc712d6d538886ce530cc5f3aefacb8fbe3e",
+      "sha256": "44d9af46e7d5975bcd72b4dc56e3fc712d6d538886ce530cc5f3aefacb8fbe3e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware-sdk.ps1",
+      "destination": "examples/hardware-sdk.ps1",
+      "source_sha256": "91fea3509416695761a71f0c97bef1128e8fc5ec3ceb5c87a57270d709a53162",
+      "sha256": "91fea3509416695761a71f0c97bef1128e8fc5ec3ceb5c87a57270d709a53162",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware-sdk.sh",
+      "destination": "examples/hardware-sdk.sh",
+      "source_sha256": "91b52e3767cb570bb759f1485d45cb32f385cf56ce3f2947cb30414eb4cfbaaf",
+      "sha256": "91b52e3767cb570bb759f1485d45cb32f385cf56ce3f2947cb30414eb4cfbaaf",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/CMakeLists.txt",
+      "destination": "examples/hardware_check/CMakeLists.txt",
+      "source_sha256": "ceb9e5f80a36ff237156fb65568c849eca7048d205db0219e513609cc09d7ee5",
+      "sha256": "ceb9e5f80a36ff237156fb65568c849eca7048d205db0219e513609cc09d7ee5",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/README.md",
+      "destination": "examples/hardware_check/README.md",
+      "source_sha256": "d9ca9fbf1d6379fdafceeb623e9f67f22c78a0d899b6d094c095c09d82fcf798",
+      "sha256": "a02858fb2faa69dd2c92cfaeeece425315b74c0ec0c1d17eca5de3002422caa8",
+      "transform": "replace stale feedback-dependent upstream instructions with bilingual public guides"
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/CMakeLists.txt",
+      "destination": "examples/hardware_check/main/CMakeLists.txt",
+      "source_sha256": "c904b5a66c783234e46bcaeabde773820f4b185fb57d70358ce0142f819de013",
+      "sha256": "c904b5a66c783234e46bcaeabde773820f4b185fb57d70358ce0142f819de013",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/app_main.c",
+      "destination": "examples/hardware_check/main/app_main.c",
+      "source_sha256": "fc85f9046460771866333ade2d414d1acd9572e7b61a7b89db5a71c47726eb7b",
+      "sha256": "fc85f9046460771866333ade2d414d1acd9572e7b61a7b89db5a71c47726eb7b",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_app.c",
+      "destination": "examples/hardware_check/main/check_app.c",
+      "source_sha256": "5d6b6015875f1b6590eb5d0b2eda71821929225a7dbf1f4f7b571857d773d3cd",
+      "sha256": "5d6b6015875f1b6590eb5d0b2eda71821929225a7dbf1f4f7b571857d773d3cd",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_app.h",
+      "destination": "examples/hardware_check/main/check_app.h",
+      "source_sha256": "6c03e8fcf664775f124511c684e1c4a99c2ba83af0a30dc3b71e4cf7f6d17eb1",
+      "sha256": "6c03e8fcf664775f124511c684e1c4a99c2ba83af0a30dc3b71e4cf7f6d17eb1",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_layout.c",
+      "destination": "examples/hardware_check/main/check_layout.c",
+      "source_sha256": "f0b81ce75f2e7a5318bc27ff3a8892846785b27f6464229d53593757b1b46b5a",
+      "sha256": "f0b81ce75f2e7a5318bc27ff3a8892846785b27f6464229d53593757b1b46b5a",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_layout.h",
+      "destination": "examples/hardware_check/main/check_layout.h",
+      "source_sha256": "082641baf85f8e4d130b077f81f6e2e2c34df019c4537c776ee1f42fbd10c129",
+      "sha256": "082641baf85f8e4d130b077f81f6e2e2c34df019c4537c776ee1f42fbd10c129",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_media.c",
+      "destination": "examples/hardware_check/main/check_media.c",
+      "source_sha256": "c038e7e40c7a5f3cdff801e3d136f522168f4aeed16c85384276f7c82cdac93c",
+      "sha256": "c038e7e40c7a5f3cdff801e3d136f522168f4aeed16c85384276f7c82cdac93c",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_media.h",
+      "destination": "examples/hardware_check/main/check_media.h",
+      "source_sha256": "a4b9872ce17bf40770b6df8316c914bf129c1c66f9bc62837e14a01e0a9c629e",
+      "sha256": "a4b9872ce17bf40770b6df8316c914bf129c1c66f9bc62837e14a01e0a9c629e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_view.c",
+      "destination": "examples/hardware_check/main/check_view.c",
+      "source_sha256": "6b5f8fea43947a9b858a1cd806a5ef92d76bc6a5d9fd2d13ac2a93efd3f9c611",
+      "sha256": "6b5f8fea43947a9b858a1cd806a5ef92d76bc6a5d9fd2d13ac2a93efd3f9c611",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/check_view.h",
+      "destination": "examples/hardware_check/main/check_view.h",
+      "source_sha256": "f6d9aede7b7ab86822a77d40a0daf1d959ee7b7a1a7decabf4519a73ab14ef3c",
+      "sha256": "f6d9aede7b7ab86822a77d40a0daf1d959ee7b7a1a7decabf4519a73ab14ef3c",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/main/idf_component.yml",
+      "destination": "examples/hardware_check/main/idf_component.yml",
+      "source_sha256": "24021de675f3c5672925237f5aba28e6dac8313d59446d29d91d509dd0d17299",
+      "sha256": "24021de675f3c5672925237f5aba28e6dac8313d59446d29d91d509dd0d17299",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/partitions.csv",
+      "destination": "examples/hardware_check/partitions.csv",
+      "source_sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/sdkconfig.defaults",
+      "destination": "examples/hardware_check/sdkconfig.defaults",
+      "source_sha256": "098c5547e70c1bfa451791684b0521eecf798c703e2ed5eea8ecf49406047ca4",
+      "sha256": "098c5547e70c1bfa451791684b0521eecf798c703e2ed5eea8ecf49406047ca4",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/.gitignore",
+      "destination": "examples/hardware_check/test_support/host/.gitignore",
+      "source_sha256": "ddc664abd962ea3f5f891873f5787a54e4f1f20d14d35ad254afc0ef266cc157",
+      "sha256": "ddc664abd962ea3f5f891873f5787a54e4f1f20d14d35ad254afc0ef266cc157",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/CMakeLists.txt",
+      "destination": "examples/hardware_check/test_support/host/CMakeLists.txt",
+      "source_sha256": "5d40eeab7ca116298e47cb34ed3d3c073d2e52335b3ac0bbcd27a16097cdc01b",
+      "sha256": "5d40eeab7ca116298e47cb34ed3d3c073d2e52335b3ac0bbcd27a16097cdc01b",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/README.md",
+      "destination": "examples/hardware_check/test_support/host/README.md",
+      "source_sha256": "9bde3865a68daec218fb38ba9b9b7b1aea4b269a8f8cac902f776b5052af87fe",
+      "sha256": "9bde3865a68daec218fb38ba9b9b7b1aea4b269a8f8cac902f776b5052af87fe",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/host_mocks.c",
+      "destination": "examples/hardware_check/test_support/host/host_mocks.c",
+      "source_sha256": "9a5630fb99a79d214ddaffd81c3c923dd5343acfdcbc78e8dc51a786355dcb45",
+      "sha256": "9a5630fb99a79d214ddaffd81c3c923dd5343acfdcbc78e8dc51a786355dcb45",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/include/esp_err.h",
+      "destination": "examples/hardware_check/test_support/host/include/esp_err.h",
+      "source_sha256": "c76db4df0e3fcca90c3e32e9a989862db0695397a1b67f5980fe78b6ac72545c",
+      "sha256": "c76db4df0e3fcca90c3e32e9a989862db0695397a1b67f5980fe78b6ac72545c",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/include/esp_heap_caps.h",
+      "destination": "examples/hardware_check/test_support/host/include/esp_heap_caps.h",
+      "source_sha256": "9f470b9d3ffcc66b70b4090b6cfd07251f405da482c0407feaf989e62ec7d99a",
+      "sha256": "9f470b9d3ffcc66b70b4090b6cfd07251f405da482c0407feaf989e62ec7d99a",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/include/freertos/FreeRTOS.h",
+      "destination": "examples/hardware_check/test_support/host/include/freertos/FreeRTOS.h",
+      "source_sha256": "c5471dcd8357f97fa583dc9fcca25395369d040c6db0e6d7753e522dc831c63e",
+      "sha256": "c5471dcd8357f97fa583dc9fcca25395369d040c6db0e6d7753e522dc831c63e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/include/freertos/queue.h",
+      "destination": "examples/hardware_check/test_support/host/include/freertos/queue.h",
+      "source_sha256": "5f177078f794c17c025119b95a0b3ed11025bbd7e4322900296ca1ee0c1e85e9",
+      "sha256": "5f177078f794c17c025119b95a0b3ed11025bbd7e4322900296ca1ee0c1e85e9",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/include/host_mocks.h",
+      "destination": "examples/hardware_check/test_support/host/include/host_mocks.h",
+      "source_sha256": "09318f1cf98041cea08ba088941cd9f92bc4aba1bbebfe516e675edec765ad2e",
+      "sha256": "09318f1cf98041cea08ba088941cd9f92bc4aba1bbebfe516e675edec765ad2e",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/include/watcher_hw_display.h",
+      "destination": "examples/hardware_check/test_support/host/include/watcher_hw_display.h",
+      "source_sha256": "e4def2b00655c4e3d94000515b7ed1db493b09ad960cade2322d04bf00d5a325",
+      "sha256": "e4def2b00655c4e3d94000515b7ed1db493b09ad960cade2322d04bf00d5a325",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/lv_conf.h",
+      "destination": "examples/hardware_check/test_support/host/lv_conf.h",
+      "source_sha256": "8c206b24f041df6554eb57492f6e69fe45caeeb25ae35de016f263032d6b482a",
+      "sha256": "8c206b24f041df6554eb57492f6e69fe45caeeb25ae35de016f263032d6b482a",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/test_support/host/test_check_view.c",
+      "destination": "examples/hardware_check/test_support/host/test_check_view.c",
+      "source_sha256": "15721228b1b2580428375e94adce2587ee4a912d8ab30bf8e6dd6577859a48cd",
+      "sha256": "15721228b1b2580428375e94adce2587ee4a912d8ab30bf8e6dd6577859a48cd",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/verify.ps1",
+      "destination": "examples/hardware_check/verify.ps1",
+      "source_sha256": "9cc3678e2b4a46f9fcdd12fbc4aababa72434ad078f6d2b58d5c2f083773c435",
+      "sha256": "9cc3678e2b4a46f9fcdd12fbc4aababa72434ad078f6d2b58d5c2f083773c435",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/verify.py",
+      "destination": "examples/hardware_check/verify.py",
+      "source_sha256": "d65f3e068921ac274b928988107487aaea11370f683dedf330a6680f242255d3",
+      "sha256": "d65f3e068921ac274b928988107487aaea11370f683dedf330a6680f242255d3",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/hardware_check/verify.sh",
+      "destination": "examples/hardware_check/verify.sh",
+      "source_sha256": "43090f37d391b3ecf03c6b387129b01721839679175b03730051f60cd5b58b9b",
+      "sha256": "43090f37d391b3ecf03c6b387129b01721839679175b03730051f60cd5b58b9b",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/head/CMakeLists.txt",
+      "destination": "examples/head/CMakeLists.txt",
+      "source_sha256": "1cc6ba9b58e5a01621d751e1d9cf9af84690f1281c4f444dcf8f328eb6f045e2",
+      "sha256": "1cc6ba9b58e5a01621d751e1d9cf9af84690f1281c4f444dcf8f328eb6f045e2",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/head/main/CMakeLists.txt",
+      "destination": "examples/head/main/CMakeLists.txt",
+      "source_sha256": "9d764baf88191d086f3dc99756070eb67e4375180069feddc510051eac06d701",
+      "sha256": "9d764baf88191d086f3dc99756070eb67e4375180069feddc510051eac06d701",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/head/main/app_main.c",
+      "destination": "examples/head/main/app_main.c",
+      "source_sha256": "394ea262d20965b29d889fd560db35f31de800b01b8aafa901f8e8449132e303",
+      "sha256": "394ea262d20965b29d889fd560db35f31de800b01b8aafa901f8e8449132e303",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/head/main/idf_component.yml",
+      "destination": "examples/head/main/idf_component.yml",
+      "source_sha256": "24021de675f3c5672925237f5aba28e6dac8313d59446d29d91d509dd0d17299",
+      "sha256": "24021de675f3c5672925237f5aba28e6dac8313d59446d29d91d509dd0d17299",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/head/partitions.csv",
+      "destination": "examples/head/partitions.csv",
+      "source_sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/head/sdkconfig.defaults",
+      "destination": "examples/head/sdkconfig.defaults",
+      "source_sha256": "fa52ee9e00947bf72d02590800b5b27377d7180259119e1e715cf59ff9e767fd",
+      "sha256": "fa52ee9e00947bf72d02590800b5b27377d7180259119e1e715cf59ff9e767fd",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/robot/CMakeLists.txt",
+      "destination": "examples/robot/CMakeLists.txt",
+      "source_sha256": "6effc0be26fccbddb29f2ae604c7f46abd0e95cc6ff0e0dd3a5d22e369e6ebe9",
+      "sha256": "6effc0be26fccbddb29f2ae604c7f46abd0e95cc6ff0e0dd3a5d22e369e6ebe9",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/robot/main/CMakeLists.txt",
+      "destination": "examples/robot/main/CMakeLists.txt",
+      "source_sha256": "6b7ec0af3e4a8ef02ce6de757e195c7aee706c7754570ad1889636eb9ec619db",
+      "sha256": "6b7ec0af3e4a8ef02ce6de757e195c7aee706c7754570ad1889636eb9ec619db",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/robot/main/app_main.c",
+      "destination": "examples/robot/main/app_main.c",
+      "source_sha256": "c0afd4b5afa41a0637adbda9388b09de8d1b9bcc4466898fe1919afe81c245c3",
+      "sha256": "c0afd4b5afa41a0637adbda9388b09de8d1b9bcc4466898fe1919afe81c245c3",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/robot/main/idf_component.yml",
+      "destination": "examples/robot/main/idf_component.yml",
+      "source_sha256": "24021de675f3c5672925237f5aba28e6dac8313d59446d29d91d509dd0d17299",
+      "sha256": "24021de675f3c5672925237f5aba28e6dac8313d59446d29d91d509dd0d17299",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/robot/partitions.csv",
+      "destination": "examples/robot/partitions.csv",
+      "source_sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "sha256": "adb67bc36c1119776fac0310881e78247c23bfb5fb3b31cc3b04c60a1c0f1040",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/robot/sdkconfig.defaults",
+      "destination": "examples/robot/sdkconfig.defaults",
+      "source_sha256": "fa52ee9e00947bf72d02590800b5b27377d7180259119e1e715cf59ff9e767fd",
+      "sha256": "fa52ee9e00947bf72d02590800b5b27377d7180259119e1e715cf59ff9e767fd",
+      "transform": null
+    },
+    {
+      "source": "examples/hardware_sdk/sdk.cmake",
+      "destination": "examples/sdk.cmake",
+      "source_sha256": "c8fd5a46074f64531eb87d84092305eaba3e1eef4b25485bc179d003b6694c7e",
+      "sha256": "540c5d21b8bfa95bcbe3b7f3ca7bb04b0350dfd347d145728ac5ebadd99dd010",
+      "transform": "public-relative component root"
+    },
+    {
+      "source": "firmware/hx6538_video_bridge/include/watcher_face_frame.h",
+      "destination": "components/hal/hal_camera/include/watcher_face_frame.h",
+      "source_sha256": "f70d98fab6991cffa1bc9e0c0456197c9de66c6a5e7babaa364f284eb1d6fa8f",
+      "sha256": "f70d98fab6991cffa1bc9e0c0456197c9de66c6a5e7babaa364f284eb1d6fa8f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/CHANGELOG.md",
+      "destination": "components/esp_codec_dev/CHANGELOG.md",
+      "source_sha256": "a6362f48b8d655df9b3a3fe2981dcce5f961cc09048b148ee9ad6e93208420de",
+      "sha256": "a6362f48b8d655df9b3a3fe2981dcce5f961cc09048b148ee9ad6e93208420de",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/CMakeLists.txt",
+      "destination": "components/esp_codec_dev/CMakeLists.txt",
+      "source_sha256": "c48d5388caa51a2362b4bb999982328884ca1821714dc1c053cd60bc2562ce54",
+      "sha256": "c48d5388caa51a2362b4bb999982328884ca1821714dc1c053cd60bc2562ce54",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/Kconfig",
+      "destination": "components/esp_codec_dev/Kconfig",
+      "source_sha256": "ea5422a1c464127751c573bc081c2b3003bdf2d1fcb547f35037961309686b2a",
+      "sha256": "ea5422a1c464127751c573bc081c2b3003bdf2d1fcb547f35037961309686b2a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/LICENSE",
+      "destination": "components/esp_codec_dev/LICENSE",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/README.md",
+      "destination": "components/esp_codec_dev/README.md",
+      "source_sha256": "0705ad17f2cdd175105cfd6c7f96e945fea088b4de1df46447ba782c7266e35e",
+      "sha256": "0705ad17f2cdd175105cfd6c7f96e945fea088b4de1df46447ba782c7266e35e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/README_CN.md",
+      "destination": "components/esp_codec_dev/README_CN.md",
+      "source_sha256": "85d1ade369492a349998adbd330697edd6594417634d69d7a268366e8e5bb03a",
+      "sha256": "85d1ade369492a349998adbd330697edd6594417634d69d7a268366e8e5bb03a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/audio_codec_sw_vol.c",
+      "destination": "components/esp_codec_dev/audio_codec_sw_vol.c",
+      "source_sha256": "b8951fa4db5f32fe01315cc8b657f2a82a99fb1076d17ee87f866622addf7385",
+      "sha256": "b8951fa4db5f32fe01315cc8b657f2a82a99fb1076d17ee87f866622addf7385",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/audio_codec_sw_vol.h",
+      "destination": "components/esp_codec_dev/audio_codec_sw_vol.h",
+      "source_sha256": "71996ac3c9cf3bfb7f37d5b5dafa8c4fdf023ff68d5d680d9353f9a08ed85001",
+      "sha256": "71996ac3c9cf3bfb7f37d5b5dafa8c4fdf023ff68d5d680d9353f9a08ed85001",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/aw88298/aw88298.c",
+      "destination": "components/esp_codec_dev/device/aw88298/aw88298.c",
+      "source_sha256": "19e8b6e9b0627a68e53cdd2667bb3f03738203b74f21a1dcd933d041f8faa5c8",
+      "sha256": "19e8b6e9b0627a68e53cdd2667bb3f03738203b74f21a1dcd933d041f8faa5c8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/aw88298/aw88298_reg.h",
+      "destination": "components/esp_codec_dev/device/aw88298/aw88298_reg.h",
+      "source_sha256": "519f1f68fc695a8c7300381dbf661568bd401b737adbb0e4a8836cad7b734761",
+      "sha256": "519f1f68fc695a8c7300381dbf661568bd401b737adbb0e4a8836cad7b734761",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es7210/es7210.c",
+      "destination": "components/esp_codec_dev/device/es7210/es7210.c",
+      "source_sha256": "8c741993683579ffbffd05a227533f4a54d086921de8ed99ff6c12f6574d5921",
+      "sha256": "8c741993683579ffbffd05a227533f4a54d086921de8ed99ff6c12f6574d5921",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es7210/es7210_reg.h",
+      "destination": "components/esp_codec_dev/device/es7210/es7210_reg.h",
+      "source_sha256": "12b2a719e5feefa248e239c8368227dde8fd0a60c7f055eca60e800fc7371dcc",
+      "sha256": "12b2a719e5feefa248e239c8368227dde8fd0a60c7f055eca60e800fc7371dcc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es7243/es7243.c",
+      "destination": "components/esp_codec_dev/device/es7243/es7243.c",
+      "source_sha256": "d37aa2097734b6acdc92c307168d0e5bee71e085b283bb2ddf4ac469cbf79feb",
+      "sha256": "d37aa2097734b6acdc92c307168d0e5bee71e085b283bb2ddf4ac469cbf79feb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es7243e/es7243e.c",
+      "destination": "components/esp_codec_dev/device/es7243e/es7243e.c",
+      "source_sha256": "9567a84e261b442792a4b5843f3f084fa3c56c33008dd2c09b6f3e34093f3cf5",
+      "sha256": "9567a84e261b442792a4b5843f3f084fa3c56c33008dd2c09b6f3e34093f3cf5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8156/es8156.c",
+      "destination": "components/esp_codec_dev/device/es8156/es8156.c",
+      "source_sha256": "2abc1af331e2ca0202ceacfad073ae4f80980be3262abce52185ed1125f2d839",
+      "sha256": "2abc1af331e2ca0202ceacfad073ae4f80980be3262abce52185ed1125f2d839",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8156/es8156_reg.h",
+      "destination": "components/esp_codec_dev/device/es8156/es8156_reg.h",
+      "source_sha256": "bce7036d649980d25594c5b523d915d37f5432102b316331d757b6a7e99aa5f2",
+      "sha256": "bce7036d649980d25594c5b523d915d37f5432102b316331d757b6a7e99aa5f2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8311/es8311.c",
+      "destination": "components/esp_codec_dev/device/es8311/es8311.c",
+      "source_sha256": "94db30be65a256be861d620dc4fe34d2fcf385d4ac7426c27a856e8b5d8479e6",
+      "sha256": "94db30be65a256be861d620dc4fe34d2fcf385d4ac7426c27a856e8b5d8479e6",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8311/es8311_reg.h",
+      "destination": "components/esp_codec_dev/device/es8311/es8311_reg.h",
+      "source_sha256": "a65d5cdc26413ad4cba4250f64ad92e4ab9f37e9c8829a3eb17a57711cdb87ed",
+      "sha256": "a65d5cdc26413ad4cba4250f64ad92e4ab9f37e9c8829a3eb17a57711cdb87ed",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8374/es8374.c",
+      "destination": "components/esp_codec_dev/device/es8374/es8374.c",
+      "source_sha256": "dbab37bf8ccda4063318e4292d3fa9ab264a06a332bde1ca6db62c441b4fc5c3",
+      "sha256": "dbab37bf8ccda4063318e4292d3fa9ab264a06a332bde1ca6db62c441b4fc5c3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8388/es8388.c",
+      "destination": "components/esp_codec_dev/device/es8388/es8388.c",
+      "source_sha256": "7c363ce96975bf0f0c07a3c81dd277a0608eadd890f1060252c220bbbb6c4707",
+      "sha256": "7c363ce96975bf0f0c07a3c81dd277a0608eadd890f1060252c220bbbb6c4707",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/es8388/es8388_reg.h",
+      "destination": "components/esp_codec_dev/device/es8388/es8388_reg.h",
+      "source_sha256": "1e5523c87dd67382ac0bd855d0d67f6ba54f6f051168ee60ad14c3767e55c686",
+      "sha256": "1e5523c87dd67382ac0bd855d0d67f6ba54f6f051168ee60ad14c3767e55c686",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/aw88298_dac.h",
+      "destination": "components/esp_codec_dev/device/include/aw88298_dac.h",
+      "source_sha256": "f895ff195d124620850b10823c81d62a97fbd3c6f3746ecce4ff74add9f9bc19",
+      "sha256": "f895ff195d124620850b10823c81d62a97fbd3c6f3746ecce4ff74add9f9bc19",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es7210_adc.h",
+      "destination": "components/esp_codec_dev/device/include/es7210_adc.h",
+      "source_sha256": "06b0ce1e6ba96e8a11a4cab07b07615c85985584720bdb1b5863444389bd25d0",
+      "sha256": "06b0ce1e6ba96e8a11a4cab07b07615c85985584720bdb1b5863444389bd25d0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es7243_adc.h",
+      "destination": "components/esp_codec_dev/device/include/es7243_adc.h",
+      "source_sha256": "3fb91d2f5aadd0c7440c0955a4945eada0aa1c3acbc1be3f1be9e5bdc37c0b53",
+      "sha256": "3fb91d2f5aadd0c7440c0955a4945eada0aa1c3acbc1be3f1be9e5bdc37c0b53",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es7243e_adc.h",
+      "destination": "components/esp_codec_dev/device/include/es7243e_adc.h",
+      "source_sha256": "830e65e461c4141ffa5f7a9bfb66cfb25f8505af08319b13d69c58991648fe56",
+      "sha256": "830e65e461c4141ffa5f7a9bfb66cfb25f8505af08319b13d69c58991648fe56",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es8156_dac.h",
+      "destination": "components/esp_codec_dev/device/include/es8156_dac.h",
+      "source_sha256": "97a35683fa07e65d32044ee8676e7410d6313202bd873de9672075188eb3d97a",
+      "sha256": "97a35683fa07e65d32044ee8676e7410d6313202bd873de9672075188eb3d97a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es8311_codec.h",
+      "destination": "components/esp_codec_dev/device/include/es8311_codec.h",
+      "source_sha256": "e10f30ab57a2bb6b46d257a7ccba9726b61e1f201182eec2c71731e837db3dca",
+      "sha256": "e10f30ab57a2bb6b46d257a7ccba9726b61e1f201182eec2c71731e837db3dca",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es8374_codec.h",
+      "destination": "components/esp_codec_dev/device/include/es8374_codec.h",
+      "source_sha256": "e45872c465f78c49e09da9a127141e0d217006dad287c7fcbdd056a786427cc5",
+      "sha256": "e45872c465f78c49e09da9a127141e0d217006dad287c7fcbdd056a786427cc5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/es8388_codec.h",
+      "destination": "components/esp_codec_dev/device/include/es8388_codec.h",
+      "source_sha256": "7684143aad5eba2f207aeca5724dafce00470f772e5a110fa8396b42096a19a4",
+      "sha256": "7684143aad5eba2f207aeca5724dafce00470f772e5a110fa8396b42096a19a4",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/tas5805m_dac.h",
+      "destination": "components/esp_codec_dev/device/include/tas5805m_dac.h",
+      "source_sha256": "e98f0bf5260dbe0acf94a4554401daa088570111666828287dea8b870761defd",
+      "sha256": "e98f0bf5260dbe0acf94a4554401daa088570111666828287dea8b870761defd",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/include/zl38063_codec.h",
+      "destination": "components/esp_codec_dev/device/include/zl38063_codec.h",
+      "source_sha256": "49bce27ec37c285c32f5bc25d586731b0c2723f399d30749db8b140a74d12699",
+      "sha256": "49bce27ec37c285c32f5bc25d586731b0c2723f399d30749db8b140a74d12699",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/priv_include/es_common.h",
+      "destination": "components/esp_codec_dev/device/priv_include/es_common.h",
+      "source_sha256": "bbc2d51cbb01d2a2e8d0430252a2fad40a0d1813c0b7bca9765ea2364bc3eb46",
+      "sha256": "bbc2d51cbb01d2a2e8d0430252a2fad40a0d1813c0b7bca9765ea2364bc3eb46",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/tas5805m/tas5805m.c",
+      "destination": "components/esp_codec_dev/device/tas5805m/tas5805m.c",
+      "source_sha256": "9fa1e48d2587d5e6bcfa3961d2751a00026b1cce191b0d92f833cdd00d956603",
+      "sha256": "9fa1e48d2587d5e6bcfa3961d2751a00026b1cce191b0d92f833cdd00d956603",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/tas5805m/tas5805m_reg.h",
+      "destination": "components/esp_codec_dev/device/tas5805m/tas5805m_reg.h",
+      "source_sha256": "2a2e4e1411d942df7600d8ebacfdb131dd971a13720cbe07fd4b68a2e14f230d",
+      "sha256": "2a2e4e1411d942df7600d8ebacfdb131dd971a13720cbe07fd4b68a2e14f230d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/tas5805m/tas5805m_reg_cfg.h",
+      "destination": "components/esp_codec_dev/device/tas5805m/tas5805m_reg_cfg.h",
+      "source_sha256": "a37db933972d59249432408d90c2508ee9041be6721ef47128e3939dcd61b02f",
+      "sha256": "a37db933972d59249432408d90c2508ee9041be6721ef47128e3939dcd61b02f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/LICENSE.txt",
+      "destination": "components/esp_codec_dev/device/zl38063/LICENSE.txt",
+      "source_sha256": "74d726086954edd745515669d633d3aee238595b35efcdbef2167a4095bcd6bc",
+      "sha256": "74d726086954edd745515669d633d3aee238595b35efcdbef2167a4095bcd6bc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/Readme_twolf.txt",
+      "destination": "components/esp_codec_dev/device/zl38063/Readme_twolf.txt",
+      "source_sha256": "077009871a9fad2193e8f67011acdd2f050ea65ed8fc8478de2c510f98c5d99a",
+      "sha256": "077009871a9fad2193e8f67011acdd2f050ea65ed8fc8478de2c510f98c5d99a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/api_lib/tw_spi_access.h",
+      "destination": "components/esp_codec_dev/device/zl38063/api_lib/tw_spi_access.h",
+      "source_sha256": "f2892241fa5b68a85719295c151665e0d465e2e55c5a130f83369efb2c5e2713",
+      "sha256": "f2892241fa5b68a85719295c151665e0d465e2e55c5a130f83369efb2c5e2713",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/api_lib/vprocTwolf_access.c",
+      "destination": "components/esp_codec_dev/device/zl38063/api_lib/vprocTwolf_access.c",
+      "source_sha256": "87990b89a2cd01ea3d4ac19ca7462de75dcb0d7495962828e6c446009f5d9b08",
+      "sha256": "87990b89a2cd01ea3d4ac19ca7462de75dcb0d7495962828e6c446009f5d9b08",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/api_lib/vprocTwolf_access.h",
+      "destination": "components/esp_codec_dev/device/zl38063/api_lib/vprocTwolf_access.h",
+      "source_sha256": "77cc1caa68776423530fe0769fef87e4306ab969d377e1391ddcfc9126e3b828",
+      "sha256": "77cc1caa68776423530fe0769fef87e4306ab969d377e1391ddcfc9126e3b828",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/api_lib/vproc_common.c",
+      "destination": "components/esp_codec_dev/device/zl38063/api_lib/vproc_common.c",
+      "source_sha256": "34a5f5554d97b358246f734663e4437d22c5e4625f2cda58d42efa4ae061498e",
+      "sha256": "34a5f5554d97b358246f734663e4437d22c5e4625f2cda58d42efa4ae061498e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/api_lib/vproc_common.h",
+      "destination": "components/esp_codec_dev/device/zl38063/api_lib/vproc_common.h",
+      "source_sha256": "5201a89d8ea99b88733e369fc99d8bebae7c33be2e1af766931e31ad355eeaa0",
+      "sha256": "5201a89d8ea99b88733e369fc99d8bebae7c33be2e1af766931e31ad355eeaa0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/api_lib/vproc_data_types.h",
+      "destination": "components/esp_codec_dev/device/zl38063/api_lib/vproc_data_types.h",
+      "source_sha256": "2f32da045f3f7743c3685d5155c5d11cd78a1ab1f0c6193dfeffe30e6527777f",
+      "sha256": "2f32da045f3f7743c3685d5155c5d11cd78a1ab1f0c6193dfeffe30e6527777f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/example_apps/tw_hal_verify.c",
+      "destination": "components/esp_codec_dev/device/zl38063/example_apps/tw_hal_verify.c",
+      "source_sha256": "d7da1952b4f910a424725854155ab7d18686643178b8dde09e66fa72ff28ce1c",
+      "sha256": "d7da1952b4f910a424725854155ab7d18686643178b8dde09e66fa72ff28ce1c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/example_apps/tw_ldcfg.c",
+      "destination": "components/esp_codec_dev/device/zl38063/example_apps/tw_ldcfg.c",
+      "source_sha256": "22599687523ddd7e4c1b04f65a3348437d012db0cc32aba9a0c6b4710df5e744",
+      "sha256": "22599687523ddd7e4c1b04f65a3348437d012db0cc32aba9a0c6b4710df5e744",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/example_apps/tw_ldfw.c",
+      "destination": "components/esp_codec_dev/device/zl38063/example_apps/tw_ldfw.c",
+      "source_sha256": "54e20d24badc76868e9c12539b7eb90a7aefdcf4120beaf15a6c74f4f4081cca",
+      "sha256": "54e20d24badc76868e9c12539b7eb90a7aefdcf4120beaf15a6c74f4f4081cca",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/example_apps/tw_ldfwcfg.c",
+      "destination": "components/esp_codec_dev/device/zl38063/example_apps/tw_ldfwcfg.c",
+      "source_sha256": "0993c793aaeacef119bc9b4fb0df1f9ae5f7217e45bf565f30acc3e2488cd2b5",
+      "sha256": "0993c793aaeacef119bc9b4fb0df1f9ae5f7217e45bf565f30acc3e2488cd2b5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/example_apps/tw_spi_access.c",
+      "destination": "components/esp_codec_dev/device/zl38063/example_apps/tw_spi_access.c",
+      "source_sha256": "26a5bd1c67e181e1b53e4a3cfdca0d898d7f972b06d625f4bb0bc98b5b3a5d10",
+      "sha256": "26a5bd1c67e181e1b53e4a3cfdca0d898d7f972b06d625f4bb0bc98b5b3a5d10",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/firmware/zl38063_config.h",
+      "destination": "components/esp_codec_dev/device/zl38063/firmware/zl38063_config.h",
+      "source_sha256": "6eb6b2a8f64b87d41c1d5995be4c2b8ace2edfff110073d87bf5a9ffffae169c",
+      "sha256": "6eb6b2a8f64b87d41c1d5995be4c2b8ace2edfff110073d87bf5a9ffffae169c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/firmware/zl38063_firmware.h",
+      "destination": "components/esp_codec_dev/device/zl38063/firmware/zl38063_firmware.h",
+      "source_sha256": "ad5c90bcf3c377f03862f7d8b33c092365c664eaa57b5ab994133358a482086a",
+      "sha256": "ad5c90bcf3c377f03862f7d8b33c092365c664eaa57b5ab994133358a482086a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/device/zl38063/zl38063.c",
+      "destination": "components/esp_codec_dev/device/zl38063/zl38063.c",
+      "source_sha256": "030a6ca280906e6e6f8e892db33ce8484a1b44b1c9ad3d09e19f425bed313d79",
+      "sha256": "030a6ca280906e6e6f8e892db33ce8484a1b44b1c9ad3d09e19f425bed313d79",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/esp_codec_dev.c",
+      "destination": "components/esp_codec_dev/esp_codec_dev.c",
+      "source_sha256": "a996705e2fae088d58a097d5a5aa7451e802f199de5808ce95eba5ec10e823dc",
+      "sha256": "a996705e2fae088d58a097d5a5aa7451e802f199de5808ce95eba5ec10e823dc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/esp_codec_dev_if.c",
+      "destination": "components/esp_codec_dev/esp_codec_dev_if.c",
+      "source_sha256": "f186e338082f101513ea058b9283697ba33602bbf55f133640c8fa0746880d21",
+      "sha256": "f186e338082f101513ea058b9283697ba33602bbf55f133640c8fa0746880d21",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/esp_codec_dev_vol.c",
+      "destination": "components/esp_codec_dev/esp_codec_dev_vol.c",
+      "source_sha256": "3ec591e1757b331832c2b68c267bc18d0c6edc8b2a6933184c16935ca9ba102c",
+      "sha256": "3ec591e1757b331832c2b68c267bc18d0c6edc8b2a6933184c16935ca9ba102c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/idf_component.yml",
+      "destination": "components/esp_codec_dev/idf_component.yml",
+      "source_sha256": "ab883b8435d1c98a4150cef1e4bf5fc560a445ebb9be94b4b5a3789475bebc8b",
+      "sha256": "ab883b8435d1c98a4150cef1e4bf5fc560a445ebb9be94b4b5a3789475bebc8b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/include/esp_codec_dev.h",
+      "destination": "components/esp_codec_dev/include/esp_codec_dev.h",
+      "source_sha256": "3d97d77974011272c53b13deb62e3db9b737a886593687767215aeb3de008c51",
+      "sha256": "3d97d77974011272c53b13deb62e3db9b737a886593687767215aeb3de008c51",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/include/esp_codec_dev_defaults.h",
+      "destination": "components/esp_codec_dev/include/esp_codec_dev_defaults.h",
+      "source_sha256": "069730975f0fe3f2e80d6cdb0375b04c6693b546affac06ebc01623e57bc9fca",
+      "sha256": "069730975f0fe3f2e80d6cdb0375b04c6693b546affac06ebc01623e57bc9fca",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/include/esp_codec_dev_os.h",
+      "destination": "components/esp_codec_dev/include/esp_codec_dev_os.h",
+      "source_sha256": "e415e7e0dd4133c2d0bbd3ba2b3ec23bd084c8f9ce2c3c2d7fd1598a43a292f8",
+      "sha256": "e415e7e0dd4133c2d0bbd3ba2b3ec23bd084c8f9ce2c3c2d7fd1598a43a292f8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/include/esp_codec_dev_types.h",
+      "destination": "components/esp_codec_dev/include/esp_codec_dev_types.h",
+      "source_sha256": "15ecd1cc8d7244bf12a558d7dd4635a359052994388f5be067341b56a3726835",
+      "sha256": "15ecd1cc8d7244bf12a558d7dd4635a359052994388f5be067341b56a3726835",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/include/esp_codec_dev_vol.h",
+      "destination": "components/esp_codec_dev/include/esp_codec_dev_vol.h",
+      "source_sha256": "2ee723bc80dc9cc3478eeaf6920fbce2dc707dfef33d9b4deb2d9175d702c572",
+      "sha256": "2ee723bc80dc9cc3478eeaf6920fbce2dc707dfef33d9b4deb2d9175d702c572",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/interface/audio_codec_ctrl_if.h",
+      "destination": "components/esp_codec_dev/interface/audio_codec_ctrl_if.h",
+      "source_sha256": "b985f54597b01afd2633b3df843a47d718a722784ebb9bbe76ece9fb1de7c3d4",
+      "sha256": "b985f54597b01afd2633b3df843a47d718a722784ebb9bbe76ece9fb1de7c3d4",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/interface/audio_codec_data_if.h",
+      "destination": "components/esp_codec_dev/interface/audio_codec_data_if.h",
+      "source_sha256": "3a9a63e4c8f49fa8624f16e835cf8d8cb88d8a6ea5b8028cd24d55ad15468459",
+      "sha256": "3a9a63e4c8f49fa8624f16e835cf8d8cb88d8a6ea5b8028cd24d55ad15468459",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/interface/audio_codec_gpio_if.h",
+      "destination": "components/esp_codec_dev/interface/audio_codec_gpio_if.h",
+      "source_sha256": "a4e0ccb45810ccbd3c1d7719b0c9f8bb9cf19c31c3f1cff4a8c4910d292feda9",
+      "sha256": "a4e0ccb45810ccbd3c1d7719b0c9f8bb9cf19c31c3f1cff4a8c4910d292feda9",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/interface/audio_codec_if.h",
+      "destination": "components/esp_codec_dev/interface/audio_codec_if.h",
+      "source_sha256": "3b2a798b8e9df3a19bc327a0b7f619bdc902aa99da16519a7f7b586aadb59443",
+      "sha256": "3b2a798b8e9df3a19bc327a0b7f619bdc902aa99da16519a7f7b586aadb59443",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/interface/audio_codec_vol_if.h",
+      "destination": "components/esp_codec_dev/interface/audio_codec_vol_if.h",
+      "source_sha256": "d0b980fde0262a21dde7c39fad688a3935c829f80dced02f56fcc821700a0bee",
+      "sha256": "d0b980fde0262a21dde7c39fad688a3935c829f80dced02f56fcc821700a0bee",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/platform/audio_codec_ctrl_i2c.c",
+      "destination": "components/esp_codec_dev/platform/audio_codec_ctrl_i2c.c",
+      "source_sha256": "9a10415f1b0733228080e8bee813bbd1f2132d4dbd9f9d374629f572aef907f2",
+      "sha256": "9a10415f1b0733228080e8bee813bbd1f2132d4dbd9f9d374629f572aef907f2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/platform/audio_codec_ctrl_spi.c",
+      "destination": "components/esp_codec_dev/platform/audio_codec_ctrl_spi.c",
+      "source_sha256": "f1f660f6c1caf3a277a40782c2169e427b4fa6c6e858ac9bd67ec587c6b67d06",
+      "sha256": "f1f660f6c1caf3a277a40782c2169e427b4fa6c6e858ac9bd67ec587c6b67d06",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/platform/audio_codec_data_i2s.c",
+      "destination": "components/esp_codec_dev/platform/audio_codec_data_i2s.c",
+      "source_sha256": "8d60f229f558f68c0f229fdd15bdcb30b1127e94cfd18862c4d9f2b047a34ea0",
+      "sha256": "8d60f229f558f68c0f229fdd15bdcb30b1127e94cfd18862c4d9f2b047a34ea0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/platform/audio_codec_gpio.c",
+      "destination": "components/esp_codec_dev/platform/audio_codec_gpio.c",
+      "source_sha256": "2c87ffb6b65ce58f842223cdbc53e4b3c4138476617892afb532d3faccb8926c",
+      "sha256": "2c87ffb6b65ce58f842223cdbc53e4b3c4138476617892afb532d3faccb8926c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/platform/esp_codec_dev_os.c",
+      "destination": "components/esp_codec_dev/platform/esp_codec_dev_os.c",
+      "source_sha256": "1c7cb297b0e589357b28b418908a4240a59078e7a67a935a3fc22f868ba7a9f0",
+      "sha256": "1c7cb297b0e589357b28b418908a4240a59078e7a67a935a3fc22f868ba7a9f0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/CMakeLists.txt",
+      "destination": "components/esp_codec_dev/test_support/host/CMakeLists.txt",
+      "source_sha256": "e0c792b334f3ef391235a381195ed6001b45ad2da009e36301e31a9e8a79e19e",
+      "sha256": "e0c792b334f3ef391235a381195ed6001b45ad2da009e36301e31a9e8a79e19e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/include/esp_codec_dev_os.h",
+      "destination": "components/esp_codec_dev/test_support/host/include/esp_codec_dev_os.h",
+      "source_sha256": "b3adf106d95b8934f690943f2921308b90be5b766c4c8ba250c792de56400201",
+      "sha256": "b3adf106d95b8934f690943f2921308b90be5b766c4c8ba250c792de56400201",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/include/esp_err.h",
+      "destination": "components/esp_codec_dev/test_support/host/include/esp_err.h",
+      "source_sha256": "24066a463f8712c280e715791cfba54b6722022cdb7a80a215fb36cd75d240aa",
+      "sha256": "24066a463f8712c280e715791cfba54b6722022cdb7a80a215fb36cd75d240aa",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/include/esp_log.h",
+      "destination": "components/esp_codec_dev/test_support/host/include/esp_log.h",
+      "source_sha256": "9964bc73168a0ab192a7938a756003074ca337557d8cc06cb4792b21f280d551",
+      "sha256": "9964bc73168a0ab192a7938a756003074ca337557d8cc06cb4792b21f280d551",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/test_adc_privacy.c",
+      "destination": "components/esp_codec_dev/test_support/host/test_adc_privacy.c",
+      "source_sha256": "4e762e7bc7da2dafd75c11b9a9bbe7f2ceae262275db276f2c7eeab710c3c2c0",
+      "sha256": "4e762e7bc7da2dafd75c11b9a9bbe7f2ceae262275db276f2c7eeab710c3c2c0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/test_codec.c",
+      "destination": "components/esp_codec_dev/test_support/host/test_codec.c",
+      "source_sha256": "086b890c5d8df7628fbdcc03d61dcf8830b1b294e4ffc8309db9534007b6a835",
+      "sha256": "086b890c5d8df7628fbdcc03d61dcf8830b1b294e4ffc8309db9534007b6a835",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_codec_dev/test_support/host/test_i2s_privacy.c",
+      "destination": "components/esp_codec_dev/test_support/host/test_i2s_privacy.c",
+      "source_sha256": "b9c1b2d5bbd812d47f6081da5c2bea1ab629753c7dc9fe72b1fc43700d4cfa5b",
+      "sha256": "b9c1b2d5bbd812d47f6081da5c2bea1ab629753c7dc9fe72b1fc43700d4cfa5b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_io_expander_pca95xx_16bit/CMakeLists.txt",
+      "destination": "components/esp_io_expander_pca95xx_16bit/CMakeLists.txt",
+      "source_sha256": "dfb98fb1006eaf83cbc863ee617771203c44948a62ed9b89906bf483acdd6157",
+      "sha256": "dfb98fb1006eaf83cbc863ee617771203c44948a62ed9b89906bf483acdd6157",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_io_expander_pca95xx_16bit/README.md",
+      "destination": "components/esp_io_expander_pca95xx_16bit/README.md",
+      "source_sha256": "48ced1e59e052c2fb772d155d99d5345537f00d7f233aa314e827605db4cfb94",
+      "sha256": "48ced1e59e052c2fb772d155d99d5345537f00d7f233aa314e827605db4cfb94",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_io_expander_pca95xx_16bit/esp_io_expander_pca95xx_16bit.c",
+      "destination": "components/esp_io_expander_pca95xx_16bit/esp_io_expander_pca95xx_16bit.c",
+      "source_sha256": "67a145c8ee6039cdfb63e8ded32cc88609dd3bd40dec69378fb927d88672bbb3",
+      "sha256": "67a145c8ee6039cdfb63e8ded32cc88609dd3bd40dec69378fb927d88672bbb3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_io_expander_pca95xx_16bit/idf_component.yml",
+      "destination": "components/esp_io_expander_pca95xx_16bit/idf_component.yml",
+      "source_sha256": "4d96386eee35ac89f971a8edb1649255318b4e8fed7bbe97736e804a8d6e70e7",
+      "sha256": "4d96386eee35ac89f971a8edb1649255318b4e8fed7bbe97736e804a8d6e70e7",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_io_expander_pca95xx_16bit/include/esp_io_expander_pca95xx_16bit.h",
+      "destination": "components/esp_io_expander_pca95xx_16bit/include/esp_io_expander_pca95xx_16bit.h",
+      "source_sha256": "e61b568fbfb9742efe49f174ca6630162a02fafe4d973c9ef01ae00e2d893d9d",
+      "sha256": "e61b568fbfb9742efe49f174ca6630162a02fafe4d973c9ef01ae00e2d893d9d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_io_expander_pca95xx_16bit/license.txt",
+      "destination": "components/esp_io_expander_pca95xx_16bit/license.txt",
+      "source_sha256": "c0ce83e35fe5d08830446c0921d094bc561566f09debe1946fa9ad89106eea8d",
+      "sha256": "c0ce83e35fe5d08830446c0921d094bc561566f09debe1946fa9ad89106eea8d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_lvgl_port/CMakeLists.txt",
+      "destination": "components/esp_lvgl_port/CMakeLists.txt",
+      "source_sha256": "eab6fd5d7960e1f716b0619a074cb0da98a21cfac9ff837a4dfd7277ae2f1636",
+      "sha256": "eab6fd5d7960e1f716b0619a074cb0da98a21cfac9ff837a4dfd7277ae2f1636",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_lvgl_port/esp_lvgl_port.c",
+      "destination": "components/esp_lvgl_port/esp_lvgl_port.c",
+      "source_sha256": "392d84ce563860c538e3b87561bc4c7bc9a6c3e167d370885cfa99b24aa907c6",
+      "sha256": "392d84ce563860c538e3b87561bc4c7bc9a6c3e167d370885cfa99b24aa907c6",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_lvgl_port/idf_component.yml",
+      "destination": "components/esp_lvgl_port/idf_component.yml",
+      "source_sha256": "676ef493fa264af1b945d41ecf602d3db748554bc85be4888fa9b675cc09377b",
+      "sha256": "676ef493fa264af1b945d41ecf602d3db748554bc85be4888fa9b675cc09377b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/esp_lvgl_port/include/esp_lvgl_port.h",
+      "destination": "components/esp_lvgl_port/include/esp_lvgl_port.h",
+      "source_sha256": "74a54935564118e2d139190e574930a22c16d93cb650b5a37d95b16ed8b86075",
+      "sha256": "74a54935564118e2d139190e574930a22c16d93cb650b5a37d95b16ed8b86075",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/CMakeLists.txt",
+      "destination": "components/hal/hal_audio/CMakeLists.txt",
+      "source_sha256": "7ea7cbe5d869b9e88b3f73dcc83478edc2ca6b0b459eabc7c693d8f477b31652",
+      "sha256": "7ea7cbe5d869b9e88b3f73dcc83478edc2ca6b0b459eabc7c693d8f477b31652",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/Kconfig",
+      "destination": "components/hal/hal_audio/Kconfig",
+      "source_sha256": "0cbd4af59cb46ec0ad6e564ff623df0f2379bfe86af818a5b7c3a1b9d2cd99bc",
+      "sha256": "0cbd4af59cb46ec0ad6e564ff623df0f2379bfe86af818a5b7c3a1b9d2cd99bc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/idf_component.yml",
+      "destination": "components/hal/hal_audio/idf_component.yml",
+      "source_sha256": "7b7b83df79a1e2c86d9aa0445821be9c43fc3a0b3b432bfdad57e55e8fdc79f8",
+      "sha256": "be1ce450c2d694e175ec1ed837b7182882c8bb366585a079090a44a86d41c322",
+      "transform": "public repository metadata URL"
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/include/hal_audio.h",
+      "destination": "components/hal/hal_audio/include/hal_audio.h",
+      "source_sha256": "b645eb3b321a19ef5cbfd748d328d8844e236896b4db4e22a4cd3bceadc43835",
+      "sha256": "b645eb3b321a19ef5cbfd748d328d8844e236896b4db4e22a4cd3bceadc43835",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/include/hal_opus.h",
+      "destination": "components/hal/hal_audio/include/hal_opus.h",
+      "source_sha256": "58e8bd36076969a05f1a33b4d8db13638d7175026c1ea6864d7f97faa5a8b0da",
+      "sha256": "58e8bd36076969a05f1a33b4d8db13638d7175026c1ea6864d7f97faa5a8b0da",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/src/hal_audio.c",
+      "destination": "components/hal/hal_audio/src/hal_audio.c",
+      "source_sha256": "f835f6da24b1da369f4480171c6ccb9dd9ca4496f19b84ed992fca6a095342a8",
+      "sha256": "f835f6da24b1da369f4480171c6ccb9dd9ca4496f19b84ed992fca6a095342a8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_audio/src/hal_opus.c",
+      "destination": "components/hal/hal_audio/src/hal_opus.c",
+      "source_sha256": "8ee2a3a58f41c625b1d2d1e5e1bccfbb0f7802fcb4518cd77f2aaf5f2bfc3e64",
+      "sha256": "8ee2a3a58f41c625b1d2d1e5e1bccfbb0f7802fcb4518cd77f2aaf5f2bfc3e64",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/CMakeLists.txt",
+      "destination": "components/hal/hal_camera/CMakeLists.txt",
+      "source_sha256": "ec58f91a4e9cbe1eb9e0f9a62eec2d7515e05aecd821d4a01314f02a2686f6fa",
+      "sha256": "2c8793f5baea6e02ad897efe71d95fde00290eee90b27ffe044eca97435f9d84",
+      "transform": "remove unused private bridge include directory"
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/Kconfig",
+      "destination": "components/hal/hal_camera/Kconfig",
+      "source_sha256": "87edeeb3897331bdb9ce800d28e0ec65349e317f59b57556cadcce640ca43f60",
+      "sha256": "87edeeb3897331bdb9ce800d28e0ec65349e317f59b57556cadcce640ca43f60",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/idf_component.yml",
+      "destination": "components/hal/hal_camera/idf_component.yml",
+      "source_sha256": "581401ab1bbd5f6deca53d7a852d2a3439e3b21befc7aa61b9aedd77cfd3e7cd",
+      "sha256": "b6aa593d01a3c7c8ec613ac140b102036342d1bfb60b48f58b1bf22a7b0b4252",
+      "transform": "public repository metadata URL"
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/include/hal_camera.h",
+      "destination": "components/hal/hal_camera/include/hal_camera.h",
+      "source_sha256": "f7cb8b7304d189305dae5980f60667a9a95b57c5d3f5211d206235adeffd856f",
+      "sha256": "f7cb8b7304d189305dae5980f60667a9a95b57c5d3f5211d206235adeffd856f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/include/hx_model_identity.h",
+      "destination": "components/hal/hal_camera/include/hx_model_identity.h",
+      "source_sha256": "de394d896d6ae4ef58ced4cb9f8ebaa3f956dcc433d167fa453786599adb8d2b",
+      "sha256": "de394d896d6ae4ef58ced4cb9f8ebaa3f956dcc433d167fa453786599adb8d2b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/src/hal_camera.c",
+      "destination": "components/hal/hal_camera/src/hal_camera.c",
+      "source_sha256": "c7fefd9da76c098560baa5809191f012488d7009b75e28dc208c128f7df9eea5",
+      "sha256": "c7fefd9da76c098560baa5809191f012488d7009b75e28dc208c128f7df9eea5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hal/hal_camera/src/hal_camera_ptl.c",
+      "destination": "components/hal/hal_camera/src/hal_camera_ptl.c",
+      "source_sha256": "74145f5dd073306c00dfc2a9a6111d88aeeaf443d1cdd68ec4fca3e4f6b5ec83",
+      "sha256": "74145f5dd073306c00dfc2a9a6111d88aeeaf443d1cdd68ec4fca3e4f6b5ec83",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_media_protocol/CMakeLists.txt",
+      "destination": "components/hx_media_protocol/CMakeLists.txt",
+      "source_sha256": "080a9d49ef85aaa108a5804bfe851fbe8677ebd2988807b5a580cc062b7cd413",
+      "sha256": "080a9d49ef85aaa108a5804bfe851fbe8677ebd2988807b5a580cc062b7cd413",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_media_protocol/hx_media_protocol.c",
+      "destination": "components/hx_media_protocol/hx_media_protocol.c",
+      "source_sha256": "3024d9245169ede81f3d92b887811582a4179d35a09542a6d873a553d709336b",
+      "sha256": "3024d9245169ede81f3d92b887811582a4179d35a09542a6d873a553d709336b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_media_protocol/include/hx_media_protocol.h",
+      "destination": "components/hx_media_protocol/include/hx_media_protocol.h",
+      "source_sha256": "82f908a2f983540b3545da6ccbca7308097e67fab86ba3ec4c0664f3abbc5816",
+      "sha256": "82f908a2f983540b3545da6ccbca7308097e67fab86ba3ec4c0664f3abbc5816",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_media_protocol/test_support/host/CMakeLists.txt",
+      "destination": "components/hx_media_protocol/test_support/host/CMakeLists.txt",
+      "source_sha256": "d8691f8f298c6a73a271723084caa1340e4cbb66cbf963a5756435c99a780f3b",
+      "sha256": "d8691f8f298c6a73a271723084caa1340e4cbb66cbf963a5756435c99a780f3b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_media_protocol/test_support/host/src/test_hx_media_protocol.c",
+      "destination": "components/hx_media_protocol/test_support/host/src/test_hx_media_protocol.c",
+      "source_sha256": "ed5ef4c8066df1bafb0ee65cc1f10e05788ebbf50bf83e9badf8af04528b4865",
+      "sha256": "ed5ef4c8066df1bafb0ee65cc1f10e05788ebbf50bf83e9badf8af04528b4865",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/CMakeLists.txt",
+      "destination": "components/hx_ptl_protocol/CMakeLists.txt",
+      "source_sha256": "9d7644eccc90338843c51f784693e1157547944879baeb9f047a5278413ab02e",
+      "sha256": "9d7644eccc90338843c51f784693e1157547944879baeb9f047a5278413ab02e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/hx_photo_warmup.c",
+      "destination": "components/hx_ptl_protocol/hx_photo_warmup.c",
+      "source_sha256": "06fa4cdffa91bb3d3bbce699e5041ce7b35a8349c0179063775a93080397e424",
+      "sha256": "06fa4cdffa91bb3d3bbce699e5041ce7b35a8349c0179063775a93080397e424",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/hx_ptl_protocol.c",
+      "destination": "components/hx_ptl_protocol/hx_ptl_protocol.c",
+      "source_sha256": "18bd5f9ee3f04d79dbb860292737b01d45db0a1baad13211ed5bcfe7b3059d76",
+      "sha256": "18bd5f9ee3f04d79dbb860292737b01d45db0a1baad13211ed5bcfe7b3059d76",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/hx_ptl_resync.c",
+      "destination": "components/hx_ptl_protocol/hx_ptl_resync.c",
+      "source_sha256": "0ba638db2f6fbb8379592c012a588140b1146c3534e4cddbba007334c0c6a290",
+      "sha256": "0ba638db2f6fbb8379592c012a588140b1146c3534e4cddbba007334c0c6a290",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/hx_ptl_transport.c",
+      "destination": "components/hx_ptl_protocol/hx_ptl_transport.c",
+      "source_sha256": "5f2c4361b147c00b333d911d74b989be9aa6b1281a242c1a5e4cef66304e443b",
+      "sha256": "5f2c4361b147c00b333d911d74b989be9aa6b1281a242c1a5e4cef66304e443b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/hx_vision_control_codec.c",
+      "destination": "components/hx_ptl_protocol/hx_vision_control_codec.c",
+      "source_sha256": "dc437f3faec7d026085a501c76b168c226a644a21fdbef6bee23eadb2d3b9556",
+      "sha256": "dc437f3faec7d026085a501c76b168c226a644a21fdbef6bee23eadb2d3b9556",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/include/hx_photo_warmup.h",
+      "destination": "components/hx_ptl_protocol/include/hx_photo_warmup.h",
+      "source_sha256": "3457a1b2f06b12a5487cface928733db18d970d992552de87ee640fb694d275e",
+      "sha256": "3457a1b2f06b12a5487cface928733db18d970d992552de87ee640fb694d275e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/include/hx_ptl_protocol.h",
+      "destination": "components/hx_ptl_protocol/include/hx_ptl_protocol.h",
+      "source_sha256": "c68a0be58b67267848117130de4c4c63817dd6b8ee5a8d6f9083d85bc954af18",
+      "sha256": "c68a0be58b67267848117130de4c4c63817dd6b8ee5a8d6f9083d85bc954af18",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/include/hx_ptl_resync.h",
+      "destination": "components/hx_ptl_protocol/include/hx_ptl_resync.h",
+      "source_sha256": "6fb39bcbd35953c92ff63984923b579b5a9d48844bcbebd45525cccba300aa75",
+      "sha256": "6fb39bcbd35953c92ff63984923b579b5a9d48844bcbebd45525cccba300aa75",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/include/hx_ptl_transport.h",
+      "destination": "components/hx_ptl_protocol/include/hx_ptl_transport.h",
+      "source_sha256": "1c55bcfe07b3f86b1e4bdf257c3809cdc534bd198187e91f95bee39e56920d24",
+      "sha256": "1c55bcfe07b3f86b1e4bdf257c3809cdc534bd198187e91f95bee39e56920d24",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/include/hx_vision_control_codec.h",
+      "destination": "components/hx_ptl_protocol/include/hx_vision_control_codec.h",
+      "source_sha256": "62f49090c11c84be6f2ec450f578425bcc2943c8ceb836123bc098b1c287322e",
+      "sha256": "62f49090c11c84be6f2ec450f578425bcc2943c8ceb836123bc098b1c287322e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/test_support/host/CMakeLists.txt",
+      "destination": "components/hx_ptl_protocol/test_support/host/CMakeLists.txt",
+      "source_sha256": "32e73e7574e46b22d5b9a5a2a26ec51d1a4c4a46fe80c69240b229f8b62c2a50",
+      "sha256": "32e73e7574e46b22d5b9a5a2a26ec51d1a4c4a46fe80c69240b229f8b62c2a50",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/test_support/host/src/test_hx_ptl_protocol.c",
+      "destination": "components/hx_ptl_protocol/test_support/host/src/test_hx_ptl_protocol.c",
+      "source_sha256": "f712d22bb3791d7b207f2cb0da64a24f29e476c44d433ed3c06fc8345b4374be",
+      "sha256": "f712d22bb3791d7b207f2cb0da64a24f29e476c44d433ed3c06fc8345b4374be",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/test_support/host/src/test_hx_ptl_resync.c",
+      "destination": "components/hx_ptl_protocol/test_support/host/src/test_hx_ptl_resync.c",
+      "source_sha256": "a8d8ddcfc2054d8c70e39fbf6e9fe132b42158c0e62204e3c69f79bf3169830b",
+      "sha256": "a8d8ddcfc2054d8c70e39fbf6e9fe132b42158c0e62204e3c69f79bf3169830b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/test_support/host/src/test_photo_warmup.c",
+      "destination": "components/hx_ptl_protocol/test_support/host/src/test_photo_warmup.c",
+      "source_sha256": "ebbe6d53701e59c7f76f26eb11f0cf98627b63b56afca9d7f1b812fe28eabf82",
+      "sha256": "ebbe6d53701e59c7f76f26eb11f0cf98627b63b56afca9d7f1b812fe28eabf82",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/hx_ptl_protocol/test_support/host/src/test_vision_control_codec.c",
+      "destination": "components/hx_ptl_protocol/test_support/host/src/test_vision_control_codec.c",
+      "source_sha256": "7e7148c0652bd447dc92925911832f9c797b28289bd26f8e94c69968aec0d077",
+      "sha256": "7e7148c0652bd447dc92925911832f9c797b28289bd26f8e94c69968aec0d077",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/jpeg_integrity/CMakeLists.txt",
+      "destination": "components/jpeg_integrity/CMakeLists.txt",
+      "source_sha256": "9c46f3b81f42b286b339817b625640e134f78efcfd82f8792a63b45970fcff63",
+      "sha256": "9c46f3b81f42b286b339817b625640e134f78efcfd82f8792a63b45970fcff63",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/jpeg_integrity/include/hal_camera_jpeg_integrity.h",
+      "destination": "components/jpeg_integrity/include/hal_camera_jpeg_integrity.h",
+      "source_sha256": "a8c31a0c3a5bcbc27fc23553759bbb0dd37cd95286b5e839c43e3aba407828b7",
+      "sha256": "a8c31a0c3a5bcbc27fc23553759bbb0dd37cd95286b5e839c43e3aba407828b7",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/jpeg_integrity/jpeg_integrity.c",
+      "destination": "components/jpeg_integrity/jpeg_integrity.c",
+      "source_sha256": "bf18344a91fff7f4be55259917b47c5c13396b2896251efd62387e23d08d1b68",
+      "sha256": "bf18344a91fff7f4be55259917b47c5c13396b2896251efd62387e23d08d1b68",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/CHANGELOG.md",
+      "destination": "components/media_lib_sal/CHANGELOG.md",
+      "source_sha256": "1f0355bf6172a8d3bdf629c30804124f1c2e27946dcb53de411afb8f1f956d24",
+      "sha256": "1f0355bf6172a8d3bdf629c30804124f1c2e27946dcb53de411afb8f1f956d24",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/CMakeLists.txt",
+      "destination": "components/media_lib_sal/CMakeLists.txt",
+      "source_sha256": "2eeee46d16376dd4773da5de4712f2a147c0e21c22a10dc722bb3bbd8906fd1f",
+      "sha256": "2eeee46d16376dd4773da5de4712f2a147c0e21c22a10dc722bb3bbd8906fd1f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/Kconfig.projbuild",
+      "destination": "components/media_lib_sal/Kconfig.projbuild",
+      "source_sha256": "b2247d6c7d87f726dd9bc270861a7d6118aed6c10900e98dfa42f21541b142fd",
+      "sha256": "b2247d6c7d87f726dd9bc270861a7d6118aed6c10900e98dfa42f21541b142fd",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/LICENSE",
+      "destination": "components/media_lib_sal/LICENSE",
+      "source_sha256": "32395cf1ed0b65a896c6cdd93ba06ea08e5ef2349ea80b155bb1699af61efd30",
+      "sha256": "32395cf1ed0b65a896c6cdd93ba06ea08e5ef2349ea80b155bb1699af61efd30",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/README.md",
+      "destination": "components/media_lib_sal/README.md",
+      "source_sha256": "958cac063a3e35bf62d9d1659086c3f36d5745f8eff63169117e4167874f6dc5",
+      "sha256": "958cac063a3e35bf62d9d1659086c3f36d5745f8eff63169117e4167874f6dc5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/idf_component.yml",
+      "destination": "components/media_lib_sal/idf_component.yml",
+      "source_sha256": "49d858fb78cf1f6798710353151314417af842b0e77e6787b9e0f2be2fe3e92a",
+      "sha256": "49d858fb78cf1f6798710353151314417af842b0e77e6787b9e0f2be2fe3e92a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/data_queue.h",
+      "destination": "components/media_lib_sal/include/data_queue.h",
+      "source_sha256": "92fc03e9210e753a1c185557b6f0a972aefccdb28613dc64cd60ef7722ca30e3",
+      "sha256": "92fc03e9210e753a1c185557b6f0a972aefccdb28613dc64cd60ef7722ca30e3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_crypt.h",
+      "destination": "components/media_lib_sal/include/media_lib_crypt.h",
+      "source_sha256": "b423ad07293fd8d83124654efddd9110f335436dccd33331243cb21cd9aae788",
+      "sha256": "b423ad07293fd8d83124654efddd9110f335436dccd33331243cb21cd9aae788",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_err.h",
+      "destination": "components/media_lib_sal/include/media_lib_err.h",
+      "source_sha256": "255956fce3fcd58f1978fbc99355fe726fe3c1b0a60aae6268e5ce7bde915df2",
+      "sha256": "255956fce3fcd58f1978fbc99355fe726fe3c1b0a60aae6268e5ce7bde915df2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_mem_trace.h",
+      "destination": "components/media_lib_sal/include/media_lib_mem_trace.h",
+      "source_sha256": "0fff67a8c51fb7b3b0508e1134f116c2fcd6a2959c3985799164266a11be4ff3",
+      "sha256": "0fff67a8c51fb7b3b0508e1134f116c2fcd6a2959c3985799164266a11be4ff3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_netif.h",
+      "destination": "components/media_lib_sal/include/media_lib_netif.h",
+      "source_sha256": "10f959e5ab87b32ca6a4b4252a588aaf5631fc96045a87d31469f78d251ed17d",
+      "sha256": "10f959e5ab87b32ca6a4b4252a588aaf5631fc96045a87d31469f78d251ed17d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_os.h",
+      "destination": "components/media_lib_sal/include/media_lib_os.h",
+      "source_sha256": "96d821f1245bb38ba83ef08665bb4ffaf4e0144ef76be2b6225a6c9866948964",
+      "sha256": "96d821f1245bb38ba83ef08665bb4ffaf4e0144ef76be2b6225a6c9866948964",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_socket.h",
+      "destination": "components/media_lib_sal/include/media_lib_socket.h",
+      "source_sha256": "1b30ddca09676618dcd8f47152e649e6efb0a460edfada87e7b18cb70ca51edc",
+      "sha256": "1b30ddca09676618dcd8f47152e649e6efb0a460edfada87e7b18cb70ca51edc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/media_lib_tls.h",
+      "destination": "components/media_lib_sal/include/media_lib_tls.h",
+      "source_sha256": "f7d1cd6a38429c6bcb4fce518e216794483752d54695ceb605c4c08b0461affc",
+      "sha256": "f7d1cd6a38429c6bcb4fce518e216794483752d54695ceb605c4c08b0461affc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/msg_q.h",
+      "destination": "components/media_lib_sal/include/msg_q.h",
+      "source_sha256": "49e784d816a070ddbf9f216bb6e630d3bb46adc8b726f32ae7cae91c4dc8ece5",
+      "sha256": "49e784d816a070ddbf9f216bb6e630d3bb46adc8b726f32ae7cae91c4dc8ece5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/port/media_lib_adapter.h",
+      "destination": "components/media_lib_sal/include/port/media_lib_adapter.h",
+      "source_sha256": "a6881ade3685e620fbc051c49c6c1eb6942908f2993f5d79944b658043dacc46",
+      "sha256": "a6881ade3685e620fbc051c49c6c1eb6942908f2993f5d79944b658043dacc46",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/port/media_lib_crypt_reg.h",
+      "destination": "components/media_lib_sal/include/port/media_lib_crypt_reg.h",
+      "source_sha256": "6ffbd07fbb9f010685a8a80dc4d1e661ea9ae714e2a48f9cc0c1422a37167d16",
+      "sha256": "6ffbd07fbb9f010685a8a80dc4d1e661ea9ae714e2a48f9cc0c1422a37167d16",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/port/media_lib_netif_reg.h",
+      "destination": "components/media_lib_sal/include/port/media_lib_netif_reg.h",
+      "source_sha256": "e1c7145691b00067c403abb7585d1e8c16bbfe55a8dd6a6aa004c2f1764095d4",
+      "sha256": "e1c7145691b00067c403abb7585d1e8c16bbfe55a8dd6a6aa004c2f1764095d4",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/port/media_lib_os_reg.h",
+      "destination": "components/media_lib_sal/include/port/media_lib_os_reg.h",
+      "source_sha256": "c80dc25ff68cb065e59eaa6dbd8850d7e2c0536813abc07ba567f342ea78f1c1",
+      "sha256": "c80dc25ff68cb065e59eaa6dbd8850d7e2c0536813abc07ba567f342ea78f1c1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/port/media_lib_socket_reg.h",
+      "destination": "components/media_lib_sal/include/port/media_lib_socket_reg.h",
+      "source_sha256": "ea815d4c5cd1293d112d46fe0abf67426919d2bb8250ca24854180d228c66f31",
+      "sha256": "ea815d4c5cd1293d112d46fe0abf67426919d2bb8250ca24854180d228c66f31",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/include/port/media_lib_tls_reg.h",
+      "destination": "components/media_lib_sal/include/port/media_lib_tls_reg.h",
+      "source_sha256": "52380cf8c6c4cef4be9ef42131a41882ade1089885d2883070762f338d29fe31",
+      "sha256": "52380cf8c6c4cef4be9ef42131a41882ade1089885d2883070762f338d29fe31",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_adapter.c",
+      "destination": "components/media_lib_sal/media_lib_adapter.c",
+      "source_sha256": "9a04ee08b1fb45957bfff4892373d3ed758b90922572f2d1e28b3ea06a7a09ac",
+      "sha256": "9a04ee08b1fb45957bfff4892373d3ed758b90922572f2d1e28b3ea06a7a09ac",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_common.c",
+      "destination": "components/media_lib_sal/media_lib_common.c",
+      "source_sha256": "aa2a6b43f6c4aaf9eac2e3249932532ed25a07c82ad6e4f1e63e01b041e357d3",
+      "sha256": "aa2a6b43f6c4aaf9eac2e3249932532ed25a07c82ad6e4f1e63e01b041e357d3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_common.h",
+      "destination": "components/media_lib_sal/media_lib_common.h",
+      "source_sha256": "257ac259bcf1f44aff9f8c4b9a93dc12d01ceea018a22fca67cfe7bddb54d375",
+      "sha256": "257ac259bcf1f44aff9f8c4b9a93dc12d01ceea018a22fca67cfe7bddb54d375",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_crypt.c",
+      "destination": "components/media_lib_sal/media_lib_crypt.c",
+      "source_sha256": "b58eb6ec0c1f150239dc9f298532971bee299ff6bcaa2b7767037b30bf893824",
+      "sha256": "b58eb6ec0c1f150239dc9f298532971bee299ff6bcaa2b7767037b30bf893824",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_netif.c",
+      "destination": "components/media_lib_sal/media_lib_netif.c",
+      "source_sha256": "d3c7885b0211077824d8ccfd61d041198381f2532e695dd4eb1cb64d69a8b122",
+      "sha256": "d3c7885b0211077824d8ccfd61d041198381f2532e695dd4eb1cb64d69a8b122",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_os.c",
+      "destination": "components/media_lib_sal/media_lib_os.c",
+      "source_sha256": "b49ddd7c909f606cbc533b3d1ff89dfc52941aa7145d7fbc248a6c296258ebd2",
+      "sha256": "b49ddd7c909f606cbc533b3d1ff89dfc52941aa7145d7fbc248a6c296258ebd2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_socket.c",
+      "destination": "components/media_lib_sal/media_lib_socket.c",
+      "source_sha256": "ffc47d9cfad893217e0b1e0fb320df6cc79c76b7c515d66240c9b65b2866bf55",
+      "sha256": "ffc47d9cfad893217e0b1e0fb320df6cc79c76b7c515d66240c9b65b2866bf55",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/media_lib_tls.c",
+      "destination": "components/media_lib_sal/media_lib_tls.c",
+      "source_sha256": "4a6c1a7bdc07d9f2065bc044a1d3e29760bea13ff08eed94c16be0387c51e86d",
+      "sha256": "4a6c1a7bdc07d9f2065bc044a1d3e29760bea13ff08eed94c16be0387c51e86d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/mem_trace/README.md",
+      "destination": "components/media_lib_sal/mem_trace/README.md",
+      "source_sha256": "7cdd3ce4cfec39d54c61b30c38920cb9ea8ae0c2639f8871b7bd5a6237aa057e",
+      "sha256": "7cdd3ce4cfec39d54c61b30c38920cb9ea8ae0c2639f8871b7bd5a6237aa057e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/mem_trace/media_lib_mem_his.c",
+      "destination": "components/media_lib_sal/mem_trace/media_lib_mem_his.c",
+      "source_sha256": "f925c0bf168e629df376efe48bc0e9bbc4e78cbbe948ca610e1ac9cc5d4bfb39",
+      "sha256": "f925c0bf168e629df376efe48bc0e9bbc4e78cbbe948ca610e1ac9cc5d4bfb39",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/mem_trace/media_lib_mem_his.h",
+      "destination": "components/media_lib_sal/mem_trace/media_lib_mem_his.h",
+      "source_sha256": "c0979af8e174df9e6303242d1c7e8cd1b9b0a51cfbbb5c0ecfb447fb56483afe",
+      "sha256": "c0979af8e174df9e6303242d1c7e8cd1b9b0a51cfbbb5c0ecfb447fb56483afe",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/mem_trace/media_lib_mem_trace.c",
+      "destination": "components/media_lib_sal/mem_trace/media_lib_mem_trace.c",
+      "source_sha256": "c07f1e2000809b5fbbb553be32ed00de846d0e9381ef03fff6335245a2123046",
+      "sha256": "c07f1e2000809b5fbbb553be32ed00de846d0e9381ef03fff6335245a2123046",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/mem_trace/mem_trace.pl",
+      "destination": "components/media_lib_sal/mem_trace/mem_trace.pl",
+      "source_sha256": "52ecdf4343cd2f1384b417402c653e7d83198d3e8325a0d01487f7dbb67a1285",
+      "sha256": "52ecdf4343cd2f1384b417402c653e7d83198d3e8325a0d01487f7dbb67a1285",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/data_queue.c",
+      "destination": "components/media_lib_sal/port/data_queue.c",
+      "source_sha256": "5e7eb49d59b151bf8ec7a034508652cb2cb7c1637a59a1bec71da5bf34f74ed3",
+      "sha256": "5e7eb49d59b151bf8ec7a034508652cb2cb7c1637a59a1bec71da5bf34f74ed3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/media_lib_crypt_default.c",
+      "destination": "components/media_lib_sal/port/media_lib_crypt_default.c",
+      "source_sha256": "b8a141814c282aaf7db3dc60e243b92ec538670366ecef4f69914b531dc00df2",
+      "sha256": "b8a141814c282aaf7db3dc60e243b92ec538670366ecef4f69914b531dc00df2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/media_lib_netif_default.c",
+      "destination": "components/media_lib_sal/port/media_lib_netif_default.c",
+      "source_sha256": "d04d185e80499105be0873d3b7a3497f3877239e888da9d585aab4960ca43384",
+      "sha256": "d04d185e80499105be0873d3b7a3497f3877239e888da9d585aab4960ca43384",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/media_lib_os_freertos.c",
+      "destination": "components/media_lib_sal/port/media_lib_os_freertos.c",
+      "source_sha256": "4b48a164c6af491d6a92e134b2f04246eef5664e14a3823a29a6c5cf394dd46b",
+      "sha256": "4b48a164c6af491d6a92e134b2f04246eef5664e14a3823a29a6c5cf394dd46b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/media_lib_socket_default.c",
+      "destination": "components/media_lib_sal/port/media_lib_socket_default.c",
+      "source_sha256": "452bfc13f6f6661b5b172301bee377c7f499c640e4c5d27abeb3654f3501f3e1",
+      "sha256": "452bfc13f6f6661b5b172301bee377c7f499c640e4c5d27abeb3654f3501f3e1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/media_lib_tls_default.c",
+      "destination": "components/media_lib_sal/port/media_lib_tls_default.c",
+      "source_sha256": "4f410aae679c821b89f443351fb8ca1052fb4a14e974dd6cf89ba8b51224c73a",
+      "sha256": "4f410aae679c821b89f443351fb8ca1052fb4a14e974dd6cf89ba8b51224c73a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/media_lib_sal/port/msg_q.c",
+      "destination": "components/media_lib_sal/port/msg_q.c",
+      "source_sha256": "93605457631b78042a4ed44a9b171fb7ac6cfe1121a797cf4210a1a68e951cb3",
+      "sha256": "93605457631b78042a4ed44a9b171fb7ac6cfe1121a797cf4210a1a68e951cb3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/CMakeLists.txt",
+      "destination": "components/protocols/mcu_link/CMakeLists.txt",
+      "source_sha256": "7a54f8bf23c2a4cb37664e079a0cbf69cb8387c772675768836f34e5da38cf54",
+      "sha256": "7a54f8bf23c2a4cb37664e079a0cbf69cb8387c772675768836f34e5da38cf54",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/Kconfig",
+      "destination": "components/protocols/mcu_link/Kconfig",
+      "source_sha256": "41e770d3e8fc96302b55aab9ab7269d869c500d242a14386bf93a524fb9fc3eb",
+      "sha256": "41e770d3e8fc96302b55aab9ab7269d869c500d242a14386bf93a524fb9fc3eb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/idf_component.yml",
+      "destination": "components/protocols/mcu_link/idf_component.yml",
+      "source_sha256": "0db2581238909527cb07d450f71f90feb1e81696567a75db291ae88e83d36567",
+      "sha256": "8c19fe6f48ca2171a4de34b0e6c755939a60990b607f367af9fe7d0c536b2959",
+      "transform": "public repository metadata URL"
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_cobs.h",
+      "destination": "components/protocols/mcu_link/include/mcu_cobs.h",
+      "source_sha256": "ee06e668acf79a9b3791e6941a81ec164a1a65625bbd99376f9ac2440cfd7414",
+      "sha256": "ee06e668acf79a9b3791e6941a81ec164a1a65625bbd99376f9ac2440cfd7414",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_crc16.h",
+      "destination": "components/protocols/mcu_link/include/mcu_crc16.h",
+      "source_sha256": "9823305afdb753de4ecda12e863625c6a1f9010ff40d99da2668c4597f958e58",
+      "sha256": "9823305afdb753de4ecda12e863625c6a1f9010ff40d99da2668c4597f958e58",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_frame.h",
+      "destination": "components/protocols/mcu_link/include/mcu_frame.h",
+      "source_sha256": "a15129c941fced330ad6a07694b3f741e9b2b6f188afb52b2d4fc1e11f5633a2",
+      "sha256": "a15129c941fced330ad6a07694b3f741e9b2b6f188afb52b2d4fc1e11f5633a2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_link.h",
+      "destination": "components/protocols/mcu_link/include/mcu_link.h",
+      "source_sha256": "67492e78270851a86940d1c47fa6faf669e60135b9e07d44e38b4db69792e559",
+      "sha256": "67492e78270851a86940d1c47fa6faf669e60135b9e07d44e38b4db69792e559",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_link_bootstrap.h",
+      "destination": "components/protocols/mcu_link/include/mcu_link_bootstrap.h",
+      "source_sha256": "433ea2094b99dd203aa792353a54f41eab3a9fc3b6f207f7a056d7db96d47f20",
+      "sha256": "433ea2094b99dd203aa792353a54f41eab3a9fc3b6f207f7a056d7db96d47f20",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_link_fsm.h",
+      "destination": "components/protocols/mcu_link/include/mcu_link_fsm.h",
+      "source_sha256": "71a61ea27cda90cdc528d20ae89bde62f10f5c19e3c624bfc123dc3702e44b64",
+      "sha256": "71a61ea27cda90cdc528d20ae89bde62f10f5c19e3c624bfc123dc3702e44b64",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_link_stats.h",
+      "destination": "components/protocols/mcu_link/include/mcu_link_stats.h",
+      "source_sha256": "3dd667736f7cdff908e4b0de0cba019547e33395af1e56c3a59e7978189d35be",
+      "sha256": "3dd667736f7cdff908e4b0de0cba019547e33395af1e56c3a59e7978189d35be",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_link_uart.h",
+      "destination": "components/protocols/mcu_link/include/mcu_link_uart.h",
+      "source_sha256": "d74b4099381c5908fbf73dbabe2fd64eeb30cd3924bb0895ea5a3b91eefd9804",
+      "sha256": "d74b4099381c5908fbf73dbabe2fd64eeb30cd3924bb0895ea5a3b91eefd9804",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/include/mcu_wire.h",
+      "destination": "components/protocols/mcu_link/include/mcu_wire.h",
+      "source_sha256": "5c2e709de422075201eeed871b8d5a930fbd1e846bac184c588a7daa43a7a357",
+      "sha256": "5c2e709de422075201eeed871b8d5a930fbd1e846bac184c588a7daa43a7a357",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_cobs.c",
+      "destination": "components/protocols/mcu_link/src/mcu_cobs.c",
+      "source_sha256": "1648f9fdaa65161069efc632337950eff163f98c3fb45487e17b9e360ab5a6ec",
+      "sha256": "1648f9fdaa65161069efc632337950eff163f98c3fb45487e17b9e360ab5a6ec",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_crc16.c",
+      "destination": "components/protocols/mcu_link/src/mcu_crc16.c",
+      "source_sha256": "21c8ed0865c2168e85b485b4ec0bf68bdf5a10547e68d32a8aff8c5503d3bcf3",
+      "sha256": "21c8ed0865c2168e85b485b4ec0bf68bdf5a10547e68d32a8aff8c5503d3bcf3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_frame.c",
+      "destination": "components/protocols/mcu_link/src/mcu_frame.c",
+      "source_sha256": "18c500bc8bd23a4e322bc43b0ba79bf110d505cc8dfccbb131cfee30d76562fe",
+      "sha256": "18c500bc8bd23a4e322bc43b0ba79bf110d505cc8dfccbb131cfee30d76562fe",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_link.c",
+      "destination": "components/protocols/mcu_link/src/mcu_link.c",
+      "source_sha256": "c46b916e9492eb2c5edc8ef6b246e9bfe54fd084da65ff4124ba4f485ead054c",
+      "sha256": "c46b916e9492eb2c5edc8ef6b246e9bfe54fd084da65ff4124ba4f485ead054c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_link_bootstrap.c",
+      "destination": "components/protocols/mcu_link/src/mcu_link_bootstrap.c",
+      "source_sha256": "cd0d7f560d495a9662c00682a536ce721fac178224f475d42c3b8306d5779ab0",
+      "sha256": "cd0d7f560d495a9662c00682a536ce721fac178224f475d42c3b8306d5779ab0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_link_fsm.c",
+      "destination": "components/protocols/mcu_link/src/mcu_link_fsm.c",
+      "source_sha256": "05953abbe6dfa8a11d50ab58d56e7e7d47dd0f237b2c24fc04cebdfbf1d12361",
+      "sha256": "05953abbe6dfa8a11d50ab58d56e7e7d47dd0f237b2c24fc04cebdfbf1d12361",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_link_stats.c",
+      "destination": "components/protocols/mcu_link/src/mcu_link_stats.c",
+      "source_sha256": "4917910409b83e16f517b6dab9e96d26d4e3c55b27771ae40705c7ea78ae02cf",
+      "sha256": "4917910409b83e16f517b6dab9e96d26d4e3c55b27771ae40705c7ea78ae02cf",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_link_uart.c",
+      "destination": "components/protocols/mcu_link/src/mcu_link_uart.c",
+      "source_sha256": "1fa8e619697583005f88816c02091ceb8c8e0421b04b8ef4dba1a7b8f03f02e0",
+      "sha256": "1fa8e619697583005f88816c02091ceb8c8e0421b04b8ef4dba1a7b8f03f02e0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/src/mcu_wire.c",
+      "destination": "components/protocols/mcu_link/src/mcu_wire.c",
+      "source_sha256": "c76d361c4944d8930c86ea76d1ff9fb5e9868a3533ea607b030972ae44659210",
+      "sha256": "c76d361c4944d8930c86ea76d1ff9fb5e9868a3533ea607b030972ae44659210",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/CMakeLists.txt",
+      "destination": "components/protocols/mcu_link/test_support/CMakeLists.txt",
+      "source_sha256": "d29425b327bf15eca64554b49e2458beadb4dd5147a7f0ff847764ffdcd19527",
+      "sha256": "d29425b327bf15eca64554b49e2458beadb4dd5147a7f0ff847764ffdcd19527",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/CMakeLists.txt",
+      "destination": "components/protocols/mcu_link/test_support/host/CMakeLists.txt",
+      "source_sha256": "c1a79bc2057f97b6547a5a356368d7294008e62b75db750925e98bb8238cf6a1",
+      "sha256": "c1a79bc2057f97b6547a5a356368d7294008e62b75db750925e98bb8238cf6a1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/esp_err.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/esp_err.h",
+      "source_sha256": "5c88d4d9237f6b12408fdac2b9bee3e0fe32297340276871def3507b7fe1052a",
+      "sha256": "5c88d4d9237f6b12408fdac2b9bee3e0fe32297340276871def3507b7fe1052a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/esp_log.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/esp_log.h",
+      "source_sha256": "6c8b0e08c3eef41255f2e651e87c7b8422d854441d1418aeba648dac57b7c088",
+      "sha256": "6c8b0e08c3eef41255f2e651e87c7b8422d854441d1418aeba648dac57b7c088",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/esp_timer.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/esp_timer.h",
+      "source_sha256": "77539eec139bbeab6471cbe03114aeccd295eccf06b1f083aa26c7db5c0bca71",
+      "sha256": "77539eec139bbeab6471cbe03114aeccd295eccf06b1f083aa26c7db5c0bca71",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/freertos/FreeRTOS.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/freertos/FreeRTOS.h",
+      "source_sha256": "c5ae531652f62d1527c1530ae4f9026b926212d8470a702173eacc362167c5df",
+      "sha256": "c5ae531652f62d1527c1530ae4f9026b926212d8470a702173eacc362167c5df",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/freertos/task.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/freertos/task.h",
+      "source_sha256": "421706bcf1b1b069b74cffdd4db4d3b3946c369396a27a170aec03f3701df669",
+      "sha256": "421706bcf1b1b069b74cffdd4db4d3b3946c369396a27a170aec03f3701df669",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/mcu_link_uart.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/mcu_link_uart.h",
+      "source_sha256": "39be3675d9fb901b876485ce60c3a6bc4f61fdf798c0f9a94fd6600addde24e5",
+      "sha256": "39be3675d9fb901b876485ce60c3a6bc4f61fdf798c0f9a94fd6600addde24e5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/include/sdkconfig.h",
+      "destination": "components/protocols/mcu_link/test_support/host/include/sdkconfig.h",
+      "source_sha256": "580a2fe4c1d5b9a1f84bf32a73d6a0cd28b78a7c814930ea0427c450dfd18525",
+      "sha256": "580a2fe4c1d5b9a1f84bf32a73d6a0cd28b78a7c814930ea0427c450dfd18525",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/host/src/test_mcu_link_poll.c",
+      "destination": "components/protocols/mcu_link/test_support/host/src/test_mcu_link_poll.c",
+      "source_sha256": "15679d252b6c4b3943eadf9fc44e67682fbf4d7abfe79555c07f18248decd830",
+      "sha256": "15679d252b6c4b3943eadf9fc44e67682fbf4d7abfe79555c07f18248decd830",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/include/mcu_link_test_support.h",
+      "destination": "components/protocols/mcu_link/test_support/include/mcu_link_test_support.h",
+      "source_sha256": "acd559eb9f57dfda21ed6bae456e2e3e110d47ded792de544cc1acef522420b3",
+      "sha256": "acd559eb9f57dfda21ed6bae456e2e3e110d47ded792de544cc1acef522420b3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/src/mcu_link_test_support.c",
+      "destination": "components/protocols/mcu_link/test_support/src/mcu_link_test_support.c",
+      "source_sha256": "61997878deb984fc646d08b7af4c5da2ff725491069e63a9098981f8b5f9de43",
+      "sha256": "61997878deb984fc646d08b7af4c5da2ff725491069e63a9098981f8b5f9de43",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/CMakeLists.txt",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/CMakeLists.txt",
+      "source_sha256": "a3cb6d43539ebc3f34b4a30d1da92b840ae29b7f54e88fba3451eb46062c6602",
+      "sha256": "a3cb6d43539ebc3f34b4a30d1da92b840ae29b7f54e88fba3451eb46062c6602",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/driver/uart.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/driver/uart.h",
+      "source_sha256": "ee3cb60006425dafa107d190d04f9c2a60cc6ca5fce712b70e44121d7b7ab45a",
+      "sha256": "ee3cb60006425dafa107d190d04f9c2a60cc6ca5fce712b70e44121d7b7ab45a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/esp_check.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/esp_check.h",
+      "source_sha256": "36f3affb5d685eefc88cb5d9a37b439dbed4b739cc8bf23240347653342ba8c3",
+      "sha256": "36f3affb5d685eefc88cb5d9a37b439dbed4b739cc8bf23240347653342ba8c3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/esp_err.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/esp_err.h",
+      "source_sha256": "8049a8670d63fba5bfafb12b272526bfc55523cc6c2857882cf4c6fd4aa5ccda",
+      "sha256": "8049a8670d63fba5bfafb12b272526bfc55523cc6c2857882cf4c6fd4aa5ccda",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/esp_log.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/esp_log.h",
+      "source_sha256": "f872b4866b379a35a9e5f157c75475cd8ddc1cebd22b445c7131f501cdda4993",
+      "sha256": "f872b4866b379a35a9e5f157c75475cd8ddc1cebd22b445c7131f501cdda4993",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/freertos/FreeRTOS.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/freertos/FreeRTOS.h",
+      "source_sha256": "ff41f5e38805377102ddf378b2d91f13e9e27da89cc3d7566cf999dbc68bca2c",
+      "sha256": "ff41f5e38805377102ddf378b2d91f13e9e27da89cc3d7566cf999dbc68bca2c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/freertos/semphr.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/freertos/semphr.h",
+      "source_sha256": "03a81c5540d80d0a71a6580660300f5595a7c24bb1dfca5873adc1cdc7245096",
+      "sha256": "03a81c5540d80d0a71a6580660300f5595a7c24bb1dfca5873adc1cdc7245096",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/include/freertos/task.h",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/include/freertos/task.h",
+      "source_sha256": "eaf5283b1ab35f4c3a3312f4172c4968e16ba9754d5355f5c7be159d23182017",
+      "sha256": "eaf5283b1ab35f4c3a3312f4172c4968e16ba9754d5355f5c7be159d23182017",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/protocols/mcu_link/test_support/uart_host/test_uart_gate.cpp",
+      "destination": "components/protocols/mcu_link/test_support/uart_host/test_uart_gate.cpp",
+      "source_sha256": "c181cef9b951a6a2f32dd8f02ac33b7da842f533525ed84bc001a0bc55011270",
+      "sha256": "c181cef9b951a6a2f32dd8f02ac33b7da842f533525ed84bc001a0bc55011270",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_audio/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_audio/CMakeLists.txt",
+      "source_sha256": "c16c1a5767ed6706e6a0b3218d237cf8f935d0f6584e57bb4252487d42de5d55",
+      "sha256": "c16c1a5767ed6706e6a0b3218d237cf8f935d0f6584e57bb4252487d42de5d55",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_audio/include/watcher_hw_audio.h",
+      "destination": "components/sdk/watcher_hw_audio/include/watcher_hw_audio.h",
+      "source_sha256": "537f79f24828eaa6534e28b71b37f7f32f2e432638de4a8fe2d2384c9976459a",
+      "sha256": "537f79f24828eaa6534e28b71b37f7f32f2e432638de4a8fe2d2384c9976459a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_audio/test_support/host/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_audio/test_support/host/CMakeLists.txt",
+      "source_sha256": "8a1ba0827276bb5284144c50288f42e090af6faecad4b7aa4ef44b456aa56081",
+      "sha256": "8a1ba0827276bb5284144c50288f42e090af6faecad4b7aa4ef44b456aa56081",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_audio/test_support/host/include/hal_audio.h",
+      "destination": "components/sdk/watcher_hw_audio/test_support/host/include/hal_audio.h",
+      "source_sha256": "ee8bdf1332f376067e47270b5bb35012227b0f0f44fc710cd59a51cc7615f7fb",
+      "sha256": "ee8bdf1332f376067e47270b5bb35012227b0f0f44fc710cd59a51cc7615f7fb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_audio/test_support/host/test_audio.c",
+      "destination": "components/sdk/watcher_hw_audio/test_support/host/test_audio.c",
+      "source_sha256": "0ff2eff74d066bebe817f0d690daf45702d368a5929c1e35a9b14165bda0f241",
+      "sha256": "0ff2eff74d066bebe817f0d690daf45702d368a5929c1e35a9b14165bda0f241",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_audio/watcher_hw_audio.c",
+      "destination": "components/sdk/watcher_hw_audio/watcher_hw_audio.c",
+      "source_sha256": "f8796ca9b38eb25e4b623740ae78b18480ce5bb1576699aeaaa8b23ecbd9f186",
+      "sha256": "f8796ca9b38eb25e4b623740ae78b18480ce5bb1576699aeaaa8b23ecbd9f186",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_body/CMakeLists.txt",
+      "source_sha256": "3da2d3867b63f6d9e76fb4538467e9baa3e56c1f93a118a8caa64a3c14b1dd02",
+      "sha256": "3da2d3867b63f6d9e76fb4538467e9baa3e56c1f93a118a8caa64a3c14b1dd02",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/include/watcher_hw_body.h",
+      "destination": "components/sdk/watcher_hw_body/include/watcher_hw_body.h",
+      "source_sha256": "3f5d0553423ef036acca2e481706e6897b12d9aa711ff619de0cdc61f37975bf",
+      "sha256": "3f5d0553423ef036acca2e481706e6897b12d9aa711ff619de0cdc61f37975bf",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/CMakeLists.txt",
+      "source_sha256": "c3dfdb52ee453707a7dc42753c9098e890e1bbe7089b699c45c2151c30bc3f3d",
+      "sha256": "c3dfdb52ee453707a7dc42753c9098e890e1bbe7089b699c45c2151c30bc3f3d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/include/esp_log.h",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/include/esp_log.h",
+      "source_sha256": "629d1f893130a1cd5920a976a5772c8f9b533bb3ddcb789644c1010d222eb4f2",
+      "sha256": "629d1f893130a1cd5920a976a5772c8f9b533bb3ddcb789644c1010d222eb4f2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/include/esp_timer.h",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/include/esp_timer.h",
+      "source_sha256": "82a7c14acf5d1cdcbea1b23bab880c69562da88013adc34ff5f2ae2115fb08d1",
+      "sha256": "82a7c14acf5d1cdcbea1b23bab880c69562da88013adc34ff5f2ae2115fb08d1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/include/freertos/FreeRTOS.h",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/include/freertos/FreeRTOS.h",
+      "source_sha256": "af032a282d83783dc6535608dcf14afa64d629efc398bf4bde980d78ec9c6f56",
+      "sha256": "af032a282d83783dc6535608dcf14afa64d629efc398bf4bde980d78ec9c6f56",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/include/freertos/semphr.h",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/include/freertos/semphr.h",
+      "source_sha256": "806e865856690114ee08547d1b9e8782f912df560d0623feba516c1921d81699",
+      "sha256": "806e865856690114ee08547d1b9e8782f912df560d0623feba516c1921d81699",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/include/freertos/task.h",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/include/freertos/task.h",
+      "source_sha256": "ebb82e7f10af36e6061c6e63dcf01bf0262b6c8c6b5374b3a50c9ccfdb3557fb",
+      "sha256": "ebb82e7f10af36e6061c6e63dcf01bf0262b6c8c6b5374b3a50c9ccfdb3557fb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/include/mcu_link_uart.h",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/include/mcu_link_uart.h",
+      "source_sha256": "fdafce2c673aa31eba194648c09aa494120c4fdc0d1feec1159ed57a29968ec3",
+      "sha256": "fdafce2c673aa31eba194648c09aa494120c4fdc0d1feec1159ed57a29968ec3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/test_support/host/test_body.c",
+      "destination": "components/sdk/watcher_hw_body/test_support/host/test_body.c",
+      "source_sha256": "32f3f8e7780bcd59b953ac935d32673fdfd301da7f8f9af17675fad4e99b46b8",
+      "sha256": "32f3f8e7780bcd59b953ac935d32673fdfd301da7f8f9af17675fad4e99b46b8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_body/watcher_hw_body.c",
+      "destination": "components/sdk/watcher_hw_body/watcher_hw_body.c",
+      "source_sha256": "f32462e5f72a9945d4dabbefeb69b92000a95561ffa6b3121ad03da93233a918",
+      "sha256": "f32462e5f72a9945d4dabbefeb69b92000a95561ffa6b3121ad03da93233a918",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_camera/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_camera/CMakeLists.txt",
+      "source_sha256": "72ca04df59525dfe3b599abb804562bf5a18c6ba7ddcbcffc0632ee10cca5d8c",
+      "sha256": "72ca04df59525dfe3b599abb804562bf5a18c6ba7ddcbcffc0632ee10cca5d8c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_camera/include/watcher_hw_camera.h",
+      "destination": "components/sdk/watcher_hw_camera/include/watcher_hw_camera.h",
+      "source_sha256": "c565536901eae1b2d4202cd0e33b7a9473010bdcb342fc286a3143c74b2057be",
+      "sha256": "c565536901eae1b2d4202cd0e33b7a9473010bdcb342fc286a3143c74b2057be",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_camera/test_support/host/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_camera/test_support/host/CMakeLists.txt",
+      "source_sha256": "0436df5329f44f21c5272b7b6b3d6ec4b3b4bfa05f9b6cbe4bcd415a941ce7bd",
+      "sha256": "0436df5329f44f21c5272b7b6b3d6ec4b3b4bfa05f9b6cbe4bcd415a941ce7bd",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_camera/test_support/host/include/hal_camera.h",
+      "destination": "components/sdk/watcher_hw_camera/test_support/host/include/hal_camera.h",
+      "source_sha256": "7b2078f75b754973a2f47bb93481b860b6d6c94c433f3725a7f16054e86a6b0f",
+      "sha256": "7b2078f75b754973a2f47bb93481b860b6d6c94c433f3725a7f16054e86a6b0f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_camera/test_support/host/test_camera.c",
+      "destination": "components/sdk/watcher_hw_camera/test_support/host/test_camera.c",
+      "source_sha256": "0fed5e1b8e45a07a36717c53d6ae9e9d65d402f352ca290cdb0c504a7306a59d",
+      "sha256": "0fed5e1b8e45a07a36717c53d6ae9e9d65d402f352ca290cdb0c504a7306a59d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_camera/watcher_hw_camera.c",
+      "destination": "components/sdk/watcher_hw_camera/watcher_hw_camera.c",
+      "source_sha256": "c148d86b7a8586cecba6b482ed2499c68bfc959a28c8f71b6cb433746efee816",
+      "sha256": "c148d86b7a8586cecba6b482ed2499c68bfc959a28c8f71b6cb433746efee816",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_core/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_core/CMakeLists.txt",
+      "source_sha256": "dcabcb8d6e12acc686f375c579c35bc261d92fa8441392a5b6390b50be0cf3f8",
+      "sha256": "dcabcb8d6e12acc686f375c579c35bc261d92fa8441392a5b6390b50be0cf3f8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_core/include/watcher_hw_core.h",
+      "destination": "components/sdk/watcher_hw_core/include/watcher_hw_core.h",
+      "source_sha256": "4f53d9dedb2a29733e3d5f327429f006eabf85978ce3ccad49adc40d8c045cc1",
+      "sha256": "4f53d9dedb2a29733e3d5f327429f006eabf85978ce3ccad49adc40d8c045cc1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_core/test_support/host/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_core/test_support/host/CMakeLists.txt",
+      "source_sha256": "e59e57ca7b5574de58c6c116459f2e8a05a70fc65dda87462c7d55fa848a67bb",
+      "sha256": "e59e57ca7b5574de58c6c116459f2e8a05a70fc65dda87462c7d55fa848a67bb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_core/test_support/host/include/esp_err.h",
+      "destination": "components/sdk/watcher_hw_core/test_support/host/include/esp_err.h",
+      "source_sha256": "4db411c8cc3407aac34a4352407de1f9dd02f7fcc44e7a0c58ae6e4d7f4d3d4b",
+      "sha256": "4db411c8cc3407aac34a4352407de1f9dd02f7fcc44e7a0c58ae6e4d7f4d3d4b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_core/test_support/host/test_core.c",
+      "destination": "components/sdk/watcher_hw_core/test_support/host/test_core.c",
+      "source_sha256": "7c5b33b9de09555e26da60b962dc5072c0e8f8f5f2ac1d234be741373b5ee247",
+      "sha256": "7c5b33b9de09555e26da60b962dc5072c0e8f8f5f2ac1d234be741373b5ee247",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_core/watcher_hw_core.c",
+      "destination": "components/sdk/watcher_hw_core/watcher_hw_core.c",
+      "source_sha256": "39e254fda8bcc89b3c11dd833e23c0cc14be94c32cbc35c620cc59863396bae1",
+      "sha256": "39e254fda8bcc89b3c11dd833e23c0cc14be94c32cbc35c620cc59863396bae1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_display/CMakeLists.txt",
+      "source_sha256": "4a355a025a848cff20e771cc856bfac3a6423514d46ff082d463001c87f96925",
+      "sha256": "4a355a025a848cff20e771cc856bfac3a6423514d46ff082d463001c87f96925",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/include/watcher_hw_display.h",
+      "destination": "components/sdk/watcher_hw_display/include/watcher_hw_display.h",
+      "source_sha256": "1348b4eaf622f6a8764903fbafae10916677ef2937b2533581502d1f04ddf5ba",
+      "sha256": "1348b4eaf622f6a8764903fbafae10916677ef2937b2533581502d1f04ddf5ba",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/CMakeLists.txt",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/CMakeLists.txt",
+      "source_sha256": "bb1548607093ddeedbf1c16900a4b45e068ef283829620fc0ce0311399e4eb7e",
+      "sha256": "bb1548607093ddeedbf1c16900a4b45e068ef283829620fc0ce0311399e4eb7e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/include/esp_lcd_panel_ops.h",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/include/esp_lcd_panel_ops.h",
+      "source_sha256": "5ef120ffd086d8eaaa2a2de71674328be25dfad197020c6eb0342bb90da491dd",
+      "sha256": "5ef120ffd086d8eaaa2a2de71674328be25dfad197020c6eb0342bb90da491dd",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/include/esp_lcd_touch.h",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/include/esp_lcd_touch.h",
+      "source_sha256": "937facbf32f30ee9ed8709d72827292286d73e684fbf48db640c680402c8f9bc",
+      "sha256": "937facbf32f30ee9ed8709d72827292286d73e684fbf48db640c680402c8f9bc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/include/esp_lvgl_port.h",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/include/esp_lvgl_port.h",
+      "source_sha256": "7032bbe1218ec3fd5b4cd4cfe42d186837ceaa364cff20c078a01c922efa97cb",
+      "sha256": "7032bbe1218ec3fd5b4cd4cfe42d186837ceaa364cff20c078a01c922efa97cb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/include/lvgl.h",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/include/lvgl.h",
+      "source_sha256": "5712dba5fa8d92601f73084d41f3c4a9aaca13605cab7e086f7e70337db8c9d8",
+      "sha256": "5712dba5fa8d92601f73084d41f3c4a9aaca13605cab7e086f7e70337db8c9d8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/include/sensecap-watcher.h",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/include/sensecap-watcher.h",
+      "source_sha256": "92181f91392ce991f08b445c667c1b81532d872a50c339065544669eb2128956",
+      "sha256": "92181f91392ce991f08b445c667c1b81532d872a50c339065544669eb2128956",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/test_support/host/test_display.c",
+      "destination": "components/sdk/watcher_hw_display/test_support/host/test_display.c",
+      "source_sha256": "5db3b767eecbdcccffc2742fd96f9258ffe83b34aa2129fcfaf3862a52e1815c",
+      "sha256": "5db3b767eecbdcccffc2742fd96f9258ffe83b34aa2129fcfaf3862a52e1815c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sdk/watcher_hw_display/watcher_hw_display.c",
+      "destination": "components/sdk/watcher_hw_display/watcher_hw_display.c",
+      "source_sha256": "a2c20463587b788eedc74387056a62e23d32de4ace9be842cd03d6977719d4cb",
+      "sha256": "a2c20463587b788eedc74387056a62e23d32de4ace9be842cd03d6977719d4cb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/CMakeLists.txt",
+      "destination": "components/sensecap-watcher/CMakeLists.txt",
+      "source_sha256": "0ce1cd4d25d08c10e05aebcd11822ed08b0419c000377109535896fab40a9ef1",
+      "sha256": "0ce1cd4d25d08c10e05aebcd11822ed08b0419c000377109535896fab40a9ef1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/Kconfig",
+      "destination": "components/sensecap-watcher/Kconfig",
+      "source_sha256": "d9798ae63fe5ba0d79af2d8657dfdaefda5d799d2c82c9823f9e0f4d7ee66906",
+      "sha256": "d9798ae63fe5ba0d79af2d8657dfdaefda5d799d2c82c9823f9e0f4d7ee66906",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/README.md",
+      "destination": "components/sensecap-watcher/README.md",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/idf_component.yml",
+      "destination": "components/sensecap-watcher/idf_component.yml",
+      "source_sha256": "a3deed87cc7379556bc6e6bd00e662c35e53e2158b888ac8df5b9379f4571a21",
+      "sha256": "a3deed87cc7379556bc6e6bd00e662c35e53e2158b888ac8df5b9379f4571a21",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/include/io_expander_read_guard.h",
+      "destination": "components/sensecap-watcher/include/io_expander_read_guard.h",
+      "source_sha256": "233dad626d080d569aff67bd17577df14187ae4e2322798b621c9b3af1f3fb8f",
+      "sha256": "233dad626d080d569aff67bd17577df14187ae4e2322798b621c9b3af1f3fb8f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/include/sensecap-watcher.h",
+      "destination": "components/sensecap-watcher/include/sensecap-watcher.h",
+      "source_sha256": "6c949cb0de681f8474d694d865ce9ee86ac3f9a5d648984dcb7b31ada7166cf7",
+      "sha256": "6c949cb0de681f8474d694d865ce9ee86ac3f9a5d648984dcb7b31ada7166cf7",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/include/watcher_display_budget.h",
+      "destination": "components/sensecap-watcher/include/watcher_display_budget.h",
+      "source_sha256": "967a366346011686e427ed5d676434a3803a0fc273afc88e42de6877db71b7d9",
+      "sha256": "967a366346011686e427ed5d676434a3803a0fc273afc88e42de6877db71b7d9",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/io_expander_read_guard.c",
+      "destination": "components/sensecap-watcher/io_expander_read_guard.c",
+      "source_sha256": "fa9500a7d865aab5c30df4657a5c1718139cda02ec73f2c56f0597b094eb9409",
+      "sha256": "fa9500a7d865aab5c30df4657a5c1718139cda02ec73f2c56f0597b094eb9409",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/license.txt",
+      "destination": "components/sensecap-watcher/license.txt",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/patches.cmake",
+      "destination": "components/sensecap-watcher/patches.cmake",
+      "source_sha256": "81a75eb81bfe9ee08c1e32933639cd1b054a5f03b98b0842618f3c4f0d1c6225",
+      "sha256": "81a75eb81bfe9ee08c1e32933639cd1b054a5f03b98b0842618f3c4f0d1c6225",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sensecap-watcher/sensecap-watcher.c",
+      "destination": "components/sensecap-watcher/sensecap-watcher.c",
+      "source_sha256": "2d36b41f4226ea9e6b1c54c8348e2dfe935b5043ba553fd2e1486dd16bd1ac87",
+      "sha256": "2d36b41f4226ea9e6b1c54c8348e2dfe935b5043ba553fd2e1486dd16bd1ac87",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/CMakeLists.txt",
+      "destination": "components/services/mcu_led_service/CMakeLists.txt",
+      "source_sha256": "c768a9ab9d26d94f37ad1f81d996331185169542288c68a68dd5636335881be5",
+      "sha256": "c768a9ab9d26d94f37ad1f81d996331185169542288c68a68dd5636335881be5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/include/mcu_led_service.h",
+      "destination": "components/services/mcu_led_service/include/mcu_led_service.h",
+      "source_sha256": "698b18b138850f0e08b5046ebd4b9c95bedec90285e884d951b9a75660bb51bf",
+      "sha256": "698b18b138850f0e08b5046ebd4b9c95bedec90285e884d951b9a75660bb51bf",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/src/mcu_led_service.c",
+      "destination": "components/services/mcu_led_service/src/mcu_led_service.c",
+      "source_sha256": "26a2f250580c297b1a9086ba59112de0cf8f5eef7cab9aff8434b98b6738bab3",
+      "sha256": "26a2f250580c297b1a9086ba59112de0cf8f5eef7cab9aff8434b98b6738bab3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/test_support/host/CMakeLists.txt",
+      "destination": "components/services/mcu_led_service/test_support/host/CMakeLists.txt",
+      "source_sha256": "8c792caa6e64673fe2ae9171d73895f74341dbd5853be51f6c0e6e138725ac26",
+      "sha256": "8c792caa6e64673fe2ae9171d73895f74341dbd5853be51f6c0e6e138725ac26",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/test_support/host/include/esp_err.h",
+      "destination": "components/services/mcu_led_service/test_support/host/include/esp_err.h",
+      "source_sha256": "abe3bf1e641fdd13d12befcfc767b7a62c2f144181797ea1fc1d7873daac95af",
+      "sha256": "abe3bf1e641fdd13d12befcfc767b7a62c2f144181797ea1fc1d7873daac95af",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/test_support/host/include/esp_log.h",
+      "destination": "components/services/mcu_led_service/test_support/host/include/esp_log.h",
+      "source_sha256": "4ac56af0dd82b247afac348d84005da6bca1844113a5b9414876a7e3cbfb2fd6",
+      "sha256": "4ac56af0dd82b247afac348d84005da6bca1844113a5b9414876a7e3cbfb2fd6",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/test_support/host/include/freertos/FreeRTOS.h",
+      "destination": "components/services/mcu_led_service/test_support/host/include/freertos/FreeRTOS.h",
+      "source_sha256": "5e18e980d58385d585232bc89afb0ab11af01407c36755f53ea7a50485d68148",
+      "sha256": "5e18e980d58385d585232bc89afb0ab11af01407c36755f53ea7a50485d68148",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/test_support/host/include/freertos/semphr.h",
+      "destination": "components/services/mcu_led_service/test_support/host/include/freertos/semphr.h",
+      "source_sha256": "7b1d5c36aefcf99a0026e7e848133cb9e13340da7652ad2c752f8ea7371671cb",
+      "sha256": "7b1d5c36aefcf99a0026e7e848133cb9e13340da7652ad2c752f8ea7371671cb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_led_service/test_support/host/src/test_mcu_led_service.c",
+      "destination": "components/services/mcu_led_service/test_support/host/src/test_mcu_led_service.c",
+      "source_sha256": "3f17b1edfd5c681621669009d7132e7e8ce240fe815d53fc42665ecf046a6c1c",
+      "sha256": "3f17b1edfd5c681621669009d7132e7e8ce240fe815d53fc42665ecf046a6c1c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/CMakeLists.txt",
+      "destination": "components/services/mcu_motion_service/CMakeLists.txt",
+      "source_sha256": "95c63455fe01014c56416991aee19ca2e947fbc5149f2a7d5561e9be41e8c4fc",
+      "sha256": "95c63455fe01014c56416991aee19ca2e947fbc5149f2a7d5561e9be41e8c4fc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/include/mcu_motion_service.h",
+      "destination": "components/services/mcu_motion_service/include/mcu_motion_service.h",
+      "source_sha256": "9448c8ef40f3c486a3e10e7748dfd83200c7e7c569ffcdc4d91a9e7ac0df6487",
+      "sha256": "9448c8ef40f3c486a3e10e7748dfd83200c7e7c569ffcdc4d91a9e7ac0df6487",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/src/mcu_motion_service.c",
+      "destination": "components/services/mcu_motion_service/src/mcu_motion_service.c",
+      "source_sha256": "5e634a8e20d60a710e73778ddbcafa512ef0cb0e8f5aedcecf4e047eb57f5e8e",
+      "sha256": "5e634a8e20d60a710e73778ddbcafa512ef0cb0e8f5aedcecf4e047eb57f5e8e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/CMakeLists.txt",
+      "destination": "components/services/mcu_motion_service/test_support/host/CMakeLists.txt",
+      "source_sha256": "0fcfecdcf6993661086333a7aeb68325171970fa0fcba49a07513e563a85c1ed",
+      "sha256": "0fcfecdcf6993661086333a7aeb68325171970fa0fcba49a07513e563a85c1ed",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/include/esp_err.h",
+      "destination": "components/services/mcu_motion_service/test_support/host/include/esp_err.h",
+      "source_sha256": "b18d6ceb291709ae36f389c9c3c003526a53b7147dbaf5f37704182ce6671c03",
+      "sha256": "b18d6ceb291709ae36f389c9c3c003526a53b7147dbaf5f37704182ce6671c03",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/include/esp_log.h",
+      "destination": "components/services/mcu_motion_service/test_support/host/include/esp_log.h",
+      "source_sha256": "fd8ed641c9ae40d71265f357cb52255b61f34200ad9a80373e7b3b4f46aefaba",
+      "sha256": "fd8ed641c9ae40d71265f357cb52255b61f34200ad9a80373e7b3b4f46aefaba",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/include/mcu_link.h",
+      "destination": "components/services/mcu_motion_service/test_support/host/include/mcu_link.h",
+      "source_sha256": "1a735bdda992d4715e0b514b7bc9283988135a2efb8d23d39dda5152d686dcfe",
+      "sha256": "1a735bdda992d4715e0b514b7bc9283988135a2efb8d23d39dda5152d686dcfe",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/include/mcu_link_bootstrap.h",
+      "destination": "components/services/mcu_motion_service/test_support/host/include/mcu_link_bootstrap.h",
+      "source_sha256": "37f52ff429f100ce6e51a1b422448fecc0b75614c3887edaae9953670b4a8b61",
+      "sha256": "37f52ff429f100ce6e51a1b422448fecc0b75614c3887edaae9953670b4a8b61",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/src/observed_sequence_test.inc",
+      "destination": "components/services/mcu_motion_service/test_support/host/src/observed_sequence_test.inc",
+      "source_sha256": "36a01c20dbc015aea730d225ea5264f331d3e98dc9fa0485fa9d436c83471168",
+      "sha256": "36a01c20dbc015aea730d225ea5264f331d3e98dc9fa0485fa9d436c83471168",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_motion_service/test_support/host/src/test_mcu_motion_service.c",
+      "destination": "components/services/mcu_motion_service/test_support/host/src/test_mcu_motion_service.c",
+      "source_sha256": "140bb98989414ee1f9c8b7756fe1f4732793143771854118b866e0b91f9717e9",
+      "sha256": "140bb98989414ee1f9c8b7756fe1f4732793143771854118b866e0b91f9717e9",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_power_service/CMakeLists.txt",
+      "destination": "components/services/mcu_power_service/CMakeLists.txt",
+      "source_sha256": "23d00e234b26d2ab31f4ee6e94aeebc60f977536f8b8ca0f4aa3eb3d35f28ffa",
+      "sha256": "23d00e234b26d2ab31f4ee6e94aeebc60f977536f8b8ca0f4aa3eb3d35f28ffa",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_power_service/include/mcu_power_service.h",
+      "destination": "components/services/mcu_power_service/include/mcu_power_service.h",
+      "source_sha256": "0908dafc86b08f2dd1f590e7272bce77b3002a4e57a7cccf729933c15e3f1beb",
+      "sha256": "0908dafc86b08f2dd1f590e7272bce77b3002a4e57a7cccf729933c15e3f1beb",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_power_service/src/mcu_power_service.c",
+      "destination": "components/services/mcu_power_service/src/mcu_power_service.c",
+      "source_sha256": "664f075945f0be199f55af1cdb7e12d157a0db84bc678fe3568cd1b3be008846",
+      "sha256": "664f075945f0be199f55af1cdb7e12d157a0db84bc678fe3568cd1b3be008846",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_runtime/CMakeLists.txt",
+      "destination": "components/services/mcu_runtime/CMakeLists.txt",
+      "source_sha256": "7bfa40c5db94cdc88ad8896ae46572236bd235d285fbc1a88914da9d02c6cec0",
+      "sha256": "7bfa40c5db94cdc88ad8896ae46572236bd235d285fbc1a88914da9d02c6cec0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_runtime/include/mcu_runtime.h",
+      "destination": "components/services/mcu_runtime/include/mcu_runtime.h",
+      "source_sha256": "9c13c348a6f9c2b00224300230684c1e36f0cc437d61750941ad91878701b8af",
+      "sha256": "9c13c348a6f9c2b00224300230684c1e36f0cc437d61750941ad91878701b8af",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_runtime/mcu_runtime.c",
+      "destination": "components/services/mcu_runtime/mcu_runtime.c",
+      "source_sha256": "0c99e816eb4f76972b5328b2c43501c0dff81bed339c904b79fde6beaf76fe5e",
+      "sha256": "0c99e816eb4f76972b5328b2c43501c0dff81bed339c904b79fde6beaf76fe5e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_sensor_service/CMakeLists.txt",
+      "destination": "components/services/mcu_sensor_service/CMakeLists.txt",
+      "source_sha256": "8e40a92ea41f27a851a26e8cf00ed36462e2245c90d3d194ac3ef98572976417",
+      "sha256": "8e40a92ea41f27a851a26e8cf00ed36462e2245c90d3d194ac3ef98572976417",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_sensor_service/include/mcu_sensor_service.h",
+      "destination": "components/services/mcu_sensor_service/include/mcu_sensor_service.h",
+      "source_sha256": "420c049cd0d88699ac7c09c4230d58c990b94d64e9f324f29166806485b17f14",
+      "sha256": "420c049cd0d88699ac7c09c4230d58c990b94d64e9f324f29166806485b17f14",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_sensor_service/src/mcu_sensor_service.c",
+      "destination": "components/services/mcu_sensor_service/src/mcu_sensor_service.c",
+      "source_sha256": "3e8a95a0be9a37200820a14df6cc297fb0a14745e4927de3840c8e00f1834d4b",
+      "sha256": "3e8a95a0be9a37200820a14df6cc297fb0a14745e4927de3840c8e00f1834d4b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_sensor_service/test_support/host/CMakeLists.txt",
+      "destination": "components/services/mcu_sensor_service/test_support/host/CMakeLists.txt",
+      "source_sha256": "db7e8f38a3d5eb3d7d11abcf7990ec336056745ec580d567c7517093b007261d",
+      "sha256": "db7e8f38a3d5eb3d7d11abcf7990ec336056745ec580d567c7517093b007261d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_sensor_service/test_support/host/include/esp_log.h",
+      "destination": "components/services/mcu_sensor_service/test_support/host/include/esp_log.h",
+      "source_sha256": "5e2841f0e0490280f0b6e86b16492cf6b8430be128065f707d72d36d46c964b5",
+      "sha256": "5e2841f0e0490280f0b6e86b16492cf6b8430be128065f707d72d36d46c964b5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/mcu_sensor_service/test_support/host/src/test_mcu_sensor_service.c",
+      "destination": "components/services/mcu_sensor_service/test_support/host/src/test_mcu_sensor_service.c",
+      "source_sha256": "b938f1ed63f27c71d7fe1e3a1e2b09fa683698db30fb86d93ccb3668065d23d5",
+      "sha256": "b938f1ed63f27c71d7fe1e3a1e2b09fa683698db30fb86d93ccb3668065d23d5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/motion_arbiter/CMakeLists.txt",
+      "destination": "components/services/motion_arbiter/CMakeLists.txt",
+      "source_sha256": "996fd6126a8d6fedd8a40cf9c82b09f6b34a2e97a822133ac2fe0a7b65d4174c",
+      "sha256": "996fd6126a8d6fedd8a40cf9c82b09f6b34a2e97a822133ac2fe0a7b65d4174c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/motion_arbiter/include/motion_arbiter.h",
+      "destination": "components/services/motion_arbiter/include/motion_arbiter.h",
+      "source_sha256": "42a6ae44af24c00b110cde7023eb218d7a3e8152ecf6db41c5e38117c29e80f2",
+      "sha256": "42a6ae44af24c00b110cde7023eb218d7a3e8152ecf6db41c5e38117c29e80f2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/motion_arbiter/src/motion_arbiter.c",
+      "destination": "components/services/motion_arbiter/src/motion_arbiter.c",
+      "source_sha256": "f21b6a23fc9426e5a9a569af35a9c3054e5817cdca66341410fec44c531ae101",
+      "sha256": "f21b6a23fc9426e5a9a569af35a9c3054e5817cdca66341410fec44c531ae101",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/motion_arbiter/test_support/host/CMakeLists.txt",
+      "destination": "components/services/motion_arbiter/test_support/host/CMakeLists.txt",
+      "source_sha256": "057e85a35da03a5c2a8e7655b2908c404888e6dd80b4cc75c12c7f7ddfbf38d5",
+      "sha256": "057e85a35da03a5c2a8e7655b2908c404888e6dd80b4cc75c12c7f7ddfbf38d5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/motion_arbiter/test_support/host/include/esp_err.h",
+      "destination": "components/services/motion_arbiter/test_support/host/include/esp_err.h",
+      "source_sha256": "f97652a3f03dc61e03f4c9f629c1e254488f7085ae852d124b50cba691428490",
+      "sha256": "f97652a3f03dc61e03f4c9f629c1e254488f7085ae852d124b50cba691428490",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/motion_arbiter/test_support/host/src/test_motion_arbiter.c",
+      "destination": "components/services/motion_arbiter/test_support/host/src/test_motion_arbiter.c",
+      "source_sha256": "ca92bb1f09f185b6f247544b9d11cc45546863bebe921686e74b3fd46150b2ce",
+      "sha256": "ca92bb1f09f185b6f247544b9d11cc45546863bebe921686e74b3fd46150b2ce",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/watcher_input_router/CMakeLists.txt",
+      "destination": "components/services/watcher_input_router/CMakeLists.txt",
+      "source_sha256": "3ebc3d0a6b1ec66d82072ef9f461b84812b12c491d7047fcb2fdec2e369a604c",
+      "sha256": "3ebc3d0a6b1ec66d82072ef9f461b84812b12c491d7047fcb2fdec2e369a604c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/watcher_input_router/include/watcher_input_router.h",
+      "destination": "components/services/watcher_input_router/include/watcher_input_router.h",
+      "source_sha256": "34c4a300332aeb67d90232bb34cb8a2e2237b1553bc38c1d2834982b1c41576c",
+      "sha256": "34c4a300332aeb67d90232bb34cb8a2e2237b1553bc38c1d2834982b1c41576c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/services/watcher_input_router/src/watcher_input_router.c",
+      "destination": "components/services/watcher_input_router/src/watcher_input_router.c",
+      "source_sha256": "4f1b2ab766585086891e154c864b1be1d971b7c0edd9004ff5fbfc42e03ca401",
+      "sha256": "4f1b2ab766585086891e154c864b1be1d971b7c0edd9004ff5fbfc42e03ca401",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/CMakeLists.txt",
+      "destination": "components/sscma_client/CMakeLists.txt",
+      "source_sha256": "f8e853e498ae7e70bb6b989b72da80e68c3d88f47bcce44a5c7d45faf1845fac",
+      "sha256": "f8e853e498ae7e70bb6b989b72da80e68c3d88f47bcce44a5c7d45faf1845fac",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/README.md",
+      "destination": "components/sscma_client/README.md",
+      "source_sha256": "63f416e55e394f953645d05cbc907a70f2c18f8f4612f8cf907f245e9dde88c6",
+      "sha256": "63f416e55e394f953645d05cbc907a70f2c18f8f4612f8cf907f245e9dde88c6",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/idf_component.yml",
+      "destination": "components/sscma_client/idf_component.yml",
+      "source_sha256": "5279d2d1fcd2d868e5571f8d8e791897f7cb13adb5835c7da3bc3059465890b0",
+      "sha256": "5279d2d1fcd2d868e5571f8d8e791897f7cb13adb5835c7da3bc3059465890b0",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client.h",
+      "destination": "components/sscma_client/include/sscma_client.h",
+      "source_sha256": "feebf654d4d2e0cf6b06a91cc9b8cd7286061ff6472fd25e20cd6213c067989a",
+      "sha256": "feebf654d4d2e0cf6b06a91cc9b8cd7286061ff6472fd25e20cd6213c067989a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_command.h",
+      "destination": "components/sscma_client/include/sscma_client_command.h",
+      "source_sha256": "6681a078f3680fb7e95b44c0321f0b21bee268863566b79bab00511b0238d475",
+      "sha256": "6681a078f3680fb7e95b44c0321f0b21bee268863566b79bab00511b0238d475",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_commands.h",
+      "destination": "components/sscma_client/include/sscma_client_commands.h",
+      "source_sha256": "90c929133d4131ab0147412ec245b1800466ce208b0c8aecf7ca375eb773ddf8",
+      "sha256": "90c929133d4131ab0147412ec245b1800466ce208b0c8aecf7ca375eb773ddf8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_flasher.h",
+      "destination": "components/sscma_client/include/sscma_client_flasher.h",
+      "source_sha256": "2d9ff4ae882363496dbdcca0f0f173dcef490c72a62fe1e4d162577ae360669a",
+      "sha256": "2d9ff4ae882363496dbdcca0f0f173dcef490c72a62fe1e4d162577ae360669a",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_io.h",
+      "destination": "components/sscma_client/include/sscma_client_io.h",
+      "source_sha256": "442d33bdf35cf3cdb9f00a80483d49e30ee9028af6a311c7c9223c18f74a2e75",
+      "sha256": "442d33bdf35cf3cdb9f00a80483d49e30ee9028af6a311c7c9223c18f74a2e75",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_ops.h",
+      "destination": "components/sscma_client/include/sscma_client_ops.h",
+      "source_sha256": "6ff85253bc4e9d9ac01d791b253d29b6558b50abb66495c1dafea58bcc0accd2",
+      "sha256": "6ff85253bc4e9d9ac01d791b253d29b6558b50abb66495c1dafea58bcc0accd2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_sensor_parser.h",
+      "destination": "components/sscma_client/include/sscma_client_sensor_parser.h",
+      "source_sha256": "6dff1f5fd09a2a03678171226010526ccbcceabe482c51e4b4c99f092b9f3eb2",
+      "sha256": "6dff1f5fd09a2a03678171226010526ccbcceabe482c51e4b4c99f092b9f3eb2",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/include/sscma_client_types.h",
+      "destination": "components/sscma_client/include/sscma_client_types.h",
+      "source_sha256": "8d7ae7bb5d8f34a20e0a1977260f5b7952f61557fb3c13daa9f996340e02a679",
+      "sha256": "8d7ae7bb5d8f34a20e0a1977260f5b7952f61557fb3c13daa9f996340e02a679",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/interface/sscma_client_flasher_interface.h",
+      "destination": "components/sscma_client/interface/sscma_client_flasher_interface.h",
+      "source_sha256": "c60cb24348cb03893a75372a87b6c9c73e6b335eea5caea6d38b4fdbe57631a3",
+      "sha256": "c60cb24348cb03893a75372a87b6c9c73e6b335eea5caea6d38b4fdbe57631a3",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/interface/sscma_client_io_interface.h",
+      "destination": "components/sscma_client/interface/sscma_client_io_interface.h",
+      "source_sha256": "6ad7b4ce8c52d5460f20c8d4f4855e6430466ddb59b3a02ab9bdbcd29f6059b9",
+      "sha256": "6ad7b4ce8c52d5460f20c8d4f4855e6430466ddb59b3a02ab9bdbcd29f6059b9",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/license.txt",
+      "destination": "components/sscma_client/license.txt",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_command.c",
+      "destination": "components/sscma_client/src/sscma_client_command.c",
+      "source_sha256": "542e38ec1c564ab20e96af3208b7483938971846816391e9dc5a20b2a922d50c",
+      "sha256": "542e38ec1c564ab20e96af3208b7483938971846816391e9dc5a20b2a922d50c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_flasher.c",
+      "destination": "components/sscma_client/src/sscma_client_flasher.c",
+      "source_sha256": "fa619bdb692595dc0c230bc7f664db54df2f7b7c1f142324c00aa0b058ce4e52",
+      "sha256": "fa619bdb692595dc0c230bc7f664db54df2f7b7c1f142324c00aa0b058ce4e52",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_flasher_we2_spi.c",
+      "destination": "components/sscma_client/src/sscma_client_flasher_we2_spi.c",
+      "source_sha256": "9f61b8e8989d6ac496a4b938d8ee01e90ba00ab1242746d83a17a132d3ca1023",
+      "sha256": "9f61b8e8989d6ac496a4b938d8ee01e90ba00ab1242746d83a17a132d3ca1023",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_flasher_we2_uart.c",
+      "destination": "components/sscma_client/src/sscma_client_flasher_we2_uart.c",
+      "source_sha256": "aacfc950833e3047a44f4c041b192a898c5c05788989303471bdb08e7533ec0e",
+      "sha256": "aacfc950833e3047a44f4c041b192a898c5c05788989303471bdb08e7533ec0e",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_io.c",
+      "destination": "components/sscma_client/src/sscma_client_io.c",
+      "source_sha256": "8de7250cd7517293dbe3fb5e7e897694764bec3f6141cf71f5dee3a43142811f",
+      "sha256": "8de7250cd7517293dbe3fb5e7e897694764bec3f6141cf71f5dee3a43142811f",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_io_i2c.c",
+      "destination": "components/sscma_client/src/sscma_client_io_i2c.c",
+      "source_sha256": "b6f2a104954cfe00cd6ad5a7f9aeb087808ea704e8bac5585240219b9af385b9",
+      "sha256": "b6f2a104954cfe00cd6ad5a7f9aeb087808ea704e8bac5585240219b9af385b9",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_io_spi.c",
+      "destination": "components/sscma_client/src/sscma_client_io_spi.c",
+      "source_sha256": "1666405d9a86bcc49737df2bc4e0a2d148d03092c3f7268def4abfae89d4636d",
+      "sha256": "1666405d9a86bcc49737df2bc4e0a2d148d03092c3f7268def4abfae89d4636d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_io_uart.c",
+      "destination": "components/sscma_client/src/sscma_client_io_uart.c",
+      "source_sha256": "af767e3487fc12218eb630078cc40fd823f78a5d63dec9370097f40e144f5343",
+      "sha256": "af767e3487fc12218eb630078cc40fd823f78a5d63dec9370097f40e144f5343",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_ops.c",
+      "destination": "components/sscma_client/src/sscma_client_ops.c",
+      "source_sha256": "4686b7b408ae62f2879b60a43bb6590fda5d19e6d9007c996d5bcdc4b0f12d16",
+      "sha256": "4686b7b408ae62f2879b60a43bb6590fda5d19e6d9007c996d5bcdc4b0f12d16",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/src/sscma_client_sensor_parser.c",
+      "destination": "components/sscma_client/src/sscma_client_sensor_parser.c",
+      "source_sha256": "b0f1d5f842e7d889419c3c3782f2d39e25c5211f84245a1291bef7ea59f0f841",
+      "sha256": "b0f1d5f842e7d889419c3c3782f2d39e25c5211f84245a1291bef7ea59f0f841",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/test_support/host/CMakeLists.txt",
+      "destination": "components/sscma_client/test_support/host/CMakeLists.txt",
+      "source_sha256": "6ade84ba765c259a57dcbe904624f2c58650acdb0e95b81a6d4cdc62da8f8588",
+      "sha256": "060a0ee734452729829781a8da1eccecc3b39686266d8176feb95b0406a20326",
+      "transform": "public host-test cJSON source path parameter and active Release assertions"
+    },
+    {
+      "source": "firmware/s3/components/sscma_client/test_support/host/src/test_sscma_client_command.c",
+      "destination": "components/sscma_client/test_support/host/src/test_sscma_client_command.c",
+      "source_sha256": "7cb5eaabbd7dd76c8c17183c3e7a9213e464f5c425d518e7bf436e07e5cd97ab",
+      "sha256": "7cb5eaabbd7dd76c8c17183c3e7a9213e464f5c425d518e7bf436e07e5cd97ab",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/CMakeLists.txt",
+      "destination": "components/watcher_hx_ptl/CMakeLists.txt",
+      "source_sha256": "4c7a3dcf16c9505483896f228429dc4d93df9ec6c1eefe23468f9e41b05c2650",
+      "sha256": "4c7a3dcf16c9505483896f228429dc4d93df9ec6c1eefe23468f9e41b05c2650",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/include/watcher_hx_control.h",
+      "destination": "components/watcher_hx_ptl/include/watcher_hx_control.h",
+      "source_sha256": "403a9353b8a06399676315587ddc29893883d52f0c8ed2b4e730ab1beea48ce4",
+      "sha256": "403a9353b8a06399676315587ddc29893883d52f0c8ed2b4e730ab1beea48ce4",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/include/watcher_hx_ptl.h",
+      "destination": "components/watcher_hx_ptl/include/watcher_hx_ptl.h",
+      "source_sha256": "bf10ce8e80a3d6e938f96f38366fa3ada12a54527e7ae08b5d4058812275f2b4",
+      "sha256": "bf10ce8e80a3d6e938f96f38366fa3ada12a54527e7ae08b5d4058812275f2b4",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/CMakeLists.txt",
+      "destination": "components/watcher_hx_ptl/test_support/host/CMakeLists.txt",
+      "source_sha256": "4abf60a9ec102184709b281bed55655c4ac047107bc26ec52375d8604f4ca308",
+      "sha256": "4abf60a9ec102184709b281bed55655c4ac047107bc26ec52375d8604f4ca308",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/driver/uart.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/driver/uart.h",
+      "source_sha256": "896ff92a58a12467e06a358b3c26bfcee0a7eaf4fb6f44591ce3488fd7c4f242",
+      "sha256": "896ff92a58a12467e06a358b3c26bfcee0a7eaf4fb6f44591ce3488fd7c4f242",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/esp_err.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/esp_err.h",
+      "source_sha256": "fe8a9fcddbe1ea33bc8f6acc0e1449f948b320bc68c95721c3e10518a1d8d58b",
+      "sha256": "fe8a9fcddbe1ea33bc8f6acc0e1449f948b320bc68c95721c3e10518a1d8d58b",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/esp_log.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/esp_log.h",
+      "source_sha256": "0db73c8f98b051ae81a4c7041ae977bae6c7104c3bf97e09c42c1d1bd056c437",
+      "sha256": "0db73c8f98b051ae81a4c7041ae977bae6c7104c3bf97e09c42c1d1bd056c437",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/esp_timer.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/esp_timer.h",
+      "source_sha256": "82a7c14acf5d1cdcbea1b23bab880c69562da88013adc34ff5f2ae2115fb08d1",
+      "sha256": "82a7c14acf5d1cdcbea1b23bab880c69562da88013adc34ff5f2ae2115fb08d1",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/freertos/FreeRTOS.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/freertos/FreeRTOS.h",
+      "source_sha256": "be71124a613eb0d17420e13acfdcc3ee91d2059788f35ff2f1b01dbee3774dc7",
+      "sha256": "be71124a613eb0d17420e13acfdcc3ee91d2059788f35ff2f1b01dbee3774dc7",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/freertos/semphr.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/freertos/semphr.h",
+      "source_sha256": "eaf5283b1ab35f4c3a3312f4172c4968e16ba9754d5355f5c7be159d23182017",
+      "sha256": "eaf5283b1ab35f4c3a3312f4172c4968e16ba9754d5355f5c7be159d23182017",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/freertos/task.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/freertos/task.h",
+      "source_sha256": "8a60c1b80bde33b2dcdefc7f66ca77255a445083f0ee9afb2455fb50efc8a1b5",
+      "sha256": "8a60c1b80bde33b2dcdefc7f66ca77255a445083f0ee9afb2455fb50efc8a1b5",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/stubs/sensecap-watcher.h",
+      "destination": "components/watcher_hx_ptl/test_support/host/stubs/sensecap-watcher.h",
+      "source_sha256": "96f45874953f9f51ef2bd2ac4e6b7f89dd89e014707fe997534bd8df42edd15d",
+      "sha256": "96f45874953f9f51ef2bd2ac4e6b7f89dd89e014707fe997534bd8df42edd15d",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/test_control.c",
+      "destination": "components/watcher_hx_ptl/test_support/host/test_control.c",
+      "source_sha256": "a98a14046ada2567dcacc88245819d1cbfaed4c88b1f6616a3eb14704c3af86c",
+      "sha256": "a98a14046ada2567dcacc88245819d1cbfaed4c88b1f6616a3eb14704c3af86c",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/test_support/host/test_ptl_init.c",
+      "destination": "components/watcher_hx_ptl/test_support/host/test_ptl_init.c",
+      "source_sha256": "3f3ea2178296ac5576940a5a8273153cb3deb8213ee10c2790217adff097c0dc",
+      "sha256": "3f3ea2178296ac5576940a5a8273153cb3deb8213ee10c2790217adff097c0dc",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/watcher_hx_control.c",
+      "destination": "components/watcher_hx_ptl/watcher_hx_control.c",
+      "source_sha256": "74f1f5102430ed4b927de9566fe3417edfc41a34a0feda7b2474373d204134e8",
+      "sha256": "74f1f5102430ed4b927de9566fe3417edfc41a34a0feda7b2474373d204134e8",
+      "transform": null
+    },
+    {
+      "source": "firmware/s3/components/watcher_hx_ptl/watcher_hx_ptl.c",
+      "destination": "components/watcher_hx_ptl/watcher_hx_ptl.c",
+      "source_sha256": "7628e44a9d2af0fe5407ab0e8d5ccbebb141e54058af96597849da73dba522b4",
+      "sha256": "7628e44a9d2af0fe5407ab0e8d5ccbebb141e54058af96597849da73dba522b4",
+      "transform": null
+    }
+  ]
+}

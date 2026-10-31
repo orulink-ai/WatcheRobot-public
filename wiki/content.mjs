@@ -55,6 +55,8 @@ export function rewriteLinks(content, source, routes, ref) {
 export async function generate(sourceRoot, destination, ref = 'main') {
   const candidates = ['README.md', 'README_zh.md', 'CONTRIBUTING.md', 'CONTRIBUTING_zh.md', 'SECURITY.md', 'SECURITY_zh.md',
     'firmware/README.md', 'firmware/README_zh.md', 'firmware/sdk/README.md', 'firmware/sdk/README_zh.md',
+    'firmware/sdk/docs/getting-started.md', 'firmware/sdk/docs/getting-started_zh.md',
+    'firmware/sdk/docs/hardware-check.md', 'firmware/sdk/docs/hardware-check_zh.md',
     'hardware/README.md', 'hardware/README_zh.md', 'hardware/pcb/spares.md', 'hardware/pcb/spares_zh.md',
     ...(await markdownFiles(join(sourceRoot, 'docs'))).map(path => 'docs/' + path),
     ...(await markdownFiles(join(sourceRoot, 'skills'))).map(path => 'skills/' + path),

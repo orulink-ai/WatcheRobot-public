@@ -1,2 +1,1 @@
-idf_component_register(SRCS "app_main.c" INCLUDE_DIRS "." REQUIRES watche_hw_body )
-
+idf_component_register(SRCS "app_main.c" INCLUDE_DIRS "." REQUIRES watcher_hw_body )

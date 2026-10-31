@@ -84,4 +84,3 @@ extern "C" {
 #endif
 
 #endif /* _AW88298_REG_H_ */
-

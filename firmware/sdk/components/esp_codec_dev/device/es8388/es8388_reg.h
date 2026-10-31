@@ -77,4 +77,3 @@ extern "C" {
 #endif
 
 #endif //__ES8388_H__
-

@@ -13,4 +13,3 @@ static inline size_t watcher_lvgl_draw_lines(size_t configured, bool claw_enable
 static inline size_t watcher_lcd_queue_depth(size_t configured, bool claw_enabled) {
     return claw_enabled ? 1 : configured;
 }
-

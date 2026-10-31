@@ -4,4 +4,3 @@ idf_component_register(
     REQUIRES hx_media_protocol
 )
 
-

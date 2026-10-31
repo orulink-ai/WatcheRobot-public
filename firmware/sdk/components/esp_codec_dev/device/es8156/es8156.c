@@ -292,4 +292,3 @@ const audio_codec_if_t *es8156_codec_new(es8156_codec_cfg_t *codec_cfg)
     }
     return NULL;
 }
-

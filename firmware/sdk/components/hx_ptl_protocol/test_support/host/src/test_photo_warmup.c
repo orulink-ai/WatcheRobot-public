@@ -23,4 +23,3 @@ int main(void) {
     puts("PASS: cold-start frame rejection, time and frame gates, invalid frames, monotonic clock");
     return 0;
 }
-

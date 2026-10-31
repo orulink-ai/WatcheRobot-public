@@ -1723,4 +1723,3 @@ static const tas5805m_cfg_reg_t tas5805m_registers[] = {
 #endif
 
 #endif
-

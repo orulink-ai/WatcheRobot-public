@@ -80,4 +80,3 @@ typedef enum gain_value {
 #endif
 
 #endif /* _ES7210_H_ */
-

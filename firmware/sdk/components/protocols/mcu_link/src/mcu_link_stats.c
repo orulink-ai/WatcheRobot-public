@@ -99,4 +99,3 @@ void mcu_link_stats_copy(mcu_link_stats_t *dst, const mcu_link_stats_t *src) {
 
     *dst = *src;
 }
-

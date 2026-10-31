@@ -280,4 +280,3 @@ err:
     xSemaphoreGive(i2c_client_io->lock);
     return ret;
 }
-

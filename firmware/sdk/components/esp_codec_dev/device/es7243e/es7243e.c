@@ -16,6 +16,7 @@ typedef struct {
     const audio_codec_ctrl_if_t *ctrl_if;
     bool                         is_open;
     bool                         enabled;
+    bool                         deferred_init;
 } audio_codec_es7243e_t;
 
 static uint8_t get_db_reg(float db)
@@ -138,6 +139,15 @@ static int es7243e_enable(const audio_codec_if_t *h, bool enable)
     }
     if (codec->is_open == false) {
         return ESP_CODEC_DEV_WRONG_STATE;
+    }
+    if (enable && codec->deferred_init) {
+        es7243e_codec_cfg_t cfg = {.ctrl_if = codec->ctrl_if};
+        int ret = es7243e_open(h, &cfg, sizeof(cfg));
+        if (ret == ESP_CODEC_DEV_OK)
+            codec->deferred_init = false;
+        else
+            codec->enabled = true; /* Partial writes require checked disable. */
+        return ret;
     }
     if (codec->enabled == enable) {
         return ESP_CODEC_DEV_OK;
@@ -262,6 +272,12 @@ const audio_codec_if_t *es7243e_codec_new(es7243e_codec_cfg_t *codec_cfg)
     codec->base.dump_reg = es7243e_dump;
     codec->base.close = es7243e_close;
     do {
+        if (codec_cfg->start_disabled) {
+            codec->ctrl_if = codec_cfg->ctrl_if;
+            codec->is_open = true;
+            codec->deferred_init = true;
+            return &codec->base;
+        }
         int ret = codec->base.open(&codec->base, codec_cfg, sizeof(es7243e_codec_cfg_t));
         if (ret != 0) {
             ESP_LOGE(TAG, "Open fail");
@@ -274,4 +290,3 @@ const audio_codec_if_t *es7243e_codec_new(es7243e_codec_cfg_t *codec_cfg)
     }
     return NULL;
 }
-

@@ -15,4 +15,3 @@ void test_exit_critical(void);
 #ifdef __cplusplus
 }
 #endif
-

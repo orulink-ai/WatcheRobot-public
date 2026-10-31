@@ -29,4 +29,3 @@ else()
     target_compile_options(mcu_motion_service_host_tests PRIVATE -UNDEBUG)
 endif()
 add_test(NAME mcu_motion_service_host_tests COMMAND mcu_motion_service_host_tests)
-

@@ -79,4 +79,3 @@ struct sscma_client_io_t {
 #ifdef __cplusplus
 }
 #endif
-

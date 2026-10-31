@@ -36,4 +36,3 @@ esp_err_t sscma_client_io_flush(sscma_client_io_t *io) {
     ESP_RETURN_ON_FALSE(io->flush, ESP_ERR_NOT_SUPPORTED, TAG, "flush not supported");
     return io->flush(io);
 }
-

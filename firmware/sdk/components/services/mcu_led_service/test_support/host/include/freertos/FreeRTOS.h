@@ -12,4 +12,3 @@ typedef uint32_t TickType_t;
 #define portMAX_DELAY UINT32_MAX
 
 #endif /* TEST_FREERTOS_H */
-

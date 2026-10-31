@@ -8,4 +8,3 @@ repository_info:
   path: components/esp_codec_dev
 url: https://github.com/espressif/esp-adf/tree/master/components/esp_codec_dev
 version: 1.2.0
-

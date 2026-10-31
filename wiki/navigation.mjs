@@ -1,7 +1,8 @@
 const groups = [
   ['使用指南', 'User guides', ['/', '/guide/getting-started', '/products/watcherobot/device-guide', '/guide/client-and-device', '/docs/flashing', '/docs/sd-card-assets', '/docs/action-test', '/guide/firmware-version-management']],
-  ['开发者文档', 'Development', ['/docs/sdk', '/sdk/', '/products/watcherobot/capabilities', '/products/watcherobot/voice']],
-  ['硬件与资源', 'Hardware and resources', ['/guide/reproduction', '/docs/pcb-fabrication', '/guide/assembly', '/hardware/', '/hardware/pcb/spares', '/firmware/', '/docs/versions', '/docs/compatibility']],
+  ['硬件专区', 'Hardware', ['/guide/reproduction', '/docs/pcb-fabrication', '/guide/assembly', '/hardware/', '/hardware/pcb/spares', '/firmware/', '/docs/versions', '/docs/compatibility']],
+  ['Python SDK', 'Python SDK', ['/docs/sdk', '/sdk/', '/products/watcherobot/capabilities', '/products/watcherobot/voice']],
+  ['C SDK（开发预览）', 'C SDK (Preview)', ['/docs/embedded-sdk', '/firmware/sdk/', '/firmware/sdk/docs/getting-started', '/firmware/sdk/docs/hardware-check']],
   ['支持与贡献', 'Support and contribution', ['/products/watcherobot/community', '/troubleshooting/', '/CONTRIBUTING', '/SECURITY', '/docs/governance', '/docs/release-process', '/skills/watche-release-flash/', '/skills/watche-sd-card-write/']],
 ];
 

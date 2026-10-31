@@ -31,4 +31,3 @@ esp_err_t mcu_link_test_support_parse_packet(const uint8_t *wire, size_t wire_le
 #endif
 
 #endif /* MCU_LINK_TEST_SUPPORT_H */
-

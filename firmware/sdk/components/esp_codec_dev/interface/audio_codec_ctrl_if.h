@@ -40,4 +40,3 @@ int audio_codec_delete_ctrl_if(const audio_codec_ctrl_if_t *ctrl_if);
 #endif
 
 #endif
-

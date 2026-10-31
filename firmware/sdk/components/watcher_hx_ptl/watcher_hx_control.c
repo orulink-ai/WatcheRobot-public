@@ -14,6 +14,9 @@
 static bool owned;
 static unsigned request_id;
 static uint32_t active_generation;
+/* A transmitted MODE may have advanced HX even when its ACK is lost.
+ * Never classify that unconfirmed generation as a foreign owner. */
+static bool generation_unknown;
 static StaticSemaphore_t control_lock_storage;
 static SemaphoreHandle_t control_lock;
 static portMUX_TYPE lock_init_guard = portMUX_INITIALIZER_UNLOCKED;
@@ -121,6 +124,20 @@ static esp_err_t status(control_state_t *out) {
     return exchange(request, id, out);
 }
 
+static esp_err_t verify_ready_locked(void) {
+    control_state_t state;
+    for (unsigned attempt = 0; attempt < 3; ++attempt) {
+        const esp_err_t result = status(&state);
+        if (result == ESP_OK) {
+            ESP_LOGI("HX_CONTROL", "Normal UART1 verified generation=%u mode=%u", state.generation, state.mode);
+            return ESP_OK;
+        }
+        if (result != ESP_ERR_TIMEOUT)
+            return result;
+    }
+    return ESP_ERR_TIMEOUT;
+}
+
 static esp_err_t init_locked(void) {
     if (owned)
         return ESP_OK;
@@ -137,20 +154,32 @@ static esp_err_t init_locked(void) {
     result = uart_param_config(BSP_SSCMA_FLASHER_UART_NUM, &config);
     if (result == ESP_OK)
         result = uart_set_pin(BSP_SSCMA_FLASHER_UART_NUM, BSP_SSCMA_FLASHER_UART_TX, BSP_SSCMA_FLASHER_UART_RX, -1, -1);
-    control_state_t state;
-    for (unsigned attempt = 0; result == ESP_OK && attempt < 3; ++attempt) {
-        if (status(&state) == ESP_OK) {
-            ESP_LOGI("HX_CONTROL", "Normal UART1 verified generation=%u mode=%u", state.generation, state.mode);
-            return ESP_OK;
+    if (result == ESP_OK) {
+        result = verify_ready_locked();
+        if (result == ESP_ERR_TIMEOUT) {
+            /* ESP32 reboot/flash can leave the independently powered Himax
+             * unresponsive. Only initialization failure may reset it, once,
+             * before a caller starts a media/model session. Match the board's
+             * existing SSCMA reset pulse; never reset an owned live control. */
+            ESP_LOGW("HX_CONTROL", "Initialization handshake timed out; trying one HX reset");
+            result = bsp_exp_io_set_level(BSP_SSCMA_CLIENT_RST, 0);
+            if (result == ESP_OK) {
+                vTaskDelay(pdMS_TO_TICKS(100));
+                result = bsp_exp_io_set_level(BSP_SSCMA_CLIENT_RST, 1);
+            }
+            if (result == ESP_OK) {
+                vTaskDelay(pdMS_TO_TICKS(200));
+                result = verify_ready_locked();
+            }
         }
-        if (attempt == 2)
-            result = ESP_ERR_TIMEOUT;
     }
+    if (result == ESP_OK)
+        return ESP_OK;
     deinit_locked();
     return result;
 }
 
-static esp_err_t mode_locked(unsigned mode, unsigned model, bool preview) {
+static esp_err_t mode_locked(unsigned mode, unsigned model, bool preview, const uint32_t *expected, bool *stopped) {
     if (mode > 2 || model > 4 || (mode == 2 ? model == 0 : model != 0) || (preview && mode != 2))
         return ESP_ERR_INVALID_ARG;
     control_state_t state;
@@ -159,17 +188,58 @@ static esp_err_t mode_locked(unsigned mode, unsigned model, bool preview) {
         ESP_LOGW("HX_CONTROL", "Mode %u status query failed: %s", mode, esp_err_to_name(result));
         return result;
     }
+    if (generation_unknown) {
+        if (state.result != 0 || state.mode != 0 || state.model != 0 || state.debug != 0 || state.error != 0)
+            return ESP_ERR_INVALID_STATE;
+        /* Fresh, fully idle HX is safe regardless of who advanced it. */
+        generation_unknown = false;
+        active_generation = state.generation;
+        if (mode == 0) {
+            if (stopped)
+                *stopped = true;
+            ESP_LOGI("HX_CONTROL", "mode=0 actual=%u error=0 reconciled_idle=1", state.generation);
+            return ESP_OK;
+        }
+    }
+    if (expected && state.generation != *expected) {
+        /* Only a fully validated idle state proves shutdown. A foreign
+         * stable pipeline is preserved; switching/error/invalid pairs retain
+         * cleanup ownership until a later fresh query can resolve them. */
+        if (state.result != 0 || state.error != 0)
+            return ESP_ERR_INVALID_STATE;
+        if (state.mode == 0 && state.model == 0 && state.debug == 0) {
+            *stopped = true;
+            ESP_LOGI("HX_CONTROL", "owned stop expected=%lu actual=%u mode=0 error=0 already_idle=1",
+                     (unsigned long)*expected, state.generation);
+            return ESP_OK;
+        }
+        if ((state.mode == 1 && state.model == 0 && state.debug == 0) ||
+            (state.mode == 2 && state.model >= 1 && state.model <= 4))
+            return ESP_OK; /* Foreign owner: never send a MODE command. */
+        return ESP_ERR_INVALID_STATE;
+    }
     const bool drain = state.mode == 1 || state.mode == 3 || state.mode == 4 || state.debug;
     char request[96];
     unsigned id = ++request_id;
-    snprintf(request, sizeof(request), "WV1 MODE %u %u %u %u %u\r\n", id, state.generation, mode, model, preview ? 1U : 0U);
+    snprintf(request, sizeof(request), "WV1 MODE %u %u %u %u %u\r\n", id, state.generation, mode, model,
+             preview ? 1U : 0U);
+    generation_unknown = true;
     result = exchange(request, id, &state);
     if (result != ESP_OK) {
         ESP_LOGW("HX_CONTROL", "Mode %u request ACK missing: %s", mode, esp_err_to_name(result));
         return result;
     }
-    if (state.result > 1)
+    if (state.result > 1) {
+        /* WV_INVALID/BUSY/STALE reject before accepting the request. Keep
+         * the pre-send identity; the reply may describe a foreign owner.
+         * TIMEOUT/FAILED are not proof of non-execution. */
+        if (state.result >= 2 && state.result <= 4)
+            generation_unknown = false;
         return ESP_ERR_INVALID_STATE;
+    }
+    /* Acceptance confirms identity even if later completion polling fails. */
+    active_generation = state.generation;
+    generation_unknown = false;
     unsigned generation = state.generation;
     const int64_t deadline = esp_timer_get_time() + 3500000;
     while (state.mode == 3 && esp_timer_get_time() < deadline) {
@@ -194,6 +264,11 @@ static esp_err_t mode_locked(unsigned mode, unsigned model, bool preview) {
     if (state.mode != mode || state.model != model || state.debug != (unsigned)preview || state.error != 0)
         return ESP_FAIL;
     active_generation = state.generation;
+    if (stopped) {
+        *stopped = true;
+        ESP_LOGI("HX_CONTROL", "owned stop expected=%lu actual=%u mode=%u error=%u",
+                 (unsigned long)*expected, state.generation, state.mode, state.error);
+    }
     return ESP_OK;
 }
 uint32_t watcher_hx_control_generation(void) {
@@ -223,7 +298,16 @@ esp_err_t watcher_hx_control_mode(unsigned mode, unsigned model) {
 }
 esp_err_t watcher_hx_control_mode_preview(unsigned mode, unsigned model, bool preview) {
     take_control_lock();
-    esp_err_t result = mode_locked(mode, model, preview);
+    esp_err_t result = mode_locked(mode, model, preview, NULL, NULL);
+    xSemaphoreGive(control_lock);
+    return result;
+}
+esp_err_t watcher_hx_control_stop_owned(uint32_t expected_generation, bool *stopped) {
+    if (!stopped)
+        return ESP_ERR_INVALID_ARG;
+    *stopped = false;
+    take_control_lock();
+    esp_err_t result = mode_locked(0, 0, false, &expected_generation, stopped);
     xSemaphoreGive(control_lock);
     return result;
 }
@@ -250,4 +334,3 @@ esp_err_t watcher_hx_control_status(watcher_hx_state_t *out) {
     xSemaphoreGive(control_lock);
     return result;
 }
-

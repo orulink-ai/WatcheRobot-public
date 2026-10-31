@@ -85,6 +85,8 @@ typedef struct {
 
 typedef struct {
     bool include_preview_image;
+    /* PTL-only model-free JPEG delivery through the same owned lifecycle. */
+    bool jpeg_only;
 } hal_camera_inference_options_t;
 
 typedef struct {
@@ -112,7 +114,9 @@ typedef void (*hal_camera_inference_cb_t)(const hal_camera_inference_frame_t *fr
  *
  * Passing NULL unregisters the observer. The current state is replayed after
  * registration. Callbacks run synchronously in the calling task, outside the
- * camera HAL lock, and must remain brief. This API is not ISR-safe.
+ * camera state lock, and must remain brief. Lifecycle/service locks may still
+ * be held: observers must not re-enter camera HAL or service lifecycle APIs
+ * (including start/stop and observer registration). This API is not ISR-safe.
  */
 esp_err_t hal_camera_set_capture_activity_callback(hal_camera_capture_activity_cb_t cb, void *ctx);
 
@@ -193,7 +197,16 @@ esp_err_t hal_camera_start_inference(hal_camera_inference_cb_t cb, void *ctx);
 esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
                                         const hal_camera_inference_options_t *options);
 esp_err_t hal_camera_stop_inference(void);
+/* Atomically stop only the matching callback/context owner. No active owner or
+ * a different owner is an ESP_OK no-op. NULL callback is invalid. A matching
+ * stop failure retains ownership for retry; never use owned_by + legacy stop. */
+esp_err_t hal_camera_stop_inference_owned(hal_camera_inference_cb_t cb, void *ctx);
 bool hal_camera_is_inferencing(void);
+/* Identity check for acquisition rollback; does not transfer ownership. */
+bool hal_camera_inference_owned_by(hal_camera_inference_cb_t cb, void *ctx);
+/* Zero-wait: OK = identity valid; INVALID_STATE = known lost;
+ * TIMEOUT = unknown (unavailable/busy lock or invalid callback). */
+esp_err_t hal_camera_inference_owner_status(hal_camera_inference_cb_t cb, void *ctx);
 esp_err_t hal_camera_get_inference_stats(hal_camera_inference_stats_t *out_stats);
 esp_err_t hal_camera_get_model_info(hal_camera_model_info_t *out_info);
 /* Read installed descriptors without selecting or writing slots. */
@@ -225,4 +238,3 @@ esp_err_t hal_camera_get_diagnostics(hal_camera_diagnostics_t *out_diagnostics);
 bool hal_camera_is_streaming(void);
 
 #endif /* HAL_CAMERA_H */
-

@@ -169,4 +169,3 @@ esp_err_t mcu_frame_unpack(const uint8_t *buffer, size_t buffer_len, mcu_frame_t
     *payload_len = header.payload_len;
     return ESP_OK;
 }
-

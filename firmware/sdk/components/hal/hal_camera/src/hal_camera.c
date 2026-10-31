@@ -1522,6 +1522,8 @@ esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
     hal_camera_model_info_t model = {0};
     esp_err_t ret;
     const bool include_preview_image = options != NULL && options->include_preview_image;
+    if (options && options->jpeg_only)
+        return ESP_ERR_NOT_SUPPORTED; /* Never silently run a model for JPEG-only demand. */
 
     ESP_RETURN_ON_FALSE(cb != NULL, ESP_ERR_INVALID_ARG, TAG, "inference callback required");
     ESP_RETURN_ON_ERROR(hal_camera_get_model_info(&model), TAG, "active model query failed");
@@ -1564,7 +1566,7 @@ esp_err_t hal_camera_start_inference_ex(hal_camera_inference_cb_t cb, void *ctx,
     return ESP_OK;
 }
 
-esp_err_t hal_camera_stop_inference(void) {
+static esp_err_t stop_inference_internal(hal_camera_inference_cb_t cb, void *ctx) {
     esp_err_t ret = ESP_OK;
 
     if (s_ctx.lock == NULL) {
@@ -1572,6 +1574,12 @@ esp_err_t hal_camera_stop_inference(void) {
     }
     if (xSemaphoreTake(s_ctx.lock, portMAX_DELAY) != pdTRUE) {
         return ESP_FAIL;
+    }
+    /* Identity validation and the stopping reservation are atomic. New starts
+     * cannot replace this owner while the blocking break runs unlocked. */
+    if (cb != NULL && (!s_ctx.inferencing || s_ctx.inference_cb != cb || s_ctx.inference_ctx != ctx)) {
+        xSemaphoreGive(s_ctx.lock);
+        return ESP_OK;
     }
     if (s_ctx.inference_stopping) {
         xSemaphoreGive(s_ctx.lock);
@@ -1606,6 +1614,35 @@ esp_err_t hal_camera_stop_inference(void) {
         ESP_LOGW(TAG, "continuous inference break failed; camera remains busy for retry: %s", esp_err_to_name(ret));
     }
     return ret;
+}
+
+esp_err_t hal_camera_stop_inference(void) {
+    return stop_inference_internal(NULL, NULL);
+}
+
+esp_err_t hal_camera_stop_inference_owned(hal_camera_inference_cb_t cb, void *ctx) {
+    if (cb == NULL)
+        return ESP_ERR_INVALID_ARG;
+    return stop_inference_internal(cb, ctx);
+}
+
+esp_err_t hal_camera_inference_owner_status(hal_camera_inference_cb_t cb, void *ctx) {
+    if (!s_ctx.lock || !cb || xSemaphoreTake(s_ctx.lock, 0) != pdTRUE)
+        return ESP_ERR_TIMEOUT;
+    bool lost = !s_ctx.inferencing || s_ctx.inference_stopping || s_ctx.inference_cb != cb || s_ctx.inference_ctx != ctx;
+    xSemaphoreGive(s_ctx.lock);
+    return lost ? ESP_ERR_INVALID_STATE : ESP_OK;
+}
+
+bool hal_camera_inference_owned_by(hal_camera_inference_cb_t cb, void *ctx) {
+    if (!s_ctx.lock || !cb)
+        return false;
+    if (xSemaphoreTake(s_ctx.lock, 0) != pdTRUE)
+        return false;
+    bool owned = s_ctx.inferencing && !s_ctx.inference_stopping &&
+                 s_ctx.inference_cb == cb && s_ctx.inference_ctx == ctx;
+    xSemaphoreGive(s_ctx.lock);
+    return owned;
 }
 
 bool hal_camera_is_inferencing(void) {
@@ -1650,4 +1687,3 @@ esp_err_t hal_camera_list_models(hal_camera_model_info_t *models, size_t capacit
     (void)count;
     return ESP_ERR_NOT_SUPPORTED;
 }
-

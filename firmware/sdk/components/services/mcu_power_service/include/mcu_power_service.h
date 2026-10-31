@@ -28,4 +28,3 @@ esp_err_t mcu_power_service_handle_link_event(const mcu_link_event_t *event);
 #endif
 
 #endif /* MCU_POWER_SERVICE_H */
-

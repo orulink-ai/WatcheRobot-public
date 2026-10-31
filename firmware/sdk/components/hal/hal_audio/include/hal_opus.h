@@ -28,4 +28,3 @@ int hal_opus_encode(const uint8_t *pcm_in, int pcm_len, uint8_t *out_buf, int ou
 int hal_opus_decode(const uint8_t *in_data, int in_len, uint8_t *pcm_out, int pcm_max_len);
 
 #endif /* HAL_OPUS_H */
-

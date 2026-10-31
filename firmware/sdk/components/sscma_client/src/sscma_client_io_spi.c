@@ -571,4 +571,3 @@ err:
     xSemaphoreGive(spi_client_io->lock);
     return ret;
 }
-

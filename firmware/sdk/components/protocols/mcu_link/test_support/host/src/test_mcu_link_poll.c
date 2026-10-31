@@ -344,6 +344,9 @@ static void test_poll_captures_hello_rsp_git_metadata(void) {
     assert(mcu_link_poll(&link, &event) == ESP_OK);
     assert(event.type == MCU_LINK_RX_EVENT_HELLO_RSP);
     assert(event.frame.header.seq == 21u);
+    /* OTA verification needs HELLO metadata, not a subscribed sensor baseline. */
+    assert(mcu_link_is_link_ready(&link));
+    assert(!mcu_link_is_ready(&link));
     assert(mcu_link_copy_peer_info(&link, &info) == ESP_OK);
     assert(info.version_valid);
     assert(info.fw_major == 0u);
@@ -531,4 +534,3 @@ int main(void) {
 
     return 0;
 }
-
