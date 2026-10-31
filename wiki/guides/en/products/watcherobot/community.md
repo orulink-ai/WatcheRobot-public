@@ -4,7 +4,9 @@ English | [简体中文](../../../products/watcherobot/community.md)
 
 ## Join the community {#join}
 
-Scan this code with WeChat and follow the prompts to join the group. On a phone, save the image and select it from the album in WeChat Scan.
+**Discord:** [Join the WatcheRobot Discord community](https://discord.gg/VJWGxPDGm).
+
+**WeChat:** Scan this code with WeChat and follow the prompts to join the group. On a phone, save the image and select it from the album in WeChat Scan.
 
 <div class="community-qr">
 

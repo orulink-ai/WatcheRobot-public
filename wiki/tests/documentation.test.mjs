@@ -84,6 +84,15 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
   }
 });
 
+test('both community pages offer Discord without removing the existing WeChat QR code', async () => {
+  for (const prefix of ['', 'en/']) {
+    const content = await read(`wiki/guides/${prefix}products/watcherobot/community.md`);
+    const join = content.split('{#join}')[1].split('\n## ')[0];
+    assert.match(join, /\[.*Discord.*\]\(https:\/\/discord\.gg\/VJWGxPDGm\)/);
+    assert.match(join, /community-wechat\.jpg/);
+  }
+});
+
 test('new guides have bilingual counterparts and locally owned image assets', async () => {
   for (const name of ['device-guide', 'capabilities', 'community', 'voice']) {
     const zhPath = `wiki/guides/products/watcherobot/${name}.md`;

@@ -4,7 +4,9 @@
 
 ## 加入社区 {#join}
 
-用微信「扫一扫」扫描二维码，按提示加入交流群；手机阅读时可保存图片，再从微信扫一扫的相册中选择。
+**Discord：**[加入 WatcheRobot Discord 社区](https://discord.gg/VJWGxPDGm)。
+
+**微信：**用微信「扫一扫」扫描二维码，按提示加入交流群；手机阅读时可保存图片，再从微信扫一扫的相册中选择。
 
 <div class="community-qr">
 
