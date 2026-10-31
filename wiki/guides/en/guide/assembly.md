@@ -12,9 +12,7 @@ Keep power disconnected while assembling, inserting flat cables, or changing wir
 
 ### Structure and major modules
 
-<video controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 12px;">
-  <source src="/media/docs/assembly/parts-overview.mp4" type="video/mp4">
-</video>
+![WatcheRobot structure and major modules](/media/docs/assembly/01_parts_reveal_preview_full_cover.gif)
 
 | Part | Purpose and check |
 | --- | --- |
@@ -27,17 +25,13 @@ Keep power disconnected while assembling, inserting flat cables, or changing wir
 
 ### Electronics and wiring
 
-<video controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 12px;">
-  <source src="/media/docs/assembly/electronics-overview.mp4" type="video/mp4">
-</video>
+![WatcheRobot electronics and wiring](/media/docs/assembly/02_electronics_reveal_full_cover.gif)
 
 The set includes the battery, light component, debug harness, FPC flat cable, bottom power PCB, Type-C harness, touch copper foil, two feedback servos, and power cable. Confirm the exact name and location of the small machined part from the BOM and the physical set.
 
 ### Screws and fasteners
 
-<video controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 12px;">
-  <source src="/media/docs/assembly/fasteners-overview.mp4" type="video/mp4">
-</video>
+![WatcheRobot screws and fasteners](/media/docs/assembly/03_screws_reveal_full_cover.gif)
 
 The source shows M2×6, M2×8, and M2×20 screw groups. Do not interchange lengths. Confirm quantities and locations from the BOM, hole depth, and video before tightening; a screw must not press against the PCB, battery, or moving mechanism.
 

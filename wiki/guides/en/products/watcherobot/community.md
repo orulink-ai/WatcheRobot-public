@@ -1,12 +1,12 @@
 English | [简体中文](../../../products/watcherobot/community.md)
 
-# Join the WatcheRobot community
+# Support and contribution
 
-Building your robot, developing an app, or troubleshooting a problem? Join our WeChat community to share assembly experience, development tutorials, and applications with other makers.
+## Join the community {#join}
 
-## Join with WeChat {#join}
+**Discord:** [Join the WatcheRobot Discord community](https://discord.gg/VJWGxPDGm).
 
-Open **Scan** in WeChat, scan this QR code, and follow the prompts. On a phone, save the image and select it from the album in WeChat Scan.
+**WeChat:** Scan this code with WeChat and follow the prompts to join the group. On a phone, save the image and select it from the album in WeChat Scan.
 
 <div class="community-qr">
 
@@ -16,10 +16,21 @@ Open **Scan** in WeChat, scan this QR code, and follow the prompts. On a phone, 
 
 If the code has expired or you cannot join, report it through [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues).
 
-## Asking for help {#report}
+## Questions and bug reports {#report}
 
-- Include your device, firmware version, client, and operating system.
-- Describe the steps and attach an error screenshot or log. For connection issues, specify the connector used.
-- Remove Wi-Fi passwords, pairing codes, access tokens, and other sensitive information.
+Check [troubleshooting](../../troubleshooting/index.md) first. If the problem persists, share the following in the community or [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues):
 
-You can also check the [device guide](device-guide.md), [flashing guide](../../../../../docs/flashing.md), or [troubleshooting](../../troubleshooting/index.md).
+- Device model, head and body firmware versions, client version, and computer operating system.
+- Connection method, reproduction steps, expected and actual results, and redacted screenshots or logs.
+
+## Contribute {#contribute}
+
+Before proposing documentation, hardware, or tool improvements, read the [GitHub contribution guide](https://github.com/orulink-ai/WatcheRobot-public/blob/main/CONTRIBUTING.md). See the original [repository rules](https://github.com/orulink-ai/WatcheRobot-public/blob/main/docs/governance.md) and [release rules](https://github.com/orulink-ai/WatcheRobot-public/blob/main/docs/release-process.md) for scope and publishing requirements.
+
+## Privacy and security reports {#security}
+
+Remove Wi-Fi information, pairing codes, tokens, and private logs before posting or submitting files. If a report involves credentials or unpublished vulnerability details, do not post them in a public issue or group chat; follow the [GitHub security policy](https://github.com/orulink-ai/WatcheRobot-public/blob/main/SECURITY.md) to contact maintainers privately and share only the reproduction information needed.
+
+## Tutorials and AI tools {#tools}
+
+For the actual steps, follow the [flashing guide](../../../../../docs/flashing.md) and [SD-card asset guide](../../../../../docs/sd-card-assets.md); for AI assistance, have your assistant read the original GitHub [flashing Skill](https://github.com/orulink-ai/WatcheRobot-public/blob/main/skills/watche-release-flash/SKILL.md) or [SD-card writing Skill](https://github.com/orulink-ai/WatcheRobot-public/blob/main/skills/watche-sd-card-write/SKILL.md).

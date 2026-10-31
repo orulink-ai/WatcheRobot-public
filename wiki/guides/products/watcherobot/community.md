@@ -1,12 +1,12 @@
 [English](../../en/products/watcherobot/community.md) | 简体中文
 
-# 加入 WatcheRobot 社区
+# 支持与贡献
 
-正在拼装机器人、开发应用，或遇到了使用问题？欢迎加入微信交流群，与其他开发者和创作者交流拼装经验、开发教程和应用案例。
+## 加入社区 {#join}
 
-## 微信扫码加入 {#join}
+**Discord：**[加入 WatcheRobot Discord 社区](https://discord.gg/VJWGxPDGm)。
 
-打开微信「扫一扫」，扫描下方二维码，按微信页面提示加入。手机阅读时，可保存图片后在微信扫一扫中从相册选择。
+**微信：**用微信「扫一扫」扫描二维码，按提示加入交流群；手机阅读时可保存图片，再从微信扫一扫的相册中选择。
 
 <div class="community-qr">
 
@@ -14,12 +14,23 @@
 
 </div>
 
-如果二维码失效或无法加入，请通过 [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues) 反馈。
+二维码失效或无法加入时，请通过 [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues) 反馈。
 
-## 提问时带上这些信息 {#report}
+## 提问与报错 {#report}
 
-- 设备型号、固件版本，以及使用的客户端和电脑系统。
-- 操作步骤、错误截图或日志；连接问题请说明使用的接口。
-- 隐去 Wi-Fi 密码、配对码、访问令牌等敏感信息。
+先查看[故障排查](../../troubleshooting/index.md)。仍未解决时，在社区或 [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues) 提供：
 
-也可以先查看[设备使用指南](device-guide.md)、[烧录指南](../../../../docs/flashing_zh.md)或[故障排查](../../troubleshooting/index.md)。
+- 设备型号、头部与身体固件版本、客户端版本及电脑系统。
+- 连接方式、复现步骤、预期与实际结果，以及脱敏后的截图或日志。
+
+## 参与贡献 {#contribute}
+
+提交文档、硬件或工具改进前，先读 [GitHub 贡献指南](https://github.com/orulink-ai/WatcheRobot-public/blob/main/CONTRIBUTING_zh.md)；收录范围与发布要求见[仓库规则原文](https://github.com/orulink-ai/WatcheRobot-public/blob/main/docs/governance_zh.md)和[发布规则原文](https://github.com/orulink-ai/WatcheRobot-public/blob/main/docs/release-process_zh.md)。
+
+## 隐私与安全报告 {#security}
+
+公开提问或提交文件前，移除 Wi-Fi 信息、配对码、令牌和私人日志。报告涉及凭据或未公开漏洞细节时，不要发到公开 Issue 或群聊；按 [GitHub 安全政策](https://github.com/orulink-ai/WatcheRobot-public/blob/main/SECURITY_zh.md)私下联系维护者，仅提供必要的复现信息。
+
+## 操作教程与 AI 工具 {#tools}
+
+实际操作见[烧录指南](../../../../docs/flashing_zh.md)与 [SD 卡资源指南](../../../../docs/sd-card-assets_zh.md)；需要 AI 助手协助时，让它阅读 GitHub 原文[烧录 Skill](https://github.com/orulink-ai/WatcheRobot-public/blob/main/skills/watche-release-flash/SKILL_zh.md)或 [SD 卡写入 Skill](https://github.com/orulink-ai/WatcheRobot-public/blob/main/skills/watche-sd-card-write/SKILL_zh.md)。

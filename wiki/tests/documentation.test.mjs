@@ -44,6 +44,18 @@ test('C SDK preview is separate from Python and HIL maintenance stays hidden', (
   }
 });
 
+test('resource indexes and support rules use a single sidebar entry in each language', () => {
+  const hardware = ['/guide/reproduction', '/docs/pcb-fabrication', '/guide/assembly', '/hardware/'];
+  const removed = ['/hardware/pcb/spares', '/firmware/', '/docs/versions', '/docs/compatibility', '/CONTRIBUTING', '/SECURITY', '/docs/governance', '/docs/release-process', '/skills/watche-release-flash/', '/skills/watche-sd-card-write/', '/troubleshooting/'];
+  for (const lang of ['zh', 'en']) {
+    const prefix = lang === 'zh' ? '' : '/en';
+    const catalog = [...hardware, ...removed, '/products/watcherobot/community'].map(route => ({lang, route:prefix + route, title:route}));
+    const groups = buildSidebar(catalog, lang)[0].items;
+    assert.deepEqual(groups.find(g => g.text === (lang === 'zh' ? '硬件专区' : 'Hardware')).items.map(i => i.link), hardware.map(r => prefix + r));
+    assert.deepEqual(groups.find(g => g.text === (lang === 'zh' ? '支持与贡献' : 'Support and contribution')).items.map(i => i.link), [prefix + '/products/watcherobot/community']);
+  }
+});
+
 test('assembly tutorial is bilingual, linked from hardware entry points, and uses published media', async () => {
   const pages = [
     ['wiki/guides/guide/assembly.md', '/guide/assembly', '整机拼装教程'],
@@ -52,9 +64,10 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
   for (const [path, route, title] of pages) {
     const content = await read(path);
     assert.match(content, new RegExp(`^# ${title}`, 'm'));
-    for (const media of ['parts-overview.mp4', 'electronics-overview.mp4', 'fasteners-overview.mp4']) {
-      assert.match(content, new RegExp(`/media/docs/assembly/${media}`));
+    for (const media of ['01_parts_reveal_preview_full_cover.gif', '02_electronics_reveal_full_cover.gif', '03_screws_reveal_full_cover.gif']) {
+      assert.match(content, new RegExp(`/media/docs/assembly/${media.replace('.', '\\.')}`));
     }
+    assert.doesNotMatch(content, /(?:parts|electronics|fasteners)-overview\.mp4/);
     assert.match(content, /https:\/\/wiki\.orulink\.ai\/media-assets\/assembly\/watcherobot-assembly-tutorial-720p-7cd0f58e\.mp4/);
     assert.doesNotMatch(content, /github\.com\/orulink-ai\/WatcheRobot-public\/releases\/download\/wiki-media-assembly/);
     const sections = [...content.matchAll(/^## .+\{#([^}]+)\}/gm)].map(match => match[1]);
@@ -68,6 +81,15 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
     const content = await read(path);
     assert.match(content, /assembly\.md/);
     assert.doesNotMatch(content, /文字步骤|text steps/);
+  }
+});
+
+test('both community pages offer Discord without removing the existing WeChat QR code', async () => {
+  for (const prefix of ['', 'en/']) {
+    const content = await read(`wiki/guides/${prefix}products/watcherobot/community.md`);
+    const join = content.split('{#join}')[1].split('\n## ')[0];
+    assert.match(join, /\[.*Discord.*\]\(https:\/\/discord\.gg\/VJWGxPDGm\)/);
+    assert.match(join, /community-wechat\.jpg/);
   }
 });
 
