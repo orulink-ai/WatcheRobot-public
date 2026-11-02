@@ -4,14 +4,32 @@
 
 ## 加入社区 {#join}
 
-**Discord：**[加入 WatcheRobot Discord 社区](https://discord.gg/VJWGxPDGm)。
+<div class="community-channels">
+<div class="community-channel">
 
-**微信：**用微信「扫一扫」扫描二维码，按提示加入交流群；手机阅读时可保存图片，再从微信扫一扫的相册中选择。
+### 微信
+
+扫描二维码加入交流群；手机上可保存图片，再从微信扫一扫的相册中选择。
 
 <div class="community-qr">
 
 ![WatcheRobot 微信社区二维码](../../../../docs/images/device/community-wechat.jpg)
 
+</div>
+</div>
+<div class="community-channel">
+
+### Discord
+
+加入 Discord 社区，交流拼装经验、应用开发和使用问题。
+
+<div class="community-discord-mark" aria-hidden="true">Discord</div>
+<div class="community-action">
+
+[加入 Discord 社区](https://discord.gg/VJWGxPDGm)
+
+</div>
+</div>
 </div>
 
 二维码失效或无法加入时，请通过 [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues) 反馈。

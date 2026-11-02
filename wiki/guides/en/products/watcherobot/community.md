@@ -4,14 +4,32 @@ English | [简体中文](../../../products/watcherobot/community.md)
 
 ## Join the community {#join}
 
-**Discord:** [Join the WatcheRobot Discord community](https://discord.gg/VJWGxPDGm).
+<div class="community-channels">
+<div class="community-channel">
 
-**WeChat:** Scan this code with WeChat and follow the prompts to join the group. On a phone, save the image and select it from the album in WeChat Scan.
+### WeChat
+
+Scan the QR code to join. On a phone, save the image and select it from the album in WeChat Scan.
 
 <div class="community-qr">
 
 ![WatcheRobot WeChat community QR code](../../../../../docs/images/device/community-wechat.jpg)
 
+</div>
+</div>
+<div class="community-channel">
+
+### Discord
+
+Join our Discord community to discuss assembly, app development, and using your robot.
+
+<div class="community-discord-mark" aria-hidden="true">Discord</div>
+<div class="community-action">
+
+[Join the Discord community](https://discord.gg/VJWGxPDGm)
+
+</div>
+</div>
 </div>
 
 If the code has expired or you cannot join, report it through [GitHub Issues](https://github.com/orulink-ai/WatcheRobot-public/issues).

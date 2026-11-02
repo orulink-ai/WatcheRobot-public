@@ -93,6 +93,18 @@ test('both community pages offer Discord without removing the existing WeChat QR
   }
 });
 
+test('community channels use matching responsive cards in both languages', async () => {
+  for (const prefix of ['', 'en/']) {
+    const content = await read(`wiki/guides/${prefix}products/watcherobot/community.md`);
+    const join = content.split('{#join}')[1].split('\n## ')[0];
+    assert.match(join, /class="community-channels"/);
+    assert.equal([...join.matchAll(/class="community-channel"/g)].length, 2);
+  }
+  const css = await read('wiki/.vitepress/theme/custom.css');
+  assert.match(css, /\.community-channels\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(css, /@media\s*\(max-width:\s*640px\)\s*\{\s*\.community-channels\s*\{\s*grid-template-columns:\s*1fr/s);
+});
+
 test('new guides have bilingual counterparts and locally owned image assets', async () => {
   for (const name of ['device-guide', 'capabilities', 'community', 'voice']) {
     const zhPath = `wiki/guides/products/watcherobot/${name}.md`;
