@@ -161,6 +161,28 @@ test('quick start is for assembled robots and DIY instructions have a separate g
   }
 });
 
+test('home introduces the product before setup and capabilities start with a plain-language list', async () => {
+  for (const [home, capability, intro] of [
+    ['README_zh.md', 'wiki/guides/products/watcherobot/capabilities.md', '## 产品介绍'],
+    ['README.md', 'wiki/guides/en/products/watcherobot/capabilities.md', '## Product introduction'],
+  ]) {
+    const content = await read(home);
+    assert.ok(content.includes(intro));
+    assert.ok(content.indexOf(intro) < content.indexOf(home === 'README.md' ? '## Quick Start' : '## 快速开始'));
+    assert.match(content.split(intro)[1].split('\n## ')[0], /capabilities\.md/);
+    const guide = await read(capability);
+    const overview = guide.split('{#overview}')[1]?.split('\n## ')[0];
+    assert.ok(overview, capability);
+    assert.ok([...overview.matchAll(/^- /gm)].length >= 10);
+    for (const anchor of ['motion', 'display', 'audio', 'vision', 'inputs', 'composed']) {
+      assert.ok(overview.includes(`](#${anchor})`), anchor);
+    }
+    assert.ok(guide.indexOf('{#overview}') < guide.indexOf('robot.motion.move_to()'));
+    assert.match(guide, /robot\.inputs\.wait/);
+    assert.match(guide, /robot\.capabilities/);
+  }
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);

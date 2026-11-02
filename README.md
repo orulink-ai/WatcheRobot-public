@@ -2,9 +2,21 @@ English | [简体中文](README_zh.md)
 
 # WatcheRobot
 
-Online documentation: **[wiki.orulink.ai](https://wiki.orulink.ai/en/)**. The Wiki builds from this repository and follows stable Releases. See [maintenance and publishing](wiki/README.en.md).
+WatcheRobot is a programmable desktop robot that combines screen expressions, body motion, lights, sound, and sensory input. Connect through a client to explore its interactions, or build your own robot applications.
 
-The public WatcheRobot desktop-robot repository provides hardware files, mechanical models, the Python SDK, flashing tools, user guides, and Release asset documentation.
+Online documentation: **[wiki.orulink.ai](https://wiki.orulink.ai/en/)**. This repository provides hardware files, mechanical models, SDKs, flashing tools, and guides. The Wiki follows stable Releases; see [maintenance and publishing](wiki/README.en.md).
+
+## Product introduction
+
+WatcheRobot is designed for desktop companionship, interactive demos, and robot application development. It does more than display information: your application can turn its head, change expressions, play sounds, and respond to touch, camera, and microphone input.
+
+- **Expression and feedback**: combine animations, code-generated expressions, body movements, lights, and audio playback.
+- **Sensing and interaction**: read back-touch, screen-tap, and roller events; take photos or capture microphone audio.
+- **Combined experiences**: use face tracking, recording, and real-time audio/video where supported. Voice conversations require an application that connects speech recognition, a language model, and speech synthesis.
+- **Application development**: use the Python SDK to combine device capabilities in an Application running on your computer. For custom device-side logic, explore the C SDK development preview.
+- **DIY building**: build and assemble a robot from the published hardware files and mechanical models, or choose a finished robot.
+
+Already have a robot? Follow Quick Start below. To explore functions and interfaces, see [Robot capabilities](wiki/guides/en/products/watcherobot/capabilities.md); to build a conversation app, see [Voice conversations](wiki/guides/en/products/watcherobot/voice.md). Availability depends on the device, firmware, SDK, and installed resources. Applications must configure AI services; a built-in general-purpose language model or offline conversation is not implied.
 
 ## Get Your Robot
 
