@@ -2,11 +2,7 @@ English | [简体中文](../../../products/watcherobot/capabilities.md)
 
 # Robot capabilities
 
-Robot primitives are individual device functions an application can call, such as turning the head, setting lights, playing sound, and reading touch input. Combine them into your own interactions without writing low-level drivers.
-
 ## Capability overview {#overview}
-
-Start with what the robot can do, then follow a category link to its API entries and operating limits below.
 
 - **Move to an angle**: set head pan, tilt, and movement duration. [Motion](#motion)
 - **Continuous targets and preset actions**: update target angles or play installed actions. [Motion](#motion)
@@ -22,12 +18,6 @@ Start with what the robot can do, then follow a category link to its API entries
 - **Recording**: record audio, video, or both where supported, and retrieve the recordings. [Composed capabilities](#composed)
 - **Real-time audio/video**: control RTC sessions and integrate a media client to complete a call. [Composed capabilities](#composed)
 - **Behaviors and works**: play installed behaviors, complete works, or expression clips. [Composed capabilities](#composed)
-
-Speech recognition, language models, and speech synthesis require an Application to connect models or services; they are not hardware primitives. See [Voice conversations](voice.md). This list describes the callable feature range, not a guarantee that every device enables every feature or that all features can run together.
-
-Before developing, complete [SDK setup and pairing](../../sdk/index.md), then run with `watcherobot app run`. The sections below retain specific APIs, capability identifiers, and operating limits.
-
-Checked on **2026-10-15** against Python SDK **0.1.12** (`cc0a319`) and ESP32 source `7699527`. The public repository's pinned `python-sdk/` may be older; check the installed SDK and device capabilities first. These source revisions are not a claim of a released compatible firmware bundle. Availability depends on your SDK, firmware, hardware, and installed resources; not every device supports all entries.
 
 ## Motion {#motion}
 

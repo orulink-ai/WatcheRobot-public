@@ -183,6 +183,23 @@ test('home introduces the product before setup and capabilities start with a pla
   }
 });
 
+test('home puts the product image first and capability overview leads straight to APIs', async () => {
+  for (const [home, capability, intro] of [
+    ['README_zh.md', 'wiki/guides/products/watcherobot/capabilities.md', '## 产品介绍'],
+    ['README.md', 'wiki/guides/en/products/watcherobot/capabilities.md', '## Product introduction'],
+  ]) {
+    const content = await read(home);
+    const afterTitle = content.split('# WatcheRobot\n')[1].trimStart();
+    assert.ok(afterTitle.startsWith('!['), home);
+    assert.ok(content.indexOf('watcher-robot-render.png') < content.indexOf(intro));
+    assert.doesNotMatch(content, /wiki\.orulink\.ai|wiki\/README|## 项目预览|## Project Preview|## 项目文档|## Project Documentation/);
+    const guide = await read(capability);
+    const overview = guide.split('{#overview}')[1].split('\n## ')[0];
+    assert.doesNotMatch(overview, /cc0a319|7699527|2026-10-15|Application 接入|Before developing|Checked on|先看机器人|Start with what/);
+    assert.ok(overview.trim().endsWith('](#composed)'));
+  }
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);
