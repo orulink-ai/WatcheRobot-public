@@ -12,9 +12,7 @@
 
 ### 结构件与主要模块
 
-<video controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 12px;">
-  <source src="/media/docs/assembly/parts-overview.mp4" type="video/mp4">
-</video>
+![WatcheRobot 结构件与主要模块展示](/media/docs/assembly/01_parts_reveal_preview_full_cover.gif)
 
 | 部件 | 用途与检查 |
 | --- | --- |
@@ -27,17 +25,13 @@
 
 ### 电子模块和连接线
 
-<video controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 12px;">
-  <source src="/media/docs/assembly/electronics-overview.mp4" type="video/mp4">
-</video>
+![WatcheRobot 电子模块和连接线展示](/media/docs/assembly/02_electronics_reveal_full_cover.gif)
 
 包括电池、灯光部件、调试线、FPC 排线、底部供电板、Type-C 连接线、触摸铜箔、两只反馈舵机和供电连接线。小型加工件的名称与安装位置以 BOM 和视频实物为准。
 
 ### 螺丝和紧固件
 
-<video controls muted loop playsinline preload="metadata" style="width: 100%; border-radius: 12px;">
-  <source src="/media/docs/assembly/fasteners-overview.mp4" type="video/mp4">
-</video>
+![WatcheRobot 螺丝和紧固件展示](/media/docs/assembly/03_screws_reveal_full_cover.gif)
 
 素材展示了 M2×6、M2×8 和 M2×20 三组螺丝。不同长度不能混用；具体数量和安装位置以 BOM、壳体孔深和视频步骤为准，锁紧前确认螺丝不会顶住 PCB、电池或活动机构。
 

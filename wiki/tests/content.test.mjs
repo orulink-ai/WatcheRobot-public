@@ -34,6 +34,60 @@ test('code labels still link correctly while inline code examples remain literal
   assert.equal(output, '[`flash.md`](/en/docs/flashing) and `[x](flashing.md)`');
 });
 
+test('consolidated links keep queries and use at most one section fragment', () => {
+  const routes = new Map([['docs/versions_zh.md', '/hardware/#versions']]);
+  const output = rewriteLinks('[query](versions_zh.md?from=home) [section](versions_zh.md#details)', 'docs/flashing_zh.md', routes, 'review');
+  assert.equal(output, '[query](/hardware/?from=home#versions) [section](/hardware/#versions)');
+});
+
+test('consolidated indexes become bilingual redirects rather than duplicate searchable pages', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'watche-consolidated-'));
+  const output = join(root, 'out');
+  try {
+    const pairs = [
+      ['hardware/pcb/spares', '/hardware/pcb/spares', '/hardware/#hardware'],
+      ['firmware/README', '/firmware/', '/hardware/#firmware'],
+      ['docs/versions', '/docs/versions', '/hardware/#versions'],
+      ['docs/compatibility', '/docs/compatibility', '/hardware/#versions'],
+      ['CONTRIBUTING', '/CONTRIBUTING', '/products/watcherobot/community#contribute'],
+      ['SECURITY', '/SECURITY', '/products/watcherobot/community#security'],
+      ['docs/governance', '/docs/governance', '/products/watcherobot/community#contribute'],
+      ['docs/release-process', '/docs/release-process', '/products/watcherobot/community#contribute'],
+      ['skills/watche-release-flash/SKILL', '/skills/watche-release-flash/', '/products/watcherobot/community#tools'],
+      ['skills/watche-sd-card-write/SKILL', '/skills/watche-sd-card-write/', '/products/watcherobot/community#tools'],
+    ];
+    for (const [suffix, prefix, hub] of [['_zh', '', 'wiki/guides/products/watcherobot/community.md'], ['', '/en', 'wiki/guides/en/products/watcherobot/community.md']]) {
+      const sources = [[`hardware/README${suffix}.md`, '# Resource hub\n## Hardware {#hardware}\n## Firmware {#firmware}\n## Versions {#versions}'], [hub, '# Support hub\n## Contribute {#contribute}\n## Security {#security}\n## Tools {#tools}'], [`README${suffix}.md`, '[BOM](hardware/pcb/spares' + suffix + '.md)']];
+      for (const [source] of pairs) sources.push([source + suffix + '.md', '# Obsolete index']);
+      for (const [path, content] of sources) {
+        await mkdir(join(root, path, '..'), {recursive:true});
+        await writeFile(join(root, path), content);
+      }
+    }
+    const catalog = await generate(root, output, 'review-ref');
+    for (const prefix of ['', '/en']) {
+      for (const [, route, target] of pairs) {
+        assert.ok(!catalog.some(page => page.route === prefix + route), prefix + route);
+        const redirect = await readFile(join(output, 'public', prefix + route + (route.endsWith('/') ? 'index.html' : '.html')), 'utf8');
+        assert.ok(redirect.includes(prefix + target), redirect);
+        assert.match(redirect, /http-equiv="refresh"/);
+        assert.match(redirect, /noindex/);
+      }
+      const home = await readFile(join(output, prefix, 'index.md'), 'utf8');
+      assert.ok(home.includes(prefix + '/hardware/#hardware'), home);
+    }
+    // Older releases without hubs still retain their original documentation.
+    for(const [source, content] of [['hardware/README_zh.md', '# Legacy resource index']]) {
+      await writeFile(join(root, source), content);
+    }
+    const oldHub = await generate(root, output, 'old-hub-release');
+    assert.ok(oldHub.some(page => page.route === '/hardware/pcb/spares'), 'old hubs without consolidated sections must retain their original pages');
+    await rm(join(root, 'hardware/README_zh.md'));
+    const legacy = await generate(root, output, 'older-release');
+    assert.ok(legacy.some(page => page.route === '/hardware/pcb/spares'));
+  } finally { await rm(root, {recursive:true, force:true}); }
+});
+
 test('generation reads canonical source, copies assets and records source revision', async () => {
   const root = await mkdtemp(join(tmpdir(), 'watche-wiki-'));
   try {

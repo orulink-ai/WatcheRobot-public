@@ -44,6 +44,18 @@ test('C SDK preview is separate from Python and HIL maintenance stays hidden', (
   }
 });
 
+test('resource indexes and support rules use a single sidebar entry in each language', () => {
+  const hardware = ['/guide/reproduction', '/docs/pcb-fabrication', '/guide/assembly', '/hardware/'];
+  const removed = ['/hardware/pcb/spares', '/firmware/', '/docs/versions', '/docs/compatibility', '/CONTRIBUTING', '/SECURITY', '/docs/governance', '/docs/release-process', '/skills/watche-release-flash/', '/skills/watche-sd-card-write/', '/troubleshooting/'];
+  for (const lang of ['zh', 'en']) {
+    const prefix = lang === 'zh' ? '' : '/en';
+    const catalog = [...hardware, ...removed, '/products/watcherobot/community'].map(route => ({lang, route:prefix + route, title:route}));
+    const groups = buildSidebar(catalog, lang)[0].items;
+    assert.deepEqual(groups.find(g => g.text === (lang === 'zh' ? '硬件专区' : 'Hardware')).items.map(i => i.link), hardware.map(r => prefix + r));
+    assert.deepEqual(groups.find(g => g.text === (lang === 'zh' ? '支持与贡献' : 'Support and contribution')).items.map(i => i.link), [prefix + '/products/watcherobot/community']);
+  }
+});
+
 test('assembly tutorial is bilingual, linked from hardware entry points, and uses published media', async () => {
   const pages = [
     ['wiki/guides/guide/assembly.md', '/guide/assembly', '整机拼装教程'],
@@ -52,9 +64,10 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
   for (const [path, route, title] of pages) {
     const content = await read(path);
     assert.match(content, new RegExp(`^# ${title}`, 'm'));
-    for (const media of ['parts-overview.mp4', 'electronics-overview.mp4', 'fasteners-overview.mp4']) {
-      assert.match(content, new RegExp(`/media/docs/assembly/${media}`));
+    for (const media of ['01_parts_reveal_preview_full_cover.gif', '02_electronics_reveal_full_cover.gif', '03_screws_reveal_full_cover.gif']) {
+      assert.match(content, new RegExp(`/media/docs/assembly/${media.replace('.', '\\.')}`));
     }
+    assert.doesNotMatch(content, /(?:parts|electronics|fasteners)-overview\.mp4/);
     assert.match(content, /https:\/\/wiki\.orulink\.ai\/media-assets\/assembly\/watcherobot-assembly-tutorial-720p-7cd0f58e\.mp4/);
     assert.doesNotMatch(content, /github\.com\/orulink-ai\/WatcheRobot-public\/releases\/download\/wiki-media-assembly/);
     const sections = [...content.matchAll(/^## .+\{#([^}]+)\}/gm)].map(match => match[1]);
@@ -69,6 +82,27 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
     assert.match(content, /assembly\.md/);
     assert.doesNotMatch(content, /文字步骤|text steps/);
   }
+});
+
+test('both community pages offer Discord without removing the existing WeChat QR code', async () => {
+  for (const prefix of ['', 'en/']) {
+    const content = await read(`wiki/guides/${prefix}products/watcherobot/community.md`);
+    const join = content.split('{#join}')[1].split('\n## ')[0];
+    assert.match(join, /\[.*Discord.*\]\(https:\/\/discord\.gg\/VJWGxPDGm\)/);
+    assert.match(join, /community-wechat\.jpg/);
+  }
+});
+
+test('community channels use matching responsive cards in both languages', async () => {
+  for (const prefix of ['', 'en/']) {
+    const content = await read(`wiki/guides/${prefix}products/watcherobot/community.md`);
+    const join = content.split('{#join}')[1].split('\n## ')[0];
+    assert.match(join, /class="community-channels"/);
+    assert.equal([...join.matchAll(/class="community-channel"/g)].length, 2);
+  }
+  const css = await read('wiki/.vitepress/theme/custom.css');
+  assert.match(css, /\.community-channels\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/s);
+  assert.match(css, /@media\s*\(max-width:\s*640px\)\s*\{\s*\.community-channels\s*\{\s*grid-template-columns:\s*1fr/s);
 });
 
 test('new guides have bilingual counterparts and locally owned image assets', async () => {
@@ -124,6 +158,45 @@ test('quick start is for assembled robots and DIY instructions have a separate g
     assert.match(guide, /pcb-fabrication(?:_zh)?\.md/);
     assert.match(guide, /flashing(?:_zh)?\.md#full/);
     assert.match(guide, /getting-started\.md/);
+  }
+});
+
+test('home introduces the product before setup and capabilities start with a plain-language list', async () => {
+  for (const [home, capability, intro] of [
+    ['README_zh.md', 'wiki/guides/products/watcherobot/capabilities.md', '## 产品介绍'],
+    ['README.md', 'wiki/guides/en/products/watcherobot/capabilities.md', '## Product introduction'],
+  ]) {
+    const content = await read(home);
+    assert.ok(content.includes(intro));
+    assert.ok(content.indexOf(intro) < content.indexOf(home === 'README.md' ? '## Quick Start' : '## 快速开始'));
+    assert.match(content.split(intro)[1].split('\n## ')[0], /capabilities\.md/);
+    const guide = await read(capability);
+    const overview = guide.split('{#overview}')[1]?.split('\n## ')[0];
+    assert.ok(overview, capability);
+    assert.ok([...overview.matchAll(/^- /gm)].length >= 10);
+    for (const anchor of ['motion', 'display', 'audio', 'vision', 'inputs', 'composed']) {
+      assert.ok(overview.includes(`](#${anchor})`), anchor);
+    }
+    assert.ok(guide.indexOf('{#overview}') < guide.indexOf('robot.motion.move_to()'));
+    assert.match(guide, /robot\.inputs\.wait/);
+    assert.match(guide, /robot\.capabilities/);
+  }
+});
+
+test('home puts the product image first and capability overview leads straight to APIs', async () => {
+  for (const [home, capability, intro] of [
+    ['README_zh.md', 'wiki/guides/products/watcherobot/capabilities.md', '## 产品介绍'],
+    ['README.md', 'wiki/guides/en/products/watcherobot/capabilities.md', '## Product introduction'],
+  ]) {
+    const content = await read(home);
+    const afterTitle = content.split('# WatcheRobot\n')[1].trimStart();
+    assert.ok(afterTitle.startsWith('!['), home);
+    assert.ok(content.indexOf('watcher-robot-render.png') < content.indexOf(intro));
+    assert.doesNotMatch(content, /wiki\.orulink\.ai|wiki\/README|## 项目预览|## Project Preview|## 项目文档|## Project Documentation/);
+    const guide = await read(capability);
+    const overview = guide.split('{#overview}')[1].split('\n## ')[0];
+    assert.doesNotMatch(overview, /cc0a319|7699527|2026-10-15|Application 接入|Before developing|Checked on|先看机器人|Start with what/);
+    assert.ok(overview.trim().endsWith('](#composed)'));
   }
 });
 
