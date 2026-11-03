@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { buildSidebar } from '../navigation.mjs';
 
 const websiteUrl = process.env.WIKI_WEBSITE_URL ?? 'https://orulink.ai/';
@@ -11,7 +11,14 @@ export default defineConfig({
   base:'/',
   cleanUrls:true,
   sitemap:{hostname:'https://wiki.orulink.ai'},
-  head:[['meta', {name:'theme-color', content:'#101c2c'}]],
+  appearance:'dark',
+  head:[
+    ['meta', {name:'theme-color', content:'#050505'}],
+    // Older source snapshots may not include the website font assets.
+    ...(existsSync(new URL('../.generated/public/media/docs/fonts/brand.css', import.meta.url))
+      ? [['link', {rel:'stylesheet', href:'/media/docs/fonts/brand.css'}] as [string, Record<string, string>]]
+      : []),
+  ],
   locales:{
     root:{label:'简体中文', lang:'zh-CN', title:'WatcheRobot 文档', themeConfig:{
       nav:[{text:'快速开始', link:catalog.some(page => page.route === '/guide/getting-started') ? '/guide/getting-started' : '/'}, {text:'烧录与使用',link:'/docs/flashing'}, {text:'Python SDK',link:'/docs/sdk'}, {text:'硬件资料',link:'/hardware/'}],

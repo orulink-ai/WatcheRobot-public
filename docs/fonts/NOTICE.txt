@@ -1,0 +1,6 @@
+MiSans Regular and Semibold web subsets
+Source: orulink-ai/WatcheRobot_website, commit b62741b47415f964acdc7f52e992ade1b0abf78d
+Original paths: assets/fonts/misans/Normal/MiSans-Regular.* and MiSans-Semibold.*
+Font assets and their CSS are copied unchanged. The entry stylesheet brand.css is local integration code.
+License: Apache License 2.0, preserved in misans/LICENSE.txt.
+Fonts are self-hosted; browser unicode-range rules load only the required glyph subsets.

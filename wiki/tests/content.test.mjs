@@ -97,7 +97,10 @@ test('generation reads canonical source, copies assets and records source revisi
     await writeFile(join(root, 'docs/flashing_zh.md'), '# 烧录');
     await writeFile(join(root, 'docs/flashing.md'), '# Flashing');
     await writeFile(join(root, 'docs/images/test.png'), 'fixture');
+    await mkdir(join(root, 'docs/fonts'), {recursive:true});
+    await writeFile(join(root, 'docs/fonts/brand.css'), '/* local brand typography */');
     await generate(root, join(root, 'out'), 'v1');
+    assert.equal(await readFile(join(root, 'out/public/media/docs/fonts/brand.css'), 'utf8'), '/* local brand typography */');
     assert.match(await readFile(join(root, 'out/index.md'), 'utf8'), /\[烧录\]\(\/docs\/flashing\)/);
     assert.equal(await readFile(join(root, 'out/public/media/docs/images/test.png'), 'utf8'), 'fixture');
     assert.equal(JSON.parse(await readFile(join(root, 'out/public/version.json'))).sourceRef, 'v1');

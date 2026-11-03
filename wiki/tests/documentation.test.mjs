@@ -213,6 +213,20 @@ test('Wiki brand uses the original ORULINK logo and links to the official websit
   assert.match(css, /\.dark \.VPNavBarTitle \.logo\s*\{[^}]*invert\(1\)/s);
 });
 
+test('Wiki visual theme shares the website monochrome palette and local MiSans typography', async () => {
+  const css = await read('wiki/.vitepress/theme/custom.css');
+  assert.match(css, /--vp-c-bg:\s*#050505/);
+  assert.match(css, /--wr-radius-md:\s*3px/);
+  assert.match(css, /--vp-font-family-base:\s*"MiSans"/);
+  assert.doesNotMatch(css, /#a1d42a|#567c00|#86b51b|#0d1725|#b7e550/i);
+  const config = await read('wiki/.vitepress/config.mts');
+  assert.match(config, /appearance:\s*'dark'/);
+  assert.match(config, /\/media\/docs\/fonts\/brand\.css/);
+  const fonts = await read('docs/fonts/brand.css');
+  assert.match(fonts, /MiSans-Regular\.min\.css/);
+  await access(resolve(root, 'docs/fonts/misans/LICENSE.txt'));
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);
