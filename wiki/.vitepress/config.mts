@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress';
 import { readFileSync } from 'node:fs';
 import { buildSidebar } from '../navigation.mjs';
 
+const websiteUrl = process.env.WIKI_WEBSITE_URL ?? 'https://orulink.ai/';
 const catalog = JSON.parse(readFileSync(new URL('../.generated/catalog.json', import.meta.url), 'utf8'));
 export default defineConfig({
   srcDir:'.generated',
@@ -24,7 +25,9 @@ export default defineConfig({
     }},
   },
   themeConfig:{
-    siteTitle:'WatcheRobot',
+    siteTitle:false,
+    logo:{src:'/media/docs/images/brand/orulink-logo.png', alt:'ORULINK'},
+    logoLink:{link:websiteUrl, target:'_self'},
     search:{provider:'local'},
     socialLinks:[{icon:'github',link:'https://github.com/orulink-ai/WatcheRobot-public'}],
     outline:{level:[2,3]},

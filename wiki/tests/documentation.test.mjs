@@ -200,6 +200,19 @@ test('home puts the product image first and capability overview leads straight t
   }
 });
 
+test('Wiki brand uses the original ORULINK logo and links to the official website', async () => {
+  const config = await read('wiki/.vitepress/config.mts');
+  assert.match(config, /siteTitle:\s*false/);
+  assert.match(config, /logo:\s*\{\s*src:\s*'\/media\/docs\/images\/brand\/orulink-logo\.png',\s*alt:\s*'ORULINK'/);
+  assert.match(config, /logoLink:\s*\{\s*link:\s*websiteUrl,\s*target:\s*'_self'/);
+  assert.match(config, /process\.env\.WIKI_WEBSITE_URL\s*\?\?\s*'https:\/\/orulink\.ai\/'/);
+  const logo = await readFile(resolve(root, 'docs/images/brand/orulink-logo.png'));
+  assert.deepEqual([...logo.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  const css = await read('wiki/.vitepress/theme/custom.css');
+  assert.doesNotMatch(css, /\.VPNavBarTitle \.title::before/);
+  assert.match(css, /\.dark \.VPNavBarTitle \.logo\s*\{[^}]*invert\(1\)/s);
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);

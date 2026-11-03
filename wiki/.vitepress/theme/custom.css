@@ -61,14 +61,16 @@ body {
   letter-spacing: -0.025em;
 }
 
-.VPNavBarTitle .title::before {
-  width: 10px;
-  height: 10px;
-  margin-right: 10px;
-  border: 2px solid currentcolor;
-  border-radius: 3px;
-  background: var(--wr-color-brand);
-  content: "";
+.VPNavBarTitle .logo {
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  margin-right: 0;
+  filter: brightness(0);
+}
+
+.dark .VPNavBarTitle .logo {
+  filter: brightness(0) invert(1);
 }
 
 .VPHero .name {

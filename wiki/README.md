@@ -42,6 +42,8 @@ macOS/Linux：
 WIKI_SOURCE_DIR=/path/to/release-checkout WIKI_SOURCE_REF=watche-system-v0.2.8 npm run docs:build
 ```
 
+联调官网与 Wiki 时，可在构建命令中设置 `WIKI_WEBSITE_URL` 指向官网预览首页；不设置时，左上角 ORULINK Logo 默认链接到 `https://orulink.ai/`。该变量只影响本次构建，不修改正文或线上发布配置。发布构建不要传入内网预览地址。
+
 ## 独立发布
 
 1. 合入 main 后，`wiki.yml` 自动测试、构建该提交的文档。PR 只检查，不发布；手动运行工作流时选择 main。

@@ -15,6 +15,8 @@ npm run docs:dev
 
 Windows skips four atomic symlink tests; deployment on Windows requires symlink privileges. Run the full suite on Linux before deploying. Rebuild after editing canonical Markdown.
 
+For joint website/Wiki previews, set `WIKI_WEBSITE_URL` in the build command to the website preview homepage. Without this override, the ORULINK logo links to `https://orulink.ai/`. This is a build-only setting; do not pass a LAN preview URL to publication builds.
+
 ## Independent publication
 
 Every main push tests and builds the exact commit, then publishes to the dedicated [wiki-site channel](https://github.com/orulink-ai/WatcheRobot-public/releases/tag/wiki-site). PRs only validate; select main for manual workflow dispatch. The channel is a prerelease explicitly excluded from Latest. It does not create firmware versions or change firmware assets.
