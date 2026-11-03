@@ -71,6 +71,7 @@ html {
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
 }
 
 /* Keep document navigation familiar while matching the website's flat chrome. */
@@ -94,9 +95,11 @@ body {
 .VPDocFooter .pager-link { border-radius: 3px; }
 .VPDoc .content-container { max-width: 760px; }
 .vp-doc { font-size: 16px; line-height: 1.85; }
-.vp-doc h1 { font-size: clamp(30px, 4vw, 42px); line-height: 1.2; font-weight: 600; }
-.vp-doc h2 { margin-top: 48px; padding-top: 28px; font-size: 24px; line-height: 1.4; font-weight: 600; }
-.vp-doc h3 { font-size: 18px; line-height: 1.5; font-weight: 600; }
+.vp-doc h1 { font-size: clamp(30px, 4vw, 42px); line-height: 1.2; font-weight: 400; }
+.vp-doc h2 { margin-top: 48px; padding-top: 28px; font-size: 26px; line-height: 1.45; font-weight: 400; }
+.vp-doc h3 { font-size: 19px; line-height: 1.5; font-weight: 400; }
+.vp-doc h1 strong, .vp-doc h2 strong, .vp-doc h3 strong { font-weight: inherit; }
+.VPSidebarItem.level-0 > .item .text { font-weight: 400; }
 .vp-doc p, .vp-doc li { overflow-wrap: break-word; }
 .vp-doc a { color: var(--vp-c-text-1); text-decoration-color: var(--vp-c-text-3); }
 .vp-doc a:hover { text-decoration-color: currentcolor; }
@@ -139,7 +142,7 @@ body {
 .VPHero .name {
   max-width: 780px;
   font-size: clamp(48px, 7vw, 84px);
-  font-weight: 760;
+  font-weight: 400;
   letter-spacing: -0.055em;
   line-height: 0.98;
   text-wrap: pretty;
@@ -149,7 +152,7 @@ body {
   max-width: 760px;
   color: var(--vp-c-text-1);
   font-size: clamp(24px, 3.6vw, 42px);
-  font-weight: 620;
+  font-weight: 400;
   letter-spacing: -0.035em;
   line-height: 1.12;
   text-wrap: pretty;
@@ -188,7 +191,7 @@ body {
 }
 
 .VPFeature .title {
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: -0.015em;
 }
 
@@ -246,7 +249,7 @@ body {
   place-items: center;
   color: var(--vp-c-text-1);
   font-size: clamp(28px, 4vw, 40px);
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: -0.04em;
 }
 .community-action p { margin: 16px 0 0; }

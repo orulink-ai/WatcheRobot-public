@@ -215,6 +215,10 @@ test('Wiki brand uses the original ORULINK logo and links to the official websit
 
 test('Wiki visual theme shares the website monochrome palette and local MiSans typography', async () => {
   const css = await read('wiki/.vitepress/theme/custom.css');
+  for (const level of [1, 2, 3]) {
+    assert.match(css, new RegExp(`\\.vp-doc h${level} \\{[^}]*font-weight: 400;`));
+  }
+  assert.match(css, /font-synthesis: none/);
   assert.match(css, /--vp-c-bg:\s*#050505/);
   assert.match(css, /--wr-radius-md:\s*3px/);
   assert.match(css, /--vp-font-family-base:\s*"MiSans"/);
