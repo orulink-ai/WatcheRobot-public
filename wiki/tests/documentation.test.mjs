@@ -200,6 +200,37 @@ test('home puts the product image first and capability overview leads straight t
   }
 });
 
+test('Wiki brand uses the original ORULINK logo and links to the official website', async () => {
+  const config = await read('wiki/.vitepress/config.mts');
+  assert.match(config, /siteTitle:\s*false/);
+  assert.match(config, /logo:\s*\{\s*src:\s*'\/media\/docs\/images\/brand\/orulink-logo\.png',\s*alt:\s*'ORULINK'/);
+  assert.match(config, /logoLink:\s*\{\s*link:\s*websiteUrl,\s*target:\s*'_self'/);
+  assert.match(config, /process\.env\.WIKI_WEBSITE_URL\s*\?\?\s*'https:\/\/orulink\.ai\/'/);
+  const logo = await readFile(resolve(root, 'docs/images/brand/orulink-logo.png'));
+  assert.deepEqual([...logo.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  const css = await read('wiki/.vitepress/theme/custom.css');
+  assert.doesNotMatch(css, /\.VPNavBarTitle \.title::before/);
+  assert.match(css, /\.dark \.VPNavBarTitle \.logo\s*\{[^}]*invert\(1\)/s);
+});
+
+test('Wiki visual theme shares the website monochrome palette and local MiSans typography', async () => {
+  const css = await read('wiki/.vitepress/theme/custom.css');
+  for (const level of [1, 2, 3]) {
+    assert.match(css, new RegExp(`\\.vp-doc h${level} \\{[^}]*font-weight: 400;`));
+  }
+  assert.match(css, /font-synthesis: none/);
+  assert.match(css, /--vp-c-bg:\s*#050505/);
+  assert.match(css, /--wr-radius-md:\s*3px/);
+  assert.match(css, /--vp-font-family-base:\s*"MiSans"/);
+  assert.doesNotMatch(css, /#a1d42a|#567c00|#86b51b|#0d1725|#b7e550/i);
+  const config = await read('wiki/.vitepress/config.mts');
+  assert.match(config, /appearance:\s*'dark'/);
+  assert.match(config, /\/media\/docs\/fonts\/brand\.css/);
+  const fonts = await read('docs/fonts/brand.css');
+  assert.match(fonts, /MiSans-Regular\.min\.css/);
+  await access(resolve(root, 'docs/fonts/misans/LICENSE.txt'));
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);
