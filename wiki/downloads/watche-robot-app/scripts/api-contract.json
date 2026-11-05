@@ -1,0 +1,801 @@
+{
+  "motion.move_to": {
+    "module": "watcherobot.robot",
+    "class": "MotionDomain",
+    "method": "move_to",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "pan_deg",
+          "tilt_deg",
+          "duration_ms"
+        ]
+      }
+    ]
+  },
+  "motion.stop": {
+    "module": "watcherobot.robot",
+    "class": "MotionDomain",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "motion.set_target": {
+    "module": "watcherobot.robot",
+    "class": "MotionDomain",
+    "method": "set_target",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "pan_deg"
+        ]
+      }
+    ]
+  },
+  "motion.play_action": {
+    "module": "watcherobot.robot",
+    "class": "MotionDomain",
+    "method": "play_action",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "lights.set_color": {
+    "module": "watcherobot.robot",
+    "class": "LightsDomain",
+    "method": "set_color",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "brightness",
+          "zone"
+        ]
+      }
+    ]
+  },
+  "lights.off": {
+    "module": "watcherobot.robot",
+    "class": "LightsDomain",
+    "method": "off",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "lights.play_effect": {
+    "module": "watcherobot.robot",
+    "class": "LightsDomain",
+    "method": "play_effect",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "color",
+          "brightness",
+          "zone",
+          "period_ms",
+          "repeat"
+        ]
+      }
+    ]
+  },
+  "robot.supports": {
+    "module": "watcherobot.robot",
+    "class": "WatcheRobot",
+    "method": "supports",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "animation.play": {
+    "module": "watcherobot.robot",
+    "class": "AnimationDomain",
+    "method": "play",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "animation.prefetch": {
+    "module": "watcherobot.robot",
+    "class": "AnimationDomain",
+    "method": "prefetch",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "animation.stop": {
+    "module": "watcherobot.robot",
+    "class": "AnimationDomain",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "expressions.play_official": {
+    "module": "watcherobot.robot",
+    "class": "ExpressionDomain",
+    "method": "play_official",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "expression_runtime.start": {
+    "module": "watcherobot.robot",
+    "class": "ExpressionRuntimeDomain",
+    "method": "start",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "style",
+          "auto_blink"
+        ]
+      },
+      {
+        "args": 1,
+        "keywords": [
+          "accessory",
+          "custom_accessory_mask",
+          "custom_accessory_layer"
+        ]
+      },
+      {
+        "args": 1,
+        "keywords": [
+          "accessory",
+          "custom_vector_path",
+          "custom_accessory_layer"
+        ]
+      }
+    ]
+  },
+  "expression_runtime.update": {
+    "module": "watcherobot.robot",
+    "class": "ExpressionRuntimeDomain",
+    "method": "update",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "preset",
+          "gaze_x",
+          "left_openness",
+          "right_openness",
+          "tag",
+          "accessory",
+          "color",
+          "transition_ms"
+        ]
+      }
+    ]
+  },
+  "expression_runtime.stop": {
+    "module": "watcherobot.robot",
+    "class": "ExpressionRuntimeDomain",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "expression_runtime.set_audio_follow": {
+    "module": "watcherobot.robot",
+    "class": "ExpressionRuntimeDomain",
+    "method": "set_audio_follow",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      },
+      {
+        "args": 1,
+        "keywords": [
+          "emotion"
+        ]
+      }
+    ]
+  },
+  "audio.play": {
+    "module": "watcherobot.robot",
+    "class": "AudioDomain",
+    "method": "play",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "audio.stop": {
+    "module": "watcherobot.robot",
+    "class": "AudioDomain",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "audio.play_file": {
+    "module": "watcherobot.robot",
+    "class": "AudioDomain",
+    "method": "play_file",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "audio.play_pcm": {
+    "module": "watcherobot.robot",
+    "class": "AudioDomain",
+    "method": "play_pcm",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "sample_rate_hz",
+          "channels",
+          "sample_width_bytes"
+        ]
+      }
+    ]
+  },
+  "microphone.open": {
+    "module": "watcherobot.robot",
+    "class": "MicrophoneDomain",
+    "method": "open",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "microphone.open_pcm": {
+    "module": "watcherobot.robot",
+    "class": "MicrophoneDomain",
+    "method": "open_pcm",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "microphone.record_pcm": {
+    "module": "watcherobot.robot",
+    "class": "MicrophoneDomain",
+    "method": "record_pcm",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "duration",
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "camera.capture": {
+    "module": "watcherobot.robot",
+    "class": "CameraDomain",
+    "method": "capture",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "camera.capture_with_feedback": {
+    "module": "watcherobot.robot",
+    "class": "CameraDomain",
+    "method": "capture_with_feedback",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "vision.status": {
+    "module": "watcherobot.vision",
+    "class": "VisionDomain",
+    "method": "status",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "vision.models": {
+    "module": "watcherobot.vision",
+    "class": "VisionDomain",
+    "method": "models",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "vision.active_model": {
+    "module": "watcherobot.vision",
+    "class": "VisionDomain",
+    "method": "active_model",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "vision.select_model": {
+    "module": "watcherobot.vision",
+    "class": "VisionDomain",
+    "method": "select_model",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "vision.start_inference": {
+    "module": "watcherobot.vision",
+    "class": "VisionDomain",
+    "method": "start_inference",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      },
+      {
+        "args": 1,
+        "keywords": [
+          "preview"
+        ]
+      }
+    ]
+  },
+  "face_tracking.start": {
+    "module": "watcherobot.vision",
+    "class": "FaceTrackingDomain",
+    "method": "start",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "face_tracking.stop": {
+    "module": "watcherobot.vision",
+    "class": "FaceTrackingDomain",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "policy"
+        ]
+      }
+    ]
+  },
+  "face_tracking.open_preview": {
+    "module": "watcherobot.vision",
+    "class": "FaceTrackingDomain",
+    "method": "open_preview",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "width",
+          "height",
+          "stop_policy"
+        ]
+      }
+    ]
+  },
+  "inputs.wait": {
+    "module": "watcherobot.inputs",
+    "class": "InputDomain",
+    "method": "wait",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "recordings.start": {
+    "module": "watcherobot.recordings",
+    "class": "RecordingsDomain",
+    "method": "start",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "mode",
+          "duration",
+          "width",
+          "height",
+          "fps"
+        ]
+      },
+      {
+        "args": 0,
+        "keywords": [
+          "mode",
+          "duration",
+          "screen_preview"
+        ]
+      }
+    ]
+  },
+  "recordings.download": {
+    "module": "watcherobot.recordings",
+    "class": "RecordingsDomain",
+    "method": "download",
+    "calls": [
+      {
+        "args": 2,
+        "keywords": []
+      }
+    ]
+  },
+  "recordings.start_host": {
+    "module": "watcherobot.recordings",
+    "class": "RecordingsDomain",
+    "method": "start_host",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "mode",
+          "duration",
+          "fps"
+        ]
+      }
+    ]
+  },
+  "recordings.list": {
+    "module": "watcherobot.recordings",
+    "class": "RecordingsDomain",
+    "method": "list",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "rtc.start": {
+    "module": "watcherobot.application.rtc",
+    "class": "ApplicationRtc",
+    "method": "start",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "mode"
+        ]
+      }
+    ]
+  },
+  "rtc.stop": {
+    "module": "watcherobot.application.rtc",
+    "class": "ApplicationRtc",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "rtc.snapshot": {
+    "module": "watcherobot.application.rtc",
+    "class": "ApplicationRtc",
+    "method": "snapshot",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "rtc.events": {
+    "module": "watcherobot.application.rtc",
+    "class": "ApplicationRtc",
+    "method": "events",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "after"
+        ]
+      }
+    ]
+  },
+  "rtc.send_offer": {
+    "module": "watcherobot.application.rtc",
+    "class": "ApplicationRtc",
+    "method": "send_offer",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "rtc.send_candidate": {
+    "module": "watcherobot.application.rtc",
+    "class": "ApplicationRtc",
+    "method": "send_candidate",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "sdp_mid",
+          "sdp_mline_index"
+        ]
+      }
+    ]
+  },
+  "behavior.play": {
+    "module": "watcherobot.robot",
+    "class": "BehaviorDomain",
+    "method": "play",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "repeat"
+        ]
+      }
+    ]
+  },
+  "behavior.stop": {
+    "module": "watcherobot.robot",
+    "class": "BehaviorDomain",
+    "method": "stop",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "works.play": {
+    "module": "watcherobot.robot",
+    "class": "WorkDomain",
+    "method": "play",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "works.play_expression": {
+    "module": "watcherobot.robot",
+    "class": "WorkDomain",
+    "method": "play_expression",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "clip_id"
+        ]
+      }
+    ]
+  },
+  "desktop.send": {
+    "module": "watcherobot.application.desktop",
+    "class": "ApplicationDesktop",
+    "method": "send",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "desktop.receive": {
+    "module": "watcherobot.application.desktop",
+    "class": "ApplicationDesktop",
+    "method": "receive",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "robot.refresh_device_info": {
+    "module": "watcherobot.robot",
+    "class": "WatcheRobot",
+    "method": "refresh_device_info",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "audio.open_stream": {
+    "module": "watcherobot.robot",
+    "class": "AudioDomain",
+    "method": "open_stream",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "max_bytes"
+        ]
+      }
+    ]
+  },
+  "audio_stream.write": {
+    "module": "watcherobot.audio",
+    "class": "ContinuousAudioPlayback",
+    "method": "write",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": []
+      }
+    ]
+  },
+  "audio_stream.finish": {
+    "module": "watcherobot.audio",
+    "class": "ContinuousAudioPlayback",
+    "method": "finish",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "audio_stream.wait": {
+    "module": "watcherobot.audio",
+    "class": "ContinuousAudioPlayback",
+    "method": "wait",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "audio_stream.cancel": {
+    "module": "watcherobot.audio",
+    "class": "ContinuousAudioPlayback",
+    "method": "cancel",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "speech.open": {
+    "module": "watcherobot.speech",
+    "class": "SpeechDomain",
+    "method": "open",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "speech.close": {
+    "module": "watcherobot.speech",
+    "class": "SpeechDomain",
+    "method": "close",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "speech_session.recognize": {
+    "module": "watcherobot.speech",
+    "class": "SpeechSession",
+    "method": "recognize",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "speech_session.say": {
+    "module": "watcherobot.speech",
+    "class": "SpeechSession",
+    "method": "say",
+    "calls": [
+      {
+        "args": 1,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  },
+  "speech_session.cancel": {
+    "module": "watcherobot.speech",
+    "class": "SpeechSession",
+    "method": "cancel",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": []
+      }
+    ]
+  },
+  "speech_session.close": {
+    "module": "watcherobot.speech",
+    "class": "SpeechSession",
+    "method": "close",
+    "calls": [
+      {
+        "args": 0,
+        "keywords": [
+          "timeout"
+        ]
+      }
+    ]
+  }
+}

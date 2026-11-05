@@ -26,6 +26,8 @@ Already have a robot? Start by connecting and using it:
 
 ## Develop and build
 
+**Recommended:** [Create an app with an AI agent](wiki/guides/en/guide/create-with-agent.md). Copy one prompt, describe your idea and let the agent use the complete downloadable Skill.
+
 | What you want to do | Start here |
 | --- | --- |
 | Write a robot application in Python | [Python SDK quick start](docs/sdk.md) |

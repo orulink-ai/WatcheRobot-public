@@ -103,6 +103,8 @@ export async function generate(sourceRoot, destination, ref = 'main') {
   }
   await rm(destination, {recursive:true, force:true});
   await mkdir(join(destination, 'public'), {recursive:true});
+  try { await cp(join(sourceRoot, 'wiki/downloads'), join(destination, 'public/downloads'), {recursive:true}); }
+  catch(error) { if(error.code !== 'ENOENT') throw error; }
   const catalog = [];
   for(const source of sources) {
     if (redirects.has(source)) {

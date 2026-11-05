@@ -26,6 +26,8 @@ WatcheRobot 是一款可编程的桌面机器人，面向桌面陪伴、互动�
 
 ## 开发与制作
 
+**推荐：**[用 AI Agent 创建应用](wiki/guides/guide/create-with-agent.md)。复制一句提示词，把你的想法交给 Agent；完整 Skill ZIP 可直接下载。
+
 | 你想做什么 | 从这里开始 |
 | --- | --- |
 | 用 Python 编写机器人应用 | [Python SDK 快速开始](docs/sdk_zh.md) |

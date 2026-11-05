@@ -231,6 +231,23 @@ test('Wiki visual theme shares the website monochrome palette and local MiSans t
   await access(resolve(root, 'docs/fonts/misans/LICENSE.txt'));
 });
 
+test('Skill-led app onboarding provides the full download and bilingual entry points', async () => {
+  for (const locale of ['', 'en/']) {
+    const text = await read(`wiki/guides/${locale}guide/create-with-agent.md`);
+    assert.match(text, /<SkillPrompt/);
+    assert.match(text, /\/downloads\/watche-robot-app\.zip/);
+    assert.match(text, /\/downloads\/watche-robot-app\/SKILL\.md/);
+    assert.match(text, /Python 3\.10/);
+  }
+  const nav = await read('wiki/navigation.mjs');
+  assert.match(nav, /'Python SDK', 'Python SDK', \['\/guide\/create-with-agent'/);
+  const component = await read('wiki/.vitepress/theme/SkillPrompt.vue');
+  assert.match(component, /window\.location\.origin/);
+  assert.match(component, /navigator\.clipboard\.writeText/);
+  await access(resolve(root, 'wiki/downloads/watche-robot-app.zip'));
+  await access(resolve(root, 'wiki/downloads/watche-robot-app/scripts/workflow.py'));
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);
@@ -252,7 +269,7 @@ test('generated pages keep internal page and asset links resolvable in both lang
       const targets = [...content.matchAll(/\]\((\/[^\s)]+)\)|(?:src|href)="(\/[^"\s]+)"/g)]
         .map(match => (match[1] ?? match[2]).split(/[?#]/)[0]);
       for (const target of targets) {
-        if (target.startsWith('/media/')) await access(resolve(output, 'public', '.' + decodeURI(target)));
+        if (target.startsWith('/media/') || target.startsWith('/downloads/')) await access(resolve(output, 'public', '.' + decodeURI(target)));
         else assert.ok(routes.has(target), `${page.route} -> ${target}`);
       }
     }
