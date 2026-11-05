@@ -251,7 +251,7 @@ test('Skill-led app onboarding provides the full download and bilingual entry po
   assert.match(component, /<details class="customize">/);
   assert.match(component, /:disabled="!prompt"/);
   assert.doesNotMatch(component, /\[填写我的需求\]/);
-  await access(resolve(root, 'wiki/downloads/watche-robot-app.zip'));
+  await access(resolve(root, 'wiki/package_skill.py'));
   await access(resolve(root, 'wiki/downloads/watche-robot-app/scripts/workflow.py'));
 });
 
