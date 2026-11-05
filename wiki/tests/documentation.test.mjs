@@ -255,6 +255,16 @@ test('Skill-led app onboarding provides the full download and bilingual entry po
   await access(resolve(root, 'wiki/downloads/watche-robot-app/scripts/workflow.py'));
 });
 
+test('Python application entry pages recommend Skill onboarding in both languages', async () => {
+  const pages = ['README_zh.md', 'README.md', 'docs/sdk_zh.md', 'docs/sdk.md',
+    ...['', 'en/'].flatMap(lang => ['guide/getting-started.md', 'sdk/index.md', 'products/watcherobot/voice.md', 'products/watcherobot/capabilities.md'].map(path => `wiki/guides/${lang}${path}`))];
+  for (const path of pages) {
+    const content = await read(path);
+    assert.match(content, /\]\([^)]*create-with-agent\.md\)/, path);
+    assert.match(content, /推荐|[Rr]ecommended/, path);
+  }
+});
+
 test('SDK instructions activate the environment first and use managed Applications', async () => {
   for (const path of ['docs/sdk_zh.md', 'docs/sdk.md']) {
     const content = await read(path);

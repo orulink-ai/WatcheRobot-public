@@ -6,7 +6,7 @@ Python SDK 是电脑上的机器人接口，包含 Runtime/Daemon；它与直接
 
 ## 从哪里开始
 
-先按 [Python SDK 快速开始](../../../docs/sdk_zh.md)安装、配对、创建并运行应用。再选择：
+推荐先用 [AI Agent + Skill 创建应用](../guide/create-with-agent.md)：把准备环境、模板选择和本地检查交给 AI，再确认运行与实机效果。想手动开发时，按 [Python SDK 手动步骤](../../../docs/sdk_zh.md)操作。需要查接口时再选择：
 
 - [原子能力](../products/watcherobot/capabilities.md)：设备接口与限制。
 - [语音对话](../products/watcherobot/voice.md)：可修改的 ASR → LLM → TTS 应用。

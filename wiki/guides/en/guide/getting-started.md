@@ -20,7 +20,7 @@ See the [illustrated Wi-Fi guide](../products/watcherobot/device-guide.md#wifi).
 | --- | --- | --- |
 | Computer client | Desktop Link | Same LAN; enter the six-digit robot code when prompted |
 | Phone control | Phone Control | Tap Add Device in the app and match the Device ID |
-| Develop an application | Desktop Link | Follow the [SDK quick start](../../../../docs/sdk.md) to pair and run an Application |
+| Develop an application | Desktop Link | Recommended: [create an app with an AI agent and Skill](create-with-agent.md) for assisted setup and development, or use the [manual SDK steps](../../../../docs/sdk.md) |
 
 Pairing does not mean an application is running. See [Client and device](client-and-device.md) for connection states.
 
@@ -29,5 +29,6 @@ Pairing does not mean an application is running. See [Client and device](client-
 Check one expression, light effect, and small movement in a safe area using the [first-run check](../../../../docs/action-test.md). On a computer, select and start an installed official or custom Application in the client.
 
 - Update firmware: [flashing](../../../../docs/flashing.md) and [version management](firmware-version-management.md).
-- Build applications: [capabilities](../products/watcherobot/capabilities.md) and [voice conversations](../products/watcherobot/voice.md).
+- Build your first app: recommended [AI agent + Skill quick start](create-with-agent.md).
+- Look up interfaces: [capabilities](../products/watcherobot/capabilities.md) and [voice conversations](../products/watcherobot/voice.md).
 - Connection issues: [troubleshooting](../troubleshooting/index.md); discuss with the [WeChat community](../products/watcherobot/community.md).

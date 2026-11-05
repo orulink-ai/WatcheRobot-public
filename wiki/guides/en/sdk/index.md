@@ -6,7 +6,7 @@ The Python SDK runs on your computer and includes the Runtime/Daemon. It is sepa
 
 ## Where to start
 
-Follow the [Python SDK quick start](../../../../docs/sdk.md) to install, pair, create, and run an application. Then explore:
+Recommended: [create an app with an AI agent and Skill](../guide/create-with-agent.md). Let AI help with setup, templates and local checks, then confirm execution and test on hardware. For manual development, use the [SDK steps](../../../../docs/sdk.md). For interface details, explore:
 
 - [Robot capabilities](../products/watcherobot/capabilities.md): interfaces and limitations.
 - [Voice conversations](../products/watcherobot/voice.md): a customizable ASR → LLM → TTS application.
