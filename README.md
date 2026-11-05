@@ -26,9 +26,11 @@ Already have a robot? Start by connecting and using it:
 
 ## Develop and build
 
+**Recommended:** [Create an app with an AI agent](wiki/guides/en/guide/create-with-agent.md). Copy one prompt, describe your idea and let the agent use the complete downloadable Skill.
+
 | What you want to do | Start here |
 | --- | --- |
-| Write a robot application in Python | [Python SDK quick start](docs/sdk.md) |
+| Create your first Python robot app | Recommended: [AI agent + Skill quick start](wiki/guides/en/guide/create-with-agent.md); [manual development](docs/sdk.md) |
 | Build a voice conversation app | [Voice conversations](wiki/guides/en/products/watcherobot/voice.md) |
 | Write device-side programs | [C SDK development preview](docs/embedded-sdk.md) |
 | Build your own robot | [DIY build guide](wiki/guides/en/guide/reproduction.md) |

@@ -1,0 +1,4 @@
+interface:
+  display_name: "WatcheRobot 机器人应用"
+  short_description: "从一句需求创建机器人 Python 应用，包含完整能力索引、开发步骤和注释示例"
+  default_prompt: "使用 $watche-robot-app，帮我创建一个用机器人摄像头拍照并保存图片的应用。"

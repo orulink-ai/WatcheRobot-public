@@ -2,6 +2,8 @@ English | [简体中文](../../../products/watcherobot/voice.md)
 
 # Create a voice conversation
 
+**Recommended quick start:** open [Create an app with an AI agent and Skill](../../guide/create-with-agent.md), expand “Want to build something else?” and choose “Voice assistant”. Let AI help generate the project and prepare configuration; you still confirm providers, credentials and real hardware results. Manual setup and troubleshooting remain below.
+
 Use the SDK's built-in voice template on your computer: robot microphone → ASR → LLM → TTS → robot speaker. Voice logic belongs to the Application; no ESP32 firmware changes are required, and the robot chip does not run the language model locally.
 
 ## Prerequisites {#prepare}

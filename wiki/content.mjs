@@ -1,3 +1,5 @@
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -103,6 +105,12 @@ export async function generate(sourceRoot, destination, ref = 'main') {
   }
   await rm(destination, {recursive:true, force:true});
   await mkdir(join(destination, 'public'), {recursive:true});
+  try { await cp(join(sourceRoot, 'wiki/downloads'), join(destination, 'public/downloads'), {recursive:true}); }
+  catch(error) { if(error.code !== 'ENOENT') throw error; }
+  const skillDir = join(destination, 'public/downloads/watche-robot-app');
+  if (await exists(join(skillDir, 'SKILL.md'))) {
+    await promisify(execFile)(process.env.PYTHON ?? 'python3', [join(root, 'wiki/package_skill.py'), skillDir, join(destination, 'public/downloads/watche-robot-app.zip')]);
+  }
   const catalog = [];
   for(const source of sources) {
     if (redirects.has(source)) {

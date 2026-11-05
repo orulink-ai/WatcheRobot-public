@@ -20,7 +20,7 @@
 | --- | --- | --- |
 | 使用电脑客户端 | Desktop Link | 电脑与机器人同一局域网，按客户端提示输入设备六位配对码 |
 | 用手机控制 | Phone Control | App 点击 Add Device，核对 Device ID 后连接 |
-| 开发自己的应用 | Desktop Link | 按 [SDK 快速开始](../../../docs/sdk_zh.md)配对并运行 Application |
+| 开发自己的应用 | Desktop Link | 推荐 [用 AI Agent + Skill 创建应用](create-with-agent.md)，由 AI 协助准备、连接和运行；也可按 [SDK 手动步骤](../../../docs/sdk_zh.md)开发 |
 
 配对成功不等于应用已运行。连接状态见[客户端与设备](client-and-device.md)。
 
@@ -29,5 +29,6 @@
 先在安全范围内检查一个表情、灯效和小幅动作，见[首次运行检查](../../../docs/action-test_zh.md)。使用电脑时，在客户端选择并启动已安装的官方或自定义 Application。
 
 - 更新固件：[烧录指南](../../../docs/flashing_zh.md)与[版本管理](firmware-version-management.md)。
-- 编写应用：[原子能力](../products/watcherobot/capabilities.md)与[语音对话](../products/watcherobot/voice.md)。
+- 编写第一个应用：推荐 [AI Agent + Skill 快速开始](create-with-agent.md)。
+- 查阅接口：[原子能力](../products/watcherobot/capabilities.md)与[语音对话](../products/watcherobot/voice.md)。
 - 连接异常：[故障排查](../troubleshooting/index.md)；需要交流时加入[微信社区](../products/watcherobot/community.md)。

@@ -114,3 +114,6 @@ asyncio.run(main())
 Run synchronous device calls in a worker thread. ACK means acceptance; Jobs require terminal-state checks. `Job.wait()` timeouts do not stop hardware; cancellation requests do not prove it stopped. Release sessions with their respective `stop()` / `close()` methods.
 
 This catalog reflects documentation and static checks, not comprehensive physical validation. See [troubleshooting](../../troubleshooting/index.md) or the [community](community.md).
+
+
+Want to turn these capabilities into your own program? Start with the recommended [AI agent + Skill app guide](../../guide/create-with-agent.md). This page remains the reference for individual APIs and limits.

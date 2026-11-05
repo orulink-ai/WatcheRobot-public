@@ -2,6 +2,10 @@ English | [简体中文](sdk_zh.md)
 
 # Python SDK Quick Start
 
+**Recommended: [create your first app with an AI agent and Skill](../wiki/guides/en/guide/create-with-agent.md)**. Copy a prompt and let the AI help prepare the environment, generate code and run checks; confirm execution and verify the real effects yourself. Continue below if you prefer manual development.
+
+The following is a manual setup reference, not a prerequisite for the Skill route.
+
 Build a managed Application on your computer to control the robot, without flashing custom ESP32 firmware. This guide targets SDK **0.1.12**, with Python **3.10–3.12** (3.11 recommended). The public repository's `python-sdk/` may pin an older revision; it does not identify your installed package.
 
 ## 1. Install the SDK
