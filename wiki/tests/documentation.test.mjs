@@ -244,6 +244,8 @@ test('Skill-led app onboarding provides the full download and bilingual entry po
   const component = await read('wiki/.vitepress/theme/SkillPrompt.vue');
   assert.match(component, /window\.location\.origin/);
   assert.match(component, /navigator\.clipboard\.writeText/);
+  assert.match(component, /document\.execCommand\('copy'\)/);
+  assert.doesNotMatch(component, /v-if="manual"|手动复制提示词/);
   assert.match(component, /v-model="requirement"/);
   assert.match(component, /immediate: true/);
   assert.match(component, /<details class="customize">/);

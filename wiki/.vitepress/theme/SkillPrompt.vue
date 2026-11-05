@@ -5,7 +5,6 @@ const origin = ref('');
 const requirement = ref('');
 const status = ref('');
 const customized = ref(false);
-const manual = ref(false);
 const samples = computed(() => props.english ? [
   ['Touch interaction', 'When I touch the robot’s back, turn its light blue for one second. Ignore repeated touches while busy; release my resources on exit.', 'Touch → blue light for one second.'],
   ['Web photo button', 'Create a local web page with a photo button. Each click captures a real photo and shows it on the page. Disable the button during capture and show errors clearly.', 'Click → a real photo appears.'],
@@ -23,9 +22,37 @@ const prompt = computed(() => !origin.value || !requirement.value.trim() ? '' : 
   ? `Download ${origin.value}/downloads/watche-robot-app.zip, extract the complete bundle and read watche-robot-app/SKILL.md. Create a WatcheRobot Python app with this requirement: ${requirement.value.trim()} Preserve existing files, run local checks and report anything not verified on hardware. Ask before controlling a robot or flashing firmware.`
   : `请下载 ${origin.value}/downloads/watche-robot-app.zip，解压完整文件并读取 watche-robot-app/SKILL.md。按 Skill 流程创建 WatcheRobot Python 应用，需求是：${requirement.value.trim()} 保留已有文件，完成本地检查并说明未实机验证的部分；控制机器人或刷固件前先征得我同意。`);
 function select(sample) { requirement.value = sample[1]; status.value = ''; customized.value = true; }
+function legacyCopy(text) {
+  const previous = document.activeElement;
+  const field = document.createElement('textarea');
+  field.value = text;
+  field.readOnly = true;
+  field.style.cssText = 'position:fixed;top:0;left:-9999px;font-size:16px;';
+  document.body.appendChild(field);
+  try {
+    field.select();
+    field.setSelectionRange(0, field.value.length);
+    return document.execCommand('copy');
+  } finally {
+    field.remove();
+    previous?.focus({ preventScroll: true });
+  }
+}
 async function copy() {
-  try { await navigator.clipboard.writeText(prompt.value); status.value = props.english ? 'Copied' : '已复制'; }
-  catch { manual.value = true; status.value = props.english ? 'Select and copy the text below.' : '请点击下方文本框全选，手动复制。'; }
+  const text = prompt.value;
+  if (!text) return;
+  let success = false;
+  // HTTP LAN pages lack Clipboard API: copy synchronously within the click gesture.
+  try {
+    if (!window.isSecureContext || !navigator.clipboard?.writeText) success = legacyCopy(text);
+    else {
+      try { await navigator.clipboard.writeText(text); success = true; }
+      catch { success = legacyCopy(text); }
+    }
+  } catch { success = false; }
+  status.value = success
+    ? (props.english ? 'Copied — send it to your AI.' : '已复制，直接粘贴给你的 AI。')
+    : (props.english ? 'Copy was blocked by your browser. Allow clipboard access and try again.' : '浏览器阻止了复制，请允许剪贴板访问后重试。');
 }
 </script>
 <template>
@@ -33,7 +60,6 @@ async function copy() {
     <p class="default-effect">{{ customized ? (english ? 'Your custom requirement is ready to copy.' : '已使用你修改的需求，可直接复制。') : (english ? 'Your first app: touch the robot’s back → blue light for one second.' : '第一个程序：触摸机器人背部 → 蓝灯亮一秒。') }}</p>
     <button class="copy" type="button" :disabled="!prompt" @click="copy">{{ english ? 'Copy and send to your AI' : '复制，发给你的 AI' }}</button>
     <span role="status">{{ status }}</span>
-    <textarea v-if="manual" class="generated" :aria-label="english ? 'Prompt to copy manually' : '手动复制提示词'" :value="prompt" readonly rows="5" @focus="$event.target.select()" />
     <details class="customize">
       <summary>{{ english ? 'Want to build something else?' : '想做别的？' }}</summary>
       <div class="examples">
