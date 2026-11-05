@@ -1,45 +1,102 @@
 # Create an app with an AI agent
 
-Describe your idea and let an AI agent help turn it into a WatcheRobot application.
+Start with one idea, without reading the entire SDK manual first.
 
-We recommend the **WatcheRobot App Skill**. It gives your agent a development workflow, complete application templates and robot capability references, so you can start with an idea rather than reading the entire SDK manual.
+The WatcheRobot App Skill gives your agent workflows, templates and capability references. Allow **3–5 minutes** to read this page and describe your idea. Installation, development and hardware testing take additional time depending on your network and requirements.
 
-## 01 · Send this prompt to your agent
+::: tip Before you start
+- **Environment:** Windows / macOS for running the app; Python 3.10–3.12, preferably 3.11. If missing, ask the agent to help prepare it without changing the system default.
+- **Tools:** an AI coding tool that can read URLs, edit files and use a terminal, with permission to download project dependencies.
+- **Hardware:** code generation and local checks do not need a robot. Photos, lights, audio and motion require a connected WatcheRobot for acceptance.
+:::
 
-Open an AI coding tool that can read URLs, edit local files and run commands, such as Codex, Claude Code or TRAE. Send this prompt from your project workspace and replace the requirement with your own idea.
+## 01 · Describe your idea and copy the prompt
+
+Open your workspace in Codex, Claude Code, TRAE or another capable tool. Select a template or write your own requirement, then send the generated prompt to your agent.
 
 <SkillPrompt english />
 
 [Download the complete Skill ZIP](/downloads/watche-robot-app.zip) · <a href="/downloads/watche-robot-app/SKILL.md" download>Download raw SKILL.md</a>
 
-This is a prompt for your agent, **not a terminal installation command**. It supplies the complete Skill for this task; it does not promise persistent installation in every agent product. If downloads fail, download and extract the ZIP manually, give the agent the local `watche-robot-app` folder and ask it to read `SKILL.md`. Copying only that file omits the supporting scripts and templates. The bundle's reference material is currently in Chinese; an agent must be able to read it or translate it.
+This is a natural-language prompt for your agent, not a terminal command.
 
-## 02 · Describe one small experience
+::: details Download failed, or want a persistent Skill installation?
+Download the ZIP manually, extract the complete bundle and give your agent the local `watche-robot-app` folder path. Ask it to read `SKILL.md`; keep all templates, references and scripts, not just this file.
 
-Specify a trigger, the robot's behavior and an observable result. For example:
+Persistent installation depends on your tool; there is no universal installation command here. The bundle references are currently in Chinese, so the agent must read or translate them.
 
-> Create a touch interaction app: touching the robot's back turns its light blue and plays an expression that actually exists on the device. Repeated touches must not stack tasks. Release the app's resources when it stops. Complete the code and local checks first; wait for my confirmation before running on a robot.
+The prompt uses this page's current origin. LAN preview downloads require an agent with company-network access; cloud agents may need a manually transferred folder instead. Production download URLs must be checked after publication; preview availability does not mean production is already updated.
+:::
 
-Other ideas include a web photo button, a timer or your own voice service. Have the agent inspect available expression, action and sound resources instead of guessing IDs. Cloud services need your own credentials; keep secrets out of source code and chat messages.
+## 02 · Check the deliverables
 
-## 03 · Have the agent build and check it
+Have the agent create the project, inspect the installed SDK interfaces and finish local validation before controlling a robot. The app runs on your computer through the SDK Daemon; it is not device firmware.
 
-The Skill includes one-shot, input-listener and web-button templates, plus references for motion, lighting, expressions, audio, camera, touch and RTC. The agent chooses the relevant template, prepares an isolated environment, checks the installed SDK interfaces, then develops and validates the app.
+This is the actual project generated with the bundle's `button` template, not a mock screenshot:
 
-- **Requirements:** Python 3.10–3.12 (3.11 recommended), network access for SDK installation, and agent permission to use files and a terminal. If anything is missing, ask the agent to explain and help prepare it.
-- **Deliverables:** a project folder, check results, the full launch command and usage instructions.
-- **Runtime:** the application runs on your computer through the SDK Daemon using `watcherobot app run`. It is not firmware flashed onto the robot.
+```text
+wiki-skill-example-python311/
+├─ .gitignore
+├─ .venv/
+├─ .watcherignore
+├─ README.md
+├─ app.json
+├─ app.py
+├─ app_support.py
+├─ icon.svg
+├─ photo_app.py
+├─ sdk-capabilities.json
+├─ sdk-requirements.json
+└─ skill-setup.json
+```
 
-## 04 · Test it on a real robot
+Excerpt from real local validation (Python 3.11, SDK 0.1.13):
 
-After local checks, connect your robot using the [Python SDK quick start](/en/docs/sdk). You can generate and check code without a device, but real hardware behavior remains unverified.
+```text
+No broken requirements found.
+Application validated
+本地检查通过；未启动 Daemon，未验证设备。
+```
 
-Before starting, have the agent confirm the target device and resource ownership; do not take over another running app. Leave safe clearance for motion tests. Current servos have no physical position feedback: a successful command is not a measured position.
+The last line means “local checks passed; Daemon was not started and the device was not verified.” Success requires `state: ready` in `skill-setup.json`, a check exit code of 0 and an explicit hardware-test status. This Linux test covers generation and static checks only; the generated manifest supports Windows / macOS, not Linux managed execution.
 
-Check resource cleanup after stopping. Inspect the actual photo and test sound and motion in person; successful checks or command acknowledgments are not proof of real-world effects.
+::: details Run on the target computer (after connection and run authorization)
+Windows PowerShell, from your actual project directory:
 
-## Need an interface reference?
+```powershell
+& ./.venv/Scripts/watcherobot.exe app run .
+```
+
+macOS, from your actual project directory:
+
+```sh
+./.venv/bin/watcherobot app run .
+```
+
+The web-photo app should print a local web address. Open it and click the button to see a real photo from this test. No robot was connected for this documentation check, so there is no successful `app run` log to show. A missing URL or real photo needs diagnosis; it is not hardware acceptance.
+:::
+
+
+Require a **project location, complete launch command, check results and unverified items**. A completion message or screenshot alone is insufficient.
+
+## 03 · Connect and test the real experience
+
+Follow the [Python SDK quick start](/en/docs/sdk). Confirm the target device and running application; do not take over someone else's app. Configure service credentials locally, outside source code and chat.
+
+::: warning Motion safety
+Leave safe clearance. Current servos have no physical position feedback: a successful command does not establish measured position, and a timeout does not prove motion has stopped.
+:::
+
+Check only the capabilities used by your app:
+
+- **Photo:** inspect a real photo captured during this test, not a placeholder.
+- **Audio:** listen to the expected content; errors must be clear.
+- **Lights / motion:** observe the intended effect and safe range; an ACK is not a measured position.
+- **Repeated triggers:** avoid conflicting stacked tasks and support explicit retries after failure.
+- **Stop:** confirm the app exits and releases its own resources without affecting other apps. Report cleanup that cannot be confirmed.
+
+## Next steps
 
 [Capabilities and APIs](/en/products/watcherobot/capabilities) · [Voice applications](/en/products/watcherobot/voice) · [Community and support](/en/products/watcherobot/community)
 
-This Skill targets computer-side Python apps. For device-side development, use the [C SDK preview](/en/docs/embedded-sdk).
+This guide targets computer-side Python applications. For device-side development, use the [C SDK preview](/en/docs/embedded-sdk).

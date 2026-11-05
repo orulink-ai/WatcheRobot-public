@@ -240,10 +240,13 @@ test('Skill-led app onboarding provides the full download and bilingual entry po
     assert.match(text, /Python 3\.10/);
   }
   const nav = await read('wiki/navigation.mjs');
-  assert.match(nav, /'Python SDK', 'Python SDK', \['\/guide\/create-with-agent'/);
+  assert.match(nav, /'Python SDK', 'Python SDK', \['\/docs\/sdk', '\/guide\/create-with-agent'/);
   const component = await read('wiki/.vitepress/theme/SkillPrompt.vue');
   assert.match(component, /window\.location\.origin/);
   assert.match(component, /navigator\.clipboard\.writeText/);
+  assert.match(component, /v-model="requirement"/);
+  assert.match(component, /:disabled="!prompt"/);
+  assert.doesNotMatch(component, /\[填写我的需求\]/);
   await access(resolve(root, 'wiki/downloads/watche-robot-app.zip'));
   await access(resolve(root, 'wiki/downloads/watche-robot-app/scripts/workflow.py'));
 });
