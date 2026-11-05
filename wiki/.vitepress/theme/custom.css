@@ -1,3 +1,24 @@
+/* This onboarding page alone gets a restrained steel-blue accent. */
+.agent-onboarding {
+  --vp-c-brand-1: #365f91;
+  --vp-c-brand-soft: rgba(54, 95, 145, 0.07);
+}
+.dark .agent-onboarding {
+  --vp-c-brand-1: #759ccc;
+  --vp-c-brand-soft: rgba(117, 156, 204, 0.10);
+  --vp-c-text-1: rgb(245, 245, 242);
+  --vp-c-text-2: rgba(245, 245, 242, 0.76);
+  --vp-c-divider: rgba(255, 255, 255, 0.14);
+}
+.agent-onboarding .vp-doc .custom-block {
+  background: var(--vp-c-brand-soft);
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+}
+.agent-onboarding .vp-doc .warning { border-left-color: #b59154; }
+.agent-onboarding .vp-doc h2 { color: var(--vp-c-brand-1); }
+.agent-onboarding .vp-doc a { color: var(--vp-c-brand-1); }
+
 /* ORULINK website palette: monochrome surfaces, fine rules, compact controls. */
 :root {
   --wr-color-ink: #080808;
