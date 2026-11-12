@@ -32,7 +32,7 @@ WatcheRobot 是一款可编程的桌面机器人，面向桌面陪伴、互动�
 | --- | --- |
 | 用 Python 创建第一个机器人应用 | 推荐 [AI Agent + Skill 快速开始](wiki/guides/guide/create-with-agent.md)；[手动开发](docs/sdk_zh.md) |
 | 搭建语音对话应用 | [快速创建语音对话](wiki/guides/products/watcherobot/voice.md) |
-| 编写设备端程序 | [C SDK 独立仓库（开发预览）](https://github.com/orulink-ai/WatcheRobot_c_sdk) |
+| 编写设备端程序 | [C SDK 独立仓库（开发预览）](https://github.com/orulink-ai/WatcheRobot_c_sdk)；[获取 `c-sdk` 子模块与使用指引](docs/embedded-sdk_zh.md) |
 | 自己制作一台机器人 | [复现指引](wiki/guides/guide/reproduction.md) |
 | 下载硬件、BOM、固件和资源 | [资源与下载](hardware/README_zh.md) |
 

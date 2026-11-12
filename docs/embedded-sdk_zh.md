@@ -26,6 +26,15 @@ C SDK 已独立维护在公开仓库 **[WatcheRobot_c_sdk](https://github.com/or
 - 舵机不能读取实际转到的角度；命令坐标和 ACK/DONE 不证明已到位或停止。运动前清空完整行程，遵守[身体控制 API 的安全说明](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/api/body.md)，并观察实际动作。
 - C SDK 仍是**开发预览**，独立建仓不代表稳定发布、配套固件完整验收或实机安全认证。
 
-## 旧快照说明
+## 在 public 仓库中获取 SDK
 
-本仓库的 `firmware/sdk/` 保留为历史开发预览快照，不再作为当前开发入口；旧页面链接继续可访问。不要混用该快照的路径、依赖和命令与独立仓库的源码。当前问题反馈和贡献请到 [C SDK 独立仓库](https://github.com/orulink-ai/WatcheRobot_c_sdk)。
+本仓库已移除原 `firmware/` 目录，通过根目录 **`c-sdk` Git 子模块**引用独立仓库，与 `python-sdk` 相同。旧 Wiki 链接转到当前指引；旧快照仍可从 Git 历史查看。
+
+在本 public 仓库根目录执行以下命令，获取本仓库固定版本的 C SDK：
+
+```sh
+git submodule update --init c-sdk
+cd c-sdk
+```
+
+随后在 `c-sdk` 目录按其上手教程构建。若要同时获取 Python SDK，可在 public 仓库根目录执行 `git submodule update --init --recursive`。子模块固定到具体提交，不会随独立仓库主线自动变化；开发最新版可直接克隆独立仓库。问题反馈与贡献也在独立仓库进行。

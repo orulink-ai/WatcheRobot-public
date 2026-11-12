@@ -1,3 +1,6 @@
 [submodule "python-sdk"]
 	path = python-sdk
 	url = https://github.com/orulink-ai/WatcheRobot_python_sdk.git
+[submodule "c-sdk"]
+	path = c-sdk
+	url = https://github.com/orulink-ai/WatcheRobot_c_sdk.git

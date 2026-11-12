@@ -32,7 +32,7 @@ Already have a robot? Start by connecting and using it:
 | --- | --- |
 | Create your first Python robot app | Recommended: [AI agent + Skill quick start](wiki/guides/en/guide/create-with-agent.md); [manual development](docs/sdk.md) |
 | Build a voice conversation app | [Voice conversations](wiki/guides/en/products/watcherobot/voice.md) |
-| Write device-side programs | [Standalone C SDK (development preview)](https://github.com/orulink-ai/WatcheRobot_c_sdk) |
+| Write device-side programs | [Standalone C SDK (development preview)](https://github.com/orulink-ai/WatcheRobot_c_sdk); [fetch the `c-sdk` submodule and get started](docs/embedded-sdk.md) |
 | Build your own robot | [DIY build guide](wiki/guides/en/guide/reproduction.md) |
 | Download hardware files, BOMs, firmware, and assets | [Resources and downloads](hardware/README.md) |
 

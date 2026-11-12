@@ -66,6 +66,9 @@ export function rewriteLinks(content, source, routes, ref) {
 const consolidatedPages = [
   ['hardware/pcb/spares', 'hardware/README', 'hardware'],
   ['firmware/README', 'hardware/README', 'firmware'],
+  ['firmware/sdk/README', 'docs/embedded-sdk', null],
+  ['firmware/sdk/docs/getting-started', 'docs/embedded-sdk', null],
+  ['firmware/sdk/docs/hardware-check', 'docs/embedded-sdk', null],
   ['docs/versions', 'hardware/README', 'versions'],
   ['docs/compatibility', 'hardware/README', 'versions'],
   ['CONTRIBUTING', 'community', 'contribute'],
@@ -78,6 +81,7 @@ const consolidatedPages = [
 
 export async function generate(sourceRoot, destination, ref = 'main') {
   const candidates = ['README.md', 'README_zh.md', 'CONTRIBUTING.md', 'CONTRIBUTING_zh.md', 'SECURITY.md', 'SECURITY_zh.md',
+    // Older release trees may still contain the SDK snapshot; current trees use submodules.
     'firmware/README.md', 'firmware/README_zh.md', 'firmware/sdk/README.md', 'firmware/sdk/README_zh.md',
     'firmware/sdk/docs/getting-started.md', 'firmware/sdk/docs/getting-started_zh.md',
     'firmware/sdk/docs/hardware-check.md', 'firmware/sdk/docs/hardware-check_zh.md',
@@ -95,9 +99,11 @@ export async function generate(sourceRoot, destination, ref = 'main') {
       const targetSource = hub === 'community'
         ? `wiki/guides/${suffix ? '' : 'en/'}products/watcherobot/community.md`
         : hub + suffix + '.md';
-      if (routes.has(source) && routes.has(targetSource)
-          && (await readFile(join(sourceRoot, targetSource), 'utf8')).includes(`{#${anchor}}`)) {
-        const target = routes.get(targetSource) + '#' + anchor;
+      // Emit compatibility redirects even after the old firmware sources are removed.
+      if ((routes.has(source) || page.startsWith('firmware/')) && routes.has(targetSource)
+          && (!anchor || (await readFile(join(sourceRoot, targetSource), 'utf8')).includes(`{#${anchor}}`))) {
+        const target = routes.get(targetSource) + (anchor ? '#' + anchor : '');
+        if (!sources.includes(source)) sources.push(source);
         redirects.set(source, {route:routeFor(source), target});
         routes.set(source, target);
       }
@@ -120,15 +126,7 @@ export async function generate(sourceRoot, destination, ref = 'main') {
       await writeFile(output, `<!doctype html><html lang="${route.startsWith('/en/') ? 'en' : 'zh-CN'}"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=${target}"><link rel="canonical" href="${target}"><title>${route.startsWith('/en/') ? 'Page moved' : '页面已合并'}</title></head><body><a href="${target}">${route.startsWith('/en/') ? 'Continue to the consolidated guide' : '前往合并后的指引'}</a></body></html>`);
       continue;
     }
-    let content = await readFile(join(sourceRoot, source), 'utf8');
-    // Keep legacy SDK URLs available without presenting the snapshot as current.
-    if (source.startsWith('firmware/sdk/')) {
-      const zh = source.endsWith('_zh.md');
-      const notice = zh
-        ? '> **历史快照**：C SDK 已迁至[独立仓库](https://github.com/orulink-ai/WatcheRobot_c_sdk)。下文为旧版内容，当前使用方法请看[最新入口](/docs/embedded-sdk)。'
-        : '> **Historical snapshot**: the C SDK is maintained in a [standalone repository](https://github.com/orulink-ai/WatcheRobot_c_sdk). The content below is historical; use the [current entry point](/en/docs/embedded-sdk).';
-      content = notice + '\n\n' + content;
-    }
+    const content = await readFile(join(sourceRoot, source), 'utf8');
     const route = routes.get(source);
     const output = join(destination, route + (route.endsWith('/') ? 'index.md' : '.md'));
     await mkdir(dirname(output), {recursive:true});

@@ -26,6 +26,15 @@ The routes are independent: the C SDK does not require installing the Python SDK
 - Servos cannot report their actual angle. Command coordinates and ACK/DONE do not prove arrival or a physical stop. Clear the full travel range, follow the [body API safety instructions](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/api/body.md) and observe actual movement.
 - The C SDK remains a **development preview**. A separate repository does not establish a stable release, complete firmware pairing acceptance or hardware safety certification.
 
-## Historical snapshot
+## Fetch the SDK through this public repository
 
-This repository retains `firmware/sdk/` as a historical development-preview snapshot, not the current development entry point. Old page links remain available. Do not mix its paths, dependencies or commands with the standalone source. Report current SDK issues and contribute in the [standalone C SDK repository](https://github.com/orulink-ai/WatcheRobot_c_sdk).
+The original `firmware/` directory has been removed. Like `python-sdk`, the root-level **`c-sdk` Git submodule** points to the standalone repository. Old Wiki links redirect to the current guide; old snapshots remain in Git history.
+
+From the public repository root, fetch the pinned C SDK version:
+
+```sh
+git submodule update --init c-sdk
+cd c-sdk
+```
+
+Follow its getting-started guide from inside `c-sdk`. To fetch the Python SDK as well, run `git submodule update --init --recursive` from the public repository root. Submodules pin specific commits; they do not automatically track upstream main. Clone the standalone repository directly to develop against its latest revision. File SDK issues and contribute there.

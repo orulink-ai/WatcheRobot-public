@@ -298,11 +298,7 @@ test('generated pages keep internal page and asset links resolvable in both lang
     for (const page of catalog) {
       const file = resolve(output, '.' + page.route + (page.route.endsWith('/') ? 'index.md' : '.md'));
       const content = (await readFile(file, 'utf8')).replace(/```[\s\S]*?```/g, '');
-      if (page.source.startsWith('firmware/sdk/')) {
-        assert.match(content, /Historical snapshot|历史快照/);
-        assert.match(content, /https:\/\/github\.com\/orulink-ai\/WatcheRobot_c_sdk/);
-        assert.ok(content.includes(page.lang === 'zh' ? '](/docs/embedded-sdk)' : '](/en/docs/embedded-sdk)'));
-      }
+      assert.ok(!page.source.startsWith('firmware/'), 'removed firmware pages must be redirects, not articles');
       const targets = [...content.matchAll(/\]\((\/[^\s)]+)\)|(?:src|href)="(\/[^"\s]+)"/g)]
         .map(match => (match[1] ?? match[2]).split(/[?#]/)[0]);
       for (const target of targets) {
