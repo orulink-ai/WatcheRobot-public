@@ -120,7 +120,15 @@ export async function generate(sourceRoot, destination, ref = 'main') {
       await writeFile(output, `<!doctype html><html lang="${route.startsWith('/en/') ? 'en' : 'zh-CN'}"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=${target}"><link rel="canonical" href="${target}"><title>${route.startsWith('/en/') ? 'Page moved' : '页面已合并'}</title></head><body><a href="${target}">${route.startsWith('/en/') ? 'Continue to the consolidated guide' : '前往合并后的指引'}</a></body></html>`);
       continue;
     }
-    const content = await readFile(join(sourceRoot, source), 'utf8');
+    let content = await readFile(join(sourceRoot, source), 'utf8');
+    // Keep legacy SDK URLs available without presenting the snapshot as current.
+    if (source.startsWith('firmware/sdk/')) {
+      const zh = source.endsWith('_zh.md');
+      const notice = zh
+        ? '> **历史快照**：C SDK 已迁至[独立仓库](https://github.com/orulink-ai/WatcheRobot_c_sdk)。下文为旧版内容，当前使用方法请看[最新入口](/docs/embedded-sdk)。'
+        : '> **Historical snapshot**: the C SDK is maintained in a [standalone repository](https://github.com/orulink-ai/WatcheRobot_c_sdk). The content below is historical; use the [current entry point](/en/docs/embedded-sdk).';
+      content = notice + '\n\n' + content;
+    }
     const route = routes.get(source);
     const output = join(destination, route + (route.endsWith('/') ? 'index.md' : '.md'));
     await mkdir(dirname(output), {recursive:true});

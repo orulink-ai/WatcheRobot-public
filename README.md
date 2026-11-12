@@ -32,7 +32,7 @@ Already have a robot? Start by connecting and using it:
 | --- | --- |
 | Create your first Python robot app | Recommended: [AI agent + Skill quick start](wiki/guides/en/guide/create-with-agent.md); [manual development](docs/sdk.md) |
 | Build a voice conversation app | [Voice conversations](wiki/guides/en/products/watcherobot/voice.md) |
-| Write device-side programs | [C SDK development preview](docs/embedded-sdk.md) |
+| Write device-side programs | [Standalone C SDK (development preview)](https://github.com/orulink-ai/WatcheRobot_c_sdk) |
 | Build your own robot | [DIY build guide](wiki/guides/en/guide/reproduction.md) |
 | Download hardware files, BOMs, firmware, and assets | [Resources and downloads](hardware/README.md) |
 
@@ -46,6 +46,6 @@ Already have a robot? Start by connecting and using it:
 
 ## Open source and licensing
 
-Published materials include hardware production files, mechanical models, the Python SDK, flashing tools, and documentation; the independent C SDK is a development preview. Official ESP32-S3 application, STM32, Himax, client, and server implementations are not published in this repository.
+Published materials include hardware production files, mechanical models, the Python SDK, flashing tools, and documentation; the [standalone C SDK](https://github.com/orulink-ai/WatcheRobot_c_sdk) is a development preview, with current source, examples and guides maintained in its own repository. Official ESP32-S3 application, STM32, Himax, client, and server implementations are not published in this repository.
 
 This repository uses [GPL-3.0](LICENSE). Subprojects and third-party components retain their own licenses.

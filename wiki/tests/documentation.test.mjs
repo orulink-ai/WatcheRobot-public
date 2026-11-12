@@ -27,16 +27,18 @@ test('product navigation groups user tasks and only links to available release c
 });
 
 test('C SDK preview is separate from Python and HIL maintenance stays hidden', () => {
-  const visible = ['/docs/embedded-sdk', '/firmware/sdk/', '/firmware/sdk/docs/getting-started', '/firmware/sdk/docs/hardware-check'];
+  const visible = ['/docs/embedded-sdk'];
+  const historical = ['/firmware/sdk/', '/firmware/sdk/docs/getting-started', '/firmware/sdk/docs/hardware-check'];
   for (const lang of ['zh', 'en']) {
     const prefix = lang === 'zh' ? '' : '/en';
-    const catalog = [...visible, '/guide/hardware-in-the-loop', '/docs/sdk', '/hardware/'].map((route, index) => ({
+    const catalog = [...visible, ...historical, '/guide/hardware-in-the-loop', '/docs/sdk', '/hardware/'].map((route, index) => ({
       lang,
       route: prefix + route,
       title: `Hidden preview ${index}`,
     }));
     const links = JSON.stringify(buildSidebar(catalog, lang));
     for (const route of visible) assert.ok(links.includes(prefix + route));
+    for (const route of historical) assert.ok(!links.includes(prefix + route));
     assert.match(links, /C SDK/);
     assert.match(links, /Python SDK/);
     assert.match(links, /Hardware|硬件专区/);
@@ -275,6 +277,19 @@ test('SDK instructions activate the environment first and use managed Applicatio
   }
 });
 
+test('C SDK entry points use standalone source and current first-run instructions', async () => {
+  for (const suffix of ['', '_zh']) {
+    const guide = await read(`docs/embedded-sdk${suffix}.md`);
+    assert.match(guide, /https:\/\/github\.com\/orulink-ai\/WatcheRobot_c_sdk/);
+    assert.match(guide, /hello_display/);
+    assert.match(guide, /examples\/hardware_check\/README/);
+    assert.match(guide, /ACK\/DONE/);
+    assert.doesNotMatch(guide, /\]\(\.\.\/firmware\/sdk\//);
+    const home = await read(`README${suffix}.md`);
+    assert.match(home, /https:\/\/github\.com\/orulink-ai\/WatcheRobot_c_sdk/);
+  }
+});
+
 test('generated pages keep internal page and asset links resolvable in both languages', async () => {
   const output = await mkdtemp(resolve(tmpdir(), 'watche-doc-links-'));
   try {
@@ -283,6 +298,11 @@ test('generated pages keep internal page and asset links resolvable in both lang
     for (const page of catalog) {
       const file = resolve(output, '.' + page.route + (page.route.endsWith('/') ? 'index.md' : '.md'));
       const content = (await readFile(file, 'utf8')).replace(/```[\s\S]*?```/g, '');
+      if (page.source.startsWith('firmware/sdk/')) {
+        assert.match(content, /Historical snapshot|历史快照/);
+        assert.match(content, /https:\/\/github\.com\/orulink-ai\/WatcheRobot_c_sdk/);
+        assert.ok(content.includes(page.lang === 'zh' ? '](/docs/embedded-sdk)' : '](/en/docs/embedded-sdk)'));
+      }
       const targets = [...content.matchAll(/\]\((\/[^\s)]+)\)|(?:src|href)="(\/[^"\s]+)"/g)]
         .map(match => (match[1] ?? match[2]).split(/[?#]/)[0]);
       for (const target of targets) {
