@@ -57,13 +57,17 @@
 
 - 快速开始：`README_zh.md`
 - 固件下载和烧录：[资源与下载](hardware/README_zh.md#firmware)、[烧录指南](docs/flashing_zh.md)
-- 设备端 C SDK 开发：[独立仓库](https://github.com/orulink-ai/WatcheRobot_c_sdk)、[子模块获取指引](docs/embedded-sdk_zh.md)
+- 设备端 C SDK 开发：[独立仓库](https://github.com/orulink-ai/WatcheRobot_c_sdk)、[子模块获取指引](#获取-sdk-子模块)
 - SD 卡和首次运行：`docs/sd-card-assets_zh.md`、`docs/action-test_zh.md`
 - SDK：`docs/sdk_zh.md`
 - 版本与配套关系：`docs/versions_zh.md`、`docs/compatibility_zh.md`
 - 硬件与 BOM：`hardware/README_zh.md`、`hardware/pcb/spares_zh.md`
 
 同时更新对应英文文档。
+
+## 获取 SDK 子模块
+
+在本仓库根目录执行 `git submodule update --init c-sdk` 获取固定版本 C SDK，再进入 `c-sdk/` 按 SDK 自身指南开发。获取全部子模块可用 `git submodule update --init --recursive`。SDK 源码变更在对应独立仓库提交，本仓库只更新引用版本。
 
 ## 提交 PR 前的验证
 

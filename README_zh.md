@@ -32,7 +32,7 @@ WatcheRobot 是一款可编程的桌面机器人，面向桌面陪伴、互动�
 | --- | --- |
 | 用 Python 创建第一个机器人应用 | 推荐 [AI Agent + Skill 快速开始](wiki/guides/guide/create-with-agent.md)；[手动开发](docs/sdk_zh.md) |
 | 搭建语音对话应用 | [快速创建语音对话](wiki/guides/products/watcherobot/voice.md) |
-| 编写设备端程序 | [C SDK 独立仓库（开发预览）](https://github.com/orulink-ai/WatcheRobot_c_sdk)；[获取 `c-sdk` 子模块与使用指引](docs/embedded-sdk_zh.md) |
+| 编写设备端程序 | [C SDK 独立仓库（开发预览）](https://github.com/orulink-ai/WatcheRobot_c_sdk)；[C SDK 使用指引](docs/embedded-sdk_zh.md) |
 | 自己制作一台机器人 | [复现指引](wiki/guides/guide/reproduction.md) |
 | 下载硬件、BOM、固件和资源 | [资源与下载](hardware/README_zh.md) |
 
@@ -46,6 +46,6 @@ WatcheRobot 是一款可编程的桌面机器人，面向桌面陪伴、互动�
 
 ## 开源与许可
 
-公开内容包括硬件生产资料、机械模型、Python SDK、烧录工具及文档；[C SDK 已独立建仓](https://github.com/orulink-ai/WatcheRobot_c_sdk)，仍为开发预览，当前源码、示例与使用说明在独立仓库维护。官方 ESP32-S3 应用、STM32、Himax、客户端和服务端实现不在本仓库公开。
+公开内容包括硬件生产资料、机械模型、Python SDK、烧录工具及文档；[C SDK](https://github.com/orulink-ai/WatcheRobot_c_sdk) 为开发预览，源码、示例与使用说明见 SDK 文档。官方 ESP32-S3 应用、STM32、Himax、客户端和服务端实现不在本仓库公开。
 
 本仓库使用 [GPL-3.0](LICENSE)，子项目和第三方组件以各自许可证为准。

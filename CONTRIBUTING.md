@@ -57,13 +57,17 @@ If your change affects setup, flashing, behavior assets, hardware materials, SDK
 
 - Quick start: `README.md`
 - Firmware downloads and flashing: [resources](hardware/README.md#firmware), [flashing guide](docs/flashing.md)
-- Device-side C SDK development: [standalone SDK](https://github.com/orulink-ai/WatcheRobot_c_sdk), [submodule instructions](docs/embedded-sdk.md)
+- Device-side C SDK development: [standalone SDK](https://github.com/orulink-ai/WatcheRobot_c_sdk), [submodule instructions](#fetch-sdk-submodules)
 - SD card and first run: `docs/sd-card-assets.md`, `docs/action-test.md`
 - SDK: `docs/sdk.md`
 - Versions and compatibility: `docs/versions.md`, `docs/compatibility.md`
 - Hardware and BOM: `hardware/README.md`, `hardware/pcb/spares.md`
 
 Update the matching Chinese document at the same time.
+
+## Fetch SDK submodules
+
+From this repository root, run `git submodule update --init c-sdk` to fetch the pinned C SDK, then enter `c-sdk/` and follow its own guide. Use `git submodule update --init --recursive` to fetch all submodules. Submit SDK source changes in their standalone repositories; this repository only updates their pinned references.
 
 ## Validation Before PR
 

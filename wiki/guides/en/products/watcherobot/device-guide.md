@@ -2,7 +2,7 @@ English | [简体中文](../../../products/watcherobot/device-guide.md)
 
 # Device user guide
 
-Power on, configure Wi-Fi, and connect your robot to a computer or phone. Steps were checked against local ESP32 source `7699527` on 2026-10-15. Screenshots come from the existing device guide; layouts can vary by firmware and app version.
+Power on, configure Wi-Fi, and connect your robot to a computer or phone. Layouts can vary by firmware and app version.
 
 ## Network specifications {#network-specs}
 

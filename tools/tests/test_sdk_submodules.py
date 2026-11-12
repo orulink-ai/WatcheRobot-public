@@ -31,7 +31,9 @@ def test_no_duplicate_firmware_or_private_snapshot_export_pipeline():
     assert not (ROOT / ".github/workflows/firmware-sdk.yml").exists()
     for suffix in ("", "_zh"):
         guide = (ROOT / f"docs/embedded-sdk{suffix}.md").read_text(encoding="utf-8")
-        assert "c-sdk" in guide
-        assert "submodule update --init c-sdk" in guide
-        assert "保留为历史" not in guide
-        assert "retains `firmware/sdk/`" not in guide
+        assert "WatcheRobot_c_sdk" in guide
+        assert "git submodule" not in guide
+        assert "firmware/" not in guide
+        assert "本 public 仓库" not in guide
+        assert "Git 历史" not in guide
+        assert "Old Wiki" not in guide
