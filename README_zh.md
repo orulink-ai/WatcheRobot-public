@@ -20,7 +20,7 @@ WatcheRobot 是一款可编程的桌面机器人，面向桌面陪伴、互动�
 已有整机，从连接和使用开始：
 
 1. **安装客户端**：从[设备使用指南](wiki/guides/products/watcherobot/device-guide.md#install-app)获取电脑或手机安装包。
-2. **配置网络**：用手机 App 扫描设备二维码，完成[Wi-Fi 配网](wiki/guides/products/watcherobot/device-guide.md#wifi)。
+2. **配置网络**：用手机 App 扫描设备二维码，完成 **2.4 GHz Wi-Fi** 配网（**不支持 5 GHz**），见[配网说明](wiki/guides/products/watcherobot/device-guide.md#wifi)。
 3. **连接机器人**：电脑选择 Desktop Link，手机选择 Phone Control，见[连接说明](wiki/guides/guide/getting-started.md)。
 4. **开始体验**：按[首次运行检查](docs/action-test_zh.md)检查表情、灯效和安全范围内的动作。
 

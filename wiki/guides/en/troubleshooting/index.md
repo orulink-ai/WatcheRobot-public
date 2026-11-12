@@ -6,6 +6,8 @@ Start with the smallest failure domain. Do not clear user data or erase the enti
 
 ## QR provisioning fails
 
+- **Check the band first: the robot supports 2.4 GHz Wi-Fi only, not 5 GHz Wi-Fi.** Enable 2.4 GHz on the router. If both bands share a name and provisioning fails, temporarily separate their names and retry with 2.4 GHz instead of repeatedly changing passwords or resetting the robot.
+
 - Use Scan QR code inside the WatcheRobot app, not WeChat. Check phone Bluetooth and camera permissions.
 - Wait for Bluetooth advertising if the device displays Preparing; this is not a QR or password error.
 - After entering a password, wait for app success and Connected/IP on the robot. Retry incorrect passwords as prompted.

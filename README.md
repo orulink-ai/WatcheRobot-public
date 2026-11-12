@@ -20,7 +20,7 @@ WatcheRobot is a programmable desktop robot for desktop companionship, interacti
 Already have a robot? Start by connecting and using it:
 
 1. **Install a client**: get a computer or phone installer from the [device guide](wiki/guides/en/products/watcherobot/device-guide.md#install-app).
-2. **Set up Wi-Fi**: scan the robot's QR code in the phone App and complete [Wi-Fi setup](wiki/guides/en/products/watcherobot/device-guide.md#wifi).
+2. **Set up Wi-Fi**: scan the robot's QR code in the phone App and complete **2.4 GHz Wi-Fi** setup (**5 GHz is not supported**); see [Wi-Fi setup](wiki/guides/en/products/watcherobot/device-guide.md#wifi).
 3. **Connect the robot**: choose Desktop Link on a computer or Phone Control on a phone; see [connection instructions](wiki/guides/en/guide/getting-started.md).
 4. **Try it out**: follow the [first-run check](docs/action-test.md) for expressions, lights, and movements within a safe range.
 

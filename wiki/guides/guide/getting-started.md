@@ -10,6 +10,10 @@
 
 ## 2. 扫码配置 Wi-Fi
 
+::: warning 仅支持 2.4 GHz Wi-Fi
+**设备不支持 5 GHz Wi-Fi。** 配网前请确认路由器已开启 2.4 GHz 网络，并选择该网络；双频同名网络配网失败时，可暂时分开频段名称后重试。
+:::
+
 第一次开机没有已保存的网络时，设备会自动打开配网页；也可进入 **Settings → Wi-Fi**。打开手机 App 的 **Scan QR code**，扫描机器人屏幕二维码，选择 Wi-Fi 并输入密码，等待手机提示成功和设备显示 Connected/IP。
 
 完整图文见[扫码配网](../products/watcherobot/device-guide.md#wifi)。手机需要蓝牙与相机权限；不要求电脑有蓝牙。已连接正确网络时不要反复点击 Disconnect，它会清除已保存的 Wi-Fi。

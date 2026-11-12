@@ -86,6 +86,22 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
   }
 });
 
+test('Wi-Fi band limitations are prominent in bilingual specs and provisioning entry points', async () => {
+  for (const [prefix, suffix] of [['', '_zh'], ['en/', '']]) {
+    const device = await read(`wiki/guides/${prefix}products/watcherobot/device-guide.md`);
+    const specs = device.split('{#network-specs}')[1].split('\n## ')[0];
+    assert.match(specs, /\*\*[^\n]*2\.4 GHz[^\n]*5 GHz[^\n]*\*\*/);
+    const provisioning = device.split('{#wifi}')[1].split('\n## ')[0];
+    assert.match(provisioning, /::: warning/);
+    assert.ok(provisioning.indexOf('2.4 GHz') < provisioning.indexOf('### 1.'));
+    for (const path of [`wiki/guides/${prefix}guide/getting-started.md`, `wiki/guides/${prefix}troubleshooting/index.md`, `README${suffix}.md`]) {
+      const content = await read(path);
+      assert.match(content, /2\.4 GHz/);
+      assert.match(content, /5 GHz/);
+    }
+  }
+});
+
 test('both community pages offer Discord without removing the existing WeChat QR code', async () => {
   for (const prefix of ['', 'en/']) {
     const content = await read(`wiki/guides/${prefix}products/watcherobot/community.md`);

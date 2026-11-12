@@ -10,6 +10,10 @@ Use stable power and a safe, level surface. Find phone and desktop downloads in 
 
 ## 2. Configure Wi-Fi with a QR code
 
+::: warning 2.4 GHz Wi-Fi only
+**5 GHz Wi-Fi is not supported.** Enable and select your router's 2.4 GHz network before provisioning. If both bands share a name and provisioning fails, temporarily use separate names and retry with 2.4 GHz.
+:::
+
 First boot without saved credentials opens provisioning automatically. Alternatively open **Settings → Wi-Fi**. In the phone app, select **Scan QR code**, scan the robot, choose Wi-Fi, and enter the password. Wait for app success and Connected/IP on the robot.
 
 See the [illustrated Wi-Fi guide](../products/watcherobot/device-guide.md#wifi). The phone needs Bluetooth and camera permissions; computer Bluetooth is not required. Do not repeatedly use Disconnect on a working network: it clears saved Wi-Fi.
