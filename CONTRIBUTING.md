@@ -42,7 +42,7 @@ Examples:
 
 Do not commit:
 
-- Official ESP32 application, STM32F103 or Himax firmware implementations (independent hardware SDK, required drivers and examples under `firmware/sdk/` are allowed)
+- Official ESP32 application, STM32F103 or Himax firmware implementations. C SDK source, drivers and examples belong in [WatcheRobot_c_sdk](https://github.com/orulink-ai/WatcheRobot_c_sdk); this repository references it through the `c-sdk/` submodule.
 - Release artifacts: `.bin`, `.zip`, `.exe`, `.msi`, `.dmg`, `.apk`, `.aab`
 - local build outputs or generated firmware images
 - Wi-Fi credentials, API keys, tokens, private keys, or `.env` files
@@ -56,13 +56,18 @@ Binary release artifacts should be uploaded to GitHub Releases instead of enteri
 If your change affects setup, flashing, behavior assets, hardware materials, SDK usage, or Release assets, update the matching documents:
 
 - Quick start: `README.md`
-- Firmware and flashing: `firmware/README.md`, `docs/flashing.md`
+- Firmware downloads and flashing: [resources](hardware/README.md#firmware), [flashing guide](docs/flashing.md)
+- Device-side C SDK development: [standalone SDK](https://github.com/orulink-ai/WatcheRobot_c_sdk), [submodule instructions](#fetch-sdk-submodules)
 - SD card and first run: `docs/sd-card-assets.md`, `docs/action-test.md`
 - SDK: `docs/sdk.md`
 - Versions and compatibility: `docs/versions.md`, `docs/compatibility.md`
 - Hardware and BOM: `hardware/README.md`, `hardware/pcb/spares.md`
 
 Update the matching Chinese document at the same time.
+
+## Fetch SDK submodules
+
+From this repository root, run `git submodule update --init c-sdk` to fetch the pinned C SDK, then enter `c-sdk/` and follow its own guide. Use `git submodule update --init --recursive` to fetch all submodules. Submit SDK source changes in their standalone repositories; this repository only updates their pinned references.
 
 ## Validation Before PR
 

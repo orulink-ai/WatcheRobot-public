@@ -42,7 +42,7 @@
 
 不要提交：
 
-- 官方 ESP32 应用、STM32F103 或 Himax 固件实现（`firmware/sdk/` 下的独立硬件 SDK、必要驱动和示例除外）
+- 官方 ESP32 应用、STM32F103 或 Himax 固件实现。C SDK 源码、驱动和示例在 [WatcheRobot_c_sdk](https://github.com/orulink-ai/WatcheRobot_c_sdk) 维护，本仓库只通过 `c-sdk/` 子模块引用。
 - Release 产物：`.bin`、`.zip`、`.exe`、`.msi`、`.dmg`、`.apk`、`.aab`
 - 本地构建输出或生成的固件镜像
 - Wi-Fi 凭据、API key、token、私钥或 `.env` 文件
@@ -56,13 +56,18 @@
 如果你的改动影响安装、刷写、行为资源、硬件资料、SDK 或 Release 资产，请同步更新对应文档：
 
 - 快速开始：`README_zh.md`
-- 固件和烧录：`firmware/README_zh.md`、`docs/flashing_zh.md`
+- 固件下载和烧录：[资源与下载](hardware/README_zh.md#firmware)、[烧录指南](docs/flashing_zh.md)
+- 设备端 C SDK 开发：[独立仓库](https://github.com/orulink-ai/WatcheRobot_c_sdk)、[子模块获取指引](#获取-sdk-子模块)
 - SD 卡和首次运行：`docs/sd-card-assets_zh.md`、`docs/action-test_zh.md`
 - SDK：`docs/sdk_zh.md`
 - 版本与配套关系：`docs/versions_zh.md`、`docs/compatibility_zh.md`
 - 硬件与 BOM：`hardware/README_zh.md`、`hardware/pcb/spares_zh.md`
 
 同时更新对应英文文档。
+
+## 获取 SDK 子模块
+
+在本仓库根目录执行 `git submodule update --init c-sdk` 获取固定版本 C SDK，再进入 `c-sdk/` 按 SDK 自身指南开发。获取全部子模块可用 `git submodule update --init --recursive`。SDK 源码变更在对应独立仓库提交，本仓库只更新引用版本。
 
 ## 提交 PR 前的验证
 

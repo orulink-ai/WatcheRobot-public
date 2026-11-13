@@ -2,7 +2,15 @@ English | [简体中文](../../../products/watcherobot/device-guide.md)
 
 # Device user guide
 
-Power on, configure Wi-Fi, and connect your robot to a computer or phone. Steps were checked against local ESP32 source `7699527` on 2026-10-15. Screenshots come from the existing device guide; layouts can vary by firmware and app version.
+Power on, configure Wi-Fi, and connect your robot to a computer or phone. Layouts can vary by firmware and app version.
+
+## Network specifications {#network-specs}
+
+| Item | Support |
+| --- | --- |
+| Wi-Fi band | **2.4 GHz only; 5 GHz Wi-Fi is not supported** |
+
+Enable the 2.4 GHz network on a dual-band router. Here, 5 GHz refers to the Wi-Fi band, not 5G cellular service.
 
 ## Power and basic controls {#controls}
 
@@ -29,6 +37,10 @@ Expand **Assets** in a release containing the phone app, download `watcher-andro
 Download Watcher Desktop from Releases too: use the appropriate `.exe` installer for Windows or a `.dmg` matching your Mac's chip architecture. Availability follows the actual assets. APKs, firmware ZIPs, and SDK wheels are not desktop installers.
 
 ## Configure Wi-Fi with a QR code {#wifi}
+
+::: warning Check the Wi-Fi band before provisioning
+**The robot connects to 2.4 GHz Wi-Fi only, not 5 GHz Wi-Fi.** Enable your router's 2.4 GHz network and select it for provisioning. If both bands share a name and provisioning fails, temporarily give the bands separate network names and retry with the 2.4 GHz network. Entering a network name manually does not enable 5 GHz support.
+:::
 
 ### 1. Display the QR code on the robot
 
@@ -60,7 +72,7 @@ Open the app, tap **Scan QR code**, and scan the code on the robot's screen. Wai
 
 ### 3. Select a network and connect
 
-Select your Wi-Fi network, or tap **Enter network manually** to enter its name. Enter the Wi-Fi password and wait for **Connected successfully**. Confirm **Connected** and an IP address on the robot. A wrong password or timeout is not success; follow the app error to retry.
+Select your **2.4 GHz Wi-Fi network (5 GHz is not supported)**, or tap **Enter network manually** to enter its name. Enter the Wi-Fi password and wait for **Connected successfully**. Confirm **Connected** and an IP address on the robot. A wrong password or timeout is not success; follow the app error to retry.
 
 Provisioning is separate from phone control. After success notification and Bluetooth release by the app, the robot can return home; a manually opened Wi-Fi information page may stay open.
 

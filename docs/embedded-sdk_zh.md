@@ -2,41 +2,26 @@
 
 # 嵌入式 C SDK（开发预览）
 
-## 先选开发路线
+使用 C SDK 在 WatcheRobot 的 ESP32-S3 上开发设备端应用，控制屏幕、声音、相机、灯光和身体运动。
 
-| 路线 | 你的代码运行在哪里 | 入口 |
-| --- | --- | --- |
-| Python SDK | 电脑端 Application，使用现有固件及 Runtime／Daemon | [Python 快速开始](sdk_zh.md) |
-| 嵌入式 C SDK | ESP32-S3，自有 `app_main`、UI 与硬件策略 | [公开源码与上手](../firmware/sdk/README_zh.md) |
+## 选择开发路线
 
-两条路线独立，不是互相安装的前提。嵌入式示例不需要 Python SDK、官方应用、Daemon、
-服务端、SD 卡或模型。
+| 你想做什么 | 从这里开始 |
+| --- | --- |
+| 在电脑上编写应用，控制现有机器人固件 | [Python SDK](sdk_zh.md) |
+| 在 ESP32-S3 上编写 C 应用，使用屏幕、声音、相机、灯光或运动 | [C SDK 中文首页](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/README_zh.md) |
 
-## 第一步怎么走
+两条路线独立，使用 C SDK 不要求先安装 Python SDK 或 Runtime/Daemon。
 
-1. [固定公开 commit，安装 ESP-IDF 6.0.2](../firmware/sdk/docs/getting-started_zh.md)。
-2. 构建 `hardware_check`；烧录前核对配套固件、恢复镜像和 ESP32 实际端口。
-   所有示例命令在**公开仓库根目录**执行。
-3. [按 8 组／26 细项体检](../firmware/sdk/docs/hardware-check_zh.md)，再修改 body／head／robot
-   应用入口，开发自己的产品。
+## 开始使用
 
-公开快照包括 `watcher_hw_{core,body,camera,audio,display}`、必要纯硬件依赖、公共 UI／
-状态机、许可测试语音、四个独立工程及 Shell／PowerShell 入口。头文件声明所有权和
-线程合同；[迁移指南](../firmware/sdk/MIGRATION.md)覆盖旧命名。
-完整固定上游 SHA 与逐文件来源见 [SOURCE.json](../firmware/sdk/SOURCE.json)，不要求私库访问。
+1. 按[第一个 C 应用教程](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/getting-started_zh.md)安装指定 ESP-IDF、获取 SDK 源码，运行不启动身体运动的 `hello_display` 示例。构建和烧录命令均在 **`WatcheRobot_c_sdk` 仓库根目录**执行。
+2. 按[功能指南](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/features.md)查找接口，从[示例目录](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/examples/README.md)选择工程。
+3. 需要整机体检时，再看[硬件体检示例](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/examples/hardware_check/README_zh.md)。
 
-## 当前硬件与发布边界
+## 烧录与运动前必读
 
-当前舵机**没有物理位置反馈**。位置查询返回 `ESP_ERR_NOT_SUPPORTED`；命令坐标、
-ACK/DONE 都不是测量。运动测试必须先人工确认完整行程安全，再命令 X90/Y120 参考姿态；
-未知起点可能使参考动作成为大行程。STOP 仍要观察实际停止并依赖 STM32 安全机制。
-[运动前必读](../firmware/sdk/docs/hardware-check_zh.md)。
-
-这是**开发预览**，不是稳定 Release、完整 STM32/Himax 配对验收、工厂认证或机械安全保证。
-相机要求 PTL Himax 固件；不能假定当前公开官方 Release 已兼容。缺少验证过的配对／恢复镜像，
-就阻塞在烧录之前。[首次准备、日常自定义烧录、恢复官方](../firmware/sdk/docs/getting-started_zh.md)
-是三种不同流程。
-
-[历史记录](../firmware/sdk/VALIDATION.md)保留当时的名称、哈希和限制；
-[本次软件同步证据](../firmware/sdk/SYNC_VALIDATION.md)不构成新声音／图像／机械实测。
-本次源码与文档 PR 不发布稳定 v1，不修改生产。
+- 首次完整烧录会替换原应用和分区表，可能覆盖设备配置。先确认[硬件、配套固件与备份要求](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/hardware-compatibility.md)，准备可用的恢复镜像；配套版本未确认前不要烧录。
+- 恢复官方功能按[完整恢复流程](flashing_zh.md#full)操作，不能只写回旧应用。
+- 舵机不能读取实际转到的角度；命令坐标和 ACK/DONE 不证明已到位或停止。运动前清空完整行程，遵守[身体控制 API 的安全说明](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/api/body.md)，并观察实际动作。
+- C SDK 当前为**开发预览**，使用前请确认配套固件和硬件要求；软件构建通过不代表实机安全验收通过。

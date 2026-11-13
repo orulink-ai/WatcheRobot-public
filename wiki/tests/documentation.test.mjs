@@ -27,16 +27,18 @@ test('product navigation groups user tasks and only links to available release c
 });
 
 test('C SDK preview is separate from Python and HIL maintenance stays hidden', () => {
-  const visible = ['/docs/embedded-sdk', '/firmware/sdk/', '/firmware/sdk/docs/getting-started', '/firmware/sdk/docs/hardware-check'];
+  const visible = ['/docs/embedded-sdk'];
+  const historical = ['/firmware/sdk/', '/firmware/sdk/docs/getting-started', '/firmware/sdk/docs/hardware-check'];
   for (const lang of ['zh', 'en']) {
     const prefix = lang === 'zh' ? '' : '/en';
-    const catalog = [...visible, '/guide/hardware-in-the-loop', '/docs/sdk', '/hardware/'].map((route, index) => ({
+    const catalog = [...visible, ...historical, '/guide/hardware-in-the-loop', '/docs/sdk', '/hardware/'].map((route, index) => ({
       lang,
       route: prefix + route,
       title: `Hidden preview ${index}`,
     }));
     const links = JSON.stringify(buildSidebar(catalog, lang));
     for (const route of visible) assert.ok(links.includes(prefix + route));
+    for (const route of historical) assert.ok(!links.includes(prefix + route));
     assert.match(links, /C SDK/);
     assert.match(links, /Python SDK/);
     assert.match(links, /Hardware|硬件专区/);
@@ -81,6 +83,22 @@ test('assembly tutorial is bilingual, linked from hardware entry points, and use
     const content = await read(path);
     assert.match(content, /assembly\.md/);
     assert.doesNotMatch(content, /文字步骤|text steps/);
+  }
+});
+
+test('Wi-Fi band limitations are prominent in bilingual specs and provisioning entry points', async () => {
+  for (const [prefix, suffix] of [['', '_zh'], ['en/', '']]) {
+    const device = await read(`wiki/guides/${prefix}products/watcherobot/device-guide.md`);
+    const specs = device.split('{#network-specs}')[1].split('\n## ')[0];
+    assert.match(specs, /\*\*[^\n]*2\.4 GHz[^\n]*5 GHz[^\n]*\*\*/);
+    const provisioning = device.split('{#wifi}')[1].split('\n## ')[0];
+    assert.match(provisioning, /::: warning/);
+    assert.ok(provisioning.indexOf('2.4 GHz') < provisioning.indexOf('### 1.'));
+    for (const path of [`wiki/guides/${prefix}guide/getting-started.md`, `wiki/guides/${prefix}troubleshooting/index.md`, `README${suffix}.md`]) {
+      const content = await read(path);
+      assert.match(content, /2\.4 GHz/);
+      assert.match(content, /5 GHz/);
+    }
   }
 });
 
@@ -275,6 +293,19 @@ test('SDK instructions activate the environment first and use managed Applicatio
   }
 });
 
+test('C SDK entry points use standalone source and current first-run instructions', async () => {
+  for (const suffix of ['', '_zh']) {
+    const guide = await read(`docs/embedded-sdk${suffix}.md`);
+    assert.match(guide, /https:\/\/github\.com\/orulink-ai\/WatcheRobot_c_sdk/);
+    assert.match(guide, /hello_display/);
+    assert.match(guide, /examples\/hardware_check\/README/);
+    assert.match(guide, /ACK\/DONE/);
+    assert.doesNotMatch(guide, /\]\(\.\.\/firmware\/sdk\//);
+    const home = await read(`README${suffix}.md`);
+    assert.match(home, /https:\/\/github\.com\/orulink-ai\/WatcheRobot_c_sdk/);
+  }
+});
+
 test('generated pages keep internal page and asset links resolvable in both languages', async () => {
   const output = await mkdtemp(resolve(tmpdir(), 'watche-doc-links-'));
   try {
@@ -283,6 +314,7 @@ test('generated pages keep internal page and asset links resolvable in both lang
     for (const page of catalog) {
       const file = resolve(output, '.' + page.route + (page.route.endsWith('/') ? 'index.md' : '.md'));
       const content = (await readFile(file, 'utf8')).replace(/```[\s\S]*?```/g, '');
+      assert.ok(!page.source.startsWith('firmware/'), 'removed firmware pages must be redirects, not articles');
       const targets = [...content.matchAll(/\]\((\/[^\s)]+)\)|(?:src|href)="(\/[^"\s]+)"/g)]
         .map(match => (match[1] ?? match[2]).split(/[?#]/)[0]);
       for (const target of targets) {

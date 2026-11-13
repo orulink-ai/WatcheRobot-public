@@ -2,46 +2,26 @@ English | [简体中文](embedded-sdk_zh.md)
 
 # Embedded C SDK (Development Preview)
 
-## Pick your development route
+Use the C SDK to build applications on WatcheRobot’s ESP32-S3, working with the screen, audio, camera, lights and body movement.
 
-| Route | Where your code runs | Start here |
-| --- | --- | --- |
-| Python SDK | Computer-side Applications, existing firmware and Runtime/Daemon | [Python quick start](sdk.md) |
-| Embedded C SDK | ESP32-S3, your own `app_main`, UI and hardware policy | [Public source and setup](../firmware/sdk/README.md) |
+## Choose your development route
 
-These are independent routes, not prerequisites for each other. The embedded
-examples need no Python SDK, official app, Daemon, server, SD card or models.
+| What you want to do | Start here |
+| --- | --- |
+| Write computer-side applications controlling existing robot firmware | [Python SDK](sdk.md) |
+| Write C applications on ESP32-S3 using the screen, audio, camera, lights or motion | [C SDK overview](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/README.md) |
 
-## First steps
+The routes are independent: the C SDK does not require installing the Python SDK or Runtime/Daemon first.
 
-1. [Pin a public commit and install ESP-IDF 6.0.2](../firmware/sdk/docs/getting-started.md).
-2. Build `hardware_check`, then verify paired firmware/recovery and your ESP32 port
-   before any flash. Build commands run from the **public repository root**.
-3. [Follow the 8-group / 26-item check](../firmware/sdk/docs/hardware-check.md), then
-   edit body/head/robot application code for your own product.
+## Get started
 
-The public snapshot includes `watcher_hw_{core,body,camera,audio,display}`, their
-hardware-only dependencies, common UI/flow helpers, licensed test speech, four
-independent projects and Shell/PowerShell entries. Headers specify ownership and
-threading; [migration](../firmware/sdk/MIGRATION.md) covers the old namespace.
-The full immutable upstream SHA and per-file provenance are in
-[SOURCE.json](../firmware/sdk/SOURCE.json). No private checkout is needed.
+1. Follow [your first C application](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/getting-started.md) to install the required ESP-IDF, download the SDK source and run `hello_display`, which does not start body movement. Build and flash commands run from the **`WatcheRobot_c_sdk` repository root**.
+2. Find APIs in the [feature guide](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/features.md) and choose a project from the [examples](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/examples/README.md).
+3. For a guided hardware check, use the [hardware-check example](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/examples/hardware_check/README.md).
 
-## Current hardware and release boundary
+## Before flashing or moving
 
-Current servos have **no physical position feedback**. Position queries return
-`ESP_ERR_NOT_SUPPORTED`; command coordinates and ACK/DONE are not measurements.
-Motion tests explicitly confirm full-travel safety before commanding X90/Y120,
-which can be a large move from an unknown start. STOP still requires physical
-observation and STM32-side safety. [Read before moving](../firmware/sdk/docs/hardware-check.md).
-
-This is a **development preview**, not a stable Release, complete STM32/Himax
-pairing, factory certificate or mechanical-safety guarantee. Camera requires PTL
-Himax firmware; public official Releases must not be assumed compatible. Missing
-verified pair or recovery images blocks flashing. [Setup/custom flash/official
-recovery](../firmware/sdk/docs/getting-started.md) are separate workflows.
-
-[Historical records](../firmware/sdk/VALIDATION.md) retain original names, hashes
-and limitations. [This sync's software evidence](../firmware/sdk/SYNC_VALIDATION.md)
-does not establish new audible, visual or mechanical acceptance. No production
-publication or stable v1 is performed by this source/documentation change.
+- A full first flash replaces the application and partition table and may overwrite configuration. Check [hardware, paired firmware and backup requirements](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/hardware-compatibility.md) and obtain usable recovery images first. Do not flash before confirming compatible versions.
+- Restore official functionality using the [complete recovery procedure](flashing.md#full), not by writing only an old application.
+- Servos cannot report their actual angle. Command coordinates and ACK/DONE do not prove arrival or a physical stop. Clear the full travel range, follow the [body API safety instructions](https://github.com/orulink-ai/WatcheRobot_c_sdk/blob/main/docs/api/body.md) and observe actual movement.
+- The C SDK is a **development preview**. Check hardware and paired firmware requirements before use; a successful software build is not hardware safety acceptance.
