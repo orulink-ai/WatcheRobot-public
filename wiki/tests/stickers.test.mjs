@@ -6,8 +6,8 @@ import test from 'node:test';
 import {buildSidebar} from '../navigation.mjs';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 
-test('sticker tutorial has twelve illustrated steps and shared local photos in both languages', async()=>{
-  const expected=['prepare','technique',...Array.from({length:12},(_,i)=>`step-${String(i+1).padStart(2,'0')}`),'finished'];
+test('sticker tutorial covers gray and blue sets with twelve positions and shared local photos', async()=>{
+  const expected=['prepare','variants','technique',...Array.from({length:12},(_,i)=>`step-${String(i+1).padStart(2,'0')}`),'finished'];
   const imageSets=[];
   for(const lang of ['zh','en']){
     const path=`wiki/guides/${lang==='en'?'en/':''}guide/stickers.md`;
@@ -17,7 +17,11 @@ test('sticker tutorial has twelve illustrated steps and shared local photos in b
     assert.match(text,/转移膜|transfer film/);
     assert.doesNotMatch(text,/feishu\.cn|file_token|revision_id|PR #|Git 历史/);
     const images=[...text.matchAll(/!\[[^\]]+\]\(([^)]+)\)/g)].map(m=>m[1]);
-    assert.equal(images.length,19);
+    assert.equal(images.length,27);
+    assert.match(text,/12/);
+    assert.match(text,/11/);
+    const top=text.split('{#step-05}')[1].split('\n## ')[0];
+    assert.match(top,/蓝色.*跳过|[Bb]lue.*skip/);
     for(const image of images){assert.ok(!image.startsWith('http'));await access(resolve(root,dirname(path),image));}
     imageSets.push(images.map(p=>p.split('/').pop()));
     const device=await readFile(resolve(root,`wiki/guides/${lang==='en'?'en/':''}products/watcherobot/device-guide.md`),'utf8');

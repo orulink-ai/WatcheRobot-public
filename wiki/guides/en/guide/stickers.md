@@ -2,7 +2,7 @@ English | [简体中文](../../guide/stickers.md)
 
 # Sticker application guide
 
-Decorate WatcheRobot and its charging dock with the supplied stickers. Follow the 12 illustrated positions below. Click any photo to inspect the pattern, edges and openings at full size.
+Decorate WatcheRobot and its charging dock with the supplied stickers. Follow the 12 illustrated positions for the gray set; the blue set covers 11 positions and skips the top of the body. Click any photo to inspect the pattern, edges and openings at full size.
 
 ## What you need {#prepare}
 
@@ -11,6 +11,45 @@ Prepare WatcheRobot, its charging dock and the **four supplied sticker sheets**.
 Turn the robot off and disconnect power from the dock. Keep the shell clean and dry. Support the robot while working; do not force its head or body joints.
 
 ![WatcheRobot, charging dock and four supplied sticker sheets](../../../../docs/images/device/stickers/preparation.webp)
+
+## Check your sticker color and count {#variants}
+
+| Color | Individual decals | Body-top decal | Sequence |
+| --- | --- | --- | --- |
+| Gray | 12 | Included | Follow steps 1–12 |
+| Blue | 11 | Not included | Go from step 4 to step 6; follow the other steps normally |
+
+Both sets are supplied on four backing sheets. Four refers to the sheets; 12 or 11 refers to the individual decals applied to the device. **The blue set intentionally has no body-top decal. Skip step 5; do not substitute a decal intended for another position.**
+
+The layouts below label each decal's position; click to enlarge. The application photos show the gray set. For blue, match the shapes and positions in the blue layouts rather than looking for identical lettering or numbers in the gray photos.
+
+### Gray stickers · 12 decals
+
+<div class="device-guide-grid sticker-gallery sticker-layouts">
+
+![Gray sticker sheet 1, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/gray-sheet-01.webp)
+
+![Gray sticker sheet 2, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/gray-sheet-02.webp)
+
+![Gray sticker sheet 3, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/gray-sheet-03.webp)
+
+![Gray sticker sheet 4, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/gray-sheet-04.webp)
+
+</div>
+
+### Blue stickers · 11 decals
+
+<div class="device-guide-grid sticker-gallery sticker-layouts">
+
+![Blue sticker sheet 1, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/blue-sheet-01.webp)
+
+![Blue sticker sheet 2, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/blue-sheet-02.webp)
+
+![Blue sticker sheet 3, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/blue-sheet-03.webp)
+
+![Blue sticker sheet 4, showing decal shapes and labeled positions](../../../../docs/images/device/stickers/blue-sheet-04.webp)
+
+</div>
 
 ## Application technique {#technique}
 
@@ -47,15 +86,17 @@ Find the side with screw holes. Use the ORULINK lettering and openings in the ph
 
 ![Aligning the body sticker on the side with screw holes](../../../../docs/images/device/stickers/step-04.webp)
 
-## 5. Top of the body {#step-05}
+## 5. Top of the body (gray set only) {#step-05}
 
-Align the light-strip opening first, then follow the top contour slowly. Do not cover the light-strip opening.
+**Blue stickers: skip this step and continue to step 6.** The blue set has no body-top decal.
+
+For the gray set, align the light-strip opening first, then follow the top contour slowly. Do not cover the light-strip opening.
 
 ![Aligning the top body sticker with the light-strip opening](../../../../docs/images/device/stickers/step-05.webp)
 
 ## 6. Right side of the body {#step-06}
 
-Match the side with the “02” pattern. Check its orientation and the shell boundary, support the robot and apply the sticker.
+Use the layout for your color to identify the body-right decal. Check its orientation and the shell boundary, support the robot and apply it. The “02” shown in the gray-set photo is only a visual reference.
 
 ![Right body sticker with the 02 pattern](../../../../docs/images/device/stickers/step-06.webp)
 

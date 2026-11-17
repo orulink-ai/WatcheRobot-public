@@ -2,7 +2,7 @@
 
 # 贴纸粘贴教程
 
-使用随设备附送的贴纸装饰 WatcheRobot 和充电底座。按下方 12 个位置逐一粘贴，每个位置均附有照片；可以点击图片放大查看图案、边角和孔位。
+使用随设备附送的贴纸装饰 WatcheRobot 和充电底座。灰色贴纸按下方 12 个位置粘贴；蓝色贴纸跳过机身顶部，共 11 个位置。每个位置均附有照片；可以点击图片放大查看图案、边角和孔位。
 
 ## 准备物品 {#prepare}
 
@@ -11,6 +11,45 @@
 操作前关闭设备电源、断开充电底座电源，保持外壳表面清洁、干燥。粘贴时扶稳设备，不要用力扳动头部或机身关节。
 
 ![WatcheRobot、充电底座与四张随附贴纸](../../../docs/images/device/stickers/preparation.webp)
+
+## 确认贴纸配色与数量 {#variants}
+
+| 配色 | 图案数量 | 机身顶部贴纸 | 操作顺序 |
+| --- | --- | --- | --- |
+| 灰色 | 12 片 | 有 | 按第 1–12 步粘贴 |
+| 蓝色 | 11 片 | 无 | 第 4 步后跳到第 6 步，其余顺序相同 |
+
+两套贴纸均分布在 4 张底纸上。“4 张”是底纸数量，“12 片／11 片”是要贴到设备上的图案数量。**蓝色套装没有机身顶部贴纸，不是漏发；请跳过第 5 步，不要用其他部位的图案代替。**
+
+下面的图纸标注了每片图案的对应部位，可点击放大。实操照片使用灰色贴纸，蓝色请按下方蓝色图纸认形状、找位置，不必寻找灰色照片中的相同文字或编号。
+
+### 灰色贴纸 · 12 片
+
+<div class="device-guide-grid sticker-gallery sticker-layouts">
+
+![灰色贴纸第 1 张底纸的图案与部位标注](../../../docs/images/device/stickers/gray-sheet-01.webp)
+
+![灰色贴纸第 2 张底纸的图案与部位标注](../../../docs/images/device/stickers/gray-sheet-02.webp)
+
+![灰色贴纸第 3 张底纸的图案与部位标注](../../../docs/images/device/stickers/gray-sheet-03.webp)
+
+![灰色贴纸第 4 张底纸的图案与部位标注](../../../docs/images/device/stickers/gray-sheet-04.webp)
+
+</div>
+
+### 蓝色贴纸 · 11 片
+
+<div class="device-guide-grid sticker-gallery sticker-layouts">
+
+![蓝色贴纸第 1 张底纸的图案与部位标注](../../../docs/images/device/stickers/blue-sheet-01.webp)
+
+![蓝色贴纸第 2 张底纸的图案与部位标注](../../../docs/images/device/stickers/blue-sheet-02.webp)
+
+![蓝色贴纸第 3 张底纸的图案与部位标注](../../../docs/images/device/stickers/blue-sheet-03.webp)
+
+![蓝色贴纸第 4 张底纸的图案与部位标注](../../../docs/images/device/stickers/blue-sheet-04.webp)
+
+</div>
 
 ## 通用粘贴方法 {#technique}
 
@@ -47,15 +86,17 @@
 
 ![有螺丝孔一侧的机身贴纸对位](../../../docs/images/device/stickers/step-04.webp)
 
-## 5. 机身顶部 {#step-05}
+## 5. 机身顶部（仅灰色贴纸） {#step-05}
 
-先对齐灯带孔位，再沿机身顶部轮廓缓慢贴合，不要遮住灯带开孔。
+**蓝色贴纸跳过本步，直接继续第 6 步。** 蓝色套装不包含机身顶部图案。
+
+灰色贴纸先对齐灯带孔位，再沿机身顶部轮廓缓慢贴合，不要遮住灯带开孔。
 
 ![机身顶部贴纸与灯带孔位的对齐位置](../../../docs/images/device/stickers/step-05.webp)
 
 ## 6. 机身右侧 {#step-06}
 
-对照带有“02”图案的一面，确认图案方向和外壳边界，扶稳设备后贴合。
+按所选配色的图纸找到机身右侧图案，确认图案方向和外壳边界，扶稳设备后贴合。灰色照片中的“02”仅用于辅助对照。
 
 ![带有02图案的机身右侧贴纸位置](../../../docs/images/device/stickers/step-06.webp)
 
