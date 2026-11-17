@@ -4,6 +4,8 @@ English | [简体中文](../../../products/watcherobot/device-guide.md)
 
 Power on, configure Wi-Fi, and connect your robot to a computer or phone. Layouts can vary by firmware and app version.
 
+For the supplied decorative stickers, follow the illustrated [sticker application guide](../../guide/stickers.md).
+
 ## Network specifications {#network-specs}
 
 | Item | Support |
