@@ -99,7 +99,7 @@ Use the right-side photo to complete the opposite sticker. Do not cover charging
 
 Check that the clear transfer film has been removed and the patterns remain on the shell. Inspect the edges and keep the screen and all openings uncovered. Click the finished photos below to compare different angles.
 
-<div class="device-guide-grid">
+<div class="device-guide-grid sticker-gallery">
 
 ![Finished robot viewed diagonally from the front](../../../../docs/images/device/stickers/finished-01.webp)
 

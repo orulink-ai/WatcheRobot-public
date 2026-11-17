@@ -242,6 +242,9 @@ body {
   object-position: center top;
 }
 .device-guide-controls img { height: 240px; }
+/* Landscape product photos keep their natural ratio rather than phone-screen height. */
+.vp-doc .sticker-gallery img { height: auto; }
+.vp-doc .sticker-gallery > p { margin: 0; }
 .community-qr img { width: 280px; max-width: 100%; height: auto; }
 .community-channels {
   display: grid;

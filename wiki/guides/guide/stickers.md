@@ -99,7 +99,7 @@
 
 确认透明转移膜已揭除、图案留在外壳上，并检查边角贴合、屏幕和各开孔未被遮挡。以下是不同角度的完成效果，可点击放大对照。
 
-<div class="device-guide-grid">
+<div class="device-guide-grid sticker-gallery">
 
 ![完成贴纸后的正面斜视图](../../../docs/images/device/stickers/finished-01.webp)
 
