@@ -18,8 +18,14 @@ test('sticker tutorial covers gray and blue sets with twelve positions and share
     assert.doesNotMatch(text,/feishu\.cn|file_token|revision_id|PR #|Git 历史/);
     const images=[...text.matchAll(/!\[[^\]]+\]\(([^)]+)\)/g)].map(m=>m[1]);
     assert.equal(images.length,27);
-    assert.match(text,/12/);
-    assert.match(text,/11/);
+    assert.match(text,lang==='zh'?/^\| 灰色 \| 12 片 \| 有 \|/m:/^\| Gray \| 12 \| Included \|/m);
+    assert.match(text,lang==='zh'?/^\| 蓝色 \| 11 片 \| 无 \|/m:/^\| Blue \| 11 \| Not included \|/m);
+    for(const [i,number] of [...'①②③④⑤⑥⑦⑧⑨⑩⑪⑫'].entries()){
+      const step=String(i+1).padStart(2,'0');
+      const section=text.split(`{#step-${step}}`)[1].split('\n## ')[0];
+      assert.ok(section.includes(number),`${lang} step ${step} should reference decal ${number}`);
+      assert.match(section,new RegExp(`step-${step}\\.webp`));
+    }
     const top=text.split('{#step-05}')[1].split('\n## ')[0];
     assert.match(top,/蓝色.*跳过|[Bb]lue.*skip/);
     for(const image of images){assert.ok(!image.startsWith('http'));await access(resolve(root,dirname(path),image));}
